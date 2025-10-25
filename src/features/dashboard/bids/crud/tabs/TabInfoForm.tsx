@@ -3,26 +3,35 @@ import React, { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/helpers";
 import {
-  DatePicker,
+  Button,
+  DatePicker, Icon,
   Input,
-  InputPhone,
+  InputPhone, Modal,
   Select,
   SelectInfinitive,
   TextAreaInput,
 } from "@/shared/ui";
-import { canopyOptions, doorLockOptions } from "@/features/dashboard/bids";
+import { canopyOptions } from "@/features/dashboard/bids";
 import { validatePhone } from "@/shared/utils/validations";
+import { useUpdateColor } from "@/features/admin/colors";
+import { showGlobalToast } from "@/shared/hooks";
+import { CustomerCreate } from "@/features/dashboard/bids/crud/tabs/CustomerCreate";
 
 interface Props {
   className?: string;
 }
 
+export const CATEGORY_HINCH_ID = 22;
+export const CATEGORY_DOORLOCK_ID = 21;
+
 export const TabInfoForm: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
   const user = JSON.parse(localStorage.getItem("__user") || "{}");
+  const [openCustomerModal, setOpenCustomerModal] = React.useState(false);
 
   return (
     <div className={cn("flex flex-col gap-4 py-1", className)}>
+      <CustomerCreate open={openCustomerModal} onCloseModal={() => setOpenCustomerModal(false)} />
       <div className="flex flex-col gap-4 sm:grid lg:grid-cols-4">
         <Form.Item
           name={["general", "customer_name"]}
@@ -36,6 +45,13 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             labelKey="name"
             valueKey="customer_id"
             useValueAsLabel
+            emptyRender={
+              <div className={"flex items-center gap-2"}>
+              <p>Клиент не найден</p>
+              <Button icon={<Icon icon={'plus'} /> } onClick={() => {
+                setOpenCustomerModal(true);
+              }}>Создать новый</Button>
+            </div>}
           />
         </Form.Item>
 
@@ -111,10 +127,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             {user?.user?.name}
           </div>
         </Form.Item>
-        <Form.Item
-          name={["general", "application_date"]}
-          label={"Дата заявки"}
-        >
+        <Form.Item name={["general", "application_date"]} label={"Дата заявки"}>
           <DatePicker
             size="small"
             className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
@@ -131,35 +144,42 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           <Input placeholder={t("common.placeholder.sizes")} />
         </Form.Item>
       </div>
-
+      <Divider />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Form.Item
+          name={["general", "default_hinge_id"]}
+          label={"Продукт петли дверей"}
+        >
+          <SelectInfinitive
+            placeholder={"Выберите продукт петли дверей"}
+            queryKey="default_hinge_id"
+            fetchUrl={`/product/by/category?category_id=${CATEGORY_HINCH_ID}`}
+            labelKey="name"
+            valueKey="[category, section_index]"
+            useValueAsLabel
+          />
+        </Form.Item>
+        <Form.Item
+          name={["general", "default_door_lock_id"]}
+          label={"Продукт замка дверей"}
+        >
+          <SelectInfinitive
+            placeholder={"Выберите продукт замка дверей"}
+            queryKey="default_door_lock_id"
+            fetchUrl={`/product/by/category?category_id=${CATEGORY_DOORLOCK_ID}`}
+            labelKey="name"
+            valueKey="[category, section_index]"
+            useValueAsLabel
+          />
+        </Form.Item>
+      </div>
+      <Divider />
       <Form.Item
         name={["general", "remark"]}
         label={t("common.labels.additionalInfo")}
       >
         <TextAreaInput placeholder={t("common.placeholder.remark")} />
       </Form.Item>
-      <Divider/>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Form.Item
-          name={["general", "door_lock"]}
-          label={t("common.labels.doorLock")}
-        >
-          <Select
-            placeholder={t("common.placeholder.doorLock")}
-            options={doorLockOptions}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name={["general", "canopy"]}
-          label={t("common.labels.canopy")}
-        >
-          <Select
-            placeholder={t("common.placeholder.canopy")}
-            options={canopyOptions}
-          />
-        </Form.Item>
-      </div>
     </div>
   );
 };

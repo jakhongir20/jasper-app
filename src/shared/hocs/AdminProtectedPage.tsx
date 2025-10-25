@@ -16,8 +16,7 @@ export default function AdminProtectedPage({
 
   // If there's an error or no user data, redirect to login
   if (error || !user) {
-    // return <Navigate to="/auth/login" replace />;
-    console.log('ds')
+    return <Navigate to="/auth/login" replace />;
   }
 
   // Check if user is admin

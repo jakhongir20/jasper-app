@@ -54,6 +54,7 @@ interface Props<T> extends Omit<SelectProps, "options" | "onChange"> {
   allowClear?: boolean;
   onClear?: () => void;
   useValueAsLabel?: boolean;
+  emptyRender?: ReactNode;
 }
 
 const PAGE_SIZE = 10;
@@ -82,6 +83,7 @@ const Select = <T extends ItemType>({
   onChange,
   allowClear = true,
   useValueAsLabel = false,
+                                      emptyRender = null,
   ...rest
 }: Props<T>) => {
   const { t } = useTranslation();
@@ -250,11 +252,17 @@ const Select = <T extends ItemType>({
     isFetching && noItemsYet ? (
       <Spin size="small" />
     ) : (
-      <Empty
-        description={t("common.search.noResults")}
-        image={<Icon icon="list" height={30} />}
-        className="[&_.ant-empty-image]:!h-6"
-      />
+      <>
+        {emptyRender ? (
+          emptyRender
+        ) : (
+          <Empty
+            description={t("common.search.noResults")}
+            image={<Icon icon="list" height={30} />}
+          className="[&_.ant-empty-image]:!h-6"
+          />
+        )}
+      </>
     );
 
   useEffect(() => {

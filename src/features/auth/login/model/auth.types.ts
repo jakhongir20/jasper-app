@@ -3,7 +3,8 @@ import { UseMutationOptions } from "@tanstack/react-query";
 export interface LoginResponse {
   token: string;
   expires_on: number; // Unix timestamp
-
+  access_token: string;
+  refresh_token: string;
   user: User;
 }
 

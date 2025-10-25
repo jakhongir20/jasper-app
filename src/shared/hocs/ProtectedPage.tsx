@@ -7,6 +7,5 @@ export default function ProtectedPage({ element }: { element: JSX.Element }) {
     return !!token;
   };
 
-  return isAuthenticated() ? element : element
-    // <Navigate to="/auth/login" replace />;
+  return isAuthenticated() ? element : <Navigate to="/auth/login" replace />;
 }

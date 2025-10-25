@@ -24,23 +24,22 @@ export const LoginForm: FC<Props> = ({ className }) => {
 
   const { mutate, isPending: isLoading } = useLogin({
     onSuccess: (response) => {
-      const { user_id } = response?.user;
+      const { access_token, user } = response;
 
       const cookieOptions = { maxAge: 24 * 60 * 60 }; // 1 day
 
-      setCookie("__token", response?.token, cookieOptions);
-      setCookie("user_id", String(user_id), cookieOptions);
+      setCookie("__token", access_token, cookieOptions);
+      setCookie("user_id", String(user?.user_id), cookieOptions);
 
       // Store token in localStorage for persistent login
-      localStorage.setItem("__token", response?.token);
+      localStorage.setItem("__token", access_token);
       localStorage.setItem("__user", JSON.stringify(response));
 
       // Clear profile cache to ensure fresh data is fetched
       queryClient.removeQueries({ queryKey: ["profile"] });
 
       // const permissions = role?.access_data;
-      //
-      if (user_id) {
+      if (user?.user_id) {
         toast(t("toast.loginSuccess"), "success");
         navigate("/", { replace: true });
         // setTimeout(() => window.location.replace("/home"), 500);
@@ -63,8 +62,8 @@ export const LoginForm: FC<Props> = ({ className }) => {
       onFinish={handleSubmit}
       initialValues={{
         remember: false,
-        username: "admin",
-        password: "admin",
+        username: "sales",
+        password: "sales",
       }}
       className={cn(className, "flex flex-col gap-4 p-4 pt-5")}
       layout="vertical"
