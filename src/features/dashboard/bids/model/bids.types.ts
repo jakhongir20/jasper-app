@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import type { ApplicationOutputEntity } from "@/shared/lib/api";
 
 export type Option = Record<string, string | number | boolean | unknown>;
 
@@ -30,22 +31,12 @@ export type Taxes = {
 };
 
 export type GeneralFormType = {
-  number: string;
   address: string;
-  customer_name: string;
-  customer_phone: string;
+  default_door_lock_id: number;
+  default_hinge_id: number;
   remark: string;
   sizes: string;
-  color: Option;
-  category_name: string;
-  date: Dayjs; // ISO
-  datetime: Dayjs; // ISO
   production_date: Dayjs; // Changed from string to Dayjs for DatePicker compatibility
-  status: number;
-  door_lock: string;
-  canopy: string;
-  transom_height_front: number;
-  transom_height_back: number;
 };
 
 export type ApplicationLocalForm = {
@@ -262,7 +253,5 @@ export type TransactionFormType = {
   box_service_quantity?: number;
   box_service_length?: number;
 };
-
-import type { ApplicationOutputEntity } from "@/shared/lib/api";
 
 export type ApplicationListItem = ApplicationOutputEntity;

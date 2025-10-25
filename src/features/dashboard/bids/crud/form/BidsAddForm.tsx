@@ -1,6 +1,6 @@
 import { Form } from "antd";
 import type { ValidateErrorEntity } from "rc-field-form/lib/interface";
-import { type FC, useState, useCallback, useEffect } from "react";
+import { type FC, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -12,10 +12,12 @@ import { cn } from "@/shared/helpers";
 import { useTabErrorHandler, useToast } from "@/shared/hooks";
 import { CAddHeader } from "@/shared/ui";
 import { BidsTab } from "@/features/dashboard/bids/crud";
-import { getDateTime } from "@/shared/utils";
-import { formatValidationErrorsForDisplay } from "@/shared/utils";
+import {
+  formatValidationErrorsForDisplay,
+  getDateTime,
+  getRandomId,
+} from "@/shared/utils";
 import { BidsService } from "@/features/dashboard/bids/model/bids.service";
-import { getRandomId } from "@/shared/utils";
 
 interface Props {
   className?: string;
@@ -249,96 +251,13 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
       const services = form.getFieldValue("services") || [];
       const qualities = form.getFieldValue("qualities") || [];
 
-      const model = {
-        "application_date": 0,
-        "address": "string",
-        "remark": "string",
-        "sizes": "string",
-        "default_door_lock_id": 0,
-        "default_hinge_id": 0,
-        "customer": {
-          "customer_id": 0,
-          "name": "string",
-          "phone_number": "string"
-        },
-        "application_transactions": [
-          {
-            "location": "string",
-            "product_type": "string",
-            "opening_height": 0,
-            "opening_width": 0,
-            "opening_thickness": 0,
-            "entity_quantity": 0,
-            "framework_front_id": 0,
-            "framework_back_id": 0,
-            "threshold": "string",
-            "opening_logic": "string",
-            "sash": 0,
-            "chamfer": 0,
-            "transom_type": 0,
-            "transom_product_id": 0,
-            "transom_height_front": 0,
-            "transom_height_back": 0,
-            "door_product_id": 0,
-            "sheathing_product_id": 0,
-            "frame_product_id": 0,
-            "filler_product_id": 0,
-            "crown_product_id": 0,
-            "up_frame_quantity": 0,
-            "up_frame_product_id": 0,
-            "under_frame_quantity": 0,
-            "under_frame_height": 0,
-            "under_frame_product_id": 0,
-            "percent_trim": 0,
-            "trim_product_id": 0,
-            "percent_molding": 0,
-            "molding_product_id": 0,
-            "percent_covering_primary": 0,
-            "covering_primary_product_id": 0,
-            "percent_covering_secondary": 0,
-            "covering_secondary_product_id": 0,
-            "percent_color": 0,
-            "color_product_id": 0,
-            "color_custom_name": "string",
-            "floor_skirting_length": 0,
-            "floor_skirting_product_id": 0,
-            "heated_floor_product_id": 0,
-            "windowsill_product_id": 0,
-            "latting_product_id": 0,
-            "window_product_id": 0,
-            "glass_product_id": 0,
-            "volume_glass": 0,
-            "door_lock_mechanism": 0,
-            "door_lock_product_id": 0,
-            "hinge_mechanism": 0,
-            "hinge_product_id": 0,
-            "door_bolt_product_id": 0,
-            "door_stopper_quantity": 0,
-            "door_stopper_product_id": 0,
-            "anti_threshold_quantity": 0,
-            "anti_threshold_product_id": 0,
-            "box_width": 0,
-            "percent_extra_option": 0,
-            "extra_option_product_id": 0
-          }
-        ],
-      };
-
       const rawData = {
-        datetime: getDateTime(general?.datetime),
-        number: general?.number,
         address: general?.address,
-        customer_name: general?.customer_name,
-        customer_phone: general?.customer_phone,
         remark: general?.remark,
         sizes: general?.sizes,
-        color: general?.color?.name || general?.color,
-        category_name: general?.category_name,
-        door_lock_id: general?.door_lock ? parseInt(general.door_lock) : null,
-        canopy_id: general?.canopy ? parseInt(general.canopy) : null,
-        transom_height_front: general?.transom_height_front || 0,
-        transom_height_back: general?.transom_height_back || 0,
-        status: general?.status || 1,
+        default_door_lock_id:
+          general?.default_door_lock_id?.category?.section_index,
+        default_hinge_id: general?.default_hinge_id?.category?.section_index,
         production_date: general?.production_date
           ? getDateTime(general?.production_date)
           : undefined,
@@ -467,17 +386,15 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
     if (value && typeof value === "object" && key in value) {
       return value[key];
     }
-    // Return null instead of 0 for empty values to avoid foreign key violations
     if (value === 0 || value === "0" || value === "") {
       return null as T;
     }
     return value;
   }
 
-  // Handle form values change
   const handleFormValuesChange = useCallback(
     (changedValues: any, allValues: any) => {
-      // Calculate services when transactions, baseboards, or windowsills change
+      console.log("changedValues: ", allValues);
       if (
         changedValues.transactions ||
         changedValues.baseboards ||

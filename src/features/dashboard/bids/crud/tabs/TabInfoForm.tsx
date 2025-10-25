@@ -36,12 +36,12 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
       />
       <div className="flex flex-col gap-4 sm:grid lg:grid-cols-4">
         <Form.Item
-          name={["general", "customer_name"]}
+          name={["general", "customer_id"]}
           label={t("common.labels.customerName")}
           rules={[{ required: true }]}
         >
           <SelectInfinitive
-            placeholder={t("common.placeholder.selectStatus")}
+            placeholder={"Выберите клиента"}
             queryKey="customer_all"
             fetchUrl={`/customer/all`}
             labelKey="name"
@@ -53,7 +53,10 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             }}
             onSelect={(value: string, selectedOption?: any) => {
               if (selectedOption?.phone_number) {
-                form.setFieldValue(["general", "phone_number"], selectedOption.phone_number);
+                form.setFieldValue(
+                  ["general", "phone_number"],
+                  selectedOption.phone_number,
+                );
               }
             }}
             emptyRender={
@@ -88,53 +91,6 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         >
           <Input placeholder={t("common.placeholder.address")} />
         </Form.Item>
-
-        {/* <Form.Item
-          name={["general", "datetime"]}
-          label={t("common.labels.productionDate")}
-          rules={[{ required: false }]}
-        >
-          <DatePicker placeholder={t("common.placeholder.productionDate")} />
-        </Form.Item>
- */}
-        {/* <Form.Item
-          name={["general", "production_date"]}
-          label={t("common.input.productionDate")}
-        >
-          <DatePicker placeholder={t("common.placeholder.productionDate")} />
-        </Form.Item> */}
-
-        <Form.Item
-          name={["general", "number"]}
-          label={t("common.labels.measurementNumber")}
-        >
-          <Input placeholder={t("common.placeholder.measurementNumber")} />
-        </Form.Item>
-
-        <Form.Item name={["general", "color"]} label={t("common.labels.color")}>
-          <SelectInfinitive
-            placeholder={t("common.placeholder.color")}
-            queryKey="color"
-            fetchUrl="/color/all"
-            labelKey="name"
-            valueKey="color_id"
-            useValueAsLabel
-          />
-        </Form.Item>
-        <Form.Item
-          name={["general", "transom_height_front"]}
-          label={t("common.input.transom_height_front")}
-        >
-          <Input placeholder={t("common.placeholder.transom_height_front")} />
-        </Form.Item>
-
-        <Form.Item
-          name={["general", "transom_height_back"]}
-          label={t("common.input.transom_height_back")}
-        >
-          <Input placeholder={t("common.placeholder.transom_height_back")} />
-        </Form.Item>
-
         <Form.Item
           name={["general", "author_id"]}
           label={t("common.labels.applicationAuthor")}
@@ -152,7 +108,6 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             placeholder={t("common.table.date")}
           />
         </Form.Item>
-
         <Form.Item
           className="col-span-2"
           name={["general", "sizes"]}
@@ -172,7 +127,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             queryKey="default_hinge_id"
             fetchUrl={`/product/by/category?category_id=${CATEGORY_HINCH_ID}`}
             labelKey="name"
-            valueKey="[category, section_index]"
+            valueKey={"category_id"}
             useValueAsLabel
           />
         </Form.Item>
@@ -185,7 +140,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             queryKey="default_door_lock_id"
             fetchUrl={`/product/by/category?category_id=${CATEGORY_DOORLOCK_ID}`}
             labelKey="name"
-            valueKey="[category, section_index]"
+            valueKey="category_id"
             useValueAsLabel
           />
         </Form.Item>

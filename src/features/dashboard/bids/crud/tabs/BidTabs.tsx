@@ -7,12 +7,6 @@ import { ContentInner, Tabs } from "@/shared/ui";
 import { TabTransactionsForm } from "@/features/dashboard/bids/crud/tabs/TabTransactionsForm";
 import { TabAspectsForm } from "@/features/dashboard/bids/crud/tabs/TabAspectsForm";
 // import { TabSheathingsForm } from "@/features/dashboard/bids/crud/tabs/TabSheathingsForm";
-import { TabBaseboardsForm } from "@/features/dashboard/bids/crud/tabs/TabBaseboardsForm";
-import { TabFloorsForm } from "@/features/dashboard/bids/crud/tabs/TabFloorsForm";
-import { TabWindowsillsForm } from "@/features/dashboard/bids/crud/tabs/TabWindowsillsForm";
-import { TabLattingsForm } from "@/features/dashboard/bids/crud/tabs/TabLattingsForm";
-import { TabFrameworksForm } from "@/features/dashboard/bids/crud/tabs/TabFrameworksForm";
-import { TabDecorationsForm } from "@/features/dashboard/bids/crud/tabs/TabDecorationsForm";
 import { TabServicesForm } from "@/features/dashboard/bids/crud/tabs/TabServicesForm";
 import { TabQualitiesForm } from "@/features/dashboard/bids/crud/tabs/TabQualitiesForm";
 
@@ -64,60 +58,60 @@ export const BidsTab: FC<Props> = ({ mode, isLoadingDetail }) => {
     //     </ContentInner>
     //   ),
     // },
-    {
-      key: "5",
-      label: t("bids.tabs.baseboards"),
-      children: (
-        <ContentInner>
-          <TabBaseboardsForm key={String(isLoadingDetail)} mode={mode} />
-        </ContentInner>
-      ),
-    },
-    {
-      key: "6",
-      label: t("bids.tabs.floors"),
-      children: (
-        <ContentInner>
-          <TabFloorsForm key={String(isLoadingDetail)} mode={mode} />
-        </ContentInner>
-      ),
-    },
-    {
-      key: "7",
-      label: t("bids.tabs.windowsills"),
-      children: (
-        <ContentInner>
-          <TabWindowsillsForm key={String(isLoadingDetail)} mode={mode} />
-        </ContentInner>
-      ),
-    },
-    {
-      key: "8",
-      label: t("bids.tabs.lattings"),
-      children: (
-        <ContentInner>
-          <TabLattingsForm key={String(isLoadingDetail)} mode={mode} />
-        </ContentInner>
-      ),
-    },
-    {
-      key: "9",
-      label: t("bids.tabs.frameworks"),
-      children: (
-        <ContentInner>
-          <TabFrameworksForm key={String(isLoadingDetail)} mode={mode} />
-        </ContentInner>
-      ),
-    },
-    {
-      key: "10",
-      label: t("bids.tabs.decorations"),
-      children: (
-        <ContentInner>
-          <TabDecorationsForm key={String(isLoadingDetail)} mode={mode} />
-        </ContentInner>
-      ),
-    },
+    // {
+    //   key: "5",
+    //   label: t("bids.tabs.baseboards"),
+    //   children: (
+    //     <ContentInner>
+    //       <TabBaseboardsForm key={String(isLoadingDetail)} mode={mode} />
+    //     </ContentInner>
+    //   ),
+    // },
+    // {
+    //   key: "6",
+    //   label: t("bids.tabs.floors"),
+    //   children: (
+    //     <ContentInner>
+    //       <TabFloorsForm key={String(isLoadingDetail)} mode={mode} />
+    //     </ContentInner>
+    //   ),
+    // },
+    // {
+    //   key: "7",
+    //   label: t("bids.tabs.windowsills"),
+    //   children: (
+    //     <ContentInner>
+    //       <TabWindowsillsForm key={String(isLoadingDetail)} mode={mode} />
+    //     </ContentInner>
+    //   ),
+    // },
+    // {
+    //   key: "8",
+    //   label: t("bids.tabs.lattings"),
+    //   children: (
+    //     <ContentInner>
+    //       <TabLattingsForm key={String(isLoadingDetail)} mode={mode} />
+    //     </ContentInner>
+    //   ),
+    // },
+    // {
+    //   key: "9",
+    //   label: t("bids.tabs.frameworks"),
+    //   children: (
+    //     <ContentInner>
+    //       <TabFrameworksForm key={String(isLoadingDetail)} mode={mode} />
+    //     </ContentInner>
+    //   ),
+    // },
+    // {
+    //   key: "10",
+    //   label: t("bids.tabs.decorations"),
+    //   children: (
+    //     <ContentInner>
+    //       <TabDecorationsForm key={String(isLoadingDetail)} mode={mode} />
+    //     </ContentInner>
+    //   ),
+    // },
     {
       key: "11",
       label: t("bids.tabs.services"),
