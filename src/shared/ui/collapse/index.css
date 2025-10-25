@@ -1,0 +1,3 @@
+.c-collapse {
+  @apply [&_.ant-collapse-content-box]:bg-white [&_.ant-collapse-content-box]:!px-0 [&_.ant-collapse-content-box]:!py-4 [&_.ant-collapse-expand-icon]:!p-0 [&_.ant-collapse-header]:!items-center [&_.ant-collapse-header]:!bg-white [&_.ant-collapse-header]:!px-0 [&_.ant-collapse-header]:!py-4 [&_.ant-collapse-item]:!border-gray-800;
+}

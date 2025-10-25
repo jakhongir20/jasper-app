@@ -1,0 +1,1 @@
+export { MoldingDetails } from "./MoldingDetails";

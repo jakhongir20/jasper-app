@@ -1,0 +1,339 @@
+/* Define color variables */
+:root {
+  --color-default-bg: #dfe2e6;
+  --color-default-text: #111214;
+  --color-green-bg: #e5f5ee;
+  --color-green-text: #38ba4e;
+  --color-red-bg: #ffe8ea;
+  --color-red-bg-error: #fff2f0;
+  --color-red-text: #dc3545;
+  --color-red-border-error: #ff4d4f;
+  --color-outlined-bg: #fff;
+  --color-outlined-border: #afb5bc;
+  --color-input-bg: #f8f9fa;
+  --color-placeholder-text: #a4aab0;
+  --color-select-bg: #eaecef;
+  --color-focused-border: #9e39ff;
+  --brand-violet-secondary-1: #f5edff;
+}
+
+/* Use color variables */
+.ant-select-selector {
+  background-color: var(--color-select-bg) !important;
+}
+
+.product-modal.ant-table-row-selected .ant-table-cell:hover {
+  background-color: #f3dbff !important;
+}
+
+.react-international-phone-country-selector-button__dropdown-arrow {
+  display: none !important;
+}
+
+.ant-input-filled,
+.ant-input-password {
+  background-color: var(--color-input-bg);
+}
+
+.ant-select .ant-select-clear {
+  inset-inline-end: 14px;
+  width: 13px;
+  height: 13px;
+  margin-top: -7px;
+  font-size: 13px;
+}
+
+.ant-select-disabled .ant-select-selection-placeholder {
+  color: inherit !important;
+}
+
+.ant-input-password input::placeholder {
+  color: var(--color-placeholder-text) !important;
+}
+
+.ant-input-outlined {
+  border-color: transparent;
+}
+
+.ant-input-outlined.ant-input-status-error:not(
+    .ant-input-disabled
+  ).ant-input-password {
+  border-color: transparent;
+}
+
+.ant-input-password:hover {
+  border-color: transparent !important;
+  background-color: #f2f2f2;
+}
+
+.ant-input-outlined.ant-input-password:focus-within,
+.ant-input-outlined.ant-input-password:focus {
+  border-color: var(--color-focused-border);
+  background-color: transparent !important;
+}
+
+.ant-input-password.ant-input-outlined.ant-input-status-error:not(
+    .ant-input-disabled
+  ):focus,
+.ant-input-password.ant-input-outlined.ant-input-status-error:not(
+    .ant-input-disabled
+  ):focus-within {
+  border-color: var(--color-red-border-error) !important;
+}
+
+.ant-badge .ant-badge-count {
+  box-shadow: 0 0 0 1px #f7bcc2 !important;
+}
+
+.ant-input-filled::placeholder {
+  color: var(--color-placeholder-text) !important;
+}
+
+.ant-picker-filled {
+  background-color: var(--color-input-bg);
+}
+
+.ant-picker-input > input {
+  font-size: 14px !important;
+}
+
+.ant-picker-filled input::placeholder {
+  color: var(--color-default-text) !important;
+}
+
+.ant-input-filled {
+  background-color: var(--color-input-bg);
+}
+
+.ant-input-textarea-affix-wrapper {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: var(--color-default-text) !important;
+}
+
+.ant-input-textarea-affix-wrapper textarea::placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: var(--color-placeholder-text) !important;
+}
+
+.ant-upload-select {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      #afb5bc,
+      #afb5bc 6px,
+      transparent 6px,
+      transparent 16px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      #afb5bc,
+      #afb5bc 6px,
+      transparent 6px,
+      transparent 16px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #afb5bc,
+      #afb5bc 6px,
+      transparent 6px,
+      transparent 16px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      #afb5bc,
+      #afb5bc 6px,
+      transparent 6px,
+      transparent 16px
+    );
+  background-position:
+    left 8px top,
+    right top 5px,
+    left 9px bottom,
+    left top 6px;
+  background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+  background-size:
+    calc(100% * 16) 2px,
+    2px calc(100% * 16),
+    calc(100% * 16) 2px,
+    2px calc(100% * 16);
+}
+
+.ant-btn-color-default {
+  background-color: var(--color-default-bg) !important;
+  color: var(--color-default-text) !important;
+  outline-color: var(--color-default-bg) !important;
+}
+
+.ant-btn-color-green {
+  background-color: var(--color-green-bg) !important;
+  color: var(--color-green-text) !important;
+  outline-color: var(--color-green-bg) !important;
+}
+
+.ant-btn-color-red {
+  background-color: var(--color-red-bg) !important;
+  color: var(--color-red-text) !important;
+  outline-color: var(--color-red-bg) !important;
+}
+
+.ant-btn-variant-outlined {
+  background-color: var(--color-outlined-bg) !important;
+  color: var(--color-default-text) !important;
+  border-color: var(--color-outlined-border) !important;
+  outline-color: var(--color-outlined-bg) !important;
+}
+
+[class^="ant-table-row-level-"]:not(.ant-table-row-level-0) .ant-table-cell {
+  background: #0f6dd2 !important;
+  border-color: red !important;
+}
+
+.ant-table-cell:last-child {
+  border-inline-end: none !important;
+}
+
+.ant-table-wrapper table {
+  border-radius: 0 !important;
+}
+
+.ant-table-cell {
+  @apply bg-white;
+}
+
+.ant-form-item {
+  margin-bottom: 0 !important;
+}
+
+.ant-form-item-label {
+  padding: 0 0 6px 0 !important;
+  color: var(--color-default-text) !important;
+  line-height: 18px !important;
+}
+
+.ant-form-item-explain-error {
+  display: none !important;
+}
+
+.ant-divider-horizontal {
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.ant-form-item-has-error
+  .\[\&_\.ant-checkbox-inner\]\:\!border-gray-700
+  .ant-checkbox-inner {
+  background-color: var(--color-red-bg-error) !important;
+  border-color: var(--color-red-border-error) !important;
+}
+
+.react-international-phone-input-container {
+  width: 100%;
+  border-width: 1px !important;
+  border-color: transparent !important;
+  transition: border-color 0.3s ease-in-out !important;
+}
+
+.ant-form-item-has-error .react-international-phone-input-container {
+  background-color: var(--color-red-bg-error) !important;
+  border-style: solid !important;
+}
+
+.ant-form-item-has-error .react-international-phone-input-container:hover {
+  background-color: var(--color-red-bg-error) !important;
+}
+
+.ant-form-item-has-error .ant-radio-button-wrapper {
+  background-color: var(--color-red-bg-error) !important;
+}
+
+.ant-radio-button-wrapper {
+  border-radius: 10px !important;
+}
+
+.ant-form-item-has-error .ant-input-affix-wrapper {
+  background-color: var(--color-red-bg-error) !important;
+}
+
+.ant-form-item-has-error .ant-input-affix-wrapper:hover {
+  border-color: var(--color-red-border-error) !important;
+}
+
+.ant-select-multiple .ant-select-selection-wrap {
+  align-self: center !important;
+}
+
+.ant-table-cell .ant-dropdown-trigger {
+  max-width: max-content;
+  margin: auto;
+}
+
+.ant-message-notice-content {
+  display: inline-grid !important;
+}
+
+.ant-table-title {
+  border: none !important;
+}
+
+.ant-picker-calendar .ant-picker-content th {
+  font-weight: 600;
+}
+
+.ant-notification-notice-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0px 16px 40px 0px rgba(0, 9, 56, 0.2) !important;
+}
+
+.custom-bank-selector-item.ant-radio-button-wrapper {
+  background-color: var(--color-input-bg) !important;
+}
+
+.custom-bank-selector-item.ant-radio-button-wrapper-checked {
+  background-color: var(--brand-violet-secondary-1) !important;
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+.leaflet-bottom.leaflet-right {
+  display: none !important;
+}
+
+.ant-table-row-expand-icon {
+  @apply !border-primary before:!bg-primary after:!bg-violet;
+
+  &.ant-table-row-expand-icon-expanded {
+    @apply scale-125;
+  }
+
+  &.ant-table-row-expand-icon-collapsed {
+    @apply scale-110;
+  }
+}
+
+.leaflet-routing-container.leaflet-bar.leaflet-routing-container-hide.leaflet-control {
+  @apply !hidden;
+}
+
+.maplibregl-ctrl-bottom-right {
+  @apply !hidden;
+}
+
+/*.ant-dropdown-menu .ant-dropdown-menu-item:hover{*/
+/*    @apply bg-transparent !important;*/
+/*}*/
+.ant-notification .ant-notification-notice-wrapper .ant-notification-notice {
+  @apply w-[450px];
+}

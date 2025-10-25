@@ -1,0 +1,12 @@
+export interface AppConfiguration {
+  usd_rate: number;
+  company_name: string;
+  hosting_domain: string;
+  molding_coefficient: number;
+}
+
+export interface ConfigurationState {
+  config: AppConfiguration | null;
+  isLoading: boolean;
+  error: string | null;
+}

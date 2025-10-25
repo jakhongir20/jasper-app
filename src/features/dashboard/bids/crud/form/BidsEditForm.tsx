@@ -1,0 +1,859 @@
+import { Form } from "antd";
+import type { ValidateErrorEntity } from "rc-field-form/lib/interface";
+import { type FC, useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
+import dayjs from "dayjs";
+
+import {
+  ApplicationLocalForm,
+  Option,
+  useUpdateApplication,
+} from "@/features/dashboard/bids/model";
+import { useApplicationDetail } from "@/features/dashboard/bids/model/bids.queries";
+import { cn } from "@/shared/helpers";
+import { getRandomId } from "@/shared/utils";
+import { useTabErrorHandler, useToast } from "@/shared/hooks";
+import { CAddHeader } from "@/shared/ui";
+import { BidsTab } from "@/features/dashboard/bids/crud";
+import { getDateTime } from "@/shared/utils";
+import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
+import { ApiService } from "@/shared/lib/services";
+import { BidsService } from "@/features/dashboard/bids/model/bids.service";
+
+interface Props {
+  className?: string;
+}
+
+const tabConfigs = [
+  {
+    tabKey: "1",
+    fields: ["general"],
+  },
+  {
+    tabKey: "2",
+    fields: ["transactions"],
+  },
+  {
+    tabKey: "3",
+    fields: ["aspects"],
+  },
+  {
+    tabKey: "4",
+    fields: ["sheathings"],
+  },
+  {
+    tabKey: "5",
+    fields: ["baseboards"],
+  },
+  {
+    tabKey: "6",
+    fields: ["floors"],
+  },
+  {
+    tabKey: "7",
+    fields: ["windowsills"],
+  },
+  {
+    tabKey: "8",
+    fields: ["lattings"],
+  },
+  {
+    tabKey: "9",
+    fields: ["frameworks"],
+  },
+  {
+    tabKey: "10",
+    fields: ["decorations"],
+  },
+  {
+    tabKey: "11",
+    fields: ["services"],
+  },
+  {
+    tabKey: "12",
+    fields: ["qualities"],
+  },
+];
+
+export const BidsEditForm: FC<Props> = ({ className }) => {
+  const [form] = Form.useForm<ApplicationLocalForm>();
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const { formFinishFailed } = useTabErrorHandler(tabConfigs);
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { getAssetUrl } = useStaticAssetsUrl();
+
+  const [formFinishErrors] = useState<ValidateErrorEntity["errorFields"]>([]);
+
+  const { data: applicationDetail, isPending: isLoadingDetail } =
+    useApplicationDetail(id as string);
+
+  const { mutate, isPending: isLoading } = useUpdateApplication({
+    onSuccess: () => {
+      navigate(`/dashboard/bids`);
+      toast(t("toast.successUpdate"), "success");
+    },
+  });
+
+  // Debug: Check form values periodically (only when there are changes)
+  useEffect(() => {
+    let lastTransactions: any[] = [];
+    let lastBaseboards: any[] = [];
+    let lastWindowsills: any[] = [];
+
+    const interval = setInterval(() => {
+      const transactions = form.getFieldValue("transactions") || [];
+      const baseboards = form.getFieldValue("baseboards") || [];
+      const windowsills = form.getFieldValue("windowsills") || [];
+
+      // Only log if values actually changed
+      const transactionsChanged =
+        JSON.stringify(transactions) !== JSON.stringify(lastTransactions);
+      const baseboardsChanged =
+        JSON.stringify(baseboards) !== JSON.stringify(lastBaseboards);
+      const windowsillsChanged =
+        JSON.stringify(windowsills) !== JSON.stringify(lastWindowsills);
+
+      if (transactionsChanged || baseboardsChanged || windowsillsChanged) {
+        if (transactionsChanged) {
+          lastTransactions = transactions;
+        }
+        if (baseboardsChanged) {
+          lastBaseboards = baseboards;
+        }
+        if (windowsillsChanged) {
+          lastWindowsills = windowsills;
+        }
+
+        // Calculate services when these fields change
+        calculateServices();
+      }
+    }, 1000); // Check every 1 second
+
+    return () => clearInterval(interval);
+  }, [form]);
+
+  // Set form values when detail data is loaded
+  useEffect(() => {
+    if (!isLoadingDetail && applicationDetail) {
+      const transformedData: ApplicationLocalForm = {
+        general: {
+          number: applicationDetail.number || "",
+          address: applicationDetail.address || "",
+          customer_name: applicationDetail.customer_name || "",
+          customer_phone: applicationDetail.customer_phone || "",
+          remark: applicationDetail.remark || "",
+          sizes: (applicationDetail.sizes as string) || "",
+          color: applicationDetail.color
+            ? { name: applicationDetail.color }
+            : undefined,
+          category_name: applicationDetail.category_name || "",
+          date: applicationDetail.date
+            ? dayjs(applicationDetail.date)
+            : undefined,
+          datetime: applicationDetail.date
+            ? dayjs(applicationDetail.date)
+            : undefined,
+          production_date: applicationDetail.production_date
+            ? dayjs(applicationDetail.production_date)
+            : undefined,
+          status: applicationDetail.status || 1,
+          door_lock:
+            (applicationDetail.door_lock as any)?.product_id?.toString() || "",
+          canopy:
+            (applicationDetail.canopy as any)?.product_id?.toString() || "",
+          transom_height_front: applicationDetail.transom_height_front || 0,
+          transom_height_back: applicationDetail.transom_height_back || 0,
+        } as any,
+        transactions:
+          applicationDetail.transactions?.map((transaction) => {
+            // Calculate basic volume
+            const basicVolume = calculateVolume(
+              transaction.height || 0,
+              transaction.width || 0,
+              transaction.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("transaction_"),
+              id: transaction.application_transaction_id || 0,
+              location: transaction.location || "",
+              door_type: transaction.door_type || "",
+              product_id: transaction.product_id || null,
+              product: transaction.product, // Include the full object
+              veneer_type: transaction.veneer_type || "",
+              lining_number: transaction.lining_number
+                ? Number(transaction.lining_number)
+                : null,
+              frame_front_id: transaction.frame_front_id
+                ? Number(transaction.frame_front_id)
+                : null,
+              frame_front: (transaction as any).frame_front, // Include the full object
+              frame_back_id: transaction.frame_back_id
+                ? Number(transaction.frame_back_id)
+                : null,
+              frame_back: (transaction as any).frame_back, // Include the full object
+              doorway_type: transaction.doorway_type || 0,
+              doorway_thickness: transaction.doorway_thickness || 0,
+              height: transaction.height || 0,
+              width: transaction.width || 0,
+              quantity: transaction.quantity || 0,
+              opening_side: transaction.opening_side || "",
+              opening_direction: transaction.opening_direction || "",
+              box_width: transaction.box_width || 0,
+              threshold: transaction.threshold || "",
+              chamfer: transaction.chamfer || "",
+              sash: transaction.sash || "",
+              transom_height_front: transaction.transom_height_front || 0,
+              transom_height_back: transaction.transom_height_back || 0,
+              crown_quantity: transaction.crown_quantity || 0,
+              transom_or_canvas: transaction.transom_or_canvas || "",
+              sheathing_id: transaction.sheathing_id
+                ? Number(transaction.sheathing_id)
+                : null,
+              sheathing: (transaction as any).sheathing, // Include the full object
+              sheathing_style: transaction.sheathing_style || "",
+              trim_id: transaction.trim_id ? Number(transaction.trim_id) : null,
+              trim: (transaction as any).trim, // Include the full object
+              trim_style: transaction.trim_style || "",
+              up_trim_id: transaction.up_trim_id
+                ? Number(transaction.up_trim_id)
+                : null,
+              up_trim: (transaction as any).up_trim, // Include the full object
+              up_trim_quantity: transaction.up_trim_quantity || 0,
+              up_trim_style: transaction.up_trim_style || "",
+              under_trim_id: transaction.under_trim_id
+                ? Number(transaction.under_trim_id)
+                : null,
+              under_trim: (transaction as any).under_trim, // Include the full object
+              under_trim_quantity: transaction.under_trim_quantity || 0,
+              under_trim_style: transaction.under_trim_style || "",
+              filler_id: transaction.filler_id
+                ? Number(transaction.filler_id)
+                : null,
+              filler: (transaction as any).filler, // Include the full object
+              crown_id: transaction.crown_id
+                ? Number(transaction.crown_id)
+                : null,
+              crown: (transaction as any).crown, // Include the full object
+              crown_style: transaction.crown_style || "",
+              glass_id: transaction.glass_id
+                ? Number(transaction.glass_id)
+                : null,
+              glass: (transaction as any).glass, // Include the full object
+              glass_quantity: transaction.glass_quantity || 0,
+              door_lock_id: transaction.door_lock_id
+                ? Number(transaction.door_lock_id)
+                : null,
+              door_lock: (transaction as any).door_lock, // Include the full object
+              door_lock_quantity: transaction.door_lock_quantity || 0,
+              canopy_id: transaction.canopy_id
+                ? Number(transaction.canopy_id)
+                : null,
+              canopy: (transaction as any).canopy, // Include the full object
+              canopy_quantity: transaction.canopy_quantity || 0,
+              latch_id: transaction.latch_id
+                ? Number(transaction.latch_id)
+                : null,
+              latch: (transaction as any).latch, // Include the full object
+              latch_quantity: transaction.latch_quantity || 0,
+              box_service_id: transaction.box_service_id
+                ? Number(transaction.box_service_id)
+                : null,
+              box_service: (transaction as any).box_service, // Include the full object
+              // Additional fields
+              booklet_number: transaction.booklet_number || "",
+              factory_mdf_type: transaction.factory_mdf_type || "",
+              factory_height: transaction.factory_height || 0,
+              factory_width: transaction.factory_width || 0,
+              factory_mdf: transaction.factory_mdf || 0,
+              factory_carcass: transaction.factory_carcass || 0,
+              factory_rail: transaction.factory_rail || 0,
+              catalogue_number: transaction.catalogue_number || "",
+              pattern_form: transaction.pattern_form || "",
+              quality_multiplier: transaction.quality_multiplier || 0,
+              volume_product: transaction.volume_product || basicVolume,
+              sheathing_height: transaction.sheathing_height || 0,
+              sheathing_width: transaction.sheathing_width || 0,
+              sheathing_thickness: transaction.sheathing_thickness || 0,
+              sheathing_quantity: transaction.sheathing_quantity || 0,
+              trim_height: transaction.trim_height || 0,
+              trim_width: transaction.trim_width || 0,
+              trim_quantity: transaction.trim_quantity || 0,
+              filler_height: transaction.filler_height || 0,
+              filler_width: transaction.filler_width || 0,
+              filler_quantity: transaction.filler_quantity || 0,
+              crown_height: transaction.crown_height || 0,
+              crown_width: transaction.crown_width || 0,
+              box_service_quantity: transaction.box_service_quantity || 0,
+              box_service_length: transaction.box_service_length || 0,
+            };
+          }) || [],
+        aspects: applicationDetail.aspects?.map((aspect: any) => ({
+          _uid: getRandomId("aspect_"),
+          id: aspect.application_aspect_id || 0,
+          aspect_file_payload: aspect.aspect_file_url
+            ? getAssetUrl(aspect.aspect_file_url)
+            : aspect.aspect || "",
+          aspect_file_name:
+            aspect.aspect_file_name ||
+            aspect.comment ||
+            t("common.placeholder.aspect"),
+          comment: aspect.comment || "",
+        })),
+        sheathings:
+          applicationDetail.sheathings?.map((sheathing: any) => {
+            // Calculate volume for sheathing
+            const volume = calculateVolume(
+              sheathing.height || 0,
+              sheathing.width || 0,
+              sheathing.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("sheathing_"),
+              id: sheathing.application_sheathing_id || 0,
+              sheathing_id: sheathing.sheathing_id || null,
+              sheathing: sheathing.sheathing, // Include the full object
+              height: sheathing.height || 0,
+              width: sheathing.width || 0,
+              quantity: sheathing.quantity || 0,
+              volume: sheathing.volume || volume,
+            };
+          }) || [],
+        baseboards:
+          applicationDetail.baseboards?.map((baseboard) => {
+            // Calculate total length for baseboard
+            const totalLength = calculateLength(
+              baseboard.length || 0,
+              baseboard.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("baseboard_"),
+              id: baseboard.application_baseboard_id || 0,
+              baseboard_id: baseboard.baseboard_id || undefined,
+              baseboard: baseboard.baseboard, // Include the full object
+              length: baseboard.length || 0,
+              quantity: baseboard.quantity || 0,
+              style: baseboard.style || "",
+              volume: totalLength,
+            };
+          }) || [],
+        floors:
+          applicationDetail.floors?.map((floor: any) => {
+            // Calculate volume for floor
+            const volume = calculateVolume(
+              floor.height || 0,
+              floor.width || 0,
+              floor.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("floor_"),
+              id: floor.application_floor_id || 0,
+              floor_id: floor.floor_id || null,
+              floor: floor.floor, // Include the full object
+              height: floor.height || 0,
+              width: floor.width || 0,
+              quantity: floor.quantity || 0,
+              style: floor.style || "",
+              volume: volume,
+            };
+          }) || [],
+        windowsills:
+          applicationDetail.windowsills?.map((windowsill: any) => {
+            // Calculate volume for windowsill
+            const volume = calculateVolume(
+              windowsill.height || 0,
+              windowsill.width || 0,
+              windowsill.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("windowsill_"),
+              id: windowsill.application_windowsill_id || 0,
+              windowsill_id: windowsill.windowsill_id || null,
+              windowsill: windowsill.windowsill, // Include the full object
+              height: windowsill.height || 0,
+              width: windowsill.width || 0,
+              quantity: windowsill.quantity || 0,
+              style: windowsill.style || "",
+              volume: volume,
+            };
+          }) || [],
+        lattings:
+          applicationDetail.lattings?.map((latting: any) => {
+            // Calculate volume for latting
+            const volume = calculateVolume(
+              latting.height || 0,
+              latting.width || 0,
+              latting.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("latting_"),
+              id: latting.application_latting_id || 0,
+              latting_id: latting.latting_id || null,
+              latting: latting.latting, // Include the full object
+              height: latting.height || 0,
+              width: latting.width || 0,
+              quantity: latting.quantity || 0,
+              style: latting.style || "",
+              volume: volume,
+            };
+          }) || [],
+        frameworks:
+          applicationDetail.frameworks?.map((framework: any) => {
+            // Calculate volume for framework
+            const volume = calculateVolume(
+              framework.height || 0,
+              framework.width || 0,
+              framework.quantity || 0,
+            );
+
+            return {
+              _uid: getRandomId("framework_"),
+              id: framework.application_framework_id || 0,
+              framework_id: framework.framework_id || null,
+              framework: framework.framework, // Include the full object
+              height: framework.height || 0,
+              width: framework.width || 0,
+              quantity: framework.quantity || 0,
+              style: framework.style || "",
+              volume: volume,
+            };
+          }) || [],
+        decorations:
+          applicationDetail.decorations?.map((decoration: any) => {
+            return {
+              _uid: getRandomId("decoration_"),
+              id: decoration.application_decoration_id || 0,
+              decoration_id: decoration.decoration_id || null,
+              decoration: decoration.decoration, // Include the full object
+              quantity: decoration.quantity || 0,
+            };
+          }) || [],
+        services:
+          applicationDetail.services?.map((service) => {
+            return {
+              ...service,
+              _uid: getRandomId("service_"),
+              id: service.application_service_id || 0,
+              service_id: service.service_id || 0,
+              name: service?.service?.name || "",
+              quantity: service.quantity || 0,
+              source: "api", // Mark existing services as API generated
+            };
+          }) || [],
+        qualities:
+          applicationDetail.qualities?.map((quality: any) => {
+            return {
+              _uid: getRandomId("quality_"),
+              id: quality.application_quality_id || 0,
+              quality_id: quality.quality_id || null,
+              quality: quality.quality, // Include the full object
+            };
+          }) || [],
+      };
+
+      form.setFieldsValue(transformedData as any);
+    }
+  }, [applicationDetail, isLoadingDetail, form]);
+
+  const handleSave = () => {
+    form.validateFields().then(({ general }) => {
+      const transactions = form.getFieldValue("transactions") || [];
+      const aspects = form.getFieldValue("aspects") || [];
+      const sheathings = form.getFieldValue("sheathings") || [];
+      const baseboards = form.getFieldValue("baseboards") || [];
+      const floors = form.getFieldValue("floors") || [];
+      const windowsills = form.getFieldValue("windowsills") || [];
+      const lattings = form.getFieldValue("lattings") || [];
+      const frameworks = form.getFieldValue("frameworks") || [];
+      const decorations = form.getFieldValue("decorations") || [];
+      const services = form.getFieldValue("services") || [];
+      const qualities = form.getFieldValue("qualities") || [];
+
+      const rawData = {
+        ...general,
+        datetime: getDateTime(general?.datetime),
+        production_date: general?.production_date
+          ? getDateTime(general?.production_date)
+          : undefined,
+        color: general?.color?.name || general?.color,
+        door_lock_id: general?.door_lock ? parseInt(general.door_lock) : null,
+        canopy_id: general?.canopy ? parseInt(general.canopy) : null,
+        transom_height_front: general?.transom_height_front || 0,
+        transom_height_back: general?.transom_height_back || 0,
+        status: general?.status || 1,
+        transactions:
+          transactions?.map(({ _uid, product, ...item }: any) => ({
+            ...item,
+            product_id: getValue(
+              "product_id",
+              item?.product_id ?? product?.product_id,
+            ),
+            lining_number: getValue("lining_id", item?.lining_number),
+            frame_front_id: getValue("molding_id", item?.frame_front),
+            frame_back_id: getValue("molding_id", item?.frame_back),
+            sheathing_id: getValue("product_id", item?.sheathing_id),
+            trim_id: getValue("product_id", item?.trim_id),
+            up_trim_id: getValue("product_id", item?.up_trim_id),
+            under_trim_id: getValue("product_id", item?.under_trim_id),
+            filler_id: getValue("product_id", item?.filler_id),
+            crown_id: getValue("product_id", item?.crown_id),
+            glass_id: getValue("product_id", item?.glass_id),
+            door_lock_id: getValue("product_id", item?.door_lock_id),
+            canopy_id: getValue("product_id", item?.canopy_id),
+            latch_id: getValue("product_id", item?.latch_id),
+            box_service_id: getValue("product_id", item?.box_service_id),
+            // Additional fields
+            booklet_number: item?.booklet_number,
+            factory_mdf_type: item?.factory_mdf_type,
+            factory_height: item?.factory_height,
+            factory_width: item?.factory_width,
+            factory_mdf: item?.factory_mdf,
+            factory_carcass: item?.factory_carcass,
+            factory_rail: item?.factory_rail,
+            catalogue_number: item?.catalogue_number,
+            pattern_form: item?.pattern_form,
+            quality_multiplier: item?.quality_multiplier,
+            volume_product: item?.volume_product,
+            sheathing_height: item?.sheathing_height,
+            sheathing_width: item?.sheathing_width,
+            sheathing_thickness: item?.sheathing_thickness,
+            sheathing_quantity: item?.sheathing_quantity,
+            trim_height: item?.trim_height,
+            trim_width: item?.trim_width,
+            trim_quantity: item?.trim_quantity,
+            filler_height: item?.filler_height,
+            filler_width: item?.filler_width,
+            filler_quantity: item?.filler_quantity,
+            crown_height: item?.crown_height,
+            crown_width: item?.crown_width,
+            box_service_quantity: item?.box_service_quantity,
+            box_service_length: item?.box_service_length,
+          })) || [],
+        aspects:
+          aspects?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            aspect_file_name: item?.comment || t("common.placeholder.aspect"),
+          })) || [],
+        sheathings:
+          sheathings?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            sheathing_id: getValue("sheathing_id", item?.sheathing_id),
+          })) || [],
+        baseboards:
+          baseboards?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            baseboard_id: getValue("baseboard_id", item?.baseboard_id),
+          })) || [],
+        floors:
+          floors?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            floor_id: getValue("floor_id", item?.floor_id),
+          })) || [],
+        windowsills:
+          windowsills?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            windowsill_id: getValue("windowsill_id", item?.windowsill_id),
+          })) || [],
+        lattings:
+          lattings?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            latting_id: getValue("latting_id", item?.latting_id),
+          })) || [],
+        frameworks:
+          frameworks?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            framework_id: getValue("framework_id", item?.framework_id),
+          })) || [],
+        decorations:
+          decorations?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            decoration_id: getValue("decoration_id", item?.decoration_id),
+          })) || [],
+        services:
+          services?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            service_id: getValue("service_id", item?.service_id),
+          })) || [],
+        qualities:
+          qualities?.map(({ _uid, ...item }: any) => ({
+            ...item,
+            quality_id: getValue("quality_id", item?.quality_id),
+          })) || [],
+      };
+
+      mutate({
+        id: id as string,
+        formData: rawData,
+      });
+    });
+  };
+
+  const handleCancel = () => {
+    navigate("/dashboard/bids");
+  };
+
+  function getValue<T = unknown>(key: string, value: any): T {
+    if (value && typeof value === "object" && key in value) {
+      return value[key];
+    }
+    // Return null instead of 0 for empty values to avoid foreign key violations
+    if (value === 0 || value === "0" || value === "") {
+      return null as T;
+    }
+    return value;
+  }
+
+  // Calculate volume for various components
+  const calculateVolume = (
+    height: number,
+    width: number,
+    quantity: number,
+  ): number => {
+    return (height || 0) * (width || 0) * (quantity || 0);
+  };
+
+  // Calculate length for baseboards
+  const calculateLength = (length: number, quantity: number): number => {
+    return (length || 0) * (quantity || 0);
+  };
+
+  // Calculate services based on form data
+  const calculateServices = useCallback(async () => {
+    try {
+      const transactions = form.getFieldValue("transactions") || [];
+      const baseboards = form.getFieldValue("baseboards") || [];
+      const windowsills = form.getFieldValue("windowsills") || [];
+
+      // Only proceed if we have data
+      if (
+        transactions.length === 0 &&
+        baseboards.length === 0 &&
+        windowsills.length === 0
+      ) {
+        return;
+      }
+
+      // Transform data to API format
+      const apiData = {
+        application_transactions: transactions.map((t: any) => ({
+          product_id:
+            typeof t.product_id === "object"
+              ? t.product_id?.product_id || 0
+              : t.product_id || 0,
+          quantity: t.quantity || 0,
+          sash: t.sash || "string",
+          sheathing_id:
+            typeof t.sheathing_id === "object"
+              ? t.sheathing_id?.product_id || 0
+              : t.sheathing_id || 0,
+          canopy_id:
+            typeof t.canopy_id === "object"
+              ? t.canopy_id?.product_id || 0
+              : t.canopy_id || 0,
+        })),
+        application_baseboards: baseboards.map((b: any) => ({
+          baseboard_id:
+            typeof b.baseboard_id === "object"
+              ? b.baseboard_id?.baseboard_id || 0
+              : b.baseboard_id || 0,
+          length: b.length || 0,
+        })),
+        application_windowsill: windowsills.map((w: any) => ({
+          windowsill_id:
+            typeof w.windowsill_id === "object"
+              ? w.windowsill_id?.windowsill_id || 0
+              : w.windowsill_id || 0,
+          quantity: w.quantity || 0,
+        })),
+      };
+
+      // Call the service manager API
+      const response = await BidsService.getServiceManager(apiData);
+
+      if (response?.results?.services) {
+        // Get existing services and separate user vs API services
+        const existingServices = form.getFieldValue("services") || [];
+        const userServices = existingServices.filter(
+          (s: any) => s.source !== "api",
+        );
+
+        // Create new API services with source field
+        const apiServices = response.results.services.map((service: any) => ({
+          ...service,
+          _uid: getRandomId("service_"),
+          service_id: service.service_id,
+          quantity: service.quantity || 0,
+          source: "api", // Mark as API generated
+        }));
+
+        // Merge: keep user services + replace API services
+        const updatedServices = [...userServices, ...apiServices];
+        form.setFieldsValue({ services: updatedServices });
+      }
+    } catch (error) {
+      // Silently fail as per requirements
+    }
+  }, [form]);
+
+  // Calculate advanced transaction fields via API
+
+  // Auto-calculate volumes when form values change
+  const autoCalculateVolumes = useCallback(() => {
+    const transactions = form.getFieldValue("transactions") || [];
+    const sheathings = form.getFieldValue("sheathings") || [];
+    const baseboards = form.getFieldValue("baseboards") || [];
+    const floors = form.getFieldValue("floors") || [];
+    const windowsills = form.getFieldValue("windowsills") || [];
+    const lattings = form.getFieldValue("lattings") || [];
+    const frameworks = form.getFieldValue("frameworks") || [];
+
+    // Update transactions with calculated volumes
+    const updatedTransactions = transactions.map((transaction: any) => {
+      const volume_product = calculateVolume(
+        transaction.height || 0,
+        transaction.width || 0,
+        transaction.quantity || 0,
+      );
+      return { ...transaction, volume_product };
+    });
+
+    // Update sheathings with calculated volumes
+    const updatedSheathings = sheathings.map((sheathing: any) => {
+      const volume = calculateVolume(
+        sheathing.height || 0,
+        sheathing.width || 0,
+        sheathing.quantity || 0,
+      );
+      return { ...sheathing, volume };
+    });
+
+    // Update baseboards with calculated volumes
+    const updatedBaseboards = baseboards.map((baseboard: any) => {
+      const volume = calculateLength(
+        baseboard.length || 0,
+        baseboard.quantity || 0,
+      );
+      return { ...baseboard, volume };
+    });
+
+    // Update floors with calculated volumes
+    const updatedFloors = floors.map((floor: any) => {
+      const volume = calculateVolume(
+        floor.height || 0,
+        floor.width || 0,
+        floor.quantity || 0,
+      );
+      return { ...floor, volume };
+    });
+
+    // Update windowsills with calculated volumes
+    const updatedWindowsills = windowsills.map((windowsill: any) => {
+      const volume = calculateVolume(
+        windowsill.height || 0,
+        windowsill.width || 0,
+        windowsill.quantity || 0,
+      );
+      return { ...windowsill, volume };
+    });
+
+    // Update lattings with calculated volumes
+    const updatedLattings = lattings.map((latting: any) => {
+      const volume = calculateVolume(
+        latting.height || 0,
+        latting.width || 0,
+        latting.quantity || 0,
+      );
+      return { ...latting, volume };
+    });
+
+    // Update frameworks with calculated volumes
+    const updatedFrameworks = frameworks.map((framework: any) => {
+      const volume = calculateVolume(
+        framework.height || 0,
+        framework.width || 0,
+        framework.quantity || 0,
+      );
+      return { ...framework, volume };
+    });
+
+    // Update form with calculated values
+    form.setFieldsValue({
+      transactions: updatedTransactions,
+      sheathings: updatedSheathings,
+      baseboards: updatedBaseboards,
+      floors: updatedFloors,
+      windowsills: updatedWindowsills,
+      lattings: updatedLattings,
+      frameworks: updatedFrameworks,
+    });
+  }, [form]);
+
+  // Handle form values change
+  const handleFormValuesChange = useCallback(
+    (changedValues: any, allValues: any) => {
+      // Check if volume-related fields changed
+      const volumeFields = [
+        "transactions",
+        "sheathings",
+        "baseboards",
+        "floors",
+        "windowsills",
+        "lattings",
+        "frameworks",
+      ];
+      const hasVolumeFieldChanged = Object.keys(changedValues).some((field) =>
+        volumeFields.includes(field),
+      );
+
+      if (hasVolumeFieldChanged) {
+        autoCalculateVolumes();
+      }
+
+      // Calculate services when transactions, baseboards, or windowsills change
+      if (
+        changedValues.transactions ||
+        changedValues.baseboards ||
+        changedValues.windowsills
+      ) {
+        calculateServices();
+      }
+    },
+    [autoCalculateVolumes, calculateServices],
+  );
+
+  return (
+    <Form
+      form={form}
+      layout="vertical"
+      className={cn(className)}
+      onFinishFailed={formFinishFailed}
+      onValuesChange={handleFormValuesChange}
+      scrollToFirstError
+    >
+      <CAddHeader
+        code={applicationDetail?.number}
+        mode="edit"
+        title={t("bids.edit.title")}
+        loading={isLoading}
+        addText={t("common.button.save")}
+        onSave={handleSave}
+        showCancelButton={true}
+        onCancel={handleCancel}
+      />
+
+      <BidsTab
+        mode="edit"
+        formFinishErrors={formFinishErrors}
+        isLoadingDetail={isLoadingDetail}
+      />
+    </Form>
+  );
+};

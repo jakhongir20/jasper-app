@@ -1,0 +1,3 @@
+.ant-form-item-has-error .\[\&_\.ant-upload\]\:\!bg-transparent .ant-upload {
+  @apply bg-red-400 !important;
+}
