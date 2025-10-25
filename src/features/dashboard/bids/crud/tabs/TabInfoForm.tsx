@@ -4,17 +4,14 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/helpers";
 import {
   Button,
-  DatePicker, Icon,
+  DatePicker,
+  Icon,
   Input,
-  InputPhone, Modal,
-  Select,
+  InputPhone,
   SelectInfinitive,
   TextAreaInput,
 } from "@/shared/ui";
-import { canopyOptions } from "@/features/dashboard/bids";
 import { validatePhone } from "@/shared/utils/validations";
-import { useUpdateColor } from "@/features/admin/colors";
-import { showGlobalToast } from "@/shared/hooks";
 import { CustomerCreate } from "@/features/dashboard/bids/crud/tabs/CustomerCreate";
 
 interface Props {
@@ -26,12 +23,17 @@ export const CATEGORY_DOORLOCK_ID = 21;
 
 export const TabInfoForm: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
+  const form = Form.useFormInstance();
   const user = JSON.parse(localStorage.getItem("__user") || "{}");
   const [openCustomerModal, setOpenCustomerModal] = React.useState(false);
+  const [search, setSearch] = React.useState("");
 
   return (
     <div className={cn("flex flex-col gap-4 py-1", className)}>
-      <CustomerCreate open={openCustomerModal} onCloseModal={() => setOpenCustomerModal(false)} />
+      <CustomerCreate
+        open={openCustomerModal}
+        onCloseModal={() => setOpenCustomerModal(false)}
+      />
       <div className="flex flex-col gap-4 sm:grid lg:grid-cols-4">
         <Form.Item
           name={["general", "customer_name"]}
@@ -41,22 +43,37 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           <SelectInfinitive
             placeholder={t("common.placeholder.selectStatus")}
             queryKey="customer_all"
-            fetchUrl="/customer/all"
+            fetchUrl={`/customer/all`}
             labelKey="name"
             valueKey="customer_id"
             useValueAsLabel
+            params={{ query: search }}
+            onSearch={(search: string) => {
+              setSearch(search);
+            }}
+            onSelect={(value: string, selectedOption?: any) => {
+              if (selectedOption?.phone_number) {
+                form.setFieldValue(["general", "phone_number"], selectedOption.phone_number);
+              }
+            }}
             emptyRender={
-              <div className={"flex items-center gap-2"}>
-              <p>Клиент не найден</p>
-              <Button icon={<Icon icon={'plus'} /> } onClick={() => {
-                setOpenCustomerModal(true);
-              }}>Создать новый</Button>
-            </div>}
+              <div className={"flex items-center gap-3"}>
+                <p>Клиент не найден</p>
+                <Button
+                  icon={<Icon icon={"plus"} />}
+                  onClick={() => {
+                    setOpenCustomerModal(true);
+                  }}
+                >
+                  Создать новый
+                </Button>
+              </div>
+            }
           />
         </Form.Item>
 
         <Form.Item
-          name={["general", "customer_phone"]}
+          name={["general", "phone_number"]}
           label={t("common.labels.customerPhone")}
           rules={[{ required: true, validator: validatePhone }]}
           validateTrigger={["onBlur", "onSubmit"]}

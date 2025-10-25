@@ -1,8 +1,6 @@
-import React, { FC } from 'react';
-import { cn } from '@/shared/helpers';
-import { Form, FormInstance } from "antd";
+import React, { FC } from "react";
+import { Form } from "antd";
 import { Input, InputPhone, Modal } from "@/shared/ui";
-import { useUpdateColor } from "@/features/admin/colors";
 import { showGlobalToast } from "@/shared/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -14,19 +12,19 @@ interface Props {
   onCloseModal: () => void;
 }
 
-export const CustomerCreate: FC<Props> = ({ open, onCloseModal}) => {
+export const CustomerCreate: FC<Props> = ({ open, onCloseModal }) => {
   const [form] = Form.useForm();
-  const queryClient=useQueryClient()
-  const {t} = useTranslation()
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { mutate, isPending: isLoading } = useCreateCustomer({
     onSuccess: () => {
       showGlobalToast("Клиент успешно создан", "success");
-      queryClient.invalidateQueries({ queryKey: ["tableData"] });
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
       form.resetFields();
+      onCloseModal();
     },
     onError: (error: any) => {
-      debugger
       showGlobalToast(
         error?.response?.data || t("common.messages.error"),
         "error",
@@ -38,10 +36,10 @@ export const CustomerCreate: FC<Props> = ({ open, onCloseModal}) => {
     form.validateFields().then((values) => {
       const model = {
         ...values,
-      }
-      mutate(model)
+      };
+      mutate(model);
     });
-  }
+  };
 
   return (
     <Modal
@@ -61,11 +59,13 @@ export const CustomerCreate: FC<Props> = ({ open, onCloseModal}) => {
       >
         <Input placeholder={"Введите имя клиента"} />
       </Form.Item>
-      <br/>
+      <br />
       <Form.Item
         name={"phone_number"}
         label={"Телефон клиента"}
-        rules={[{ required: true, message: "Пожалуйста введите телефон клиента" }]}
+        rules={[
+          { required: true, message: "Пожалуйста введите телефон клиента" },
+        ]}
       >
         <InputPhone placeholder={"Введите телефон клиента"} />
       </Form.Item>
