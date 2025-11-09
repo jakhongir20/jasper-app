@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect, useMemo } from "react";
+import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
@@ -29,7 +29,7 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
-  options?: { value: string | number; label: string }[];
+  options?: { value: string | number; label: string; }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -41,6 +41,7 @@ type FieldConfig = {
 };
 
 type SectionConfig = {
+  key: string;
   title?: string;
   fields: FieldConfig[];
   visible?: (values: TransactionValues, productType: string) => boolean;
@@ -48,14 +49,11 @@ type SectionConfig = {
 
 type ProductTypeConfig = {
   requiredFields: string[];
-  conditionalRequired?: Record<
-    string,
-    (values: TransactionValues) => boolean
-  >;
+  conditionalRequired?: Record<string, (values: TransactionValues) => boolean>;
   sections: SectionConfig[];
 };
 
-const ALWAYS_REQUIRED_FIELDS = ["location", "product_type"];
+const ALWAYS_REQUIRED_FIELDS = ["location"];
 
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
@@ -63,6 +61,7 @@ const isDoorType = (productType: string) =>
 const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
   const sections: SectionConfig[] = [
     {
+      key: "transom",
       title: "Фрамуга",
       fields: [
         {
@@ -104,6 +103,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "door",
       title: "Полотно (дверь)",
       fields: [
         {
@@ -120,6 +120,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "sheathing",
       title: "Обшивка",
       fields: [
         {
@@ -136,6 +137,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "trim-elements",
       title: "Наличник и элементы",
       fields: [
         {
@@ -217,6 +219,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "finishing",
       title: "Отделка",
       fields: [
         {
@@ -318,6 +321,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "additional-products",
       title: "Плинтус, тёплый пол, обрешётка, окно, подоконник",
       fields: [
         {
@@ -385,6 +389,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "glass",
       title: "Стекло",
       visible: (_, productType) => productType === "door-window",
       fields: [
@@ -416,6 +421,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "hardware",
       title: "Фурнитура",
       fields: [
         {
@@ -511,6 +517,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
       ],
     },
     {
+      key: "box-extra",
       title: "Ширина коробки и доп. опции",
       fields: [
         {
@@ -558,8 +565,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     conditionalRequired: {
       door_bolt_product_id: (values) => {
-        const widthValue =
-          Number(values?.opening_width ?? values?.width ?? 0);
+        const widthValue = Number(values?.opening_width ?? values?.width ?? 0);
         return widthValue >= 1.1;
       },
     },
@@ -580,8 +586,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     conditionalRequired: {
       door_bolt_product_id: (values) => {
-        const widthValue =
-          Number(values?.opening_width ?? values?.width ?? 0);
+        const widthValue = Number(values?.opening_width ?? values?.width ?? 0);
         return widthValue >= 1.1;
       },
     },
@@ -597,6 +602,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     sections: [
       {
+        key: "doorway-sheathing",
         title: "Обшивка",
         fields: [
           {
@@ -623,6 +629,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     sections: [
       {
+        key: "window-main",
         title: "Окно",
         fields: [
           {
@@ -649,6 +656,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     sections: [
       {
+        key: "windowsill-main",
         title: "Подоконник",
         fields: [
           {
@@ -675,6 +683,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     sections: [
       {
+        key: "heated-floor-main",
         title: "Тёплый пол",
         fields: [
           {
@@ -701,6 +710,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
     sections: [
       {
+        key: "latting-main",
         title: "Обрешётка",
         fields: [
           {
@@ -731,6 +741,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     name: "product_type",
     label: "Тип продукта",
     type: "select",
+    allowClear: true,
     placeholder: "Выберите тип продукта",
     options: PRODUCT_TYPES,
     aliases: ["door_type"],
@@ -840,10 +851,12 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     "";
 
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
-  const sections = useMemo(
-    () => config?.sections ?? [],
-    [config],
-  );
+  const sections = useMemo(() => config?.sections ?? [], [config]);
+  const [activeSectionKeys, setActiveSectionKeys] = useState<string[]>([]);
+
+  const setTransactionField = (fieldName: string, value: unknown) => {
+    form.setFieldValue(["transactions", 0, fieldName] as any, value);
+  };
 
   const isFieldRequired = (fieldName: string) => {
     if (ALWAYS_REQUIRED_FIELDS.includes(fieldName)) {
@@ -873,11 +886,11 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const getRules = (fieldName: string, label: string) =>
     isFieldRequired(fieldName)
       ? [
-          {
-            required: true,
-            message: `Заполните поле «${label}»`,
-          },
-        ]
+        {
+          required: true,
+          message: `Заполните поле «${label}»`,
+        },
+      ]
       : undefined;
 
   useEffect(() => {
@@ -893,18 +906,12 @@ export const TransactionForm: FC<Props> = ({ className }) => {
       const primaryValue = transactionValues[primary];
       const legacyValue = transactionValues[legacy];
 
-      if (
-        legacyValue !== undefined &&
-        primaryValue === undefined
-      ) {
-        form.setFieldValue(["transactions", 0, primary], legacyValue);
+      if (legacyValue !== undefined && primaryValue === undefined) {
+        setTransactionField(primary, legacyValue);
       }
 
-      if (
-        primaryValue !== undefined &&
-        primaryValue !== legacyValue
-      ) {
-        form.setFieldValue(["transactions", 0, legacy], primaryValue);
+      if (primaryValue !== undefined && primaryValue !== legacyValue) {
+        setTransactionField(legacy, primaryValue);
       }
     });
   }, [form, transactionValues]);
@@ -914,7 +921,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
       return null;
     }
 
-    const namePath = ["transactions", 0, field.name];
+    const namePath = ["transactions", 0, field.name] as (string | number)[];
     const rules = getRules(field.name, field.label);
 
     switch (field.type) {
@@ -926,10 +933,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               onChange={(event) => {
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
-                    form.setFieldValue(
-                      ["transactions", 0, alias],
-                      event.target.value,
-                    ),
+                    setTransactionField(alias, event.target.value),
                   );
                 }
               }}
@@ -949,10 +953,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
                   rawValue === "" ? undefined : Number(rawValue);
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
-                    form.setFieldValue(
-                      ["transactions", 0, alias],
-                      normalized,
-                    ),
+                    setTransactionField(alias, normalized),
                   );
                 }
               }}
@@ -969,7 +970,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               onChange={(value) => {
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
-                    form.setFieldValue(["transactions", 0, alias], value),
+                    setTransactionField(alias, value),
                   );
                 }
               }}
@@ -983,14 +984,14 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               placeholder={field.placeholder}
               queryKey={field.queryKey}
               fetchUrl={field.fetchUrl}
-              labelKey={field.labelKey}
-              valueKey={field.valueKey}
+              labelKey={field.labelKey ?? "name"}
+              valueKey={(field.valueKey ?? "product_id") as string}
               useValueAsLabel={field.useValueAsLabel}
               allowClear={field.allowClear}
               onChange={(value) => {
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
-                    form.setFieldValue(["transactions", 0, alias], value),
+                    setTransactionField(alias, value),
                   );
                 }
               }}
@@ -1011,10 +1012,20 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     [sections, transactionValues, productType],
   );
 
+  useEffect(() => {
+    const initialKeys = visibleSections.map((section) => section.key);
+    setActiveSectionKeys(initialKeys);
+  }, [visibleSections, productType]);
+
   return (
     <div className={cn(className)}>
       <Collapse ghost defaultActiveKey={["measuring"]}>
-        <Collapse.Panel key="measuring" header="Замерка">
+        <Collapse.Panel
+          key="measuring"
+          header={
+            <span className={"font-medium !text-[#218395]"}>Замерка</span>
+          }
+        >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {MEASUREMENT_FIELDS.map((field) => {
               const node = renderField(field);
@@ -1027,45 +1038,59 @@ export const TransactionForm: FC<Props> = ({ className }) => {
 
       <Divider />
 
-      <Collapse ghost>
-        <Collapse.Panel key="extra" header="Другие параметры">
-          {visibleSections.length ? (
-            <div className="space-y-10">
-              {visibleSections.map((section, index) => (
-                <section
-                  key={`${section.title ?? "section"}-${index}`}
+      <div className="space-y-4">
+        {visibleSections.length ? (
+          visibleSections.map((section) => {
+            const isActive = activeSectionKeys.includes(section.key);
+            return (
+              <Collapse
+                key={section.key}
+                activeKey={isActive ? [section.key] : []}
+                onChange={(key) => {
+                  const open = Array.isArray(key)
+                    ? key.includes(section.key)
+                    : key === section.key;
+                  setActiveSectionKeys((prev) => {
+                    if (open) {
+                      return Array.from(new Set([...prev, section.key]));
+                    }
+                    return prev.filter((value) => value !== section.key);
+                  });
+                }}
+                expandIconPosition="end"
+                accordion
+              >
+                <Collapse.Panel
+                  header={
+                    <p className={"!text-medium !text-[#218395]"}>
+                      {section.title ?? "Параметры"}
+                    </p>
+                  }
+                  key={section.key}
                 >
-                  {section.title ? (
-                    <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                      {section.title}
-                    </h4>
-                  ) : null}
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {section.fields.map((field) => {
                       const node = renderField(field);
                       if (!node) return null;
                       return (
-                        <Fragment key={`${section.title}-${field.name}`}>
+                        <Fragment key={`${section.key}-${field.name}`}>
                           {node}
                         </Fragment>
                       );
                     })}
                   </div>
-                </section>
-              ))}
-            </div>
-          ) : (
-            <div className="text-sm text-gray-500">
-              {productType
-                ? "Для выбранного типа продукта дополнительных полей пока не настроено."
-                : "Выберите тип продукта, чтобы увидеть дополнительные параметры."}
-            </div>
-          )}
-        </Collapse.Panel>
-      </Collapse>
-
-      <Divider />
+                </Collapse.Panel>
+              </Collapse>
+            );
+          })
+        ) : (
+          <div className="text-sm text-gray-500">
+            {productType
+              ? "Для выбранного типа продукта дополнительных полей пока не настроено."
+              : "Выберите тип продукта, чтобы увидеть дополнительные параметры."}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
-
