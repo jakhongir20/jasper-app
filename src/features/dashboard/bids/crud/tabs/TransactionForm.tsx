@@ -29,7 +29,7 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
-  options?: { value: string | number; label: string }[];
+  options?: { value: string | number; label: string; }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -151,7 +151,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель наличника",
           queryKey: "frame_product",
-          fetchUrl: "/product/by/category?category_id=13",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 1 },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -162,7 +163,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель нашельника",
           queryKey: "filler_product",
-          fetchUrl: "/product/by/category?category_id=14",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 1 },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -173,7 +175,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель короны",
           queryKey: "crown_product",
-          fetchUrl: "/product/by/category?category_id=15",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 1 },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -191,7 +194,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель надналичника",
           queryKey: "up_frame_product",
-          fetchUrl: "/product/by/category?category_id=16",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 1 },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -216,177 +220,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель подналичника",
           queryKey: "under_frame_product",
-          fetchUrl: "/product/by/category?category_id=17",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-    {
-      key: "finishing",
-      title: "Отделка",
-      fields: [
-        {
-          name: "percent_trim",
-          label: "Процент обкладки",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите процент обкладки",
-        },
-        {
-          name: "trim_product_id",
-          label: "Модель обкладки",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель обкладки",
-          queryKey: "trim_product",
-          fetchUrl: "/product/by/category?category_id=18",
-          labelKey: ["name", "measure"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "percent_molding",
-          label: "Процент молдинга",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите процент молдинга",
-        },
-        {
-          name: "molding_product_id",
-          label: "Модель молдинга",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель молдинга",
-          queryKey: "molding_product",
-          fetchUrl: "/product/by/category?category_id=19",
-          labelKey: ["name", "measure"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "percent_covering_primary",
-          label: "Покрытие I, %",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите процент покрытия I",
-        },
-        {
-          name: "covering_primary_product_id",
-          label: "Модель покрытия I",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель покрытия I",
-          queryKey: "covering_primary_product",
-          fetchUrl: "/product/by/category?category_id=20",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "percent_covering_secondary",
-          label: "Покрытие II, %",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите процент покрытия II",
-        },
-        {
-          name: "covering_secondary_product_id",
-          label: "Модель покрытия II",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель покрытия II",
-          queryKey: "covering_secondary_product",
-          fetchUrl: "/product/by/category?category_id=21",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "percent_color",
-          label: "Цвет, %",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите процент цвета",
-        },
-        {
-          name: "color_custom_name",
-          label: "Название цвета",
-          type: "text",
-          placeholder: "Введите название цвета",
-        },
-        {
-          name: "color_product_id",
-          label: "Модель цвета",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель цвета",
-          queryKey: "color_product",
-          fetchUrl: "/product/by/category?category_id=22",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-    {
-      key: "additional-products",
-      title: "Плинтус, тёплый пол, обрешётка, окно, подоконник",
-      fields: [
-        {
-          name: "floor_skirting_length",
-          label: "Длина плинтуса",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите длину плинтуса",
-        },
-        {
-          name: "floor_skirting_product_id",
-          label: "Модель плинтуса",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель плинтуса",
-          queryKey: "floor_skirting_product",
-          fetchUrl: "/product/by/category?category_id=23",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "heated_floor_product_id",
-          label: "Модель тёплого пола",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель тёплого пола",
-          queryKey: "heated_floor_product",
-          fetchUrl: "/product/by/category?category_id=24",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "latting_product_id",
-          label: "Модель обрешётки",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель обрешётки",
-          queryKey: "latting_product",
-          fetchUrl: "/product/by/category?category_id=25",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "window_product_id",
-          label: "Модель окна",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель окна",
-          queryKey: "window_product",
-          fetchUrl: "/product/by/category?category_id=26",
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "windowsill_product_id",
-          label: "Модель подоконника",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель подоконника",
-          queryKey: "windowsill_product",
-          fetchUrl: "/product/by/category?category_id=27",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 1 },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -538,7 +373,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель доп. опции",
           queryKey: "extra_option_product",
-          fetchUrl: "/product/by/category?category_id=34",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 10 },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -553,6 +389,234 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
 
   return sections;
 };
+
+const SHARED_SECTIONS: SectionConfig[] = [
+  {
+    key: "finishing",
+    title: "Отделка",
+    fields: [
+      {
+        name: "percent_trim",
+        label: "Процент обкладки",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент обкладки",
+      },
+      {
+        name: "trim_product_id",
+        label: "Модель обкладки",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель обкладки",
+        queryKey: "trim_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "measure"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "percent_molding",
+        label: "Процент молдинга",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент молдинга",
+      },
+      {
+        name: "molding_product_id",
+        label: "Модель молдинга",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель молдинга",
+        queryKey: "molding_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "measure"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "percent_covering_primary",
+        label: "Покрытие I, %",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент покрытия I",
+      },
+      {
+        name: "covering_primary_product_id",
+        label: "Модель покрытия I",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель покрытия I",
+        queryKey: "covering_primary_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "percent_covering_secondary",
+        label: "Покрытие II, %",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент покрытия II",
+      },
+      {
+        name: "covering_secondary_product_id",
+        label: "Модель покрытия II",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель покрытия II",
+        queryKey: "covering_secondary_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "percent_color",
+        label: "Цвет, %",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент цвета",
+      },
+      {
+        name: "color_custom_name",
+        label: "Название цвета",
+        type: "text",
+        placeholder: "Введите название цвета",
+      },
+      {
+        name: "color_product_id",
+        label: "Модель цвета",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель цвета",
+        queryKey: "color_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "additional-products",
+    title: "Плинтус, тёплый пол, обрешётка, окно, подоконник",
+    fields: [
+      {
+        name: "floor_skirting_length",
+        label: "Длина плинтуса",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите длину плинтуса",
+      },
+      {
+        name: "floor_skirting_product_id",
+        label: "Модель плинтуса",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель плинтуса",
+        queryKey: "floor_skirting_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "heated_floor_product_id",
+        label: "Модель тёплого пола",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель тёплого пола",
+        queryKey: "heated_floor_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "latting_product_id",
+        label: "Модель обрешётки",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель обрешётки",
+        queryKey: "latting_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "window_product_id",
+        label: "Модель окна",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель окна",
+        queryKey: "window_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "windowsill_product_id",
+        label: "Модель подоконника",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель подоконника",
+        queryKey: "windowsill_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 1 },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+];
+
+const TRANSSOM_SECTION: SectionConfig[] = [
+  {
+    key: "transom",
+    title: "Фрамуга",
+    fields: [
+      {
+        name: "transom_type",
+        label: "Тип фрамуги",
+        type: "select",
+        placeholder: "Выберите тип фрамуги",
+        options: [
+          { value: 1, label: "Обычная" },
+          { value: 2, label: "Скрытая" },
+        ],
+      },
+      {
+        name: "transom_height_front",
+        label: "Высота фрамуги (лицо)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту фрамуги (лицо)",
+      },
+      {
+        name: "transom_height_back",
+        label: "Высота фрамуги (тыл)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту фрамуги (тыл)",
+      },
+      {
+        name: "transom_product_id",
+        label: "Модель фрамуги",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель фрамуги",
+        queryKey: "transom_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: 10 },
+        labelKey: "name",
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+];
 
 const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   "door-window": [
@@ -978,11 +1042,11 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const getRules = (fieldName: string, label: string) =>
     isFieldRequired(fieldName)
       ? [
-          {
-            required: true,
-            message: `Заполните поле «${label}»`,
-          },
-        ]
+        {
+          required: true,
+          message: `Заполните поле «${label}»`,
+        },
+      ]
       : undefined;
 
   useEffect(() => {
@@ -1101,8 +1165,15 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     [sections, transactionValues, productType],
   );
 
+  const combinedSections = useMemo(
+    () => [...TRANSSOM_SECTION, ...SHARED_SECTIONS, ...visibleSections],
+    [visibleSections],
+  );
+
   useEffect(() => {
-    const initialKeys = visibleSections.map((section) => section.key);
+    const sharedKeys = SHARED_SECTIONS.map((section) => section.key);
+    const productKeys = visibleSections.map((section) => section.key);
+    const initialKeys = Array.from(new Set([...sharedKeys, ...productKeys]));
     setActiveSectionKeys(initialKeys);
   }, [visibleSections, productType]);
 
@@ -1128,51 +1199,51 @@ export const TransactionForm: FC<Props> = ({ className }) => {
       <Divider />
 
       <div className="space-y-4">
-        {visibleSections.length ? (
-          visibleSections.map((section) => {
-            const isActive = activeSectionKeys.includes(section.key);
-            return (
-              <Collapse
-                key={section.key}
-                activeKey={isActive ? [section.key] : []}
-                onChange={(key) => {
-                  const open = Array.isArray(key)
-                    ? key.includes(section.key)
-                    : key === section.key;
-                  setActiveSectionKeys((prev) => {
-                    if (open) {
-                      return Array.from(new Set([...prev, section.key]));
-                    }
-                    return prev.filter((value) => value !== section.key);
-                  });
-                }}
-                expandIconPosition="end"
-                accordion
-              >
-                <Collapse.Panel
-                  header={
-                    <p className={"!text-medium !text-[#218395]"}>
-                      {section.title ?? "Параметры"}
-                    </p>
+        {combinedSections.map((section) => {
+          const isActive = activeSectionKeys.includes(section.key);
+          return (
+            <Collapse
+              key={section.key}
+              activeKey={isActive ? [section.key] : []}
+              onChange={(key) => {
+                const open = Array.isArray(key)
+                  ? key.includes(section.key)
+                  : key === section.key;
+                setActiveSectionKeys((prev) => {
+                  if (open) {
+                    return Array.from(new Set([...prev, section.key]));
                   }
-                  key={section.key}
-                >
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {section.fields.map((field) => {
-                      const node = renderField(field);
-                      if (!node) return null;
-                      return (
-                        <Fragment key={`${section.key}-${field.name}`}>
-                          {node}
-                        </Fragment>
-                      );
-                    })}
-                  </div>
-                </Collapse.Panel>
-              </Collapse>
-            );
-          })
-        ) : (
+                  return prev.filter((value) => value !== section.key);
+                });
+              }}
+              expandIconPosition="end"
+              accordion
+            >
+              <Collapse.Panel
+                header={
+                  <p className={"!text-medium !text-[#218395]"}>
+                    {section.title ?? "Параметры"}
+                  </p>
+                }
+                key={section.key}
+              >
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {section.fields.map((field) => {
+                    const node = renderField(field);
+                    if (!node) return null;
+                    return (
+                      <Fragment key={`${section.key}-${field.name}`}>
+                        {node}
+                      </Fragment>
+                    );
+                  })}
+                </div>
+              </Collapse.Panel>
+            </Collapse>
+          );
+        })}
+
+        {visibleSections.length === 0 && (
           <div className="text-sm text-gray-500">
             {productType
               ? "Для выбранного типа продукта дополнительных полей пока не настроено."
@@ -1198,6 +1269,14 @@ export const getTransactionValidationPaths = (
     if (!field.visible || field.visible(values, productType)) {
       names.push(field.name);
     }
+  });
+
+  [...TRANSSOM_SECTION, ...SHARED_SECTIONS].forEach((section) => {
+    section.fields.forEach((field) => {
+      if (!field.visible || field.visible(values, productType)) {
+        names.push(field.name);
+      }
+    });
   });
 
   visibleSections.forEach((section) => {
