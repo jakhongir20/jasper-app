@@ -1,7 +1,5 @@
 import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import { TransactionsModal } from "@/features/dashboard/bids/crud/modal/TransactionsModal";
 import { useTableTransactionColumns } from "@/features/dashboard/bids/constants/columns/TableTransactionColumn";
 import { cn } from "@/shared/helpers";
 import { useToggle } from "@/shared/hooks/useToggle";
@@ -11,6 +9,7 @@ import {
   ApplicationLocalForm,
   TransactionFormType as Transaction,
 } from "@/features/dashboard/bids/model";
+import { TransactionDrawer } from "@/features/dashboard/bids/crud/tabs/TransactionDrawer";
 
 interface Props {
   className?: string;
@@ -93,18 +92,24 @@ export const TabTransactionsForm: FC<Props> = ({
         onAdd={handleAddTransaction}
       />
 
-      {isAddProductModalOpen && (
-        <TransactionsModal
-          isOpen={isAddProductModalOpen}
-          closeModal={handleCloseModal}
-          title={
-            editingTransaction
-              ? t("bids.edit.transaction")
-              : t("bids.add.transaction")
-          }
-          initialValues={editingTransaction || undefined}
-        />
-      )}
+      <TransactionDrawer
+        mode={editingTransaction ? "edit" : "add"}
+        open={isAddProductModalOpen}
+        onClose={handleCloseModal}
+      />
+
+      {/*{isAddProductModalOpen && (*/}
+      {/*  <TransactionsModal*/}
+      {/*    isOpen={isAddProductModalOpen}*/}
+      {/*    closeModal={handleCloseModal}*/}
+      {/*    title={*/}
+      {/*      editingTransaction*/}
+      {/*        ? t("bids.edit.transaction")*/}
+      {/*        : t("bids.add.transaction")*/}
+      {/*    }*/}
+      {/*    initialValues={editingTransaction || undefined}*/}
+      {/*  />*/}
+      {/*)}*/}
 
       <ActionModal
         title={t("bids.delete.transaction.title")}

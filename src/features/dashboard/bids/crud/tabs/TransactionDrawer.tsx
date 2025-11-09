@@ -29,7 +29,9 @@ export const TransactionDrawer: FC<Props> = ({
       className={className}
       title={
         <div className={"flex items-center justify-between"}>
-          <h1>Добавить перечень</h1>
+          <h1>
+            {mode === "edit" ? "Редактировать перечень" : "Добавить перечень"}
+          </h1>
           <div className={"flex gap-2"}>
             <Button onClick={() => onClose(false)} type={"default"}>
               Отмена

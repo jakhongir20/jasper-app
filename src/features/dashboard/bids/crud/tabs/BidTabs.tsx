@@ -9,7 +9,6 @@ import { TabAspectsForm } from "@/features/dashboard/bids/crud/tabs/TabAspectsFo
 // import { TabSheathingsForm } from "@/features/dashboard/bids/crud/tabs/TabSheathingsForm";
 import { TabServicesForm } from "@/features/dashboard/bids/crud/tabs/TabServicesForm";
 import { TabQualitiesForm } from "@/features/dashboard/bids/crud/tabs/TabQualitiesForm";
-import { TransactionContent } from "@/features/dashboard/bids/crud/tabs/TransactionContent";
 
 interface Props {
   activeTabKey?: string;
@@ -37,7 +36,6 @@ export const BidsTab: FC<Props> = ({ mode, isLoadingDetail }) => {
       label: t("bids.tabs.transactions"),
       children: (
         <ContentInner>
-          <TransactionContent key={String(isLoadingDetail)} mode={mode} />
           <TabTransactionsForm key={String(isLoadingDetail)} mode={mode} />
         </ContentInner>
       ),

@@ -7,7 +7,6 @@ import {
 import { TableWrapper } from "@/shared/ui";
 import { useTableTransactionColumns } from "@/features/dashboard/bids/constants/columns/TableTransactionColumn";
 import { Form } from "antd";
-import { TransactionDrawer } from "@/features/dashboard/bids/crud/tabs/TransactionDrawer";
 
 interface Props {
   className?: string;
@@ -31,11 +30,6 @@ export const TransactionContent: FC<Props> = ({
 
   return (
     <div className={cn(className)}>
-      <TransactionDrawer
-        mode={mode}
-        open={openDrawer}
-        onClose={setOpenDrawer}
-      />
       <TableWrapper<Transaction>
         loading={!!isLoadingDetail && mode === "edit"}
         pagination={false}
