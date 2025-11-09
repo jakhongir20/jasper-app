@@ -37,6 +37,7 @@ type FieldConfig = {
   useValueAsLabel?: boolean;
   allowClear?: boolean;
   aliases?: string[];
+  params?: Record<string, string | number | boolean>;
   visible?: (values: TransactionValues, productType: string) => boolean;
 };
 
@@ -97,8 +98,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель фрамуги",
           queryKey: "transom_product",
-          fetchUrl:
-            "/product/by/category-section-index?category_section_index=",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: 10 },
           labelKey: "name",
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -114,8 +115,9 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           label: "Модель двери",
           type: "selectInfinitive",
           placeholder: "Выберите модель двери",
+          params: { category_section_index: 1 }, // todo make dynamic
           queryKey: "door_product",
-          fetchUrl: "/product/by/category?category_id=11",
+          fetchUrl: "/product/by/category-section-index",
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -712,9 +714,10 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
             type: "selectInfinitive",
             placeholder: "Выберите модель обшивки",
             queryKey: "doorway_sheathing",
-            fetchUrl: "/product/by/category?category_id=13",
-            labelKey: ["name", "measure"],
+            fetchUrl: "/product/by/category-section-index",
+            params: { category_section_index: 1 }, // todo make dynamic
             valueKey: "product_id",
+            labelKey: ["name", "measure"],
             useValueAsLabel: true,
           },
         ],
@@ -906,9 +909,10 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     label: "Порог",
     type: "select",
     placeholder: "Выберите тип порога",
+    // Порог => (1, "Нет"), (2, "С порогом"), (1, "С порогом (низкий)")
     options: [
-      { value: "yes", label: "Да" },
-      { value: "no", label: "Нет" },
+      { value: 1, label: "Нет" },
+      { value: 2, label: "С порогом" },
       { value: "custom", label: "Кастомный" },
     ],
     visible: (_, productType) => isDoorType(productType),
@@ -1072,6 +1076,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               placeholder={field.placeholder}
               queryKey={field.queryKey}
               fetchUrl={field.fetchUrl}
+              params={field.params}
               labelKey={field.labelKey ?? "name"}
               valueKey={(field.valueKey ?? "product_id") as string}
               useValueAsLabel={field.useValueAsLabel}
