@@ -36,40 +36,12 @@ const tabConfigs = [
     tabKey: "3",
     fields: ["application_aspects"],
   },
-  // {
-  //   tabKey: "4",
-  //   fields: ["sheathings"],
-  // },
   {
-    tabKey: "4",
-    fields: ["baseboards"],
-  },
-  {
-    tabKey: "5",
-    fields: ["floors"],
-  },
-  {
-    tabKey: "6",
-    fields: ["windowsills"],
-  },
-  {
-    tabKey: "7",
-    fields: ["lattings"],
-  },
-  {
-    tabKey: "8",
-    fields: ["frameworks"],
-  },
-  {
-    tabKey: "9",
-    fields: ["decorations"],
-  },
-  {
-    tabKey: "10",
+    tabKey: "11",
     fields: ["application_services"],
   },
   {
-    tabKey: "11",
+    tabKey: "12",
     fields: ["application_qualities"],
   },
 ];

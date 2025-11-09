@@ -43,10 +43,10 @@ export const TabAspectsForm: FC<Props> = ({
   const handleConfirmDelete = () => {
     if (itemToDelete) {
       const updatedItems = form
-        .getFieldValue("aspects")
+        .getFieldValue("application_aspects")
         ?.filter((item: Aspect) => item._uid !== itemToDelete._uid);
 
-      form.setFieldsValue({ aspects: updatedItems });
+      form.setFieldsValue({ application_aspects: updatedItems });
       toast(t("toast.delete.success"), "success");
     }
     toggleDeleteConfirm();
