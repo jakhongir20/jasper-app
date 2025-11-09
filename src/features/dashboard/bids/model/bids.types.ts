@@ -42,7 +42,9 @@ export type GeneralFormType = {
 export type ApplicationLocalForm = {
   general: GeneralFormType;
   transactions?: Partial<TransactionFormType[]>;
+  application_aspects?: Partial<AspectFormType[]>;
   aspects?: Partial<AspectFormType[]>;
+  application_services?: Partial<ApplicationService[]>;
   sheathings?: Partial<ApplicationSheathing[]>;
   baseboards?: Partial<ApplicationBaseboard[]>;
   floors?: Partial<ApplicationFloor[]>;
@@ -50,6 +52,7 @@ export type ApplicationLocalForm = {
   lattings?: Partial<ApplicationLatting[]>;
   frameworks?: Partial<ApplicationFramework[]>;
   decorations?: Partial<ApplicationDecoration[]>;
+  application_qualities?: Partial<ApplicationAdditionalQuality[]>;
   services?: Partial<ApplicationService[]>;
   qualities?: Partial<ApplicationAdditionalQuality[]>;
 };
@@ -59,7 +62,6 @@ export type AspectFormType = {
   _uid?: string; // Unique identifier for the aspect, used for editing
   id?: number;
   aspect_file_payload: string; // input file
-  aspect_file_name: string; // input
   comment: string; // input
 };
 

@@ -44,13 +44,13 @@ export const TabQualitiesForm: FC<Props> = ({
   const handleConfirmDelete = () => {
     if (itemToDelete) {
       const updatedItems = form
-        .getFieldValue("services")
+        .getFieldValue("application_qualities")
         ?.filter(
           (item: ApplicationAdditionalQuality) =>
             item._uid !== itemToDelete._uid,
         );
 
-      form.setFieldsValue({ services: updatedItems });
+      form.setFieldsValue({ application_qualities: updatedItems });
       toast(t("toast.success"), "success");
     }
     toggleDeleteConfirm();
@@ -78,8 +78,8 @@ export const TabQualitiesForm: FC<Props> = ({
         loading={isLoadingDetail && mode === "edit"}
         pagination={false}
         data={
-          form.getFieldValue("qualities")?.length
-            ? form.getFieldValue("qualities")
+          form.getFieldValue("application_qualities")?.length
+            ? form.getFieldValue("application_qualities")
             : []
         }
         rowKey={(record) => record._uid as string}

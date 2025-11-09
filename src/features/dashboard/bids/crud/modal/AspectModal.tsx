@@ -44,7 +44,7 @@ export const AspectModal: FC<Props> = ({
     form.validateFields().then((values) => {
       const formValues = values;
       const currentAspects: AspectFormType[] =
-        parentForm.getFieldValue("aspects") || [];
+        parentForm.getFieldValue("application_aspects") || [];
 
       if (initialValues) {
         // Update existing aspect
@@ -54,12 +54,12 @@ export const AspectModal: FC<Props> = ({
         );
 
         parentForm.setFieldsValue({
-          aspects: updatedAspects,
+          application_aspects: updatedAspects,
         });
       } else {
         // Add new aspect
         parentForm.setFieldsValue({
-          aspects: [
+          application_aspects: [
             ...currentAspects,
             {
               ...formValues,

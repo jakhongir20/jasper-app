@@ -43,7 +43,8 @@ export const QualityModal: FC<Props> = ({
   const handleConfirm = () => {
     form.validateFields().then((values) => {
       const formValues = values;
-      const currentQualities = parentForm.getFieldValue("qualities") || [];
+      const currentQualities =
+        parentForm.getFieldValue("application_qualities") || [];
 
       if (initialValues) {
         // Update existing quality
@@ -52,12 +53,12 @@ export const QualityModal: FC<Props> = ({
             quality._uid === initialValues._uid ? { ...formValues } : quality,
         );
         parentForm.setFieldsValue({
-          qualities: updatedQualities,
+          application_qualities: updatedQualities,
         });
       } else {
         // Add new quality
         parentForm.setFieldsValue({
-          qualities: [
+          application_qualities: [
             ...currentQualities,
             {
               ...formValues,

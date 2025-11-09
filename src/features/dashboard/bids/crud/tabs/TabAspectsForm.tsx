@@ -80,8 +80,8 @@ export const TabAspectsForm: FC<Props> = ({
         loading={isLoadingDetail && mode === "edit"}
         pagination={false}
         data={
-          form.getFieldValue("aspects")?.length
-            ? form.getFieldValue("aspects")
+          form.getFieldValue("application_aspects")?.length
+            ? form.getFieldValue("application_aspects")
             : []
         }
         rowKey={(record) => record._uid as string}

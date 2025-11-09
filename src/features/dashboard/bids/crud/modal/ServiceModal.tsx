@@ -43,22 +43,24 @@ export const ServiceModal: FC<Props> = ({
   const handleConfirm = () => {
     form.validateFields().then((values) => {
       const formValues = values;
-      const currentAspects = parentForm.getFieldValue("services") || [];
+      const currentServices = parentForm.getFieldValue(
+        "application_services",
+      ) || [];
 
       if (initialValues) {
         // Update existing service
-        const updatedAspects = currentAspects.map(
+        const updatedServices = currentServices.map(
           (service: ApplicationService) =>
             service._uid === initialValues._uid ? { ...formValues } : service,
         );
         parentForm.setFieldsValue({
-          services: updatedAspects,
+          application_services: updatedServices,
         });
       } else {
         // Add new service
         parentForm.setFieldsValue({
-          services: [
-            ...currentAspects,
+          application_services: [
+            ...currentServices,
             {
               ...formValues,
               _uid: formValues._uid || getRandomId("service_"),
