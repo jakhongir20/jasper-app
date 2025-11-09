@@ -13,7 +13,7 @@ import Filter from "@/shared/ui/filter/Filter";
 
 export default function Page() {
   const { tableData, isLoading, pagination } = useTableFetch<Organization>(
-    "/gateway/application/all/",
+    "/application/all/",
     {
       user_id: "1",
     },

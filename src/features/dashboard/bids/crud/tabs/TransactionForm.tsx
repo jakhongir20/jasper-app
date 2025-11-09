@@ -29,7 +29,7 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
-  options?: { value: string | number; label: string; }[];
+  options?: { value: string | number; label: string }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -73,9 +73,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "select",
           placeholder: "Выберите тип фрамуги",
           options: [
-            { value: "none", label: "Нет" },
-            { value: "front", label: "Лицо" },
-            { value: "back", label: "Тыл" },
+            { value: 1, label: "Обычная" },
+            { value: 2, label: "Скрытая" },
           ],
         },
         {
@@ -98,7 +97,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель фрамуги",
           queryKey: "transom_product",
-          fetchUrl: "/product/by/category?category_id=10",
+          fetchUrl:
+            "/product/by/category-section-index?category_section_index=",
           labelKey: "name",
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -585,7 +585,12 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "entity_quantity",
     "sheathing_product_id",
   ],
-  window: ["opening_height", "opening_width", "entity_quantity", "window_product_id"],
+  window: [
+    "opening_height",
+    "opening_width",
+    "entity_quantity",
+    "window_product_id",
+  ],
   windowsill: [
     "opening_height",
     "opening_width",
@@ -619,10 +624,7 @@ const toBoolean = (value: unknown) => {
   return false;
 };
 
-const getNestedValue = (
-  values: TransactionValues,
-  path: string,
-): unknown =>
+const getNestedValue = (values: TransactionValues, path: string): unknown =>
   path.split(".").reduce<unknown>((acc, key) => {
     if (acc && typeof acc === "object") {
       return (acc as Record<string, unknown>)[key];
@@ -816,8 +818,7 @@ const filterVisibleSections = (
   productType: string,
 ) =>
   sections.filter(
-    (section) =>
-      !section.visible || section.visible(values, productType),
+    (section) => !section.visible || section.visible(values, productType),
   );
 
 const MEASUREMENT_FIELDS: FieldConfig[] = [
@@ -882,9 +883,9 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     type: "selectInfinitive",
     placeholder: "Выберите передний каркас",
     queryKey: "framework_front",
-    fetchUrl: "/product/by/category?category_id=1",
+    fetchUrl: "/framework/all",
     labelKey: "name",
-    valueKey: "product_id",
+    valueKey: "framework_id",
     useValueAsLabel: true,
     visible: (_, productType) => isDoorType(productType),
   },
@@ -894,9 +895,9 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     type: "selectInfinitive",
     placeholder: "Выберите задний каркас",
     queryKey: "framework_back",
-    fetchUrl: "/product/by/category?category_id=2",
+    fetchUrl: "/framework/all",
     labelKey: "name",
-    valueKey: "product_id",
+    valueKey: "framework_id",
     useValueAsLabel: true,
     visible: (_, productType) => isDoorType(productType),
   },
@@ -973,11 +974,11 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const getRules = (fieldName: string, label: string) =>
     isFieldRequired(fieldName)
       ? [
-        {
-          required: true,
-          message: `Заполните поле «${label}»`,
-        },
-      ]
+          {
+            required: true,
+            message: `Заполните поле «${label}»`,
+          },
+        ]
       : undefined;
 
   useEffect(() => {
@@ -1202,7 +1203,5 @@ export const getTransactionValidationPaths = (
     });
   });
 
-  return names.map(
-    (name) => ["transactions", 0, name] as (string | number)[],
-  );
+  return names.map((name) => ["transactions", 0, name] as (string | number)[]);
 };

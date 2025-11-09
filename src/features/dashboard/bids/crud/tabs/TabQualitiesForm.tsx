@@ -98,7 +98,7 @@ export const TabQualitiesForm: FC<Props> = ({
         <QualityModal
           isOpen={isAddModalOpen}
           closeModal={handleCloseModal}
-          title={editingItem ? t("bids.edit.service") : t("bids.add.service")}
+          title={editingItem ? t("bids.edit.quality") : t("bids.add.quality")}
           initialValues={editingItem || undefined}
         />
       )}
