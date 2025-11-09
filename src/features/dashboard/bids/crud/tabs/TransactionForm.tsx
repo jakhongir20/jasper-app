@@ -38,6 +38,200 @@ const MEASUREMENT_KEYS = new Set<string>([
 const prettifyKey = (key: string) =>
   key.replace(/_/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
 
+const OTHER_FIELD_TRANSLATIONS: Record<
+  string,
+  { label: string; numberPlaceholder?: string; textPlaceholder?: string }
+> = {
+  sash: {
+    label: "Количество створок",
+    numberPlaceholder: "Введите количество створок",
+  },
+  chamfer: {
+    label: "Фаска",
+    numberPlaceholder: "Введите значение фаски",
+  },
+  transom_type: {
+    label: "Тип фрамуги",
+    numberPlaceholder: "Введите тип фрамуги",
+  },
+  transom_product_id: {
+    label: "Модель фрамуги",
+    numberPlaceholder: "Введите идентификатор фрамуги",
+  },
+  transom_height_front: {
+    label: "Высота фрамуги (Лицо)",
+    numberPlaceholder: "Введите высоту фрамуги (лицо)",
+  },
+  transom_height_back: {
+    label: "Высота фрамуги (Тыл)",
+    numberPlaceholder: "Введите высоту фрамуги (тыл)",
+  },
+  door_product_id: {
+    label: "Модель двери",
+    numberPlaceholder: "Введите идентификатор двери",
+  },
+  sheathing_product_id: {
+    label: "Модель обшивки",
+    numberPlaceholder: "Введите идентификатор обшивки",
+  },
+  frame_product_id: {
+    label: "Модель наличника",
+    numberPlaceholder: "Введите идентификатор наличника",
+  },
+  filler_product_id: {
+    label: "Модель нашельника",
+    numberPlaceholder: "Введите идентификатор нашельника",
+  },
+  crown_product_id: {
+    label: "Модель короны",
+    numberPlaceholder: "Введите идентификатор короны",
+  },
+  up_frame_quantity: {
+    label: "Количество надналичников",
+    numberPlaceholder: "Введите количество надналичников",
+  },
+  up_frame_product_id: {
+    label: "Модель надналичника",
+    numberPlaceholder: "Введите идентификатор надналичника",
+  },
+  under_frame_quantity: {
+    label: "Количество подналичников",
+    numberPlaceholder: "Введите количество подналичников",
+  },
+  under_frame_height: {
+    label: "Высота подналичника",
+    numberPlaceholder: "Введите высоту подналичника",
+  },
+  under_frame_product_id: {
+    label: "Модель подналичника",
+    numberPlaceholder: "Введите идентификатор подналичника",
+  },
+  percent_trim: {
+    label: "Процент обкладки",
+    numberPlaceholder: "Введите процент обкладки",
+  },
+  trim_product_id: {
+    label: "Модель обкладки",
+    numberPlaceholder: "Введите идентификатор обкладки",
+  },
+  percent_molding: {
+    label: "Процент молдинга",
+    numberPlaceholder: "Введите процент молдинга",
+  },
+  molding_product_id: {
+    label: "Модель молдинга",
+    numberPlaceholder: "Введите идентификатор молдинга",
+  },
+  percent_covering_primary: {
+    label: "Процент покрытия I",
+    numberPlaceholder: "Введите процент покрытия I",
+  },
+  covering_primary_product_id: {
+    label: "Модель покрытия I",
+    numberPlaceholder: "Введите идентификатор покрытия I",
+  },
+  percent_covering_secondary: {
+    label: "Процент покрытия II",
+    numberPlaceholder: "Введите процент покрытия II",
+  },
+  covering_secondary_product_id: {
+    label: "Модель покрытия II",
+    numberPlaceholder: "Введите идентификатор покрытия II",
+  },
+  percent_color: {
+    label: "Процент цвета",
+    numberPlaceholder: "Введите процент цвета",
+  },
+  color_product_id: {
+    label: "Модель цвета",
+    numberPlaceholder: "Введите идентификатор цвета",
+  },
+  color_custom_name: {
+    label: "Пользовательский цвет",
+    textPlaceholder: "Введите название цвета",
+  },
+  floor_skirting_length: {
+    label: "Длина плинтуса",
+    numberPlaceholder: "Введите длину плинтуса",
+  },
+  floor_skirting_product_id: {
+    label: "Модель плинтуса",
+    numberPlaceholder: "Введите идентификатор плинтуса",
+  },
+  heated_floor_product_id: {
+    label: "Модель тёплого пола",
+    numberPlaceholder: "Введите идентификатор тёплого пола",
+  },
+  windowsill_product_id: {
+    label: "Модель подоконника",
+    numberPlaceholder: "Введите идентификатор подоконника",
+  },
+  latting_product_id: {
+    label: "Модель обрешётки",
+    numberPlaceholder: "Введите идентификатор обрешётки",
+  },
+  window_product_id: {
+    label: "Модель окна",
+    numberPlaceholder: "Введите идентификатор окна",
+  },
+  glass_product_id: {
+    label: "Модель стекла",
+    numberPlaceholder: "Введите идентификатор стекла",
+  },
+  volume_glass: {
+    label: "Объём стекла",
+    numberPlaceholder: "Введите объём стекла",
+  },
+  door_lock_mechanism: {
+    label: "Механизм замка",
+    numberPlaceholder: "Введите механизм замка",
+  },
+  door_lock_product_id: {
+    label: "Модель замка",
+    numberPlaceholder: "Введите идентификатор замка",
+  },
+  hinge_mechanism: {
+    label: "Механизм петли",
+    numberPlaceholder: "Введите механизм петли",
+  },
+  hinge_product_id: {
+    label: "Модель петли",
+    numberPlaceholder: "Введите идентификатор петли",
+  },
+  door_bolt_product_id: {
+    label: "Модель шпингалета",
+    numberPlaceholder: "Введите идентификатор шпингалета",
+  },
+  door_stopper_quantity: {
+    label: "Количество стопперов",
+    numberPlaceholder: "Введите количество стопперов",
+  },
+  door_stopper_product_id: {
+    label: "Модель стоппера",
+    numberPlaceholder: "Введите идентификатор стоппера",
+  },
+  anti_threshold_quantity: {
+    label: "Количество анти-порогов",
+    numberPlaceholder: "Введите количество анти-порогов",
+  },
+  anti_threshold_product_id: {
+    label: "Модель анти-порога",
+    numberPlaceholder: "Введите идентификатор анти-порога",
+  },
+  box_width: {
+    label: "Ширина коробки",
+    numberPlaceholder: "Введите ширину коробки",
+  },
+  percent_extra_option: {
+    label: "Процент доп. опции",
+    numberPlaceholder: "Введите процент доп. опции",
+  },
+  extra_option_product_id: {
+    label: "Модель доп. опции",
+    numberPlaceholder: "Введите идентификатор доп. опции",
+  },
+};
+
 export const TransactionForm: FC<Props> = ({ className, mode }) => {
   const { t } = useTranslation();
   const form = Form.useFormInstance<ApplicationLocalForm>();
@@ -111,6 +305,15 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
   // все ключи, которые НЕ реализованы в "Замерка"
   const otherParamsEntries = Object.entries(transactionShape).filter(
     ([key]) => !MEASUREMENT_KEYS.has(key),
+  );
+
+  const defaultNumberPlaceholder = t(
+    "bids.transactions.placeholders.numberDefault",
+    { defaultValue: "Введите число" },
+  );
+  const defaultTextPlaceholder = t(
+    "bids.transactions.placeholders.textDefault",
+    { defaultValue: "Введите значение" },
   );
 
   return (
@@ -274,20 +477,28 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
               <Form.Item
                 key={key}
                 name={["transactions", 0, key]}
-                label={prettifyKey(key)}
+                label={t(`bids.transactions.fields.${key}`, {
+                  defaultValue:
+                    OTHER_FIELD_TRANSLATIONS[key]?.label ?? prettifyKey(key),
+                })}
               >
-                {typeof sampleValue === "number" ? (
-                  <Input type="number" />
-                ) : (
-                  <Input />
-                )}
+                <Input
+                  type={typeof sampleValue === "number" ? "number" : "text"}
+                  placeholder={t(`bids.transactions.placeholders.${key}`, {
+                    defaultValue:
+                      (typeof sampleValue === "number"
+                        ? (OTHER_FIELD_TRANSLATIONS[key]?.numberPlaceholder ??
+                          defaultNumberPlaceholder)
+                        : (OTHER_FIELD_TRANSLATIONS[key]?.textPlaceholder ??
+                          defaultTextPlaceholder)) ?? defaultTextPlaceholder,
+                  })}
+                />
               </Form.Item>
             ))}
           </div>
         </Collapse.Panel>
       </Collapse>
 
-      <Divider />
       <Divider />
     </div>
   );
