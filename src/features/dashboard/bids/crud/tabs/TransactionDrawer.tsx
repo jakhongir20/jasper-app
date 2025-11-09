@@ -1,7 +1,11 @@
-import { FC } from "react";
-import { Drawer } from "antd";
+import { FC, useCallback } from "react";
+import { Drawer, Form, message } from "antd";
 import { Button } from "@/shared/ui";
-import { TransactionForm } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
+import {
+  TransactionForm,
+  getTransactionValidationPaths,
+} from "@/features/dashboard/bids/crud/tabs/TransactionForm";
+import { ApplicationLocalForm } from "@/features/dashboard/bids";
 
 interface Props {
   className?: string;
@@ -16,6 +20,23 @@ export const TransactionDrawer: FC<Props> = ({
   onClose,
   mode,
 }) => {
+  const form = Form.useFormInstance<ApplicationLocalForm>();
+
+  const handleConfirm = useCallback(async () => {
+    const transactions = form.getFieldValue("transactions") || [];
+    const currentTransaction = transactions?.[0] || {};
+    const validationPaths = getTransactionValidationPaths(
+      currentTransaction as Record<string, unknown>,
+    );
+
+    try {
+      await form.validateFields(validationPaths as any);
+      onClose(false);
+    } catch (error) {
+      message.error("Заполните обязательные поля");
+    }
+  }, [form, onClose]);
+
   return (
     <Drawer
       placement={"bottom"}
@@ -36,7 +57,7 @@ export const TransactionDrawer: FC<Props> = ({
             <Button onClick={() => onClose(false)} type={"default"}>
               Отмена
             </Button>
-            <Button type={"primary"}>
+            <Button type={"primary"} onClick={handleConfirm}>
               {mode === "edit" ? "Сохранить изменения" : "Подтвердить"}
             </Button>
           </div>

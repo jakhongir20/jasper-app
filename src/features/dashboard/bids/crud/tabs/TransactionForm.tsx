@@ -53,10 +53,13 @@ type ProductTypeConfig = {
   sections: SectionConfig[];
 };
 
-const ALWAYS_REQUIRED_FIELDS = ["location"];
+const ALWAYS_REQUIRED_FIELDS: string[] = [];
 
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
+
+const resolveProductType = (values: TransactionValues) =>
+  ((values.product_type ?? values.door_type) as string | undefined) ?? "";
 
 const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
   const sections: SectionConfig[] = [
@@ -549,57 +552,153 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
   return sections;
 };
 
+const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
+  "door-window": [
+    "opening_height",
+    "opening_width",
+    "opening_thickness",
+    "entity_quantity",
+    "box_width",
+    "door_product_id",
+    "sheathing_product_id",
+    "glass_product_id",
+    "door_lock_product_id",
+    "hinge_product_id",
+    "door_bolt_product_id",
+  ],
+  "door-deaf": [
+    "opening_height",
+    "opening_width",
+    "opening_thickness",
+    "entity_quantity",
+    "box_width",
+    "door_product_id",
+    "sheathing_product_id",
+    "door_lock_product_id",
+    "hinge_product_id",
+    "door_bolt_product_id",
+  ],
+  doorway: [
+    "opening_height",
+    "opening_width",
+    "opening_thickness",
+    "entity_quantity",
+    "sheathing_product_id",
+  ],
+  window: ["opening_height", "opening_width", "entity_quantity", "window_product_id"],
+  windowsill: [
+    "opening_height",
+    "opening_width",
+    "entity_quantity",
+    "windowsill_product_id",
+  ],
+  "heated-floor": [
+    "opening_height",
+    "opening_width",
+    "entity_quantity",
+    "heated_floor_product_id",
+  ],
+  latting: [
+    "opening_height",
+    "opening_width",
+    "entity_quantity",
+    "latting_product_id",
+  ],
+};
+
+const hasValue = (value: unknown) =>
+  value !== undefined && value !== null && value !== "";
+
+const toBoolean = (value: unknown) => {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "string") {
+    const normalized = value.toLowerCase().trim();
+    return normalized === "true" || normalized === "1" || normalized === "yes";
+  }
+  return false;
+};
+
+const getNestedValue = (
+  values: TransactionValues,
+  path: string,
+): unknown =>
+  path.split(".").reduce<unknown>((acc, key) => {
+    if (acc && typeof acc === "object") {
+      return (acc as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, values);
+
+const lattingHasFront = (values: TransactionValues) =>
+  hasValue(values.framework_front_id);
+
+const lattingHasBack = (values: TransactionValues) =>
+  hasValue(values.framework_back_id);
+
+const lattingFrontFlag = (values: TransactionValues, flag: string) =>
+  toBoolean(getNestedValue(values, `frame_front.${flag}`));
+
+const lattingBackFlag = (values: TransactionValues, flag: string) =>
+  toBoolean(getNestedValue(values, `frame_back.${flag}`));
+
+const CONDITIONAL_REQUIREMENTS: Record<
+  string,
+  Record<string, (values: TransactionValues) => boolean>
+> = {
+  "door-window": {
+    door_bolt_product_id: (values) =>
+      Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
+  },
+  "door-deaf": {
+    door_bolt_product_id: (values) =>
+      Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
+  },
+  latting: {
+    framework_front_id: lattingHasFront,
+    framework_back_id: lattingHasBack,
+    up_frame_product_id: (values) =>
+      lattingFrontFlag(values, "has_up_frame") ||
+      lattingBackFlag(values, "has_up_frame"),
+    under_frame_height: (values) =>
+      lattingFrontFlag(values, "has_under_frame") ||
+      lattingBackFlag(values, "has_under_frame"),
+    under_frame_product_id: (values) =>
+      lattingFrontFlag(values, "has_under_frame") ||
+      lattingBackFlag(values, "has_under_frame"),
+    crown_product_id: (values) =>
+      lattingFrontFlag(values, "has_crown") ||
+      lattingBackFlag(values, "has_crown"),
+    transom_type: (values) =>
+      lattingFrontFlag(values, "has_transom") ||
+      lattingBackFlag(values, "has_transom"),
+    transom_height_front: (values) => lattingFrontFlag(values, "has_transom"),
+    transom_height_back: (values) => lattingBackFlag(values, "has_transom"),
+    transom_product_id: (values) =>
+      lattingFrontFlag(values, "has_transom") ||
+      lattingBackFlag(values, "has_transom"),
+    frame_product_id: (values) =>
+      lattingFrontFlag(values, "is_frame") ||
+      lattingBackFlag(values, "is_frame"),
+    filler_product_id: (values) =>
+      lattingFrontFlag(values, "is_filler") ||
+      lattingBackFlag(values, "is_filler"),
+  },
+};
+
 const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
   "door-window": {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "opening_thickness",
-      "entity_quantity",
-      "box_width",
-      "door_product_id",
-      "sheathing_product_id",
-      "glass_product_id",
-      "door_lock_product_id",
-      "hinge_product_id",
-    ],
-    conditionalRequired: {
-      door_bolt_product_id: (values) => {
-        const widthValue = Number(values?.opening_width ?? values?.width ?? 0);
-        return widthValue >= 1.1;
-      },
-    },
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["door-window"],
+    conditionalRequired: CONDITIONAL_REQUIREMENTS["door-window"],
     sections: createDoorSections(true),
   },
   "door-deaf": {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "opening_thickness",
-      "entity_quantity",
-      "box_width",
-      "door_product_id",
-      "sheathing_product_id",
-      "door_lock_product_id",
-      "hinge_product_id",
-      "door_bolt_product_id",
-    ],
-    conditionalRequired: {
-      door_bolt_product_id: (values) => {
-        const widthValue = Number(values?.opening_width ?? values?.width ?? 0);
-        return widthValue >= 1.1;
-      },
-    },
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["door-deaf"],
+    conditionalRequired: CONDITIONAL_REQUIREMENTS["door-deaf"],
     sections: createDoorSections(false),
   },
   doorway: {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "opening_thickness",
-      "entity_quantity",
-      "sheathing_product_id",
-    ],
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["doorway"],
     sections: [
       {
         key: "doorway-sheathing",
@@ -621,12 +720,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
   },
   window: {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "entity_quantity",
-      "window_product_id",
-    ],
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["window"],
     sections: [
       {
         key: "window-main",
@@ -648,12 +742,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
   },
   windowsill: {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "entity_quantity",
-      "windowsill_product_id",
-    ],
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["windowsill"],
     sections: [
       {
         key: "windowsill-main",
@@ -675,12 +764,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
   },
   "heated-floor": {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "entity_quantity",
-      "heated_floor_product_id",
-    ],
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["heated-floor"],
     sections: [
       {
         key: "heated-floor-main",
@@ -702,12 +786,8 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
   },
   latting: {
-    requiredFields: [
-      "opening_height",
-      "opening_width",
-      "entity_quantity",
-      "latting_product_id",
-    ],
+    requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["latting"],
+    conditionalRequired: CONDITIONAL_REQUIREMENTS["latting"],
     sections: [
       {
         key: "latting-main",
@@ -729,6 +809,16 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
     ],
   },
 };
+
+const filterVisibleSections = (
+  sections: SectionConfig[],
+  values: TransactionValues,
+  productType: string,
+) =>
+  sections.filter(
+    (section) =>
+      !section.visible || section.visible(values, productType),
+  );
 
 const MEASUREMENT_FIELDS: FieldConfig[] = [
   {
@@ -845,10 +935,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     (form.getFieldValue(["transactions", 0]) as TransactionValues) ??
     {};
 
-  const productType =
-    (transactionValues.product_type as string | undefined) ??
-    (transactionValues.door_type as string | undefined) ??
-    "";
+  const productType = resolveProductType(transactionValues);
 
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
   const sections = useMemo(() => config?.sections ?? [], [config]);
@@ -1004,11 +1091,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   };
 
   const visibleSections = useMemo(
-    () =>
-      sections.filter(
-        (section) =>
-          !section.visible || section.visible(transactionValues, productType),
-      ),
+    () => filterVisibleSections(sections, transactionValues, productType),
     [sections, transactionValues, productType],
   );
 
@@ -1092,5 +1175,34 @@ export const TransactionForm: FC<Props> = ({ className }) => {
         )}
       </div>
     </div>
+  );
+};
+
+export const getTransactionValidationPaths = (
+  values: TransactionValues,
+): (string | number)[][] => {
+  const productType = resolveProductType(values);
+  const config = productType ? PRODUCT_CONFIG[productType] : undefined;
+  const sections = config?.sections ?? [];
+  const visibleSections = filterVisibleSections(sections, values, productType);
+
+  const names: string[] = [];
+
+  MEASUREMENT_FIELDS.forEach((field) => {
+    if (!field.visible || field.visible(values, productType)) {
+      names.push(field.name);
+    }
+  });
+
+  visibleSections.forEach((section) => {
+    section.fields.forEach((field) => {
+      if (!field.visible || field.visible(values, productType)) {
+        names.push(field.name);
+      }
+    });
+  });
+
+  return names.map(
+    (name) => ["transactions", 0, name] as (string | number)[],
   );
 };
