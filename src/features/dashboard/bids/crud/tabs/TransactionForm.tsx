@@ -19,6 +19,36 @@ const PRODUCT_TYPES = [
   { value: "latting", label: "Обрешётка" },
 ];
 
+const CATEGORY_SECTION_INDEX = {
+  transom: 1,
+  door_window: 2,
+  door_deaf: 3,
+  sheathing: 4,
+  frame: 5,
+  filler: 6,
+  crown: 7,
+  up_frame: 8,
+  under_frame: 9,
+  trim: 10,
+  molding: 11,
+  covering_primary: 12,
+  covering_secondary: 13,
+  color: 14,
+  floor_skirting: 15,
+  heated_floor: 16,
+  latting: 17,
+  window: 18,
+  windowsill: 19,
+  glass: 20,
+  door_lock: 21,
+  hinge: 22,
+  door_bolt: 23,
+  door_stopper: 24,
+  anti_threshold: 25,
+  box_width: 26,
+  extra_options: 27,
+} as const;
+
 type TransactionValues = Record<string, unknown>;
 
 type FieldType = "text" | "number" | "select" | "selectInfinitive";
@@ -37,7 +67,12 @@ type FieldConfig = {
   useValueAsLabel?: boolean;
   allowClear?: boolean;
   aliases?: string[];
-  params?: Record<string, string | number | boolean>;
+  params?:
+  | Record<string, string | number | boolean>
+  | ((
+    values: TransactionValues,
+    productType: string,
+  ) => Record<string, string | number | boolean>);
   visible?: (values: TransactionValues, productType: string) => boolean;
 };
 
@@ -115,9 +150,14 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           label: "Модель двери",
           type: "selectInfinitive",
           placeholder: "Выберите модель двери",
-          params: { category_section_index: 1 }, // todo make dynamic
           queryKey: "door_product",
           fetchUrl: "/product/by/category-section-index",
+          params: (_, productType) => ({
+            category_section_index:
+              productType === "door-deaf"
+                ? CATEGORY_SECTION_INDEX.door_deaf
+                : CATEGORY_SECTION_INDEX.door_window,
+          }),
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -134,7 +174,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель обшивки",
           queryKey: "sheathing_product",
-          fetchUrl: "/product/by/category?category_id=12",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: CATEGORY_SECTION_INDEX.sheathing },
           labelKey: ["name", "measure"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -152,7 +193,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           placeholder: "Выберите модель наличника",
           queryKey: "frame_product",
           fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 1 },
+          params: { category_section_index: CATEGORY_SECTION_INDEX.frame },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -164,7 +205,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           placeholder: "Выберите модель нашельника",
           queryKey: "filler_product",
           fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 1 },
+          params: { category_section_index: CATEGORY_SECTION_INDEX.filler },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -176,7 +217,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           placeholder: "Выберите модель короны",
           queryKey: "crown_product",
           fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 1 },
+          params: { category_section_index: CATEGORY_SECTION_INDEX.crown },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -195,7 +236,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           placeholder: "Выберите модель надналичника",
           queryKey: "up_frame_product",
           fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 1 },
+          params: { category_section_index: CATEGORY_SECTION_INDEX.up_frame },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -221,7 +262,7 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           placeholder: "Выберите модель подналичника",
           queryKey: "under_frame_product",
           fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 1 },
+          params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -246,7 +287,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель стекла",
           queryKey: "glass_product",
-          fetchUrl: "/product/by/category?category_id=1",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: CATEGORY_SECTION_INDEX.glass },
           labelKey: ["name", "measure"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -270,7 +312,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель замка",
           queryKey: "door_lock_product",
-          fetchUrl: "/product/by/category?category_id=29",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: CATEGORY_SECTION_INDEX.door_lock },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -281,7 +324,8 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель петли",
           queryKey: "hinge_product",
-          fetchUrl: "/product/by/category?category_id=30",
+          fetchUrl: "/product/by/category-section-index",
+          params: { category_section_index: CATEGORY_SECTION_INDEX.hinge },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -292,7 +336,10 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель шпингалета",
           queryKey: "door_bolt_product",
-          fetchUrl: "/product/by/category?category_id=31",
+          fetchUrl: "/product/by/category-section-index",
+          params: {
+            category_section_index: CATEGORY_SECTION_INDEX.door_bolt,
+          },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -303,7 +350,10 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель стоппера",
           queryKey: "door_stopper_product",
-          fetchUrl: "/product/by/category?category_id=32",
+          fetchUrl: "/product/by/category-section-index",
+          params: {
+            category_section_index: CATEGORY_SECTION_INDEX.door_stopper,
+          },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -314,7 +364,10 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           type: "selectInfinitive",
           placeholder: "Выберите модель анти-порога",
           queryKey: "anti_threshold_product",
-          fetchUrl: "/product/by/category?category_id=33",
+          fetchUrl: "/product/by/category-section-index",
+          params: {
+            category_section_index: CATEGORY_SECTION_INDEX.anti_threshold,
+          },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -374,7 +427,9 @@ const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
           placeholder: "Выберите модель доп. опции",
           queryKey: "extra_option_product",
           fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 10 },
+          params: {
+            category_section_index: CATEGORY_SECTION_INDEX.extra_options,
+          },
           labelKey: ["name", "feature"],
           valueKey: "product_id",
           useValueAsLabel: true,
@@ -409,7 +464,7 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель обкладки",
         queryKey: "trim_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.trim },
         labelKey: ["name", "measure"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -428,7 +483,7 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель молдинга",
         queryKey: "molding_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.molding },
         labelKey: ["name", "measure"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -447,7 +502,9 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель покрытия I",
         queryKey: "covering_primary_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.covering_primary,
+        },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -466,7 +523,9 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель покрытия II",
         queryKey: "covering_secondary_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.covering_secondary,
+        },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -491,7 +550,7 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель цвета",
         queryKey: "color_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.color },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -516,7 +575,9 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель плинтуса",
         queryKey: "floor_skirting_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.floor_skirting,
+        },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -528,7 +589,9 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель тёплого пола",
         queryKey: "heated_floor_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.heated_floor,
+        },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -540,7 +603,7 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель обрешётки",
         queryKey: "latting_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.latting },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -552,7 +615,7 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель окна",
         queryKey: "window_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.window },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -564,7 +627,7 @@ const SHARED_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите модель подоконника",
         queryKey: "windowsill_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 1 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.windowsill },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -609,7 +672,7 @@ const TRANSSOM_SECTION: SectionConfig[] = [
         placeholder: "Выберите модель фрамуги",
         queryKey: "transom_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: 10 },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.transom },
         labelKey: "name",
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -779,7 +842,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
             placeholder: "Выберите модель обшивки",
             queryKey: "doorway_sheathing",
             fetchUrl: "/product/by/category-section-index",
-            params: { category_section_index: 1 }, // todo make dynamic
+            params: { category_section_index: CATEGORY_SECTION_INDEX.sheathing },
             valueKey: "product_id",
             labelKey: ["name", "measure"],
             useValueAsLabel: true,
@@ -801,7 +864,8 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
             type: "selectInfinitive",
             placeholder: "Выберите модель окна",
             queryKey: "window_product",
-            fetchUrl: "/product/by/category?category_id=26",
+            fetchUrl: "/product/by/category-section-index",
+            params: { category_section_index: CATEGORY_SECTION_INDEX.window },
             labelKey: ["name", "feature"],
             valueKey: "product_id",
             useValueAsLabel: true,
@@ -823,7 +887,8 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
             type: "selectInfinitive",
             placeholder: "Выберите модель подоконника",
             queryKey: "windowsill_product",
-            fetchUrl: "/product/by/category?category_id=27",
+            fetchUrl: "/product/by/category-section-index",
+            params: { category_section_index: CATEGORY_SECTION_INDEX.windowsill },
             labelKey: ["name", "feature"],
             valueKey: "product_id",
             useValueAsLabel: true,
@@ -845,7 +910,10 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
             type: "selectInfinitive",
             placeholder: "Выберите модель тёплого пола",
             queryKey: "heated_floor_product",
-            fetchUrl: "/product/by/category?category_id=24",
+            fetchUrl: "/product/by/category-section-index",
+            params: {
+              category_section_index: CATEGORY_SECTION_INDEX.heated_floor,
+            },
             labelKey: ["name", "feature"],
             valueKey: "product_id",
             useValueAsLabel: true,
@@ -868,7 +936,8 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
             type: "selectInfinitive",
             placeholder: "Выберите модель обрешётки",
             queryKey: "latting_product",
-            fetchUrl: "/product/by/category?category_id=25",
+            fetchUrl: "/product/by/category-section-index",
+            params: { category_section_index: CATEGORY_SECTION_INDEX.latting },
             labelKey: ["name", "feature"],
             valueKey: "product_id",
             useValueAsLabel: true,
@@ -1140,7 +1209,11 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               placeholder={field.placeholder}
               queryKey={field.queryKey}
               fetchUrl={field.fetchUrl}
-              params={field.params}
+              params={
+                typeof field.params === "function"
+                  ? field.params(transactionValues, productType)
+                  : field.params
+              }
               labelKey={field.labelKey ?? "name"}
               valueKey={(field.valueKey ?? "product_id") as string}
               useValueAsLabel={field.useValueAsLabel}
@@ -1217,7 +1290,6 @@ export const TransactionForm: FC<Props> = ({ className }) => {
                 });
               }}
               expandIconPosition="end"
-              accordion
             >
               <Collapse.Panel
                 header={
