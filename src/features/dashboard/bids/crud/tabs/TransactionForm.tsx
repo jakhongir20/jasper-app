@@ -1,9 +1,8 @@
-import { FC } from "react";
-import { cn } from "@/shared/helpers";
+import { FC, Fragment, useEffect, useMemo } from "react";
 import { Collapse, Divider, Form } from "antd";
+import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
 import { Input, Select, SelectInfinitive } from "@/shared/ui";
-import { useTranslation } from "react-i18next";
 
 interface Props {
   className?: string;
@@ -11,792 +10,1057 @@ interface Props {
 }
 
 const PRODUCT_TYPES = [
-  { value: "door-window", label: "ДО Дверь" },
-  { value: "door-deaf", label: "ДГ Дверь" },
-  { value: "doorway", label: "Обшивочный проем" },
+  { value: "door-window", label: "ДО дверь" },
+  { value: "door-deaf", label: "ДГ дверь" },
+  { value: "doorway", label: "Обшивочный проём" },
   { value: "window", label: "Окно" },
   { value: "windowsill", label: "Подоконник" },
-  { value: "heated-floor", label: "Теплый пол" },
-  { value: "latting", label: "Обрешетка" },
+  { value: "heated-floor", label: "Тёплый пол" },
+  { value: "latting", label: "Обрешётка" },
 ];
 
-export const TransactionForm: FC<Props> = ({ className, mode }) => {
-  const { t } = useTranslation();
+type TransactionValues = Record<string, unknown>;
+
+type FieldType = "text" | "number" | "select" | "selectInfinitive";
+
+type FieldConfig = {
+  name: string;
+  label: string;
+  type: FieldType;
+  placeholder?: string;
+  numberStep?: number;
+  options?: { value: string | number; label: string }[];
+  queryKey?: string;
+  fetchUrl?: string;
+  valueKey?: string;
+  labelKey?: string | string[];
+  useValueAsLabel?: boolean;
+  allowClear?: boolean;
+  aliases?: string[];
+  visible?: (values: TransactionValues, productType: string) => boolean;
+};
+
+type SectionConfig = {
+  title?: string;
+  fields: FieldConfig[];
+  visible?: (values: TransactionValues, productType: string) => boolean;
+};
+
+type ProductTypeConfig = {
+  requiredFields: string[];
+  conditionalRequired?: Record<
+    string,
+    (values: TransactionValues) => boolean
+  >;
+  sections: SectionConfig[];
+};
+
+const ALWAYS_REQUIRED_FIELDS = ["location", "product_type"];
+
+const isDoorType = (productType: string) =>
+  productType === "door-window" || productType === "door-deaf";
+
+const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
+  const sections: SectionConfig[] = [
+    {
+      title: "Фрамуга",
+      fields: [
+        {
+          name: "transom_type",
+          label: "Тип фрамуги",
+          type: "select",
+          placeholder: "Выберите тип фрамуги",
+          options: [
+            { value: "none", label: "Нет" },
+            { value: "front", label: "Лицо" },
+            { value: "back", label: "Тыл" },
+          ],
+        },
+        {
+          name: "transom_height_front",
+          label: "Высота фрамуги (лицо)",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите высоту фрамуги (лицо)",
+        },
+        {
+          name: "transom_height_back",
+          label: "Высота фрамуги (тыл)",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите высоту фрамуги (тыл)",
+        },
+        {
+          name: "transom_product_id",
+          label: "Модель фрамуги",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель фрамуги",
+          queryKey: "transom_product",
+          fetchUrl: "/product/by/category?category_id=10",
+          labelKey: "name",
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+    {
+      title: "Полотно (дверь)",
+      fields: [
+        {
+          name: "door_product_id",
+          label: "Модель двери",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель двери",
+          queryKey: "door_product",
+          fetchUrl: "/product/by/category?category_id=11",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+    {
+      title: "Обшивка",
+      fields: [
+        {
+          name: "sheathing_product_id",
+          label: "Модель обшивки",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель обшивки",
+          queryKey: "sheathing_product",
+          fetchUrl: "/product/by/category?category_id=12",
+          labelKey: ["name", "measure"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+    {
+      title: "Наличник и элементы",
+      fields: [
+        {
+          name: "frame_product_id",
+          label: "Модель наличника",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель наличника",
+          queryKey: "frame_product",
+          fetchUrl: "/product/by/category?category_id=13",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "filler_product_id",
+          label: "Модель нашельника",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель нашельника",
+          queryKey: "filler_product",
+          fetchUrl: "/product/by/category?category_id=14",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "crown_product_id",
+          label: "Модель короны",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель короны",
+          queryKey: "crown_product",
+          fetchUrl: "/product/by/category?category_id=15",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "up_frame_quantity",
+          label: "Количество надналичников",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество надналичников",
+        },
+        {
+          name: "up_frame_product_id",
+          label: "Модель надналичника",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель надналичника",
+          queryKey: "up_frame_product",
+          fetchUrl: "/product/by/category?category_id=16",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "under_frame_quantity",
+          label: "Количество подналичников",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество подналичников",
+        },
+        {
+          name: "under_frame_height",
+          label: "Высота подналичника",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите высоту подналичника",
+        },
+        {
+          name: "under_frame_product_id",
+          label: "Модель подналичника",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель подналичника",
+          queryKey: "under_frame_product",
+          fetchUrl: "/product/by/category?category_id=17",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+    {
+      title: "Отделка",
+      fields: [
+        {
+          name: "percent_trim",
+          label: "Процент обкладки",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите процент обкладки",
+        },
+        {
+          name: "trim_product_id",
+          label: "Модель обкладки",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель обкладки",
+          queryKey: "trim_product",
+          fetchUrl: "/product/by/category?category_id=18",
+          labelKey: ["name", "measure"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "percent_molding",
+          label: "Процент молдинга",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите процент молдинга",
+        },
+        {
+          name: "molding_product_id",
+          label: "Модель молдинга",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель молдинга",
+          queryKey: "molding_product",
+          fetchUrl: "/product/by/category?category_id=19",
+          labelKey: ["name", "measure"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "percent_covering_primary",
+          label: "Покрытие I, %",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите процент покрытия I",
+        },
+        {
+          name: "covering_primary_product_id",
+          label: "Модель покрытия I",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель покрытия I",
+          queryKey: "covering_primary_product",
+          fetchUrl: "/product/by/category?category_id=20",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "percent_covering_secondary",
+          label: "Покрытие II, %",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите процент покрытия II",
+        },
+        {
+          name: "covering_secondary_product_id",
+          label: "Модель покрытия II",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель покрытия II",
+          queryKey: "covering_secondary_product",
+          fetchUrl: "/product/by/category?category_id=21",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "percent_color",
+          label: "Цвет, %",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите процент цвета",
+        },
+        {
+          name: "color_custom_name",
+          label: "Название цвета",
+          type: "text",
+          placeholder: "Введите название цвета",
+        },
+        {
+          name: "color_product_id",
+          label: "Модель цвета",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель цвета",
+          queryKey: "color_product",
+          fetchUrl: "/product/by/category?category_id=22",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+    {
+      title: "Плинтус, тёплый пол, обрешётка, окно, подоконник",
+      fields: [
+        {
+          name: "floor_skirting_length",
+          label: "Длина плинтуса",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите длину плинтуса",
+        },
+        {
+          name: "floor_skirting_product_id",
+          label: "Модель плинтуса",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель плинтуса",
+          queryKey: "floor_skirting_product",
+          fetchUrl: "/product/by/category?category_id=23",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "heated_floor_product_id",
+          label: "Модель тёплого пола",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель тёплого пола",
+          queryKey: "heated_floor_product",
+          fetchUrl: "/product/by/category?category_id=24",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "latting_product_id",
+          label: "Модель обрешётки",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель обрешётки",
+          queryKey: "latting_product",
+          fetchUrl: "/product/by/category?category_id=25",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "window_product_id",
+          label: "Модель окна",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель окна",
+          queryKey: "window_product",
+          fetchUrl: "/product/by/category?category_id=26",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "windowsill_product_id",
+          label: "Модель подоконника",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель подоконника",
+          queryKey: "windowsill_product",
+          fetchUrl: "/product/by/category?category_id=27",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+    {
+      title: "Стекло",
+      visible: (_, productType) => productType === "door-window",
+      fields: [
+        {
+          name: "glass_quantity",
+          label: "Количество стекол",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество стекол",
+        },
+        {
+          name: "glass_product_id",
+          label: "Модель стекла",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель стекла",
+          queryKey: "glass_product",
+          fetchUrl: "/product/by/category?category_id=1",
+          labelKey: ["name", "measure"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "volume_glass",
+          label: "Объём стекла",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите объём стекла",
+        },
+      ],
+    },
+    {
+      title: "Фурнитура",
+      fields: [
+        {
+          name: "door_lock_product_id",
+          label: "Модель замка",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель замка",
+          queryKey: "door_lock_product",
+          fetchUrl: "/product/by/category?category_id=29",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "hinge_product_id",
+          label: "Модель петли",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель петли",
+          queryKey: "hinge_product",
+          fetchUrl: "/product/by/category?category_id=30",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "door_bolt_product_id",
+          label: "Модель шпингалета",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель шпингалета",
+          queryKey: "door_bolt_product",
+          fetchUrl: "/product/by/category?category_id=31",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "door_stopper_product_id",
+          label: "Модель стоппера",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель стоппера",
+          queryKey: "door_stopper_product",
+          fetchUrl: "/product/by/category?category_id=32",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "anti_threshold_product_id",
+          label: "Модель анти-порога",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель анти-порога",
+          queryKey: "anti_threshold_product",
+          fetchUrl: "/product/by/category?category_id=33",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+        {
+          name: "door_lock_quantity",
+          label: "Количество замков",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество замков",
+        },
+        {
+          name: "hinge_quantity",
+          label: "Количество петель",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество петель",
+        },
+        {
+          name: "door_bolt_quantity",
+          label: "Количество шпингалетов",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество шпингалетов",
+        },
+        {
+          name: "door_stopper_quantity",
+          label: "Количество стопперов",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество стопперов",
+        },
+        {
+          name: "anti_threshold_quantity",
+          label: "Количество анти-порогов",
+          type: "number",
+          numberStep: 1,
+          placeholder: "Введите количество анти-порогов",
+        },
+      ],
+    },
+    {
+      title: "Ширина коробки и доп. опции",
+      fields: [
+        {
+          name: "percent_extra_option",
+          label: "Процент доп. опции",
+          type: "number",
+          numberStep: 0.01,
+          placeholder: "Введите процент доп. опции",
+        },
+        {
+          name: "extra_option_product_id",
+          label: "Модель доп. опции",
+          type: "selectInfinitive",
+          placeholder: "Выберите модель доп. опции",
+          queryKey: "extra_option_product",
+          fetchUrl: "/product/by/category?category_id=34",
+          labelKey: ["name", "feature"],
+          valueKey: "product_id",
+          useValueAsLabel: true,
+        },
+      ],
+    },
+  ];
+
+  if (!includeGlass) {
+    return sections.filter((section) => section.title !== "Стекло");
+  }
+
+  return sections;
+};
+
+const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
+  "door-window": {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "opening_thickness",
+      "entity_quantity",
+      "box_width",
+      "door_product_id",
+      "sheathing_product_id",
+      "glass_product_id",
+      "door_lock_product_id",
+      "hinge_product_id",
+    ],
+    conditionalRequired: {
+      door_bolt_product_id: (values) => {
+        const widthValue =
+          Number(values?.opening_width ?? values?.width ?? 0);
+        return widthValue >= 1.1;
+      },
+    },
+    sections: createDoorSections(true),
+  },
+  "door-deaf": {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "opening_thickness",
+      "entity_quantity",
+      "box_width",
+      "door_product_id",
+      "sheathing_product_id",
+      "door_lock_product_id",
+      "hinge_product_id",
+      "door_bolt_product_id",
+    ],
+    conditionalRequired: {
+      door_bolt_product_id: (values) => {
+        const widthValue =
+          Number(values?.opening_width ?? values?.width ?? 0);
+        return widthValue >= 1.1;
+      },
+    },
+    sections: createDoorSections(false),
+  },
+  doorway: {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "opening_thickness",
+      "entity_quantity",
+      "sheathing_product_id",
+    ],
+    sections: [
+      {
+        title: "Обшивка",
+        fields: [
+          {
+            name: "sheathing_product_id",
+            label: "Модель обшивки",
+            type: "selectInfinitive",
+            placeholder: "Выберите модель обшивки",
+            queryKey: "doorway_sheathing",
+            fetchUrl: "/product/by/category?category_id=13",
+            labelKey: ["name", "measure"],
+            valueKey: "product_id",
+            useValueAsLabel: true,
+          },
+        ],
+      },
+    ],
+  },
+  window: {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "entity_quantity",
+      "window_product_id",
+    ],
+    sections: [
+      {
+        title: "Окно",
+        fields: [
+          {
+            name: "window_product_id",
+            label: "Модель окна",
+            type: "selectInfinitive",
+            placeholder: "Выберите модель окна",
+            queryKey: "window_product",
+            fetchUrl: "/product/by/category?category_id=26",
+            labelKey: ["name", "feature"],
+            valueKey: "product_id",
+            useValueAsLabel: true,
+          },
+        ],
+      },
+    ],
+  },
+  windowsill: {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "entity_quantity",
+      "windowsill_product_id",
+    ],
+    sections: [
+      {
+        title: "Подоконник",
+        fields: [
+          {
+            name: "windowsill_product_id",
+            label: "Модель подоконника",
+            type: "selectInfinitive",
+            placeholder: "Выберите модель подоконника",
+            queryKey: "windowsill_product",
+            fetchUrl: "/product/by/category?category_id=27",
+            labelKey: ["name", "feature"],
+            valueKey: "product_id",
+            useValueAsLabel: true,
+          },
+        ],
+      },
+    ],
+  },
+  "heated-floor": {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "entity_quantity",
+      "heated_floor_product_id",
+    ],
+    sections: [
+      {
+        title: "Тёплый пол",
+        fields: [
+          {
+            name: "heated_floor_product_id",
+            label: "Модель тёплого пола",
+            type: "selectInfinitive",
+            placeholder: "Выберите модель тёплого пола",
+            queryKey: "heated_floor_product",
+            fetchUrl: "/product/by/category?category_id=24",
+            labelKey: ["name", "feature"],
+            valueKey: "product_id",
+            useValueAsLabel: true,
+          },
+        ],
+      },
+    ],
+  },
+  latting: {
+    requiredFields: [
+      "opening_height",
+      "opening_width",
+      "entity_quantity",
+      "latting_product_id",
+    ],
+    sections: [
+      {
+        title: "Обрешётка",
+        fields: [
+          {
+            name: "latting_product_id",
+            label: "Модель обрешётки",
+            type: "selectInfinitive",
+            placeholder: "Выберите модель обрешётки",
+            queryKey: "latting_product",
+            fetchUrl: "/product/by/category?category_id=25",
+            labelKey: ["name", "feature"],
+            valueKey: "product_id",
+            useValueAsLabel: true,
+          },
+        ],
+      },
+    ],
+  },
+};
+
+const MEASUREMENT_FIELDS: FieldConfig[] = [
+  {
+    name: "location",
+    label: "Местоположение",
+    type: "text",
+    placeholder: "Введите местоположение",
+  },
+  {
+    name: "product_type",
+    label: "Тип продукта",
+    type: "select",
+    placeholder: "Выберите тип продукта",
+    options: PRODUCT_TYPES,
+    aliases: ["door_type"],
+  },
+  {
+    name: "opening_height",
+    label: "Высота проёма",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите высоту проёма",
+    aliases: ["height"],
+  },
+  {
+    name: "opening_width",
+    label: "Ширина проёма",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите ширину проёма",
+    aliases: ["width"],
+  },
+  {
+    name: "opening_thickness",
+    label: "Толщина проёма",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите толщину проёма",
+    aliases: ["doorway_thickness"],
+  },
+  {
+    name: "entity_quantity",
+    label: "Количество элементов",
+    type: "number",
+    numberStep: 1,
+    placeholder: "Введите количество элементов",
+    aliases: ["quantity"],
+  },
+  {
+    name: "box_width",
+    label: "Ширина коробки",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите ширину коробки",
+    visible: (_, productType) => isDoorType(productType),
+  },
+  {
+    name: "framework_front_id",
+    label: "Каркас передний",
+    type: "selectInfinitive",
+    placeholder: "Выберите передний каркас",
+    queryKey: "framework_front",
+    fetchUrl: "/product/by/category?category_id=1",
+    labelKey: "name",
+    valueKey: "product_id",
+    useValueAsLabel: true,
+    visible: (_, productType) => isDoorType(productType),
+  },
+  {
+    name: "framework_back_id",
+    label: "Каркас задний",
+    type: "selectInfinitive",
+    placeholder: "Выберите задний каркас",
+    queryKey: "framework_back",
+    fetchUrl: "/product/by/category?category_id=2",
+    labelKey: "name",
+    valueKey: "product_id",
+    useValueAsLabel: true,
+    visible: (_, productType) => isDoorType(productType),
+  },
+  {
+    name: "threshold",
+    label: "Порог",
+    type: "select",
+    placeholder: "Выберите тип порога",
+    options: [
+      { value: "yes", label: "Да" },
+      { value: "no", label: "Нет" },
+      { value: "custom", label: "Кастомный" },
+    ],
+    visible: (_, productType) => isDoorType(productType),
+  },
+  {
+    name: "opening_logic",
+    label: "Логика открывания",
+    type: "select",
+    placeholder: "Выберите логику открывания",
+    options: [
+      { value: "left", label: "Левое" },
+      { value: "right", label: "Правое" },
+      { value: "up", label: "Вверх" },
+      { value: "down", label: "Вниз" },
+    ],
+    visible: (_, productType) => isDoorType(productType),
+  },
+];
+
+export const TransactionForm: FC<Props> = ({ className }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
+
+  const transactionValues =
+    (Form.useWatch(["transactions", 0], form) as TransactionValues) ??
+    (form.getFieldValue(["transactions", 0]) as TransactionValues) ??
+    {};
+
+  const productType =
+    (transactionValues.product_type as string | undefined) ??
+    (transactionValues.door_type as string | undefined) ??
+    "";
+
+  const config = productType ? PRODUCT_CONFIG[productType] : undefined;
+  const sections = useMemo(
+    () => config?.sections ?? [],
+    [config],
+  );
+
+  const isFieldRequired = (fieldName: string) => {
+    if (ALWAYS_REQUIRED_FIELDS.includes(fieldName)) {
+      return true;
+    }
+
+    if (!config) {
+      return false;
+    }
+
+    if (config.requiredFields.includes(fieldName)) {
+      return true;
+    }
+
+    const conditional = config.conditionalRequired?.[fieldName];
+    if (conditional) {
+      try {
+        return conditional(transactionValues);
+      } catch {
+        return false;
+      }
+    }
+
+    return false;
+  };
+
+  const getRules = (fieldName: string, label: string) =>
+    isFieldRequired(fieldName)
+      ? [
+          {
+            required: true,
+            message: `Заполните поле «${label}»`,
+          },
+        ]
+      : undefined;
+
+  useEffect(() => {
+    const mappings: Array<[string, string]> = [
+      ["product_type", "door_type"],
+      ["opening_height", "height"],
+      ["opening_width", "width"],
+      ["opening_thickness", "doorway_thickness"],
+      ["entity_quantity", "quantity"],
+    ];
+
+    mappings.forEach(([primary, legacy]) => {
+      const primaryValue = transactionValues[primary];
+      const legacyValue = transactionValues[legacy];
+
+      if (
+        legacyValue !== undefined &&
+        primaryValue === undefined
+      ) {
+        form.setFieldValue(["transactions", 0, primary], legacyValue);
+      }
+
+      if (
+        primaryValue !== undefined &&
+        primaryValue !== legacyValue
+      ) {
+        form.setFieldValue(["transactions", 0, legacy], primaryValue);
+      }
+    });
+  }, [form, transactionValues]);
+
+  const renderField = (field: FieldConfig) => {
+    if (field.visible && !field.visible(transactionValues, productType)) {
+      return null;
+    }
+
+    const namePath = ["transactions", 0, field.name];
+    const rules = getRules(field.name, field.label);
+
+    switch (field.type) {
+      case "text":
+        return (
+          <Form.Item name={namePath} label={field.label} rules={rules}>
+            <Input
+              placeholder={field.placeholder}
+              onChange={(event) => {
+                if (field.aliases) {
+                  field.aliases.forEach((alias) =>
+                    form.setFieldValue(
+                      ["transactions", 0, alias],
+                      event.target.value,
+                    ),
+                  );
+                }
+              }}
+            />
+          </Form.Item>
+        );
+      case "number":
+        return (
+          <Form.Item name={namePath} label={field.label} rules={rules}>
+            <Input
+              type="number"
+              step={field.numberStep ?? 0.01}
+              placeholder={field.placeholder}
+              onChange={(event) => {
+                const rawValue = event.target.value;
+                const normalized =
+                  rawValue === "" ? undefined : Number(rawValue);
+                if (field.aliases) {
+                  field.aliases.forEach((alias) =>
+                    form.setFieldValue(
+                      ["transactions", 0, alias],
+                      normalized,
+                    ),
+                  );
+                }
+              }}
+            />
+          </Form.Item>
+        );
+      case "select":
+        return (
+          <Form.Item name={namePath} label={field.label} rules={rules}>
+            <Select
+              placeholder={field.placeholder}
+              options={field.options}
+              allowClear={field.allowClear}
+              onChange={(value) => {
+                if (field.aliases) {
+                  field.aliases.forEach((alias) =>
+                    form.setFieldValue(["transactions", 0, alias], value),
+                  );
+                }
+              }}
+            />
+          </Form.Item>
+        );
+      case "selectInfinitive":
+        return (
+          <Form.Item name={namePath} label={field.label} rules={rules}>
+            <SelectInfinitive
+              placeholder={field.placeholder}
+              queryKey={field.queryKey}
+              fetchUrl={field.fetchUrl}
+              labelKey={field.labelKey}
+              valueKey={field.valueKey}
+              useValueAsLabel={field.useValueAsLabel}
+              allowClear={field.allowClear}
+              onChange={(value) => {
+                if (field.aliases) {
+                  field.aliases.forEach((alias) =>
+                    form.setFieldValue(["transactions", 0, alias], value),
+                  );
+                }
+              }}
+            />
+          </Form.Item>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const visibleSections = useMemo(
+    () =>
+      sections.filter(
+        (section) =>
+          !section.visible || section.visible(transactionValues, productType),
+      ),
+    [sections, transactionValues, productType],
+  );
 
   return (
     <div className={cn(className)}>
-      {/* Тип продукта над формой */}
-      <Select
-        options={PRODUCT_TYPES}
-        value={form.getFieldValue(["transactions", 0, "door_type"])}
-        className="mb-5"
-        onChange={(value) =>
-          form.setFieldValue(["transactions", 0, "door_type"], value)
-        }
-        title="Тип продукта"
-        placeholder="Выберите тип продукта"
-      />
-
-      {/* ====================== Замерка ====================== */}
-      <Collapse ghost defaultActiveKey={"1"}>
-        <Collapse.Panel key={"1"} header={"Замерка"}>
+      <Collapse ghost defaultActiveKey={["measuring"]}>
+        <Collapse.Panel key="measuring" header="Замерка">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Location - Text input */}
-            <Form.Item
-              name={["transactions", 0, "location"]}
-              label="Местоположение"
-              rules={[{ required: true }]}
-            >
-              <Input placeholder="Введите местоположение" />
-            </Form.Item>
-
-            {/* Product Type - Select */}
-            <Form.Item
-              name={["transactions", 0, "door_type"]}
-              label="Тип продукта"
-              rules={[{ required: true }]}
-            >
-              <Select
-                options={PRODUCT_TYPES}
-                placeholder="Выберите тип продукта"
-              />
-            </Form.Item>
-
-            {/* Opening Height - Number float */}
-            <Form.Item
-              name={["transactions", 0, "height"]}
-              label="Высота проема"
-              rules={[{ required: true }]}
-            >
-              <Input
-                type="number"
-                step="0.01"
-                placeholder="Введите высоту проема"
-              />
-            </Form.Item>
-
-            {/* Opening Width - Number float */}
-            <Form.Item
-              name={["transactions", 0, "width"]}
-              label="Ширина проема"
-              rules={[{ required: true }]}
-            >
-              <Input
-                type="number"
-                step="0.01"
-                placeholder="Введите ширину проема"
-              />
-            </Form.Item>
-
-            {/* Opening Thickness - Number float */}
-            <Form.Item
-              name={["transactions", 0, "doorway_thickness"]}
-              label="Толщина проема"
-              rules={[{ required: true }]}
-            >
-              <Input
-                type="number"
-                step="0.01"
-                placeholder="Введите толщину проема"
-              />
-            </Form.Item>
-
-            {/* Entity Quantity - Number int */}
-            <Form.Item
-              name={["transactions", 0, "quantity"]}
-              label="Количество элементов"
-              rules={[{ required: true }]}
-            >
-              <Input
-                type="number"
-                step="1"
-                placeholder="Введите количество элементов"
-              />
-            </Form.Item>
-
-            {/* Framework Front - Select */}
-            <Form.Item
-              name={["transactions", 0, "frame_front_id"]}
-              label="Каркас передний"
-            >
-              <SelectInfinitive
-                placeholder="Выберите передний каркас"
-                queryKey="framework_front"
-                fetchUrl="/product/by/category?category_id=1"
-                labelKey="name"
-                valueKey="product_id"
-                useValueAsLabel
-              />
-            </Form.Item>
-
-            {/* Framework Back - Select */}
-            <Form.Item
-              name={["transactions", 0, "frame_back_id"]}
-              label="Каркас задний"
-            >
-              <SelectInfinitive
-                placeholder="Выберите задний каркас"
-                queryKey="framework_back"
-                fetchUrl="/product/by/category?category_id=2"
-                labelKey="name"
-                valueKey="product_id"
-                useValueAsLabel
-              />
-            </Form.Item>
-
-            {/* Threshold - Select */}
-            <Form.Item name={["transactions", 0, "threshold"]} label="Порог">
-              <Select
-                placeholder="Выберите порог"
-                options={[
-                  { value: "yes", label: "Да" },
-                  { value: "no", label: "Нет" },
-                  { value: "custom", label: "Кастомный" },
-                ]}
-              />
-            </Form.Item>
-
-            {/* Opening Logic - Select */}
-            <Form.Item
-              name={["transactions", 0, "opening_direction"]}
-              label="Логика открывания"
-            >
-              <Select
-                placeholder="Выберите логику открывания"
-                options={[
-                  { value: "left", label: "Левое" },
-                  { value: "right", label: "Правое" },
-                  { value: "up", label: "Вверх" },
-                  { value: "down", label: "Вниз" },
-                ]}
-              />
-            </Form.Item>
+            {MEASUREMENT_FIELDS.map((field) => {
+              const node = renderField(field);
+              if (!node) return null;
+              return <Fragment key={field.name}>{node}</Fragment>;
+            })}
           </div>
         </Collapse.Panel>
       </Collapse>
 
       <Divider />
 
-      {/* =================== Другие параметры =================== */}
       <Collapse ghost>
-        <Collapse.Panel key={"2"} header={"Другие параметры"}>
-          <div className="space-y-10">
-            {/* ---------- Фрамуга ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Фрамуга
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Form.Item
-                  name={["transactions", 0, "transom_type"]}
-                  label="Тип фрамуги"
+        <Collapse.Panel key="extra" header="Другие параметры">
+          {visibleSections.length ? (
+            <div className="space-y-10">
+              {visibleSections.map((section, index) => (
+                <section
+                  key={`${section.title ?? "section"}-${index}`}
                 >
-                  <Select
-                    placeholder="Выберите тип фрамуги"
-                    options={[
-                      { value: "none", label: "Нет" },
-                      { value: "front", label: "Лицо" },
-                      { value: "back", label: "Зад" },
-                    ]}
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "transom_height_front"]}
-                  label="Высота фрамуги (лицо)"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "transom_height_back"]}
-                  label="Высота фрамуги (зад)"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "transom_product_id"]}
-                  label="Модель фрамуги"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель фрамуги"
-                    queryKey="transom"
-                    fetchUrl="/product/by/category?category_id=10"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Полотно (Дверь) ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Полотно (Дверь)
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Form.Item
-                  name={["transactions", 0, "door_product_id"]}
-                  label="Модель двери"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель двери"
-                    queryKey="door"
-                    fetchUrl="/product/by/category?category_id=11"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Обшивка ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Обшивка
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Form.Item
-                  name={["transactions", 0, "sheathing_product_id"]}
-                  label="Модель обшивки"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель обшивки"
-                    queryKey="sheathing"
-                    fetchUrl="/product/by/category?category_id=12"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Наличник / Нашельник / Корона ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Наличник и элементы
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Наличник */}
-                <Form.Item
-                  name={["transactions", 0, "frame_product_id"]}
-                  label="Модель наличника"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель наличника"
-                    queryKey="frame"
-                    fetchUrl="/product/by/category?category_id=13"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Нашельник */}
-                <Form.Item
-                  name={["transactions", 0, "filler_product_id"]}
-                  label="Модель нашельника"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель нашельника"
-                    queryKey="filler"
-                    fetchUrl="/product/by/category?category_id=14"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Корона */}
-                <Form.Item
-                  name={["transactions", 0, "crown_product_id"]}
-                  label="Модель короны"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель короны"
-                    queryKey="crown"
-                    fetchUrl="/product/by/category?category_id=15"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Кубик (надналичник) */}
-                <Form.Item
-                  name={["transactions", 0, "up_frame_quantity"]}
-                  label="Кол-во надналичников"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "up_frame_product_id"]}
-                  label="Модель надналичника"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель надналичника"
-                    queryKey="up_frame"
-                    fetchUrl="/product/by/category?category_id=16"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Сапожок (подналичник) */}
-                <Form.Item
-                  name={["transactions", 0, "under_frame_quantity"]}
-                  label="Кол-во подналичников"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "under_frame_height"]}
-                  label="Высота подналичника"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "under_frame_product_id"]}
-                  label="Модель подналичника"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель подналичника"
-                    queryKey="under_frame"
-                    fetchUrl="/product/by/category?category_id=17"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Обклад / Молдинг / Покрытие / Цвет ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Отделка
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Обклад */}
-                <Form.Item
-                  name={["transactions", 0, "percent_trim"]}
-                  label="Процент обклада"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "trim_product_id"]}
-                  label="Модель обклада"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель обклада"
-                    queryKey="trim"
-                    fetchUrl="/product/by/category?category_id=18"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Молдинг */}
-                <Form.Item
-                  name={["transactions", 0, "percent_molding"]}
-                  label="Процент молдинга"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "molding_product_id"]}
-                  label="Модель молдинга"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель молдинга"
-                    queryKey="molding"
-                    fetchUrl="/product/by/category?category_id=19"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Покрытие I */}
-                <Form.Item
-                  name={["transactions", 0, "percent_covering_primary"]}
-                  label="Покрытие I, %"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "covering_primary_product_id"]}
-                  label="Модель покрытия I"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите покрытие I"
-                    queryKey="covering_primary"
-                    fetchUrl="/product/by/category?category_id=20"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Покрытие II */}
-                <Form.Item
-                  name={["transactions", 0, "percent_covering_secondary"]}
-                  label="Покрытие II, %"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "covering_secondary_product_id"]}
-                  label="Модель покрытия II"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите покрытие II"
-                    queryKey="covering_secondary"
-                    fetchUrl="/product/by/category?category_id=21"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Цвет */}
-                <Form.Item
-                  name={["transactions", 0, "percent_color"]}
-                  label="Цвет, %"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "color_custom_name"]}
-                  label="Название цвета"
-                >
-                  <Input placeholder="Например, RAL 9003" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "color_product_id"]}
-                  label="Модель цвета"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите цвет"
-                    queryKey="color"
-                    fetchUrl="/product/by/category?category_id=22"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Плинтус / Теплый пол / Обрешетка / Окно / Подоконник ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Плинтус, теплый пол, обрешетка, окно, подоконник
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Плинтус */}
-                <Form.Item
-                  name={["transactions", 0, "floor_skirting_length"]}
-                  label="Длина плинтуса"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "floor_skirting_product_id"]}
-                  label="Модель плинтуса"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель плинтуса"
-                    queryKey="floor_skirting"
-                    fetchUrl="/product/by/category?category_id=23"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Теплый пол */}
-                <Form.Item
-                  name={["transactions", 0, "heated_floor_product_id"]}
-                  label="Модель теплого пола"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель теплого пола"
-                    queryKey="heated_floor"
-                    fetchUrl="/product/by/category?category_id=24"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Обрешетка */}
-                <Form.Item
-                  name={["transactions", 0, "latting_product_id"]}
-                  label="Модель обрешетки"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель обрешетки"
-                    queryKey="latting"
-                    fetchUrl="/product/by/category?category_id=25"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Окно */}
-                <Form.Item
-                  name={["transactions", 0, "window_product_id"]}
-                  label="Модель окна"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель окна"
-                    queryKey="window"
-                    fetchUrl="/product/by/category?category_id=26"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Подоконник */}
-                <Form.Item
-                  name={["transactions", 0, "windowsill_product_id"]}
-                  label="Модель подоконника"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель подоконника"
-                    queryKey="windowsill"
-                    fetchUrl="/product/by/category?category_id=27"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Стекло ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Стекло
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Form.Item
-                  name={["transactions", 0, "glass_quantity"]}
-                  label="Количество стекол"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "glass_product_id"]}
-                  label="Модель стекла"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель стекла"
-                    queryKey="glass"
-                    fetchUrl="/product/by/category?category_id=28"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "volume_glass"]}
-                  label="Объем стекла"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Замок / Петля / Шпингалет / Стоппер / Анти-порог ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Фурнитура
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Замок двери */}
-                <Form.Item
-                  name={["transactions", 0, "door_lock_quantity"]}
-                  label="Кол-во замков"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "door_lock_mechanism"]}
-                  label="Механизм замка"
-                >
-                  <Select
-                    placeholder="Выберите механизм замка"
-                    options={[
-                      { value: "mechanical", label: "Механический" },
-                      { value: "magnetic", label: "Магнитный" },
-                      { value: "other", label: "Другое" },
-                    ]}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "door_lock_product_id"]}
-                  label="Модель замка"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель замка"
-                    queryKey="door_lock"
-                    fetchUrl="/product/by/category?category_id=29"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Петля */}
-                <Form.Item
-                  name={["transactions", 0, "hinge_quantity"]}
-                  label="Кол-во петель"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "hinge_mechanism"]}
-                  label="Механизм петли"
-                >
-                  <Select
-                    placeholder="Выберите механизм петли"
-                    options={[
-                      { value: "standard", label: "Стандарт" },
-                      { value: "hidden", label: "Скрытая" },
-                      { value: "other", label: "Другое" },
-                    ]}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "hinge_product_id"]}
-                  label="Модель петли"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель петли"
-                    queryKey="hinge"
-                    fetchUrl="/product/by/category?category_id=30"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Шпингалет */}
-                <Form.Item
-                  name={["transactions", 0, "door_bolt_quantity"]}
-                  label="Кол-во шпингалетов"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "door_bolt_product_id"]}
-                  label="Модель шпингалета"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель шпингалета"
-                    queryKey="door_bolt"
-                    fetchUrl="/product/by/category?category_id=31"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Стоппер */}
-                <Form.Item
-                  name={["transactions", 0, "door_stopper_quantity"]}
-                  label="Кол-во стопера"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "door_stopper_product_id"]}
-                  label="Модель стопера"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель стопера"
-                    queryKey="door_stopper"
-                    fetchUrl="/product/by/category?category_id=32"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-
-                {/* Анти-порог */}
-                <Form.Item
-                  name={["transactions", 0, "anti_threshold_quantity"]}
-                  label="Кол-во анти-порогов"
-                >
-                  <Input type="number" step="1" />
-                </Form.Item>
-                <Form.Item
-                  name={["transactions", 0, "anti_threshold_product_id"]}
-                  label="Модель анти-порога"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите модель анти-порога"
-                    queryKey="anti_threshold"
-                    fetchUrl="/product/by/category?category_id=33"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-
-            {/* ---------- Ширина коробки / Доп. опция ---------- */}
-            <section>
-              <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
-                Ширина коробки и доп. опции
-              </h4>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Form.Item
-                  name={["transactions", 0, "box_width"]}
-                  label="Ширина коробки"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "percent_extra_option"]}
-                  label="Процент доп. опции"
-                >
-                  <Input type="number" step="0.01" />
-                </Form.Item>
-
-                <Form.Item
-                  name={["transactions", 0, "extra_option_product_id"]}
-                  label="Модель доп. опции"
-                >
-                  <SelectInfinitive
-                    placeholder="Выберите доп. опцию"
-                    queryKey="extra_option"
-                    fetchUrl="/product/by/category?category_id=34"
-                    labelKey="name"
-                    valueKey="product_id"
-                    useValueAsLabel
-                  />
-                </Form.Item>
-              </div>
-            </section>
-          </div>
+                  {section.title ? (
+                    <h4 className="mb-3 text-sm font-medium text-[#1d7488]">
+                      {section.title}
+                    </h4>
+                  ) : null}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {section.fields.map((field) => {
+                      const node = renderField(field);
+                      if (!node) return null;
+                      return (
+                        <Fragment key={`${section.title}-${field.name}`}>
+                          {node}
+                        </Fragment>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm text-gray-500">
+              {productType
+                ? "Для выбранного типа продукта дополнительных полей пока не настроено."
+                : "Выберите тип продукта, чтобы увидеть дополнительные параметры."}
+            </div>
+          )}
         </Collapse.Panel>
       </Collapse>
 
@@ -804,3 +1068,4 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
     </div>
   );
 };
+
