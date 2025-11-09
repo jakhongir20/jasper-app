@@ -1,9 +1,9 @@
-import { type FC, useState } from "react";
+import { type FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useTableTransactionColumns } from "@/features/dashboard/bids/constants/columns/TableTransactionColumn";
+import type { ColumnType } from "antd/es/table";
 import { cn } from "@/shared/helpers";
 import { useToggle } from "@/shared/hooks/useToggle";
-import { ActionModal, TableWrapper } from "@/shared/ui";
+import { ActionModal, TableAction, TableWrapper } from "@/shared/ui";
 import { Form, message } from "antd";
 import {
   ApplicationLocalForm,
@@ -58,11 +58,100 @@ export const TabTransactionsForm: FC<Props> = ({
     toggleProductModal();
   };
 
-  const columns = useTableTransactionColumns({
-    onDelete: onOpenDelete,
-    onEdit: onEditTransaction,
-    mode: mode,
-  });
+  const productTypeLabels: Record<string, string> = {
+    "door-window": "ДО дверь",
+    "door-deaf": "ДГ дверь",
+    doorway: "Обшивочный проём",
+    window: "Окно",
+    windowsill: "Подоконник",
+    "heated-floor": "Тёплый пол",
+    latting: "Обрешётка",
+  };
+
+  const thresholdLabels: Record<string, string> = {
+    yes: "Да",
+    no: "Нет",
+    custom: "Кастомный",
+  };
+
+  const openingLogicLabels: Record<string, string> = {
+    left: "Левое",
+    right: "Правое",
+    up: "Вверх",
+    down: "Вниз",
+  };
+
+  const renderPrimitive = (value: unknown) => {
+    if (value === null || value === undefined || value === "") {
+      return "-";
+    }
+    if (typeof value === "object") {
+      const objectValue = value as Record<string, unknown>;
+      if (objectValue?.name) {
+        return String(objectValue.name ?? "-");
+      }
+      if (objectValue?.label) {
+        return String(objectValue.label ?? "-");
+      }
+      return "-";
+    }
+    return String(value);
+  };
+
+  const columns: ColumnType<Transaction>[] = useMemo(
+    () => [
+      {
+        title: "Местоположение",
+        dataIndex: "location",
+      },
+      {
+        title: "Тип продукта",
+        dataIndex: "product_type",
+        render: (value: string) =>
+          productTypeLabels[value] ?? renderPrimitive(value),
+      },
+      {
+        title: "Высота проёма",
+        dataIndex: "opening_height",
+        render: (value: number) =>
+          value === undefined || value === null ? "-" : String(value),
+      },
+      {
+        title: "Ширина проёма",
+        dataIndex: "opening_width",
+        render: (value: number) =>
+          value === undefined || value === null ? "-" : String(value),
+      },
+      {
+        title: "Толщина проёма",
+        dataIndex: "opening_thickness",
+        render: (value: number) =>
+          value === undefined || value === null ? "-" : String(value),
+      },
+      {
+        title: "Количество элементов",
+        dataIndex: "entity_quantity",
+        render: (value: number) =>
+          value === undefined || value === null ? "-" : String(value),
+      },
+      {
+        title: null,
+        dataIndex: "action",
+        fixed: "right",
+        render: (_: unknown, record: Transaction) => (
+          <div className="flex flex-col gap-1">
+            <TableAction
+              showEdit
+              showDelete
+              onEdit={() => onEditTransaction(record)}
+              onDelete={() => onOpenDelete(record)}
+            />
+          </div>
+        ),
+      },
+    ],
+    [onEditTransaction, onOpenDelete, productTypeLabels],
+  );
 
   const handleAddTransaction = () => {
     setEditingTransaction(null);
