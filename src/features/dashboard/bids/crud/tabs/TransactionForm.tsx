@@ -17,12 +17,32 @@ const PRODUCT_TYPES = [
   { value: "window", label: "Окно" },
   { value: "windowsill", label: "Подоконник" },
   { value: "heated-floor", label: "Теплый пол" },
-  { value: "latting", label: "Обрешетка" }
+  { value: "latting", label: "Обрешетка" },
 ];
+
+// ключи, которые уже реализованы в секции "Замерка"
+const MEASUREMENT_KEYS = new Set<string>([
+  "location",
+  "product_type",
+  "opening_height",
+  "opening_width",
+  "opening_thickness",
+  "entity_quantity",
+  "framework_front_id",
+  "framework_back_id",
+  "threshold",
+  "opening_logic",
+]);
+
+// простенький генератор подписи по ключу (можешь потом заменить на i18n/словарь)
+const prettifyKey = (key: string) =>
+  key.replace(/_/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
 
 export const TransactionForm: FC<Props> = ({ className, mode }) => {
   const { t } = useTranslation();
   const form = Form.useFormInstance<ApplicationLocalForm>();
+
+  // схема полей (у тебя потом придёт с бэка, сейчас заглушка)
   const application_transactions = [
     {
       location: "string",
@@ -81,9 +101,17 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
       anti_threshold_product_id: 0,
       box_width: 0,
       percent_extra_option: 0,
-      extra_option_product_id: 0
-    }
+      extra_option_product_id: 0,
+    },
   ];
+
+  // берём "форму" первой транзакции
+  const transactionShape = application_transactions[0] ?? {};
+
+  // все ключи, которые НЕ реализованы в "Замерка"
+  const otherParamsEntries = Object.entries(transactionShape).filter(
+    ([key]) => !MEASUREMENT_KEYS.has(key),
+  );
 
   return (
     <div className={cn(className)}>
@@ -97,6 +125,8 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
         title="Тип продукта"
         placeholder="Выберите тип продукта"
       />
+
+      {/* ===== Замерка ===== */}
       <Collapse ghost defaultActiveKey={"1"}>
         <Collapse.Panel key={"1"} header={"Замерка"}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -204,16 +234,13 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
             </Form.Item>
 
             {/* Threshold - Select */}
-            <Form.Item
-              name={["transactions", 0, "threshold"]}
-              label="Порог"
-            >
+            <Form.Item name={["transactions", 0, "threshold"]} label="Порог">
               <Select
                 placeholder="Выберите порог"
                 options={[
                   { value: "yes", label: "Да" },
                   { value: "no", label: "Нет" },
-                  { value: "custom", label: "Кастомный" }
+                  { value: "custom", label: "Кастомный" },
                 ]}
               />
             </Form.Item>
@@ -229,19 +256,37 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
                   { value: "left", label: "Левое" },
                   { value: "right", label: "Правое" },
                   { value: "up", label: "Вверх" },
-                  { value: "down", label: "Вниз" }
+                  { value: "down", label: "Вниз" },
                 ]}
               />
             </Form.Item>
           </div>
         </Collapse.Panel>
       </Collapse>
+
       <Divider />
+
+      {/* ===== Другие параметры ===== */}
       <Collapse ghost>
         <Collapse.Panel key={"2"} header={"Другие параметры"}>
-          Lorem ipsum dolor.
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {otherParamsEntries.map(([key, sampleValue]) => (
+              <Form.Item
+                key={key}
+                name={["transactions", 0, key]}
+                label={prettifyKey(key)}
+              >
+                {typeof sampleValue === "number" ? (
+                  <Input type="number" />
+                ) : (
+                  <Input />
+                )}
+              </Form.Item>
+            ))}
+          </div>
         </Collapse.Panel>
       </Collapse>
+
       <Divider />
       <Divider />
     </div>
