@@ -34,7 +34,7 @@ const tabConfigs = [
   },
   {
     tabKey: "3",
-    fields: ["aspects"],
+    fields: ["application_aspects"],
   },
   // {
   //   tabKey: "4",
@@ -66,13 +66,62 @@ const tabConfigs = [
   },
   {
     tabKey: "10",
-    fields: ["services"],
+    fields: ["application_services"],
   },
   {
     tabKey: "11",
-    fields: ["qualities"],
+    fields: ["application_qualities"],
   },
 ];
+
+const toNullableNumber = (value: unknown): number | null => {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+  const numeric = Number(value);
+  return Number.isNaN(numeric) ? null : numeric;
+};
+
+const normalizeString = (value: unknown): string | null => {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  const stringValue = String(value);
+  return stringValue.length === 0 ? null : stringValue;
+};
+
+const extractId = (
+  value: any,
+  keys: string[] = [
+    "product_id",
+    "category_section_index",
+    "category_id",
+    "customer_id",
+    "service_id",
+    "quality_id",
+    "value",
+    "id",
+  ],
+): number | null => {
+  if (value && typeof value === "object") {
+    for (const key of keys) {
+      if (value[key] !== undefined && value[key] !== null) {
+        const candidate = value[key];
+        const numeric = Number(candidate);
+        if (!Number.isNaN(numeric)) {
+          return numeric;
+        }
+      }
+    }
+  }
+
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const numeric = Number(value);
+  return Number.isNaN(numeric) ? null : numeric;
+};
 
 // Default form values for testing - will be defined inside component
 
@@ -105,20 +154,11 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
       // Transform data to API format
       const apiData = {
         application_transactions: transactions.map((t: any) => ({
-          product_id:
-            typeof t.product_id === "object"
-              ? t.product_id?.product_id || 0
-              : t.product_id || 0,
-          quantity: t.quantity || 0,
-          sash: t.sash || "string",
-          sheathing_id:
-            typeof t.sheathing_id === "object"
-              ? t.sheathing_id?.product_id || 0
-              : t.sheathing_id || 0,
-          canopy_id:
-            typeof t.canopy_id === "object"
-              ? t.canopy_id?.product_id || 0
-              : t.canopy_id || 0,
+          product_id: extractId(t?.door_product_id) ?? 0,
+          quantity: toNullableNumber(t?.entity_quantity) ?? 0,
+          sash: toNullableNumber(t?.sash) ?? 0,
+          sheathing_id: extractId(t?.sheathing_product_id) ?? 0,
+          canopy_id: extractId(t?.hinge_product_id) ?? 0,
         })),
         application_baseboards: baseboards.map((b: any) => ({
           baseboard_id:
@@ -141,7 +181,8 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
       if (response?.results?.services) {
         // Get existing services and separate user vs API services
-        const existingServices = form.getFieldValue("services") || [];
+        const existingServices =
+          form.getFieldValue("application_services") || [];
         const userServices = existingServices.filter(
           (s: any) => s.source !== "api",
         );
@@ -157,7 +198,7 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
         // Merge: keep user services + replace API services
         const updatedServices = [...userServices, ...apiServices];
-        form.setFieldsValue({ services: updatedServices });
+        form.setFieldsValue({ application_services: updatedServices });
       }
     } catch (error) {
       // Silently fail as per requirements
@@ -228,7 +269,7 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
               });
               return; // Don't show generic error
             }
-          } catch (err) {}
+          } catch (err) { }
         }
       }
 
@@ -239,158 +280,148 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
   const handleSave = () => {
     form.validateFields().then(({ general }) => {
+      const generalValues = (general ?? {}) as Record<string, any>;
       const transactions = form.getFieldValue("transactions") || [];
-      const aspects = form.getFieldValue("aspects") || [];
-      // const sheathings = form.getFieldValue("sheathings") || [];
-      const baseboards = form.getFieldValue("baseboards") || [];
-      const floors = form.getFieldValue("floors") || [];
-      const windowsills = form.getFieldValue("windowsills") || [];
-      const lattings = form.getFieldValue("lattings") || [];
-      const frameworks = form.getFieldValue("frameworks") || [];
-      const decorations = form.getFieldValue("decorations") || [];
-      const services = form.getFieldValue("services") || [];
-      const qualities = form.getFieldValue("qualities") || [];
+      const applicationServices =
+        form.getFieldValue("application_services") || [];
+      const applicationQualities =
+        form.getFieldValue("application_qualities") || [];
+      const applicationAspects =
+        form.getFieldValue("application_aspects") || [];
 
-      const rawData = {
-        address: general?.address,
-        remark: general?.remark,
-        sizes: general?.sizes,
-        default_door_lock_id:
-          general?.default_door_lock_id?.category?.section_index,
-        default_hinge_id: general?.default_hinge_id?.category?.section_index,
-        production_date: general?.production_date
-          ? getDateTime(general?.production_date)
-          : undefined,
+      const applicationTransactions = transactions.map(
+        ({ _uid, ...transaction }: { _uid?: string;[key: string]: any; }) => ({
+          location: normalizeString(transaction.location),
+          product_type: transaction.product_type ?? null,
+          opening_height: toNullableNumber(transaction.opening_height),
+          opening_width: toNullableNumber(transaction.opening_width),
+          opening_thickness: toNullableNumber(transaction.opening_thickness),
+          entity_quantity: toNullableNumber(transaction.entity_quantity),
+          framework_front_id: extractId(transaction.framework_front_id),
+          framework_back_id: extractId(transaction.framework_back_id),
+          threshold: normalizeString(transaction.threshold),
+          opening_logic: normalizeString(transaction.opening_logic),
+          sash: toNullableNumber(transaction.sash),
+          chamfer: toNullableNumber(transaction.chamfer),
+          transom_type: toNullableNumber(transaction.transom_type),
+          transom_product_id: extractId(transaction.transom_product_id),
+          transom_height_front: toNullableNumber(
+            transaction.transom_height_front,
+          ),
+          transom_height_back: toNullableNumber(
+            transaction.transom_height_back,
+          ),
+          door_product_id: extractId(transaction.door_product_id),
+          sheathing_product_id: extractId(transaction.sheathing_product_id),
+          frame_product_id: extractId(transaction.frame_product_id),
+          filler_product_id: extractId(transaction.filler_product_id),
+          crown_product_id: extractId(transaction.crown_product_id),
+          up_frame_quantity: toNullableNumber(transaction.up_frame_quantity),
+          up_frame_product_id: extractId(transaction.up_frame_product_id),
+          under_frame_quantity: toNullableNumber(
+            transaction.under_frame_quantity,
+          ),
+          under_frame_height: toNullableNumber(transaction.under_frame_height),
+          under_frame_product_id: extractId(transaction.under_frame_product_id),
+          percent_trim: toNullableNumber(transaction.percent_trim),
+          trim_product_id: extractId(transaction.trim_product_id),
+          percent_molding: toNullableNumber(transaction.percent_molding),
+          molding_product_id: extractId(transaction.molding_product_id),
+          percent_covering_primary: toNullableNumber(
+            transaction.percent_covering_primary,
+          ),
+          covering_primary_product_id: extractId(
+            transaction.covering_primary_product_id,
+          ),
+          percent_covering_secondary: toNullableNumber(
+            transaction.percent_covering_secondary,
+          ),
+          covering_secondary_product_id: extractId(
+            transaction.covering_secondary_product_id,
+          ),
+          percent_color: toNullableNumber(transaction.percent_color),
+          color_product_id: extractId(transaction.color_product_id),
+          color_custom_name: normalizeString(transaction.color_custom_name),
+          floor_skirting_length: toNullableNumber(
+            transaction.floor_skirting_length,
+          ),
+          floor_skirting_product_id: extractId(
+            transaction.floor_skirting_product_id,
+          ),
+          heated_floor_product_id: extractId(
+            transaction.heated_floor_product_id,
+          ),
+          windowsill_product_id: extractId(transaction.windowsill_product_id),
+          latting_product_id: extractId(transaction.latting_product_id),
+          window_product_id: extractId(transaction.window_product_id),
+          glass_product_id: extractId(transaction.glass_product_id),
+          volume_glass: toNullableNumber(transaction.volume_glass),
+          door_lock_mechanism: normalizeString(transaction.door_lock_mechanism),
+          door_lock_product_id: extractId(transaction.door_lock_product_id),
+          hinge_mechanism: normalizeString(transaction.hinge_mechanism),
+          hinge_product_id: extractId(transaction.hinge_product_id),
+          door_bolt_product_id: extractId(transaction.door_bolt_product_id),
+          door_stopper_quantity: toNullableNumber(
+            transaction.door_stopper_quantity,
+          ),
+          door_stopper_product_id: extractId(
+            transaction.door_stopper_product_id,
+          ),
+          anti_threshold_quantity: toNullableNumber(
+            transaction.anti_threshold_quantity,
+          ),
+          anti_threshold_product_id: extractId(
+            transaction.anti_threshold_product_id,
+          ),
+          box_width: toNullableNumber(transaction.box_width),
+          percent_extra_option: toNullableNumber(
+            transaction.percent_extra_option,
+          ),
+          extra_option_product_id: extractId(
+            transaction.extra_option_product_id,
+          ),
+        }),
+      );
 
-        transactions:
-          transactions?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              product_id: getValue("product_id", t?.product_id),
-              lining_number: getValue("lining_id", t?.lining_number),
-              frame_front_id: getValue("molding_id", t?.frame_front_id),
-              frame_back_id: getValue("molding_id", t?.frame_back_id),
-              sheathing_id: getValue("product_id", t?.sheathing_id),
-              trim_id: getValue("product_id", t?.trim_id),
-              up_trim_id: getValue("product_id", t?.up_trim_id),
-              under_trim_id: getValue("product_id", t?.under_trim_id),
-              filler_id: getValue("product_id", t?.filler_id),
-              crown_id: getValue("product_id", t?.crown_id),
-              glass_id: getValue("product_id", t?.glass_id),
-              door_lock_id: getValue("product_id", t?.door_lock_id),
-              canopy_id: getValue("product_id", t?.canopy_id),
-              latch_id: getValue("product_id", t?.latch_id),
-              box_service_id: getValue("product_id", t?.box_service_id),
-              // Additional fields
-              booklet_number: t?.booklet_number,
-              factory_mdf_type: t?.factory_mdf_type,
-              factory_height: t?.factory_height,
-              factory_width: t?.factory_width,
-              factory_mdf: t?.factory_mdf,
-              factory_carcass: t?.factory_carcass,
-              factory_rail: t?.factory_rail,
-              catalogue_number: t?.catalogue_number,
-              pattern_form: t?.pattern_form,
-              quality_multiplier: t?.quality_multiplier,
-              volume_product: t?.volume_product,
-              sheathing_height: t?.sheathing_height,
-              sheathing_width: t?.sheathing_width,
-              sheathing_thickness: t?.sheathing_thickness,
-              sheathing_quantity: t?.sheathing_quantity,
-              trim_height: t?.trim_height,
-              trim_width: t?.trim_width,
-              trim_quantity: t?.trim_quantity,
-              filler_height: t?.filler_height,
-              filler_width: t?.filler_width,
-              filler_quantity: t?.filler_quantity,
-              crown_height: t?.crown_height,
-              crown_width: t?.crown_width,
-              box_service_quantity: t?.box_service_quantity,
-              box_service_length: t?.box_service_length,
-            }),
-          ) || [],
-        aspects:
-          aspects?.map(
-            ({ _uid, ...item }: { _uid?: string; [key: string]: unknown }) => ({
-              ...item,
-              aspect_file_name:
-                item?.aspect_file_name ||
-                item?.comment ||
-                t("common.placeholder.aspect"),
-            }),
-          ) || [],
-        sheathings: [],
-        baseboards:
-          baseboards?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              baseboard_id: getValue("baseboard_id", t?.baseboard_id),
-            }),
-          ) || [],
-        floors:
-          floors?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              floor_id: getValue("floor_id", t?.floor_id),
-            }),
-          ) || [],
-        windowsills:
-          windowsills?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              windowsill_id: getValue("windowsill_id", t?.windowsill_id),
-            }),
-          ) || [],
-        lattings:
-          lattings?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              latting_id: getValue("latting_id", t?.latting_id),
-            }),
-          ) || [],
-        frameworks:
-          frameworks?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              framework_id: getValue("framework_id", t?.framework_id),
-            }),
-          ) || [],
-        decorations:
-          decorations?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              decoration_id: getValue("decoration_id", t?.decoration_id),
-            }),
-          ) || [],
-        services:
-          services?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              service_id: getValue("service_id", t?.service_id),
-            }),
-          ) || [],
-        qualities:
-          qualities?.map(
-            ({ _uid, ...t }: { _uid?: string; [key: string]: unknown }) => ({
-              ...t,
-              quality_id: getValue("quality_id", t?.quality_id),
-            }),
-          ) || [],
+      const applicationServicesPayload = applicationServices.map(
+        ({ _uid, source, ...service }: any) => ({
+          quantity: toNullableNumber(service.quantity),
+          service_id: extractId(service.service_id),
+        }),
+      );
+
+      const applicationQualitiesPayload = applicationQualities.map(
+        ({ _uid, ...quality }: any) => ({
+          quality_id: extractId(quality.quality_id),
+        }),
+      );
+
+      const applicationAspectsPayload = applicationAspects.map(
+        ({ _uid, ...aspect }: any) => ({
+          comment: aspect.comment ?? "",
+          aspect_file_payload: aspect.aspect_file_payload ?? "",
+        }),
+      );
+
+      const payload = {
+        application_date: generalValues?.application_date
+          ? getDateTime(generalValues.application_date)
+          : null,
+        address: normalizeString(generalValues?.address),
+        remark: normalizeString(generalValues?.remark),
+        sizes: normalizeString(generalValues?.sizes),
+        default_door_lock_id: extractId(generalValues?.default_door_lock_id),
+        default_hinge_id: extractId(generalValues?.default_hinge_id),
+        customer_id: extractId(generalValues?.customer_id, ["customer_id"]),
+        application_transactions: applicationTransactions,
+        application_services: applicationServicesPayload,
+        application_qualities: applicationQualitiesPayload,
+        application_aspects: applicationAspectsPayload,
       };
 
-      mutate(rawData);
+      mutate(payload as any);
     });
   };
-
-  function getValue<T = unknown>(key: string, value: any): T {
-    if (value && typeof value === "object" && key in value) {
-      return value[key];
-    }
-    if (value === 0 || value === "0" || value === "") {
-      return null as T;
-    }
-    return value;
-  }
 
   const handleFormValuesChange = useCallback(
     (changedValues: any, allValues: any) => {
