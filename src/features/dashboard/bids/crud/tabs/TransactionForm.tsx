@@ -2,7 +2,8 @@ import { FC } from "react";
 import { cn } from "@/shared/helpers";
 import { Collapse, Divider, Form } from "antd";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
-import { Select } from "@/shared/ui";
+import { Input, Select, SelectInfinitive } from "@/shared/ui";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   className?: string;
@@ -16,10 +17,11 @@ const PRODUCT_TYPES = [
   { value: "window", label: "Окно" },
   { value: "windowsill", label: "Подоконник" },
   { value: "heated-floor", label: "Теплый пол" },
-  { value: "latting", label: "Обрешетка" },
+  { value: "latting", label: "Обрешетка" }
 ];
 
 export const TransactionForm: FC<Props> = ({ className, mode }) => {
+  const { t } = useTranslation();
   const form = Form.useFormInstance<ApplicationLocalForm>();
   const application_transactions = [
     {
@@ -79,25 +81,159 @@ export const TransactionForm: FC<Props> = ({ className, mode }) => {
       anti_threshold_product_id: 0,
       box_width: 0,
       percent_extra_option: 0,
-      extra_option_product_id: 0,
-    },
+      extra_option_product_id: 0
+    }
   ];
 
   return (
     <div className={cn(className)}>
       <Select
         options={PRODUCT_TYPES}
-        value={form.getFieldValue(["transactions", "product_type"])}
+        value={form.getFieldValue(["transactions", 0, "door_type"])}
         className="mb-5"
         onChange={(value) =>
-          form.setFieldValue(["transactions", "product_type"], value)
+          form.setFieldValue(["transactions", 0, "door_type"], value)
         }
         title="Тип продукта"
         placeholder="Выберите тип продукта"
       />
       <Collapse ghost defaultActiveKey={"1"}>
         <Collapse.Panel key={"1"} header={"Замерка"}>
-          Lorem ipsum dolor.
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Location - Text input */}
+            <Form.Item
+              name={["transactions", 0, "location"]}
+              label="Местоположение"
+              rules={[{ required: true }]}
+            >
+              <Input placeholder="Введите местоположение" />
+            </Form.Item>
+
+            {/* Product Type - Select */}
+            <Form.Item
+              name={["transactions", 0, "door_type"]}
+              label="Тип продукта"
+              rules={[{ required: true }]}
+            >
+              <Select
+                options={PRODUCT_TYPES}
+                placeholder="Выберите тип продукта"
+              />
+            </Form.Item>
+
+            {/* Opening Height - Number float */}
+            <Form.Item
+              name={["transactions", 0, "height"]}
+              label="Высота проема"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="number"
+                step="0.01"
+                placeholder="Введите высоту проема"
+              />
+            </Form.Item>
+
+            {/* Opening Width - Number float */}
+            <Form.Item
+              name={["transactions", 0, "width"]}
+              label="Ширина проема"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="number"
+                step="0.01"
+                placeholder="Введите ширину проема"
+              />
+            </Form.Item>
+
+            {/* Opening Thickness - Number float */}
+            <Form.Item
+              name={["transactions", 0, "doorway_thickness"]}
+              label="Толщина проема"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="number"
+                step="0.01"
+                placeholder="Введите толщину проема"
+              />
+            </Form.Item>
+
+            {/* Entity Quantity - Number int */}
+            <Form.Item
+              name={["transactions", 0, "quantity"]}
+              label="Количество элементов"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="number"
+                step="1"
+                placeholder="Введите количество элементов"
+              />
+            </Form.Item>
+
+            {/* Framework Front - Select */}
+            <Form.Item
+              name={["transactions", 0, "frame_front_id"]}
+              label="Каркас передний"
+            >
+              <SelectInfinitive
+                placeholder="Выберите передний каркас"
+                queryKey="framework_front"
+                fetchUrl="/product/by/category?category_id=1"
+                labelKey="name"
+                valueKey="product_id"
+                useValueAsLabel
+              />
+            </Form.Item>
+
+            {/* Framework Back - Select */}
+            <Form.Item
+              name={["transactions", 0, "frame_back_id"]}
+              label="Каркас задний"
+            >
+              <SelectInfinitive
+                placeholder="Выберите задний каркас"
+                queryKey="framework_back"
+                fetchUrl="/product/by/category?category_id=2"
+                labelKey="name"
+                valueKey="product_id"
+                useValueAsLabel
+              />
+            </Form.Item>
+
+            {/* Threshold - Select */}
+            <Form.Item
+              name={["transactions", 0, "threshold"]}
+              label="Порог"
+            >
+              <Select
+                placeholder="Выберите порог"
+                options={[
+                  { value: "yes", label: "Да" },
+                  { value: "no", label: "Нет" },
+                  { value: "custom", label: "Кастомный" }
+                ]}
+              />
+            </Form.Item>
+
+            {/* Opening Logic - Select */}
+            <Form.Item
+              name={["transactions", 0, "opening_direction"]}
+              label="Логика открывания"
+            >
+              <Select
+                placeholder="Выберите логику открывания"
+                options={[
+                  { value: "left", label: "Левое" },
+                  { value: "right", label: "Правое" },
+                  { value: "up", label: "Вверх" },
+                  { value: "down", label: "Вниз" }
+                ]}
+              />
+            </Form.Item>
+          </div>
         </Collapse.Panel>
       </Collapse>
       <Divider />
