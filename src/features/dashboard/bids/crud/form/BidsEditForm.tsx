@@ -98,7 +98,13 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
     useApplicationDetail(id as string);
 
   const { mutate, isPending: isLoading } = useUpdateApplication({
-    onSuccess: () => {
+    onSuccess: async (_, variables: { id: string }) => {
+      try {
+        await BidsService.forecastServices(variables.id);
+      } catch {
+        // ignore forecast errors silently
+      }
+
       navigate(`/dashboard/bids`);
       toast(t("toast.successUpdate"), "success");
     },
@@ -268,7 +274,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             ? dayjs(applicationDate)
             : applicationDetail.date
               ? dayjs(applicationDetail.date)
-              : undefined,
+            : undefined,
           category_name: applicationDetail.category_name || "",
           date: applicationDetail.date
             ? dayjs(applicationDetail.date)
@@ -623,9 +629,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         (applicationDetail as any)?.application_id ?? id;
       const applicationId = applicationIdRaw ? Number(applicationIdRaw) : 0;
 
-      const response = await BidsService.getServiceManager(applicationId);
+      const response = await BidsService.forecastServices(applicationId);
 
-      if (response?.results?.services) {
+      if ((response as any)?.results?.services) {
         // Get existing services and separate user vs API services
         const existingServices =
           form.getFieldValue("application_services") || [];

@@ -74,7 +74,7 @@ export function useForecastApplication(
   });
 }
 
-export function useServiceManager(
+export function useServiceForecast(
   options?: UseMutationOptions<
     {
       payload: any;
@@ -100,23 +100,7 @@ export function useServiceManager(
       };
     },
     unknown,
-    {
-      application_transactions: Array<{
-        product_id: number;
-        quantity: number;
-        sash: string;
-        sheathing_id: number;
-        canopy_id: number;
-      }>;
-      application_baseboards: Array<{
-        baseboard_id: number;
-        length: number;
-      }>;
-      application_windowsill: Array<{
-        windowsill_id: number;
-        quantity: number;
-      }>;
-    }
+    number | string
   >,
 ) {
   const mutationFn: MutationFunction<
@@ -143,27 +127,12 @@ export function useServiceManager(
         }>;
       };
     },
-    {
-      application_transactions: Array<{
-        product_id: number;
-        quantity: number;
-        sash: string;
-        sheathing_id: number;
-        canopy_id: number;
-      }>;
-      application_baseboards: Array<{
-        baseboard_id: number;
-        length: number;
-      }>;
-      application_windowsill: Array<{
-        windowsill_id: number;
-        quantity: number;
-      }>;
-    }
-  > = async (formData) => await BidsService.getServiceManager(formData);
+    number | string
+  > = async (applicationId) =>
+    await BidsService.forecastServices(applicationId);
 
   return useMutation({
-    mutationKey: ["serviceManager"],
+    mutationKey: ["serviceForecast"],
     mutationFn,
     ...options,
   });

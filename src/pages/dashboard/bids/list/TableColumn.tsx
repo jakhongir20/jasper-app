@@ -18,6 +18,13 @@ export const columns = (
       title: t("common.table.number"),
       dataIndex: "number",
     },
+    {
+      key: "application_id",
+      title: "ID",
+      dataIndex: "application_id",
+      width: 90,
+      render: (data: number | string) => data ?? "-",
+    },
 
     {
       key: "customer_name",

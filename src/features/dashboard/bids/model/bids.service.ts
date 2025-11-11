@@ -32,7 +32,7 @@ export class BidsService {
     );
   }
 
-  static getServiceManager(applicationId: number | string) {
+  static forecastServices(applicationId: number | string) {
     return ApiService.$post<{
       payload: any;
       results: {
@@ -55,8 +55,10 @@ export class BidsService {
           quantity: number;
         }>;
       };
-    }>("/application/service-manager", undefined, {
-      params: { application_id: applicationId },
-    });
+    }>(
+      "/application/forecast",
+      undefined,
+      { params: { application_id: applicationId } },
+    );
   }
 }

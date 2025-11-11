@@ -126,11 +126,27 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
     return () => clearInterval(interval);
   }, [form, calculateServices]);
 
-  const { mutate, isPending: isLoading } = useCreateApplication({
-    onSuccess: () => {
-      navigate(`/dashboard/bids`);
+  const { mutate: createApplication, isPending: isLoading } =
+    useCreateApplication({
+      onSuccess: (response: any) => {
+        toast(t("toast.success"), "success");
 
-      toast(t("toast.success"), "success");
+        try {
+          const createdId =
+            response?.application_id ??
+            response?.data?.application_id ??
+            response?.id;
+
+          if (createdId) {
+            BidsService.forecastServices(createdId).catch(() => {
+              // Ignore forecast errors silently
+            });
+          }
+        } catch {
+          // ignore
+        }
+
+      navigate(`/dashboard/bids`);
     },
     onError: (error) => {
       // Store the error for validation error handling
@@ -213,7 +229,7 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
         application_aspects: applicationAspectsPayload,
       };
 
-      mutate(payload as any);
+      createApplication(payload as any);
     });
   };
 
