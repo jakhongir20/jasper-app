@@ -10,13 +10,33 @@ interface Props {
 }
 
 const PRODUCT_TYPES = [
+  { value: "transom", label: "Фрамуга" },
   { value: "door-window", label: "ДО дверь" },
   { value: "door-deaf", label: "ДГ дверь" },
   { value: "doorway", label: "Обшивочный проём" },
-  { value: "window", label: "Окно" },
-  { value: "windowsill", label: "Подоконник" },
+  { value: "frame", label: "Наличник" },
+  { value: "filler", label: "Нашельник" },
+  { value: "crown", label: "Корона" },
+  { value: "up_frame", label: "Надналичник" },
+  { value: "under_frame", label: "Подналичник" },
+  { value: "trim", label: "Обклад" },
+  { value: "molding", label: "Молдинг" },
+  { value: "covering_primary", label: "Покрытие I" },
+  { value: "covering_secondary", label: "Покрытие II" },
+  { value: "color", label: "Цвет" },
+  { value: "floor_skirting", label: "Плинтус" },
   { value: "heated-floor", label: "Тёплый пол" },
   { value: "latting", label: "Обрешётка" },
+  { value: "window", label: "Окно" },
+  { value: "windowsill", label: "Подоконник" },
+  { value: "glass", label: "Стекло" },
+  { value: "door_lock", label: "Замок двери" },
+  { value: "hinge", label: "Петля" },
+  { value: "door_bolt", label: "Шпингалет" },
+  { value: "door_stopper", label: "Стоппер" },
+  { value: "anti_threshold", label: "Анти-порог" },
+  { value: "box_width", label: "Ширина коробки" },
+  { value: "extra_options", label: "Доп. опции" },
 ];
 
 const CATEGORY_SECTION_INDEX = {
@@ -81,6 +101,7 @@ type SectionConfig = {
   title?: string;
   fields: FieldConfig[];
   visible?: (values: TransactionValues, productType: string) => boolean;
+  allowedProductTypes?: string[];
 };
 
 type ProductTypeConfig = {
@@ -94,319 +115,262 @@ const ALWAYS_REQUIRED_FIELDS: string[] = [];
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
 
-const resolveProductType = (values: TransactionValues) =>
-  ((values.product_type ?? values.door_type) as string | undefined) ?? "";
-
-const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
-  const sections: SectionConfig[] = [
-    {
-      key: "door",
-      title: "Полотно (дверь)",
-      fields: [
-        {
-          name: "door_product_id",
-          label: "Модель двери",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель двери",
-          queryKey: "door_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: (_, productType) => ({
-            category_section_index:
-              productType === "door-deaf"
-                ? CATEGORY_SECTION_INDEX.door_deaf
-                : CATEGORY_SECTION_INDEX.door_window,
-          }),
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-    {
-      key: "sheathing",
-      title: "Обшивка",
-      fields: [
-        {
-          name: "sheathing_product_id",
-          label: "Модель обшивки",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель обшивки",
-          queryKey: "sheathing_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.sheathing },
-          labelKey: ["name", "measure"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-    {
-      key: "trim-elements",
-      title: "Наличник и элементы",
-      fields: [
-        {
-          name: "frame_product_id",
-          label: "Модель наличника",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель наличника",
-          queryKey: "frame_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.frame },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "filler_product_id",
-          label: "Модель нашельника",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель нашельника",
-          queryKey: "filler_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.filler },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "crown_product_id",
-          label: "Модель короны",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель короны",
-          queryKey: "crown_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.crown },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "up_frame_quantity",
-          label: "Количество надналичников",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество надналичников",
-        },
-        {
-          name: "up_frame_product_id",
-          label: "Модель надналичника",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель надналичника",
-          queryKey: "up_frame_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.up_frame },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "under_frame_quantity",
-          label: "Количество подналичников",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество подналичников",
-        },
-        {
-          name: "under_frame_height",
-          label: "Высота подналичника",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите высоту подналичника",
-        },
-        {
-          name: "under_frame_product_id",
-          label: "Модель подналичника",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель подналичника",
-          queryKey: "under_frame_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-    {
-      key: "glass",
-      title: "Стекло",
-      visible: (_, productType) => productType === "door-window",
-      fields: [
-        {
-          name: "glass_quantity",
-          label: "Количество стекол",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество стекол",
-        },
-        {
-          name: "glass_product_id",
-          label: "Модель стекла",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель стекла",
-          queryKey: "glass_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.glass },
-          labelKey: ["name", "measure"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "volume_glass",
-          label: "Объём стекла",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите объём стекла",
-        },
-      ],
-    },
-    {
-      key: "hardware",
-      title: "Фурнитура",
-      fields: [
-        {
-          name: "door_lock_product_id",
-          label: "Модель замка",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель замка",
-          queryKey: "door_lock_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.door_lock },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "hinge_product_id",
-          label: "Модель петли",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель петли",
-          queryKey: "hinge_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: CATEGORY_SECTION_INDEX.hinge },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "door_bolt_product_id",
-          label: "Модель шпингалета",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель шпингалета",
-          queryKey: "door_bolt_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: {
-            category_section_index: CATEGORY_SECTION_INDEX.door_bolt,
-          },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "door_stopper_product_id",
-          label: "Модель стоппера",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель стоппера",
-          queryKey: "door_stopper_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: {
-            category_section_index: CATEGORY_SECTION_INDEX.door_stopper,
-          },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "anti_threshold_product_id",
-          label: "Модель анти-порога",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель анти-порога",
-          queryKey: "anti_threshold_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: {
-            category_section_index: CATEGORY_SECTION_INDEX.anti_threshold,
-          },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-        {
-          name: "door_lock_quantity",
-          label: "Количество замков",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество замков",
-        },
-        {
-          name: "hinge_quantity",
-          label: "Количество петель",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество петель",
-        },
-        {
-          name: "door_bolt_quantity",
-          label: "Количество шпингалетов",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество шпингалетов",
-        },
-        {
-          name: "door_stopper_quantity",
-          label: "Количество стопперов",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество стопперов",
-        },
-        {
-          name: "anti_threshold_quantity",
-          label: "Количество анти-порогов",
-          type: "number",
-          numberStep: 1,
-          placeholder: "Введите количество анти-порогов",
-        },
-      ],
-    },
-    {
-      key: "box-extra",
-      title: "Ширина коробки и доп. опции",
-      fields: [
-        {
-          name: "percent_extra_option",
-          label: "Процент доп. опции",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите процент доп. опции",
-        },
-        {
-          name: "extra_option_product_id",
-          label: "Модель доп. опции",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель доп. опции",
-          queryKey: "extra_option_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: {
-            category_section_index: CATEGORY_SECTION_INDEX.extra_options,
-          },
-          labelKey: ["name", "feature"],
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-  ];
-
-  if (!includeGlass) {
-    return sections.filter((section) => section.title !== "Стекло");
-  }
-
-  return sections;
-};
-
-const SHARED_SECTIONS: SectionConfig[] = [
+const ALL_SECTIONS: SectionConfig[] = [
   {
-    key: "finishing",
-    title: "Отделка",
+    key: "transom",
+    title: "Фрамуга",
+    allowedProductTypes: ["door-window", "door-deaf", "transom"],
+    fields: [
+      {
+        name: "transom_type",
+        label: "Тип фрамуги",
+        type: "select",
+        placeholder: "Выберите тип фрамуги",
+        options: [
+          { value: 1, label: "Обычная" },
+          { value: 2, label: "Скрытая" },
+        ],
+      },
+      {
+        name: "transom_product_id",
+        label: "Модель фрамуги",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель фрамуги",
+        queryKey: "transom_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.transom },
+        labelKey: "name",
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "transom_height_front",
+        label: "Высота фрамуги (лицо)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту фрамуги (лицо)",
+      },
+      {
+        name: "transom_height_back",
+        label: "Высота фрамуги (тыл)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту фрамуги (тыл)",
+      },
+    ],
+  },
+  {
+    key: "door",
+    title: "Полотно (дверь)",
+    allowedProductTypes: ["door-window", "door-deaf"],
+    fields: [
+      {
+        name: "volume_door",
+        label: "Объём полотна",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём полотна",
+      },
+      {
+        name: "sash",
+        label: "Распашка",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите значение распашки",
+      },
+      {
+        name: "chamfer",
+        label: "Фаска",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите значение фаски",
+      },
+      {
+        name: "door_product_id",
+        label: "Модель двери",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель двери",
+        queryKey: "door_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: (_, productType) => ({
+          category_section_index:
+            productType === "door-deaf"
+              ? CATEGORY_SECTION_INDEX.door_deaf
+              : CATEGORY_SECTION_INDEX.door_window,
+        }),
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "sheathing",
+    title: "Обшивка",
+    allowedProductTypes: ["door-window", "door-deaf", "sheathing", "doorway"],
+    fields: [
+      {
+        name: "volume_sheathing",
+        label: "Объём обшивки",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём обшивки",
+      },
+      {
+        name: "sheathing_product_id",
+        label: "Модель обшивки",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель обшивки",
+        queryKey: "sheathing_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.sheathing },
+        labelKey: ["name", "measure"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "frame",
+    title: "Наличник",
+    allowedProductTypes: ["door-window", "door-deaf", "frame"],
+    fields: [
+      {
+        name: "volume_frame",
+        label: "Объём наличника",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём наличника",
+      },
+      {
+        name: "frame_product_id",
+        label: "Модель наличника",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель наличника",
+        queryKey: "frame_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "filler",
+    title: "Нашельник",
+    allowedProductTypes: ["door-window", "door-deaf", "filler"],
+    fields: [
+      {
+        name: "volume_filler",
+        label: "Объём нашельника",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём нашельника",
+      },
+      {
+        name: "filler_product_id",
+        label: "Модель нашельника",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель нашельника",
+        queryKey: "filler_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.filler },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "crown",
+    title: "Корона",
+    allowedProductTypes: ["door-window", "door-deaf", "crown"],
+    fields: [
+      {
+        name: "volume_crown",
+        label: "Объём короны",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём короны",
+      },
+      {
+        name: "crown_product_id",
+        label: "Модель короны",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель короны",
+        queryKey: "crown_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.crown },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "up-frame",
+    title: "Кубик (Надналичник)",
+    allowedProductTypes: ["door-window", "door-deaf", "up_frame"],
+    fields: [
+      {
+        name: "up_frame_quantity",
+        label: "Количество надналичников",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество надналичников",
+      },
+      {
+        name: "up_frame_product_id",
+        label: "Модель надналичника",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель надналичника",
+        queryKey: "up_frame_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.up_frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "under-frame",
+    title: "Сапожок (Подналичник)",
+    allowedProductTypes: ["door-window", "door-deaf", "under_frame"],
+    fields: [
+      {
+        name: "under_frame_quantity",
+        label: "Количество подналичников",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество подналичников",
+      },
+      {
+        name: "under_frame_height",
+        label: "Высота подналичника",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту подналичника",
+      },
+      {
+        name: "under_frame_product_id",
+        label: "Модель подналичника",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель подналичника",
+        queryKey: "under_frame_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "trim",
+    title: "Обклад",
+    allowedProductTypes: ["door-window", "door-deaf", "trim"],
     fields: [
       {
         name: "percent_trim",
@@ -427,6 +391,13 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "molding",
+    title: "Молдинг",
+    allowedProductTypes: ["door-window", "door-deaf", "molding"],
+    fields: [
       {
         name: "percent_molding",
         label: "Процент молдинга",
@@ -446,6 +417,13 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "covering-primary",
+    title: "Покрытие I",
+    allowedProductTypes: ["door-window", "door-deaf", "covering_primary"],
+    fields: [
       {
         name: "percent_covering_primary",
         label: "Покрытие I, %",
@@ -467,6 +445,13 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "covering-secondary",
+    title: "Покрытие II",
+    allowedProductTypes: ["door-window", "door-deaf", "covering_secondary"],
+    fields: [
       {
         name: "percent_covering_secondary",
         label: "Покрытие II, %",
@@ -488,6 +473,13 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "color",
+    title: "Цвет",
+    allowedProductTypes: ["door-window", "door-deaf", "color"],
+    fields: [
       {
         name: "percent_color",
         label: "Цвет, %",
@@ -516,8 +508,9 @@ const SHARED_SECTIONS: SectionConfig[] = [
     ],
   },
   {
-    key: "additional-products",
-    title: "Плинтус, тёплый пол, обрешётка, окно, подоконник",
+    key: "floor-skirting",
+    title: "Плинтус",
+    allowedProductTypes: ["door-window", "door-deaf", "floor_skirting"],
     fields: [
       {
         name: "floor_skirting_length",
@@ -540,6 +533,20 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "heated-floor",
+    title: "Тёплый пол",
+    allowedProductTypes: ["door-window", "door-deaf", "heated-floor"],
+    fields: [
+      {
+        name: "volume_heated_floor",
+        label: "Объём тёплого пола",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём тёплого пола",
+      },
       {
         name: "heated_floor_product_id",
         label: "Модель тёплого пола",
@@ -554,6 +561,20 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "latting",
+    title: "Обрешётка",
+    allowedProductTypes: ["door-window", "door-deaf", "latting"],
+    fields: [
+      {
+        name: "volume_latting",
+        label: "Объём обрешётки",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём обрешётки",
+      },
       {
         name: "latting_product_id",
         label: "Модель обрешётки",
@@ -566,6 +587,20 @@ const SHARED_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+    ],
+  },
+  {
+    key: "window",
+    title: "Окно",
+    allowedProductTypes: ["door-window", "window"],
+    fields: [
+      {
+        name: "volume_window",
+        label: "Объём окна",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём окна",
+      },
       {
         name: "window_product_id",
         label: "Модель окна",
@@ -577,6 +612,20 @@ const SHARED_SECTIONS: SectionConfig[] = [
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "windowsill",
+    title: "Подоконник",
+    allowedProductTypes: ["door-window", "windowsill"],
+    fields: [
+      {
+        name: "volume_windowsill",
+        label: "Объём подоконника",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём подоконника",
       },
       {
         name: "windowsill_product_id",
@@ -592,52 +641,253 @@ const SHARED_SECTIONS: SectionConfig[] = [
       },
     ],
   },
-];
-
-const TRANSSOM_SECTION: SectionConfig[] = [
   {
-    key: "transom",
-    title: "Фрамуга",
+    key: "glass",
+    title: "Стекло",
+    allowedProductTypes: ["door-window", "glass"],
     fields: [
       {
-        name: "transom_type",
-        label: "Тип фрамуги",
-        type: "select",
-        placeholder: "Выберите тип фрамуги",
-        options: [
-          { value: 1, label: "Обычная" },
-          { value: 2, label: "Скрытая" },
-        ],
-      },
-      {
-        name: "transom_height_front",
-        label: "Высота фрамуги (лицо)",
+        name: "glass_quantity",
+        label: "Количество стекол",
         type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите высоту фрамуги (лицо)",
+        numberStep: 1,
+        placeholder: "Введите количество стекол",
       },
       {
-        name: "transom_height_back",
-        label: "Высота фрамуги (тыл)",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите высоту фрамуги (тыл)",
-      },
-      {
-        name: "transom_product_id",
-        label: "Модель фрамуги",
+        name: "glass_product_id",
+        label: "Модель стекла",
         type: "selectInfinitive",
-        placeholder: "Выберите модель фрамуги",
-        queryKey: "transom_product",
+        placeholder: "Выберите модель стекла",
+        queryKey: "glass_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: CATEGORY_SECTION_INDEX.transom },
-        labelKey: "name",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.glass },
+        labelKey: ["name", "measure"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "volume_glass",
+        label: "Объём стекла",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите объём стекла",
+      },
+    ],
+  },
+  {
+    key: "door-lock",
+    title: "Замок двери",
+    allowedProductTypes: ["door-window", "door-deaf", "door_lock"],
+    fields: [
+      {
+        name: "door_lock_quantity",
+        label: "Количество замков",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество замков",
+      },
+      {
+        name: "door_lock_mechanism",
+        label: "Механизм замка",
+        type: "select",
+        allowClear: true,
+        placeholder: "Выберите механизм замка",
+        options: [],
+      },
+      {
+        name: "door_lock_product_id",
+        label: "Модель замка",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель замка",
+        queryKey: "door_lock_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.door_lock },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "hinge",
+    title: "Петля",
+    allowedProductTypes: ["door-window", "door-deaf", "hinge"],
+    fields: [
+      {
+        name: "hinge_quantity",
+        label: "Количество петель",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество петель",
+      },
+      {
+        name: "hinge_mechanism",
+        label: "Механизм петли",
+        type: "select",
+        allowClear: true,
+        placeholder: "Выберите механизм петли",
+        options: [],
+      },
+      {
+        name: "hinge_product_id",
+        label: "Модель петли",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель петли",
+        queryKey: "hinge_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.hinge },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "door-bolt",
+    title: "Шпингалет",
+    allowedProductTypes: ["door-window", "door-deaf", "door_bolt"],
+    fields: [
+      {
+        name: "door_bolt_quantity",
+        label: "Количество шпингалетов",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество шпингалетов",
+      },
+      {
+        name: "door_bolt_product_id",
+        label: "Модель шпингалета",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель шпингалета",
+        queryKey: "door_bolt_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.door_bolt },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "door-stopper",
+    title: "Стоппер",
+    allowedProductTypes: ["door-window", "door-deaf", "door_stopper"],
+    fields: [
+      {
+        name: "door_stopper_quantity",
+        label: "Количество стопперов",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество стопперов",
+      },
+      {
+        name: "door_stopper_product_id",
+        label: "Модель стоппера",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель стоппера",
+        queryKey: "door_stopper_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.door_stopper,
+        },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "anti-threshold",
+    title: "Анти-порог",
+    allowedProductTypes: ["door-window", "door-deaf", "anti_threshold"],
+    fields: [
+      {
+        name: "anti_threshold_quantity",
+        label: "Количество анти-порогов",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество анти-порогов",
+      },
+      {
+        name: "anti_threshold_product_id",
+        label: "Модель анти-порога",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель анти-порога",
+        queryKey: "anti_threshold_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.anti_threshold,
+        },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "box-width",
+    title: "Ширина коробки",
+    allowedProductTypes: ["door-window", "door-deaf", "box_width"],
+    fields: [
+      {
+        name: "box_width",
+        label: "Ширина коробки",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите ширину коробки",
+      },
+      {
+        name: "box_width_length",
+        label: "Длина коробки",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите длину коробки",
+      },
+    ],
+  },
+  {
+    key: "extra-options",
+    title: "Доп. опция",
+    allowedProductTypes: ["door-window", "door-deaf", "extra_options"],
+    fields: [
+      {
+        name: "percent_extra_option",
+        label: "Процент доп. опции",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент доп. опции",
+      },
+      {
+        name: "extra_option_product_id",
+        label: "Модель доп. опции",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель доп. опции",
+        queryKey: "extra_option_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: {
+          category_section_index: CATEGORY_SECTION_INDEX.extra_options,
+        },
+        labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
       },
     ],
   },
 ];
+
+const getSectionsForProductType = (productType: string) =>
+  ALL_SECTIONS.filter((section) => {
+    if (!section.allowedProductTypes || section.allowedProductTypes.length === 0) {
+      return true;
+    }
+    return section.allowedProductTypes.includes(productType);
+  });
+
+const DEFAULT_PRODUCT_SECTIONS: SectionConfig[] = ALL_SECTIONS;
+
+const resolveProductType = (values: TransactionValues) =>
+  ((values.product_type ?? values.door_type) as string | undefined) ?? "";
+
 
 const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   "door-window": [
@@ -779,130 +1029,33 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
   "door-window": {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["door-window"],
     conditionalRequired: CONDITIONAL_REQUIREMENTS["door-window"],
-    sections: createDoorSections(true),
+    sections: getSectionsForProductType("door-window"),
   },
   "door-deaf": {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["door-deaf"],
     conditionalRequired: CONDITIONAL_REQUIREMENTS["door-deaf"],
-    sections: createDoorSections(false),
+    sections: getSectionsForProductType("door-deaf"),
   },
   doorway: {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["doorway"],
-    sections: [
-      {
-        key: "doorway-sheathing",
-        title: "Обшивка",
-        fields: [
-          {
-            name: "sheathing_product_id",
-            label: "Модель обшивки",
-            type: "selectInfinitive",
-            placeholder: "Выберите модель обшивки",
-            queryKey: "doorway_sheathing",
-            fetchUrl: "/product/by/category-section-index",
-            params: { category_section_index: CATEGORY_SECTION_INDEX.sheathing },
-            valueKey: "product_id",
-            labelKey: ["name", "measure"],
-            useValueAsLabel: true,
-          },
-        ],
-      },
-    ],
+    sections: getSectionsForProductType("doorway"),
   },
   window: {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["window"],
-    sections: [
-      {
-        key: "window-main",
-        title: "Окно",
-        fields: [
-          {
-            name: "window_product_id",
-            label: "Модель окна",
-            type: "selectInfinitive",
-            placeholder: "Выберите модель окна",
-            queryKey: "window_product",
-            fetchUrl: "/product/by/category-section-index",
-            params: { category_section_index: CATEGORY_SECTION_INDEX.window },
-            labelKey: ["name", "feature"],
-            valueKey: "product_id",
-            useValueAsLabel: true,
-          },
-        ],
-      },
-    ],
+    sections: getSectionsForProductType("window"),
   },
   windowsill: {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["windowsill"],
-    sections: [
-      {
-        key: "windowsill-main",
-        title: "Подоконник",
-        fields: [
-          {
-            name: "windowsill_product_id",
-            label: "Модель подоконника",
-            type: "selectInfinitive",
-            placeholder: "Выберите модель подоконника",
-            queryKey: "windowsill_product",
-            fetchUrl: "/product/by/category-section-index",
-            params: { category_section_index: CATEGORY_SECTION_INDEX.windowsill },
-            labelKey: ["name", "feature"],
-            valueKey: "product_id",
-            useValueAsLabel: true,
-          },
-        ],
-      },
-    ],
+    sections: getSectionsForProductType("windowsill"),
   },
   "heated-floor": {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["heated-floor"],
-    sections: [
-      {
-        key: "heated-floor-main",
-        title: "Тёплый пол",
-        fields: [
-          {
-            name: "heated_floor_product_id",
-            label: "Модель тёплого пола",
-            type: "selectInfinitive",
-            placeholder: "Выберите модель тёплого пола",
-            queryKey: "heated_floor_product",
-            fetchUrl: "/product/by/category-section-index",
-            params: {
-              category_section_index: CATEGORY_SECTION_INDEX.heated_floor,
-            },
-            labelKey: ["name", "feature"],
-            valueKey: "product_id",
-            useValueAsLabel: true,
-          },
-        ],
-      },
-    ],
+    sections: getSectionsForProductType("heated-floor"),
   },
   latting: {
     requiredFields: REQUIRED_FIELDS_BY_PRODUCT_TYPE["latting"],
     conditionalRequired: CONDITIONAL_REQUIREMENTS["latting"],
-    sections: [
-      {
-        key: "latting-main",
-        title: "Обрешётка",
-        fields: [
-          {
-            name: "latting_product_id",
-            label: "Модель обрешётки",
-            type: "selectInfinitive",
-            placeholder: "Выберите модель обрешётки",
-            queryKey: "latting_product",
-            fetchUrl: "/product/by/category-section-index",
-            params: { category_section_index: CATEGORY_SECTION_INDEX.latting },
-            labelKey: ["name", "feature"],
-            valueKey: "product_id",
-            useValueAsLabel: true,
-          },
-        ],
-      },
-    ],
+    sections: getSectionsForProductType("latting"),
   },
 };
 
@@ -911,9 +1064,27 @@ const filterVisibleSections = (
   values: TransactionValues,
   productType: string,
 ) =>
-  sections.filter(
-    (section) => !section.visible || section.visible(values, productType),
-  );
+  sections.filter((section) => {
+    if (
+      section.allowedProductTypes &&
+      section.allowedProductTypes.length > 0 &&
+      productType
+    ) {
+      if (!section.allowedProductTypes.includes(productType)) {
+        return false;
+      }
+    }
+
+    if (!section.visible) {
+      return true;
+    }
+
+    try {
+      return section.visible(values, productType);
+    } catch {
+      return false;
+    }
+  });
 
 const MEASUREMENT_FIELDS: FieldConfig[] = [
   {
@@ -969,7 +1140,8 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     type: "number",
     numberStep: 0.01,
     placeholder: "Введите ширину коробки",
-    visible: (_, productType) => isDoorType(productType),
+    visible: (_, productType) =>
+      isDoorType(productType) || productType === "box_width",
   },
   {
     name: "framework_front_id",
@@ -1191,22 +1363,20 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     }
   };
 
-  const visibleSections = useMemo(
-    () => filterVisibleSections(sections, transactionValues, productType),
-    [sections, transactionValues, productType],
-  );
+  const combinedSections = useMemo(() => {
+    if (!productType) {
+      return ALL_SECTIONS;
+    }
 
-  const combinedSections = useMemo(
-    () => [...TRANSSOM_SECTION, ...SHARED_SECTIONS, ...visibleSections],
-    [visibleSections],
-  );
+    return filterVisibleSections(ALL_SECTIONS, transactionValues, productType);
+  }, [transactionValues, productType]);
 
   useEffect(() => {
-    const sharedKeys = SHARED_SECTIONS.map((section) => section.key);
-    const productKeys = visibleSections.map((section) => section.key);
-    const initialKeys = Array.from(new Set([...sharedKeys, ...productKeys]));
+    const defaultKeys = ALL_SECTIONS.map((section) => section.key);
+    const productKeys = combinedSections.map((section) => section.key);
+    const initialKeys = productType ? productKeys : defaultKeys;
     setActiveSectionKeys(initialKeys);
-  }, [visibleSections, productType]);
+  }, [combinedSections, productType]);
 
   return (
     <div className={cn(className)}>
@@ -1273,11 +1443,9 @@ export const TransactionForm: FC<Props> = ({ className }) => {
           );
         })}
 
-        {visibleSections.length === 0 && (
+        {combinedSections.length === 0 && productType && (
           <div className="text-sm text-gray-500">
-            {productType
-              ? "Для выбранного типа продукта дополнительных полей пока не настроено."
-              : "Выберите тип продукта, чтобы увидеть дополнительные параметры."}
+            {"Для выбранного типа продукта дополнительных полей пока не настроено."}
           </div>
         )}
       </div>
@@ -1301,7 +1469,7 @@ export const getTransactionValidationPaths = (
     }
   });
 
-  [...TRANSSOM_SECTION, ...SHARED_SECTIONS].forEach((section) => {
+  ALL_SECTIONS.forEach((section) => {
     section.fields.forEach((field) => {
       if (!field.visible || field.visible(values, productType)) {
         names.push(field.name);
@@ -1319,3 +1487,4 @@ export const getTransactionValidationPaths = (
 
   return names.map((name) => ["transactions", 0, name] as (string | number)[]);
 };
+
