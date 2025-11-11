@@ -225,6 +225,8 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             } as ApplicationAdditionalQuality;
           }) ?? [];
 
+      const applicationDate = (applicationDetail as any)?.application_date;
+
       const transformedData: ApplicationLocalForm = {
         general: {
           number: applicationDetail.number || "",
@@ -236,6 +238,11 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
           color: applicationDetail.color
             ? { name: applicationDetail.color }
             : undefined,
+          application_date: applicationDate
+            ? dayjs(applicationDate)
+            : applicationDetail.date
+              ? dayjs(applicationDetail.date)
+              : undefined,
           category_name: applicationDetail.category_name || "",
           date: applicationDetail.date
             ? dayjs(applicationDetail.date)
@@ -424,6 +431,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         production_date: generalValues?.production_date
           ? getDateTime(generalValues?.production_date)
           : undefined,
+        application_date: generalValues?.application_date
+          ? getDateTime(generalValues.application_date)
+          : null,
         color:
           generalValues?.color?.name || (generalValues as any)?.color || "",
         door_lock_id: generalValues?.door_lock

@@ -13,7 +13,7 @@ export class BidsService {
   }
 
   static update(id: string, form: unknown) {
-    return ApiService.$put<unknown>(`/application?application_id=${id}`, form);
+    return ApiService.$patch<unknown>(`/application?application_id=${id}`, form);
   }
 
   static delete(id: string) {

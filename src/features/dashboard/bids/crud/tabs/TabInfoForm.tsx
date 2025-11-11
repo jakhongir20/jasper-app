@@ -100,7 +100,16 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             {user?.user?.name}
           </div>
         </Form.Item>
-        <Form.Item name={["general", "application_date"]} label={"Дата заявки"}>
+        <Form.Item
+          name={["general", "application_date"]}
+          label={"Дата заявки"}
+          rules={[
+            {
+              required: true,
+              message: t("common.validation.required"),
+            },
+          ]}
+        >
           <DatePicker
             size="small"
             className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
