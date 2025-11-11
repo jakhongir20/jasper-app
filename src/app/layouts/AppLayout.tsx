@@ -23,7 +23,7 @@ export const AppLayout = ({ from }: Props) => {
   useEffect(() => {
     const handleUnauthorized = () => {
       // todo back to previuos version
-      // window.location.href = "/auth/login";
+      window.location.href = "/auth/login";
     };
 
     const handleCatch500 = () => {

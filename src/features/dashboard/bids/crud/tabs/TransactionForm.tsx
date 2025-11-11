@@ -100,48 +100,6 @@ const resolveProductType = (values: TransactionValues) =>
 const createDoorSections = (includeGlass: boolean): SectionConfig[] => {
   const sections: SectionConfig[] = [
     {
-      key: "transom",
-      title: "Фрамуга",
-      fields: [
-        {
-          name: "transom_type",
-          label: "Тип фрамуги",
-          type: "select",
-          placeholder: "Выберите тип фрамуги",
-          options: [
-            { value: 1, label: "Обычная" },
-            { value: 2, label: "Скрытая" },
-          ],
-        },
-        {
-          name: "transom_height_front",
-          label: "Высота фрамуги (лицо)",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите высоту фрамуги (лицо)",
-        },
-        {
-          name: "transom_height_back",
-          label: "Высота фрамуги (тыл)",
-          type: "number",
-          numberStep: 0.01,
-          placeholder: "Введите высоту фрамуги (тыл)",
-        },
-        {
-          name: "transom_product_id",
-          label: "Модель фрамуги",
-          type: "selectInfinitive",
-          placeholder: "Выберите модель фрамуги",
-          queryKey: "transom_product",
-          fetchUrl: "/product/by/category-section-index",
-          params: { category_section_index: 10 },
-          labelKey: "name",
-          valueKey: "product_id",
-          useValueAsLabel: true,
-        },
-      ],
-    },
-    {
       key: "door",
       title: "Полотно (дверь)",
       fields: [
