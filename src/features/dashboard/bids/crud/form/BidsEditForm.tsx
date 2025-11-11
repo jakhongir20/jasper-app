@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import {
   ApplicationLocalForm,
   Option,
+  TransactionFormType,
   useUpdateApplication,
 } from "@/features/dashboard/bids/model";
 import { useApplicationDetail } from "@/features/dashboard/bids/model/bids.queries";
@@ -20,6 +21,7 @@ import { getDateTime } from "@/shared/utils";
 import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 import { ApiService } from "@/shared/lib/services";
 import { BidsService } from "@/features/dashboard/bids/model/bids.service";
+import { transformTransactionDetailToForm } from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
   className?: string;
@@ -82,7 +84,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
   const { toast } = useToast();
   const { formFinishFailed } = useTabErrorHandler(tabConfigs);
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string; }>();
   const { getAssetUrl } = useStaticAssetsUrl();
 
   const [formFinishErrors] = useState<ValidateErrorEntity["errorFields"]>([]);
@@ -138,6 +140,32 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
   // Set form values when detail data is loaded
   useEffect(() => {
     if (!isLoadingDetail && applicationDetail) {
+      const applicationTransactions = (
+        ((applicationDetail as any).application_transactions ??
+          applicationDetail.transactions ??
+          []) as Array<Record<string, any>>
+      ).map((transaction) => {
+        const normalized = transformTransactionDetailToForm(transaction);
+        const merged = {
+          ...transaction,
+          ...normalized,
+        };
+
+        const basicVolume = calculateVolume(
+          merged.height || merged.opening_height || 0,
+          merged.width || merged.opening_width || 0,
+          merged.quantity || merged.entity_quantity || 0,
+        );
+
+        return {
+          _uid: getRandomId("transaction_"),
+          id:
+            transaction.application_transaction_id ?? transaction.id ?? 0,
+          ...merged,
+          volume_product: merged.volume_product ?? basicVolume,
+        } as TransactionFormType;
+      });
+
       const transformedData: ApplicationLocalForm = {
         general: {
           number: applicationDetail.number || "",
@@ -167,130 +195,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
           transom_height_front: applicationDetail.transom_height_front || 0,
           transom_height_back: applicationDetail.transom_height_back || 0,
         } as any,
-        transactions:
-          applicationDetail.transactions?.map((transaction) => {
-            // Calculate basic volume
-            const basicVolume = calculateVolume(
-              transaction.height || 0,
-              transaction.width || 0,
-              transaction.quantity || 0,
-            );
-
-            return {
-              _uid: getRandomId("transaction_"),
-              id: transaction.application_transaction_id || 0,
-              location: transaction.location || "",
-              door_type: transaction.door_type || "",
-              product_id: transaction.product_id || null,
-              product: transaction.product, // Include the full object
-              veneer_type: transaction.veneer_type || "",
-              lining_number: transaction.lining_number
-                ? Number(transaction.lining_number)
-                : null,
-              frame_front_id: transaction.frame_front_id
-                ? Number(transaction.frame_front_id)
-                : null,
-              frame_front: (transaction as any).frame_front, // Include the full object
-              frame_back_id: transaction.frame_back_id
-                ? Number(transaction.frame_back_id)
-                : null,
-              frame_back: (transaction as any).frame_back, // Include the full object
-              doorway_type: transaction.doorway_type || 0,
-              doorway_thickness: transaction.doorway_thickness || 0,
-              height: transaction.height || 0,
-              width: transaction.width || 0,
-              quantity: transaction.quantity || 0,
-              opening_side: transaction.opening_side || "",
-              opening_direction: transaction.opening_direction || "",
-              box_width: transaction.box_width || 0,
-              threshold: transaction.threshold || "",
-              chamfer: transaction.chamfer || "",
-              sash: transaction.sash || "",
-              transom_height_front: transaction.transom_height_front || 0,
-              transom_height_back: transaction.transom_height_back || 0,
-              crown_quantity: transaction.crown_quantity || 0,
-              transom_or_canvas: transaction.transom_or_canvas || "",
-              sheathing_id: transaction.sheathing_id
-                ? Number(transaction.sheathing_id)
-                : null,
-              sheathing: (transaction as any).sheathing, // Include the full object
-              sheathing_style: transaction.sheathing_style || "",
-              trim_id: transaction.trim_id ? Number(transaction.trim_id) : null,
-              trim: (transaction as any).trim, // Include the full object
-              trim_style: transaction.trim_style || "",
-              up_trim_id: transaction.up_trim_id
-                ? Number(transaction.up_trim_id)
-                : null,
-              up_trim: (transaction as any).up_trim, // Include the full object
-              up_trim_quantity: transaction.up_trim_quantity || 0,
-              up_trim_style: transaction.up_trim_style || "",
-              under_trim_id: transaction.under_trim_id
-                ? Number(transaction.under_trim_id)
-                : null,
-              under_trim: (transaction as any).under_trim, // Include the full object
-              under_trim_quantity: transaction.under_trim_quantity || 0,
-              under_trim_style: transaction.under_trim_style || "",
-              filler_id: transaction.filler_id
-                ? Number(transaction.filler_id)
-                : null,
-              filler: (transaction as any).filler, // Include the full object
-              crown_id: transaction.crown_id
-                ? Number(transaction.crown_id)
-                : null,
-              crown: (transaction as any).crown, // Include the full object
-              crown_style: transaction.crown_style || "",
-              glass_id: transaction.glass_id
-                ? Number(transaction.glass_id)
-                : null,
-              glass: (transaction as any).glass, // Include the full object
-              glass_quantity: transaction.glass_quantity || 0,
-              door_lock_id: transaction.door_lock_id
-                ? Number(transaction.door_lock_id)
-                : null,
-              door_lock: (transaction as any).door_lock, // Include the full object
-              door_lock_quantity: transaction.door_lock_quantity || 0,
-              canopy_id: transaction.canopy_id
-                ? Number(transaction.canopy_id)
-                : null,
-              canopy: (transaction as any).canopy, // Include the full object
-              canopy_quantity: transaction.canopy_quantity || 0,
-              latch_id: transaction.latch_id
-                ? Number(transaction.latch_id)
-                : null,
-              latch: (transaction as any).latch, // Include the full object
-              latch_quantity: transaction.latch_quantity || 0,
-              box_service_id: transaction.box_service_id
-                ? Number(transaction.box_service_id)
-                : null,
-              box_service: (transaction as any).box_service, // Include the full object
-              // Additional fields
-              booklet_number: transaction.booklet_number || "",
-              factory_mdf_type: transaction.factory_mdf_type || "",
-              factory_height: transaction.factory_height || 0,
-              factory_width: transaction.factory_width || 0,
-              factory_mdf: transaction.factory_mdf || 0,
-              factory_carcass: transaction.factory_carcass || 0,
-              factory_rail: transaction.factory_rail || 0,
-              catalogue_number: transaction.catalogue_number || "",
-              pattern_form: transaction.pattern_form || "",
-              quality_multiplier: transaction.quality_multiplier || 0,
-              volume_product: transaction.volume_product || basicVolume,
-              sheathing_height: transaction.sheathing_height || 0,
-              sheathing_width: transaction.sheathing_width || 0,
-              sheathing_thickness: transaction.sheathing_thickness || 0,
-              sheathing_quantity: transaction.sheathing_quantity || 0,
-              trim_height: transaction.trim_height || 0,
-              trim_width: transaction.trim_width || 0,
-              trim_quantity: transaction.trim_quantity || 0,
-              filler_height: transaction.filler_height || 0,
-              filler_width: transaction.filler_width || 0,
-              filler_quantity: transaction.filler_quantity || 0,
-              crown_height: transaction.crown_height || 0,
-              crown_width: transaction.crown_width || 0,
-              box_service_quantity: transaction.box_service_quantity || 0,
-              box_service_length: transaction.box_service_length || 0,
-            };
-          }) || [],
+        transactions: applicationTransactions || [],
         aspects: applicationDetail.aspects?.map((aspect: any) => ({
           _uid: getRandomId("aspect_"),
           id: aspect.application_aspect_id || 0,
@@ -465,6 +370,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
 
   const handleSave = () => {
     form.validateFields().then(({ general }) => {
+      const generalValues = (general ?? {}) as Record<string, any>;
       const transactions = form.getFieldValue("transactions") || [];
       const aspects = form.getFieldValue("aspects") || [];
       const sheathings = form.getFieldValue("sheathings") || [];
@@ -478,17 +384,22 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       const qualities = form.getFieldValue("qualities") || [];
 
       const rawData = {
-        ...general,
-        datetime: getDateTime(general?.datetime),
-        production_date: general?.production_date
-          ? getDateTime(general?.production_date)
+        ...generalValues,
+        datetime: getDateTime(generalValues?.datetime),
+        production_date: generalValues?.production_date
+          ? getDateTime(generalValues?.production_date)
           : undefined,
-        color: general?.color?.name || general?.color,
-        door_lock_id: general?.door_lock ? parseInt(general.door_lock) : null,
-        canopy_id: general?.canopy ? parseInt(general.canopy) : null,
-        transom_height_front: general?.transom_height_front || 0,
-        transom_height_back: general?.transom_height_back || 0,
-        status: general?.status || 1,
+        color:
+          generalValues?.color?.name || (generalValues as any)?.color || "",
+        door_lock_id: generalValues?.door_lock
+          ? parseInt(generalValues.door_lock)
+          : null,
+        canopy_id: generalValues?.canopy
+          ? parseInt(generalValues.canopy)
+          : null,
+        transom_height_front: generalValues?.transom_height_front || 0,
+        transom_height_back: generalValues?.transom_height_back || 0,
+        status: generalValues?.status || 1,
         transactions:
           transactions?.map(({ _uid, product, ...item }: any) => ({
             ...item,

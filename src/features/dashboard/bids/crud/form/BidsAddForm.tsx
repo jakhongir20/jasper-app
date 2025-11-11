@@ -18,6 +18,12 @@ import {
   getRandomId,
 } from "@/shared/utils";
 import { BidsService } from "@/features/dashboard/bids/model/bids.service";
+import {
+  buildTransactionPayload,
+  extractId,
+  normalizeString,
+  toNullableNumber,
+} from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
   className?: string;
@@ -45,55 +51,6 @@ const tabConfigs = [
     fields: ["application_qualities"],
   },
 ];
-
-const toNullableNumber = (value: unknown): number | null => {
-  if (value === undefined || value === null || value === "") {
-    return null;
-  }
-  const numeric = Number(value);
-  return Number.isNaN(numeric) ? null : numeric;
-};
-
-const normalizeString = (value: unknown): string | null => {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  const stringValue = String(value);
-  return stringValue.length === 0 ? null : stringValue;
-};
-
-const extractId = (
-  value: any,
-  keys: string[] = [
-    "product_id",
-    "category_section_index",
-    "category_id",
-    "customer_id",
-    "service_id",
-    "quality_id",
-    "value",
-    "id",
-  ],
-): number | null => {
-  if (value && typeof value === "object") {
-    for (const key of keys) {
-      if (value[key] !== undefined && value[key] !== null) {
-        const candidate = value[key];
-        const numeric = Number(candidate);
-        if (!Number.isNaN(numeric)) {
-          return numeric;
-        }
-      }
-    }
-  }
-
-  if (value === undefined || value === null || value === "") {
-    return null;
-  }
-
-  const numeric = Number(value);
-  return Number.isNaN(numeric) ? null : numeric;
-};
 
 // Default form values for testing - will be defined inside component
 
@@ -262,97 +219,8 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
         form.getFieldValue("application_aspects") || [];
 
       const applicationTransactions = transactions.map(
-        ({ _uid, ...transaction }: { _uid?: string;[key: string]: any; }) => ({
-          location: normalizeString(transaction.location),
-          product_type: transaction.product_type ?? null,
-          opening_height: toNullableNumber(transaction.opening_height),
-          opening_width: toNullableNumber(transaction.opening_width),
-          opening_thickness: toNullableNumber(transaction.opening_thickness),
-          entity_quantity: toNullableNumber(transaction.entity_quantity),
-          framework_front_id: extractId(transaction.framework_front_id),
-          framework_back_id: extractId(transaction.framework_back_id),
-          threshold: normalizeString(transaction.threshold),
-          opening_logic: normalizeString(transaction.opening_logic),
-          sash: toNullableNumber(transaction.sash),
-          chamfer: toNullableNumber(transaction.chamfer),
-          transom_type: toNullableNumber(transaction.transom_type),
-          transom_product_id: extractId(transaction.transom_product_id),
-          transom_height_front: toNullableNumber(
-            transaction.transom_height_front,
-          ),
-          transom_height_back: toNullableNumber(
-            transaction.transom_height_back,
-          ),
-          door_product_id: extractId(transaction.door_product_id),
-          sheathing_product_id: extractId(transaction.sheathing_product_id),
-          frame_product_id: extractId(transaction.frame_product_id),
-          filler_product_id: extractId(transaction.filler_product_id),
-          crown_product_id: extractId(transaction.crown_product_id),
-          up_frame_quantity: toNullableNumber(transaction.up_frame_quantity),
-          up_frame_product_id: extractId(transaction.up_frame_product_id),
-          under_frame_quantity: toNullableNumber(
-            transaction.under_frame_quantity,
-          ),
-          under_frame_height: toNullableNumber(transaction.under_frame_height),
-          under_frame_product_id: extractId(transaction.under_frame_product_id),
-          percent_trim: toNullableNumber(transaction.percent_trim),
-          trim_product_id: extractId(transaction.trim_product_id),
-          percent_molding: toNullableNumber(transaction.percent_molding),
-          molding_product_id: extractId(transaction.molding_product_id),
-          percent_covering_primary: toNullableNumber(
-            transaction.percent_covering_primary,
-          ),
-          covering_primary_product_id: extractId(
-            transaction.covering_primary_product_id,
-          ),
-          percent_covering_secondary: toNullableNumber(
-            transaction.percent_covering_secondary,
-          ),
-          covering_secondary_product_id: extractId(
-            transaction.covering_secondary_product_id,
-          ),
-          percent_color: toNullableNumber(transaction.percent_color),
-          color_product_id: extractId(transaction.color_product_id),
-          color_custom_name: normalizeString(transaction.color_custom_name),
-          floor_skirting_length: toNullableNumber(
-            transaction.floor_skirting_length,
-          ),
-          floor_skirting_product_id: extractId(
-            transaction.floor_skirting_product_id,
-          ),
-          heated_floor_product_id: extractId(
-            transaction.heated_floor_product_id,
-          ),
-          windowsill_product_id: extractId(transaction.windowsill_product_id),
-          latting_product_id: extractId(transaction.latting_product_id),
-          window_product_id: extractId(transaction.window_product_id),
-          glass_product_id: extractId(transaction.glass_product_id),
-          volume_glass: toNullableNumber(transaction.volume_glass),
-          door_lock_mechanism: normalizeString(transaction.door_lock_mechanism),
-          door_lock_product_id: extractId(transaction.door_lock_product_id),
-          hinge_mechanism: normalizeString(transaction.hinge_mechanism),
-          hinge_product_id: extractId(transaction.hinge_product_id),
-          door_bolt_product_id: extractId(transaction.door_bolt_product_id),
-          door_stopper_quantity: toNullableNumber(
-            transaction.door_stopper_quantity,
-          ),
-          door_stopper_product_id: extractId(
-            transaction.door_stopper_product_id,
-          ),
-          anti_threshold_quantity: toNullableNumber(
-            transaction.anti_threshold_quantity,
-          ),
-          anti_threshold_product_id: extractId(
-            transaction.anti_threshold_product_id,
-          ),
-          box_width: toNullableNumber(transaction.box_width),
-          percent_extra_option: toNullableNumber(
-            transaction.percent_extra_option,
-          ),
-          extra_option_product_id: extractId(
-            transaction.extra_option_product_id,
-          ),
-        }),
+        ({ _uid, ...transaction }: { _uid?: string;[key: string]: any; }) =>
+          buildTransactionPayload(transaction),
       );
 
       const applicationServicesPayload = applicationServices.map(

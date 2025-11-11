@@ -1,17 +1,24 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Drawer, Form, message } from "antd";
 import { Button } from "@/shared/ui";
 import {
   TransactionForm,
   getTransactionValidationPaths,
 } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
-import { ApplicationLocalForm } from "@/features/dashboard/bids";
+import {
+  ApplicationLocalForm,
+  TransactionFormType as Transaction,
+} from "@/features/dashboard/bids/model";
+import { ApiService } from "@/shared/lib/services";
+import { getRandomId } from "@/shared/utils";
+import { buildTransactionPayload } from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
   className?: string;
   open: boolean;
   onClose: (closed: boolean) => void;
   mode: "add" | "edit";
+  transaction?: Transaction | null;
 }
 
 export const TransactionDrawer: FC<Props> = ({
@@ -19,29 +26,233 @@ export const TransactionDrawer: FC<Props> = ({
   open,
   onClose,
   mode,
+  transaction,
 }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const originalTransactionsRef = useRef<Record<string, any>[]>([]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const currentTransactions =
+      (form.getFieldValue("transactions") as Record<string, any>[]) || [];
+
+    originalTransactionsRef.current = Array.isArray(currentTransactions)
+      ? currentTransactions.map((item) =>
+        item && typeof item === "object" ? { ...item } : item,
+      )
+      : [];
+
+    if (mode === "edit" && transaction) {
+      form.setFieldsValue({
+        transactions: [{ ...transaction }],
+      });
+    } else {
+      form.setFieldsValue({
+        transactions: [{}],
+      });
+    }
+  }, [form, mode, open, transaction]);
+
+  const handleCancel = useCallback(() => {
+    form.setFieldsValue({
+      transactions: originalTransactionsRef.current.map((item) =>
+        item && typeof item === "object" ? { ...item } : item,
+      ),
+    });
+    onClose(false);
+  }, [form, onClose]);
+
+  const handleDrawerClose = useCallback(() => {
+    handleCancel();
+  }, [handleCancel]);
 
   const handleConfirm = useCallback(async () => {
+    if (isSubmitting) {
+      return;
+    }
+
     const transactions = form.getFieldValue("transactions") || [];
-    const currentTransaction = transactions?.[0] || {};
-    const validationPaths = getTransactionValidationPaths(
-      currentTransaction as Record<string, unknown>,
-    );
+    const currentTransaction =
+      (transactions?.[0] as Record<string, any>) || {};
+    const validationPaths =
+      getTransactionValidationPaths(currentTransaction);
 
     try {
       await form.validateFields(validationPaths as any);
-      onClose(false);
     } catch (error) {
       message.error("Заполните обязательные поля");
+      return;
     }
-  }, [form, onClose]);
+
+    setIsSubmitting(true);
+
+    try {
+      const payload = buildTransactionPayload(currentTransaction);
+      const response = await ApiService.$post<Record<string, any>>(
+        "/application/transaction-auditor",
+        payload,
+      );
+
+      const succeeded =
+        response && typeof response === "object"
+          ? "succeeded" in response
+            ? Boolean(response.succeeded)
+            : "success" in response
+              ? Boolean(response.success)
+              : true
+          : true;
+
+      if (!succeeded) {
+        const errorMessage =
+          (response as any)?.message ??
+          (response as any)?.detail ??
+          "Не удалось подтвердить транзакцию";
+        message.error(errorMessage);
+        return;
+      }
+
+      let transactionToStore: Record<string, any> = {
+        ...currentTransaction,
+      };
+
+      if (
+        response &&
+        typeof response === "object" &&
+        "payload" in response &&
+        response.payload &&
+        typeof response.payload === "object"
+      ) {
+        transactionToStore = {
+          ...transactionToStore,
+          ...response.payload,
+        };
+      }
+
+      if (
+        response &&
+        typeof response === "object" &&
+        "results" in response &&
+        response.results &&
+        typeof response.results === "object"
+      ) {
+        transactionToStore = {
+          ...transactionToStore,
+          ...response.results,
+        };
+      }
+
+      const productTypeValue =
+        transactionToStore.product_type ??
+        transactionToStore.door_type ??
+        currentTransaction.product_type ??
+        currentTransaction.door_type ??
+        null;
+
+      transactionToStore = {
+        ...transactionToStore,
+        product_type: productTypeValue,
+        door_type: productTypeValue,
+        height:
+          transactionToStore.height ??
+          transactionToStore.opening_height ??
+          null,
+        width:
+          transactionToStore.width ?? transactionToStore.opening_width ?? null,
+        doorway_thickness:
+          transactionToStore.doorway_thickness ??
+          transactionToStore.opening_thickness ??
+          null,
+        quantity:
+          transactionToStore.quantity ??
+          transactionToStore.entity_quantity ??
+          null,
+      };
+
+      const originalList = Array.isArray(originalTransactionsRef.current)
+        ? [...originalTransactionsRef.current]
+        : [];
+
+      const matchTransaction = (item: Record<string, any>) => {
+        if (transaction?._uid && item?._uid) {
+          return item._uid === transaction._uid;
+        }
+
+        if (
+          transaction?.id !== undefined &&
+          transaction?.id !== null &&
+          item?.id !== undefined &&
+          item?.id !== null
+        ) {
+          return item.id === transaction.id;
+        }
+
+        return false;
+      };
+
+      let updatedTransactions: Record<string, any>[];
+
+      if (mode === "edit" && transaction) {
+        let hasMatch = false;
+        updatedTransactions = originalList.map((item) => {
+          if (!hasMatch && matchTransaction(item)) {
+            hasMatch = true;
+            return {
+              ...item,
+              ...transactionToStore,
+              _uid:
+                item._uid ??
+                transaction._uid ??
+                getRandomId("transaction_"),
+            };
+          }
+          return item;
+        });
+
+        if (!hasMatch) {
+          updatedTransactions = [
+            ...updatedTransactions,
+            {
+              ...transactionToStore,
+              _uid:
+                transaction._uid ?? getRandomId("transaction_"),
+            },
+          ];
+        }
+      } else {
+        updatedTransactions = [
+          ...originalList,
+          {
+            ...transactionToStore,
+            _uid: getRandomId("transaction_"),
+          },
+        ];
+      }
+
+      form.setFieldsValue({ transactions: updatedTransactions });
+      originalTransactionsRef.current = updatedTransactions;
+      message.success("Транзакция успешно подтверждена");
+      onClose(true);
+    } catch (error: any) {
+      const apiMessage =
+        error?.response?.data?.message ??
+        error?.response?.data?.detail ??
+        error?.message ??
+        "Не удалось подтвердить транзакцию";
+      message.error(apiMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [form, isSubmitting, mode, onClose, transaction]);
 
   return (
     <Drawer
       placement={"bottom"}
       open={open}
-      onClose={() => onClose(false)}
+      onClose={handleDrawerClose}
       destroyOnHidden
       closable
       width={"100%"}
@@ -54,10 +265,14 @@ export const TransactionDrawer: FC<Props> = ({
             {mode === "edit" ? "Редактировать перечень" : "Добавить перечень"}
           </h1>
           <div className={"flex gap-2"}>
-            <Button onClick={() => onClose(false)} type={"default"}>
+            <Button onClick={handleCancel} type={"default"}>
               Отмена
             </Button>
-            <Button type={"primary"} onClick={handleConfirm}>
+            <Button
+              type={"primary"}
+              onClick={handleConfirm}
+              loading={isSubmitting}
+            >
               {mode === "edit" ? "Сохранить изменения" : "Подтвердить"}
             </Button>
           </div>

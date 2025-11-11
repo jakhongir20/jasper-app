@@ -185,6 +185,7 @@ export const TabTransactionsForm: FC<Props> = ({
         mode={editingTransaction ? "edit" : "add"}
         open={isAddProductModalOpen}
         onClose={handleCloseModal}
+        transaction={editingTransaction}
       />
 
       {/*{isAddProductModalOpen && (*/}
