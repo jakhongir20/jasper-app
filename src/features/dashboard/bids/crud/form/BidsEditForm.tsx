@@ -23,7 +23,10 @@ import { getDateTime } from "@/shared/utils";
 import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 import { ApiService } from "@/shared/lib/services";
 import { BidsService } from "@/features/dashboard/bids/model/bids.service";
-import { transformTransactionDetailToForm } from "@/features/dashboard/bids/utils/transactionTransform";
+import {
+  buildTransactionPayload,
+  transformTransactionDetailToForm,
+} from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
   className?: string;
@@ -227,12 +230,35 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
 
       const applicationDate = (applicationDetail as any)?.application_date;
 
+      const customerFromDetail = (applicationDetail as any)?.customer;
+      const customerIdValue =
+        customerFromDetail?.customer_id ??
+        (applicationDetail as any)?.customer_id ??
+        undefined;
+      const customerSelectValue = customerIdValue
+        ? {
+          customer_id: customerIdValue,
+          name:
+            customerFromDetail?.name ?? applicationDetail.customer_name ?? "",
+          phone_number:
+            customerFromDetail?.phone_number ??
+            applicationDetail.customer_phone ??
+            "",
+          is_active: customerFromDetail?.is_active ?? true,
+        }
+        : undefined;
+
       const transformedData: ApplicationLocalForm = {
         general: {
           number: applicationDetail.number || "",
           address: applicationDetail.address || "",
           customer_name: applicationDetail.customer_name || "",
           customer_phone: applicationDetail.customer_phone || "",
+          customer_id: customerSelectValue,
+          phone_number:
+            customerFromDetail?.phone_number ??
+            applicationDetail.customer_phone ??
+            "",
           remark: applicationDetail.remark || "",
           sizes: (applicationDetail.sizes as string) || "",
           color: applicationDetail.color
@@ -425,8 +451,29 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       const applicationQualities =
         form.getFieldValue("application_qualities") || [];
 
+      const customerId = getValue("customer_id", generalValues?.customer_id);
+
+      const applicationTransactions = transactions.map(
+        ({
+          _uid,
+          id,
+          application_transaction_id,
+          ...transaction
+        }: any) => {
+          const normalized = buildTransactionPayload(transaction);
+          const identifier =
+            application_transaction_id ?? id ?? null;
+
+          return {
+            ...normalized,
+            application_transaction_id: identifier,
+          };
+        },
+      );
+
       const rawData = {
         ...generalValues,
+        customer_id: customerId,
         datetime: getDateTime(generalValues?.datetime),
         production_date: generalValues?.production_date
           ? getDateTime(generalValues?.production_date)
@@ -445,54 +492,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         transom_height_front: generalValues?.transom_height_front || 0,
         transom_height_back: generalValues?.transom_height_back || 0,
         status: generalValues?.status || 1,
+        application_transactions: applicationTransactions,
         transactions:
-          transactions?.map(({ _uid, product, ...item }: any) => ({
-            ...item,
-            product_id: getValue(
-              "product_id",
-              item?.product_id ?? product?.product_id,
-            ),
-            lining_number: getValue("lining_id", item?.lining_number),
-            frame_front_id: getValue("molding_id", item?.frame_front),
-            frame_back_id: getValue("molding_id", item?.frame_back),
-            sheathing_id: getValue("product_id", item?.sheathing_id),
-            trim_id: getValue("product_id", item?.trim_id),
-            up_trim_id: getValue("product_id", item?.up_trim_id),
-            under_trim_id: getValue("product_id", item?.under_trim_id),
-            filler_id: getValue("product_id", item?.filler_id),
-            crown_id: getValue("product_id", item?.crown_id),
-            glass_id: getValue("product_id", item?.glass_id),
-            door_lock_id: getValue("product_id", item?.door_lock_id),
-            canopy_id: getValue("product_id", item?.canopy_id),
-            latch_id: getValue("product_id", item?.latch_id),
-            box_service_id: getValue("product_id", item?.box_service_id),
-            // Additional fields
-            booklet_number: item?.booklet_number,
-            factory_mdf_type: item?.factory_mdf_type,
-            factory_height: item?.factory_height,
-            factory_width: item?.factory_width,
-            factory_mdf: item?.factory_mdf,
-            factory_carcass: item?.factory_carcass,
-            factory_rail: item?.factory_rail,
-            catalogue_number: item?.catalogue_number,
-            pattern_form: item?.pattern_form,
-            quality_multiplier: item?.quality_multiplier,
-            volume_product: item?.volume_product,
-            sheathing_height: item?.sheathing_height,
-            sheathing_width: item?.sheathing_width,
-            sheathing_thickness: item?.sheathing_thickness,
-            sheathing_quantity: item?.sheathing_quantity,
-            trim_height: item?.trim_height,
-            trim_width: item?.trim_width,
-            trim_quantity: item?.trim_quantity,
-            filler_height: item?.filler_height,
-            filler_width: item?.filler_width,
-            filler_quantity: item?.filler_quantity,
-            crown_height: item?.crown_height,
-            crown_width: item?.crown_width,
-            box_service_quantity: item?.box_service_quantity,
-            box_service_length: item?.box_service_length,
-          })) || [],
+          applicationTransactions,
         application_aspects:
           applicationAspects?.map(({ _uid, id, ...item }: any) => ({
             application_aspect_id: id || null,
@@ -617,41 +619,11 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       }
 
       // Transform data to API format
-      const apiData = {
-        application_transactions: transactions.map((t: any) => ({
-          product_id:
-            typeof t.product_id === "object"
-              ? t.product_id?.product_id || 0
-              : t.product_id || 0,
-          quantity: t.quantity || 0,
-          sash: t.sash || "string",
-          sheathing_id:
-            typeof t.sheathing_id === "object"
-              ? t.sheathing_id?.product_id || 0
-              : t.sheathing_id || 0,
-          canopy_id:
-            typeof t.canopy_id === "object"
-              ? t.canopy_id?.product_id || 0
-              : t.canopy_id || 0,
-        })),
-        application_baseboards: baseboards.map((b: any) => ({
-          baseboard_id:
-            typeof b.baseboard_id === "object"
-              ? b.baseboard_id?.baseboard_id || 0
-              : b.baseboard_id || 0,
-          length: b.length || 0,
-        })),
-        application_windowsill: windowsills.map((w: any) => ({
-          windowsill_id:
-            typeof w.windowsill_id === "object"
-              ? w.windowsill_id?.windowsill_id || 0
-              : w.windowsill_id || 0,
-          quantity: w.quantity || 0,
-        })),
-      };
+      const applicationIdRaw =
+        (applicationDetail as any)?.application_id ?? id;
+      const applicationId = applicationIdRaw ? Number(applicationIdRaw) : 0;
 
-      // Call the service manager API
-      const response = await BidsService.getServiceManager(apiData);
+      const response = await BidsService.getServiceManager(applicationId);
 
       if (response?.results?.services) {
         // Get existing services and separate user vs API services

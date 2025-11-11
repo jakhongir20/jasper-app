@@ -81,54 +81,8 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
       }
 
       // Transform data to API format
-      const apiData = {
-        application_transactions: transactions.map((t: any) => ({
-          product_id: extractId(t?.door_product_id) ?? 0,
-          quantity: toNullableNumber(t?.entity_quantity) ?? 0,
-          sash: toNullableNumber(t?.sash) ?? 0,
-          sheathing_id: extractId(t?.sheathing_product_id) ?? 0,
-          canopy_id: extractId(t?.hinge_product_id) ?? 0,
-        })),
-        application_baseboards: baseboards.map((b: any) => ({
-          baseboard_id:
-            typeof b.baseboard_id === "object"
-              ? b.baseboard_id?.baseboard_id || 0
-              : b.baseboard_id || 0,
-          length: b.length || 0,
-        })),
-        application_windowsill: windowsills.map((w: any) => ({
-          windowsill_id:
-            typeof w.windowsill_id === "object"
-              ? w.windowsill_id?.windowsill_id || 0
-              : w.windowsill_id || 0,
-          quantity: w.quantity || 0,
-        })),
-      };
+      return;
 
-      // Call the service manager API
-      const response = await BidsService.getServiceManager(apiData);
-
-      if (response?.results?.services) {
-        // Get existing services and separate user vs API services
-        const existingServices =
-          form.getFieldValue("application_services") || [];
-        const userServices = existingServices.filter(
-          (s: any) => s.source !== "api",
-        );
-
-        // Create new API services with source field
-        const apiServices = response.results.services.map((service: any) => ({
-          ...service,
-          _uid: getRandomId("service_"),
-          service_id: service.service_id,
-          quantity: service.quantity || 0,
-          source: "api", // Mark as API generated
-        }));
-
-        // Merge: keep user services + replace API services
-        const updatedServices = [...userServices, ...apiServices];
-        form.setFieldsValue({ application_services: updatedServices });
-      }
     } catch (error) {
       // Silently fail as per requirements
     }
