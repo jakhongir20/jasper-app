@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 
 import {
   ApplicationLocalForm,
+  ApplicationService,
+  ApplicationAdditionalQuality,
   Option,
   TransactionFormType,
   useUpdateApplication,
@@ -166,6 +168,63 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         } as TransactionFormType;
       });
 
+      const applicationAspects =
+        ((applicationDetail as any).application_aspects ??
+          applicationDetail.aspects ??
+          [])?.map((aspect: any) => {
+            const payload =
+              aspect.aspect_file_payload ??
+              (aspect.aspect_file_url
+                ? getAssetUrl(aspect.aspect_file_url)
+                : aspect.aspect ?? "");
+
+            return {
+              _uid: getRandomId("aspect_"),
+              id: aspect.application_aspect_id ?? aspect.id ?? 0,
+              comment: aspect.comment ?? "",
+              aspect_file_payload: payload ?? "",
+            };
+          }) ?? [];
+
+      const applicationServices =
+        ((applicationDetail as any).application_services ??
+          applicationDetail.services ??
+          [])?.map((service: any) => {
+            const serviceId =
+              service.service_id ??
+              service?.service?.service_id ??
+              service?.service?.id ??
+              null;
+
+            return {
+              _uid: getRandomId("service_"),
+              id: service.application_service_id ?? service.id ?? 0,
+              service_id: serviceId,
+              service: service.service ?? undefined,
+              name: service?.service?.name ?? service.name ?? "",
+              quantity: service.quantity ?? 0,
+              source: service.source ?? "api",
+            } as ApplicationService & { source?: string; };
+          }) ?? [];
+
+      const applicationQualities =
+        ((applicationDetail as any).application_qualities ??
+          applicationDetail.qualities ??
+          [])?.map((quality: any) => {
+            const qualityId =
+              quality.quality_id ??
+              quality?.quality?.quality_id ??
+              quality?.quality?.id ??
+              null;
+
+            return {
+              _uid: getRandomId("quality_"),
+              id: quality.application_quality_id ?? quality.id ?? 0,
+              quality_id: qualityId,
+              quality: quality.quality ?? undefined,
+            } as ApplicationAdditionalQuality;
+          }) ?? [];
+
       const transformedData: ApplicationLocalForm = {
         general: {
           number: applicationDetail.number || "",
@@ -196,18 +255,8 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
           transom_height_back: applicationDetail.transom_height_back || 0,
         } as any,
         transactions: applicationTransactions || [],
-        aspects: applicationDetail.aspects?.map((aspect: any) => ({
-          _uid: getRandomId("aspect_"),
-          id: aspect.application_aspect_id || 0,
-          aspect_file_payload: aspect.aspect_file_url
-            ? getAssetUrl(aspect.aspect_file_url)
-            : aspect.aspect || "",
-          aspect_file_name:
-            aspect.aspect_file_name ||
-            aspect.comment ||
-            t("common.placeholder.aspect"),
-          comment: aspect.comment || "",
-        })),
+        application_aspects: applicationAspects,
+        aspects: applicationAspects,
         sheathings:
           applicationDetail.sheathings?.map((sheathing: any) => {
             // Calculate volume for sheathing
@@ -341,27 +390,10 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
               quantity: decoration.quantity || 0,
             };
           }) || [],
-        services:
-          applicationDetail.services?.map((service) => {
-            return {
-              ...service,
-              _uid: getRandomId("service_"),
-              id: service.application_service_id || 0,
-              service_id: service.service_id || 0,
-              name: service?.service?.name || "",
-              quantity: service.quantity || 0,
-              source: "api", // Mark existing services as API generated
-            };
-          }) || [],
-        qualities:
-          applicationDetail.qualities?.map((quality: any) => {
-            return {
-              _uid: getRandomId("quality_"),
-              id: quality.application_quality_id || 0,
-              quality_id: quality.quality_id || null,
-              quality: quality.quality, // Include the full object
-            };
-          }) || [],
+        application_services: applicationServices,
+        services: applicationServices,
+        application_qualities: applicationQualities,
+        qualities: applicationQualities,
       };
 
       form.setFieldsValue(transformedData as any);
@@ -372,7 +404,8 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
     form.validateFields().then(({ general }) => {
       const generalValues = (general ?? {}) as Record<string, any>;
       const transactions = form.getFieldValue("transactions") || [];
-      const aspects = form.getFieldValue("aspects") || [];
+      const applicationAspects =
+        form.getFieldValue("application_aspects") || [];
       const sheathings = form.getFieldValue("sheathings") || [];
       const baseboards = form.getFieldValue("baseboards") || [];
       const floors = form.getFieldValue("floors") || [];
@@ -380,8 +413,10 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       const lattings = form.getFieldValue("lattings") || [];
       const frameworks = form.getFieldValue("frameworks") || [];
       const decorations = form.getFieldValue("decorations") || [];
-      const services = form.getFieldValue("services") || [];
-      const qualities = form.getFieldValue("qualities") || [];
+      const applicationServices =
+        form.getFieldValue("application_services") || [];
+      const applicationQualities =
+        form.getFieldValue("application_qualities") || [];
 
       const rawData = {
         ...generalValues,
@@ -448,10 +483,15 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             box_service_quantity: item?.box_service_quantity,
             box_service_length: item?.box_service_length,
           })) || [],
-        aspects:
-          aspects?.map(({ _uid, ...item }: any) => ({
+        application_aspects:
+          applicationAspects?.map(({ _uid, id, ...item }: any) => ({
+            application_aspect_id: id || null,
             ...item,
-            aspect_file_name: item?.comment || t("common.placeholder.aspect"),
+          })) || [],
+        aspects:
+          applicationAspects?.map(({ _uid, id, ...item }: any) => ({
+            application_aspect_id: id || null,
+            ...item,
           })) || [],
         sheathings:
           sheathings?.map(({ _uid, ...item }: any) => ({
@@ -488,14 +528,28 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             ...item,
             decoration_id: getValue("decoration_id", item?.decoration_id),
           })) || [],
-        services:
-          services?.map(({ _uid, ...item }: any) => ({
-            ...item,
+        application_services:
+          applicationServices?.map(({ _uid, id, ...item }: any) => ({
+            application_service_id: id || null,
             service_id: getValue("service_id", item?.service_id),
+            quantity: item?.quantity,
+            source: item?.source,
+          })) || [],
+        services:
+          applicationServices?.map(({ _uid, id, ...item }: any) => ({
+            application_service_id: id || null,
+            service_id: getValue("service_id", item?.service_id),
+            quantity: item?.quantity,
+            source: item?.source,
+          })) || [],
+        application_qualities:
+          applicationQualities?.map(({ _uid, id, ...item }: any) => ({
+            application_quality_id: id || null,
+            quality_id: getValue("quality_id", item?.quality_id),
           })) || [],
         qualities:
-          qualities?.map(({ _uid, ...item }: any) => ({
-            ...item,
+          applicationQualities?.map(({ _uid, id, ...item }: any) => ({
+            application_quality_id: id || null,
             quality_id: getValue("quality_id", item?.quality_id),
           })) || [],
       };
@@ -591,7 +645,8 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
 
       if (response?.results?.services) {
         // Get existing services and separate user vs API services
-        const existingServices = form.getFieldValue("services") || [];
+        const existingServices =
+          form.getFieldValue("application_services") || [];
         const userServices = existingServices.filter(
           (s: any) => s.source !== "api",
         );
@@ -607,7 +662,10 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
 
         // Merge: keep user services + replace API services
         const updatedServices = [...userServices, ...apiServices];
-        form.setFieldsValue({ services: updatedServices });
+        form.setFieldsValue({
+          application_services: updatedServices,
+          services: updatedServices,
+        });
       }
     } catch (error) {
       // Silently fail as per requirements
