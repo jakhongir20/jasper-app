@@ -26,7 +26,7 @@ export class BidsService {
   }
 
   static forecast(id: string, form: unknown): Promise<ApplicationDetail> {
-    return ApiService.$put<ApplicationDetail>(
+    return ApiService.$post<ApplicationDetail>(
       `/application/forecast?application_id=${id}`,
       form,
     );
@@ -55,10 +55,8 @@ export class BidsService {
           quantity: number;
         }>;
       };
-    }>(
-      "/application/forecast",
-      undefined,
-      { params: { application_id: applicationId } },
-    );
+    }>("/application/forecast", undefined, {
+      params: { application_id: applicationId },
+    });
   }
 }

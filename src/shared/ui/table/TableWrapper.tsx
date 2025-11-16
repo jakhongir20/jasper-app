@@ -28,6 +28,7 @@ interface Props<T extends object> extends ReusableTableProps<T> {
   showDropdown?: boolean;
   showRowIndex?: boolean;
   cvsOptions?: CVSOptions;
+  emptyTableClassName: string;
 }
 
 export const TableWrapper = <T extends object>({
@@ -52,6 +53,7 @@ export const TableWrapper = <T extends object>({
   showDropdown,
   title = undefined,
   cvsOptions,
+  emptyTableClassName = "",
   ...rest
 }: Props<T>) => {
   const { t } = useTranslation();
@@ -104,21 +106,21 @@ export const TableWrapper = <T extends object>({
         title={
           title
             ? () => (
-                <span className={"flex items-center justify-between gap-4"}>
-                  {title ? title([]) : undefined}
-                  {showSearch && (
-                    <TableAddSearch
-                      cvsOptions={cvsOptions}
-                      isShowCVS={isShowCVS}
-                      showSearch={showSearch}
-                      addButtonText={addButtonText}
-                      addButtonVariant={addButtonVariant}
-                      showAddButton={showAddButton as boolean}
-                      onAdd={onAdd}
-                    />
-                  )}
-                </span>
-              )
+              <span className={"flex items-center justify-between gap-4"}>
+                {title ? title([]) : undefined}
+                {showSearch && (
+                  <TableAddSearch
+                    cvsOptions={cvsOptions}
+                    isShowCVS={isShowCVS}
+                    showSearch={showSearch}
+                    addButtonText={addButtonText}
+                    addButtonVariant={addButtonVariant}
+                    showAddButton={showAddButton as boolean}
+                    onAdd={onAdd}
+                  />
+                )}
+              </span>
+            )
             : undefined
         }
         {...rest}
@@ -178,9 +180,8 @@ export const TableWrapper = <T extends object>({
             </div>
 
             <div
-              className={`table-filter-slide mt-1 flex flex-col items-start ${
-                filterOpen ? "open" : ""
-              }`}
+              className={`table-filter-slide mt-1 flex flex-col items-start ${filterOpen ? "open" : ""
+                }`}
             >
               {/* Triangle */}
               <div
@@ -201,7 +202,7 @@ export const TableWrapper = <T extends object>({
         )}
       </Table>
       {!loading && safeData.length === 0 && (
-        <EmptyTable showAddButton={showAddButton as boolean} onClick={onAdd} />
+        <EmptyTable showAddButton={showAddButton as boolean} className={emptyTableClassName} onClick={onAdd} />
       )}
     </>
   );

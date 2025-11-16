@@ -12,6 +12,7 @@ interface Props {
 }
 
 export const CalculationResults: FC<Props> = ({ application }) => {
+
   const { t } = useTranslation();
 
   // Helper function to calculate total forecast for a specific category
@@ -462,19 +463,20 @@ export const CalculationResults: FC<Props> = ({ application }) => {
         <Title level={4}>{t("common.labels.main_products")}</Title>
         <TableWrapper
           columns={mainProductsColumns}
-          data={application.transactions?.filter((t) => t.product) || []}
+          data={application.application_transactions?.filter((t) => t.product) || []}
           loading={false}
           showSearch={false}
           showAddButton={false}
           showFilter={false}
           pagination={false}
+          emptyTableClassName="min-h-0"
           title={() => (
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-500">
                 {t("common.labels.total")}:{" "}
                 {formatMoneyDecimal(
                   calculateTotalForecast(
-                    application.transactions || [],
+                    application.application_transactions || [],
                     "forecast_product",
                   ),
                   2,
@@ -486,24 +488,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       </Card>
 
       {/* Sheathing */}
-      {application.transactions?.some((t) => t.sheathing) && (
+      {application.application_transactions?.some((t) => t.sheathing_product) && (
         <Card>
           <Title level={4}>{t("common.labels.sheathing")}</Title>
           <TableWrapper
             columns={sheathingColumns}
-            data={application.transactions?.filter((t) => t.sheathing) || []}
+            data={application.application_transactions?.filter((t) => t.sheathing_product) || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.transactions || [],
+                      application.application_transactions || [],
                       "forecast_sheathing",
                     ),
                     2,
@@ -516,24 +519,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Trims */}
-      {application.transactions?.some((t) => t.trim) && (
+      {application?.application_transactions?.some((t) => t.trim_product) && (
         <Card>
           <Title level={4}>{t("common.labels.trims")}</Title>
           <TableWrapper
             columns={trimColumns}
-            data={application.transactions?.filter((t) => t.trim) || []}
+            data={application?.application_transactions?.filter((t) => t.trim_product) || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.transactions || [],
+                      application?.application_transactions || [],
                       "forecast_trim",
                     ),
                     2,
@@ -546,24 +550,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Fillers */}
-      {application.transactions?.some((t) => t.filler) && (
+      {application?.application_transactions?.some((t) => t.filler_product) && (
         <Card>
           <Title level={4}>{t("common.labels.fillers")}</Title>
           <TableWrapper
             columns={fillerColumns}
-            data={application.transactions?.filter((t) => t.filler) || []}
+            data={application?.application_transactions?.filter((t) => t.filler_product) || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.transactions || [],
+                      application?.application_transactions || [],
                       "forecast_filler",
                     ),
                     2,
@@ -576,24 +581,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Door Locks */}
-      {application.transactions?.some((t) => t.door_lock) && (
+      {application?.application_transactions?.some((t) => t.door_lock_product) && (
         <Card>
           <Title level={4}>{t("common.labels.door_locks")}</Title>
           <TableWrapper
             columns={doorLockColumns}
-            data={application.transactions?.filter((t) => t.door_lock) || []}
+            data={application?.application_transactions?.filter((t) => t.door_lock_product) || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.transactions || [],
+                      application?.application_transactions || [],
                       "forecast_door_lock",
                     ),
                     2,
@@ -606,24 +612,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Canopies */}
-      {application.transactions?.some((t) => t.canopy) && (
+      {application?.application_transactions?.some((t) => t.canopy) && (
         <Card>
           <Title level={4}>{t("common.labels.canopies")}</Title>
           <TableWrapper
             columns={canopyColumns}
-            data={application.transactions?.filter((t) => t.canopy) || []}
+            data={application?.application_transactions?.filter((t) => t.canopy) || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.transactions || [],
+                      application?.application_transactions || [],
                       "forecast_canopy",
                     ),
                     2,
@@ -636,24 +643,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Glass */}
-      {application.transactions?.some((t) => t.glass) && (
+      {application?.application_transactions?.some((t) => t.glass_product) && (
         <Card>
           <Title level={4}>{t("common.labels.glass")}</Title>
           <TableWrapper
             columns={glassColumns}
-            data={application.transactions?.filter((t) => t.glass) || []}
+            data={application?.application_transactions?.filter((t) => t.glass_product) || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.transactions || [],
+                      application?.application_transactions || [],
                       "forecast_glass",
                     ),
                     2,
@@ -666,24 +674,25 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Services */}
-      {application.services && application.services.length > 0 && (
+      {application.application_services && application.application_services.length > 0 && (
         <Card>
           <Title level={4}>{t("common.labels.services")}</Title>
           <TableWrapper
             columns={servicesColumns}
-            data={application.services || []}
+            data={application.application_services || []}
             loading={false}
             showSearch={false}
             showAddButton={false}
             showFilter={false}
             pagination={false}
+            emptyTableClassName="min-h-0"
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
                   {formatMoneyDecimal(
                     Math.round(
-                      (application.services || []).reduce(
+                      (application.application_services || []).reduce(
                         (sum, item) => sum + (item.forecast || 0),
                         0,
                       ) * 100,
@@ -708,6 +717,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             showSearch={false}
             showAddButton={false}
             showFilter={false}
+            emptyTableClassName="min-h-0"
             pagination={false}
             title={() => (
               <div className="flex items-center justify-between">
@@ -722,9 +732,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
                         return (
                           sum +
                           unitPrice *
-                            quantity *
-                            length *
-                            (application.forecast_rate || 1)
+                          quantity *
+                          length *
+                          (application.forecast_rate || 1)
                         );
                       }, 0) * 100,
                     ) / 100,

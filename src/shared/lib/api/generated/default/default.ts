@@ -6,10 +6,7 @@
  *  * 0.1.0
  *  *\/
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -22,8 +19,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   ApplicationCloseApplicationClosePostParams,
@@ -142,6982 +139,11607 @@ import type {
   WindowsillGetWindowsillGetParams,
   WindowsillInputEntity,
   WindowsillOutputEntity,
-  WindowsillReadAllWindowsillAllGetParams
-} from '.././model';
+  WindowsillReadAllWindowsillAllGetParams,
+} from ".././model";
 
-import { customInstance } from '../../mutator';
-import type { ErrorType } from '../../mutator';
-
+import { customInstance } from "../../mutator";
+import type { ErrorType } from "../../mutator";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 /**
  * @summary Configuration Read One
  */
 export const configurationReadOneConfigurationGet = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ConfigurationEntity>(
-      {url: `/configuration`, method: 'GET', signal
-    },
-      options);
-    }
-  
+  return customInstance<ConfigurationEntity>(
+    { url: `/configuration`, method: "GET", signal },
+    options,
+  );
+};
 
 export const getConfigurationReadOneConfigurationGetQueryKey = () => {
-    return [`/configuration`] as const;
-    }
+  return [`/configuration`] as const;
+};
 
-    
-export const getConfigurationReadOneConfigurationGetQueryOptions = <TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
+export const getConfigurationReadOneConfigurationGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey =
+    queryOptions?.queryKey ?? getConfigurationReadOneConfigurationGetQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getConfigurationReadOneConfigurationGetQueryKey();
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>
+  > = ({ signal }) =>
+    configurationReadOneConfigurationGet(requestOptions, signal);
 
-  
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>> = ({ signal }) => configurationReadOneConfigurationGet(requestOptions, signal);
+export type ConfigurationReadOneConfigurationGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>
+>;
+export type ConfigurationReadOneConfigurationGetQueryError = ErrorType<unknown>;
 
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ConfigurationReadOneConfigurationGetQueryResult = NonNullable<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>>
-export type ConfigurationReadOneConfigurationGetQueryError = ErrorType<unknown>
-
-
-export function useConfigurationReadOneConfigurationGet<TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError, TData>> & Pick<
+export function useConfigurationReadOneConfigurationGet<
+  TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
           TError,
           Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useConfigurationReadOneConfigurationGet<TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useConfigurationReadOneConfigurationGet<
+  TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
           TError,
           Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useConfigurationReadOneConfigurationGet<TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useConfigurationReadOneConfigurationGet<
+  TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Configuration Read One
  */
 
-export function useConfigurationReadOneConfigurationGet<TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useConfigurationReadOneConfigurationGet<
+  TData = Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof configurationReadOneConfigurationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getConfigurationReadOneConfigurationGetQueryOptions(options);
 
-  const queryOptions = getConfigurationReadOneConfigurationGetQueryOptions(options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Configuration Update
  */
 export const configurationUpdateConfigurationPut = (
-    
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/configuration`, method: 'PUT'
-    },
-      options);
-    }
-  
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/configuration`, method: "PUT" },
+    options,
+  );
+};
 
+export const getConfigurationUpdateConfigurationPutMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["configurationUpdateConfigurationPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getConfigurationUpdateConfigurationPutMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>, TError,void, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>,
+    void
+  > = () => {
+    return configurationUpdateConfigurationPut(requestOptions);
+  };
 
-const mutationKey = ['configurationUpdateConfigurationPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type ConfigurationUpdateConfigurationPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>
+>;
 
+export type ConfigurationUpdateConfigurationPutMutationError =
+  ErrorType<unknown>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>, void> = () => {
-          
-
-          return  configurationUpdateConfigurationPut(requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ConfigurationUpdateConfigurationPutMutationResult = NonNullable<Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>>
-    
-    export type ConfigurationUpdateConfigurationPutMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Configuration Update
  */
-export const useConfigurationUpdateConfigurationPut = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>,
-        TError,
-        void,
-        TContext
-      > => {
+export const useConfigurationUpdateConfigurationPut = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>,
+      TError,
+      void,
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof configurationUpdateConfigurationPut>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions =
+    getConfigurationUpdateConfigurationPutMutationOptions(options);
 
-      const mutationOptions = getConfigurationUpdateConfigurationPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Create
  */
 export const applicationCreateApplicationPost = (
-    applicationInputEntity: ApplicationInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  applicationInputEntity: ApplicationInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ApplicationOutputEntity>(
-      {url: `/application`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: applicationInputEntity, signal
+  return customInstance<ApplicationOutputEntity>(
+    {
+      url: `/application`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: applicationInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getApplicationCreateApplicationPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationCreateApplicationPost>>,
+    TError,
+    { data: ApplicationInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationCreateApplicationPost>>,
+  TError,
+  { data: ApplicationInputEntity },
+  TContext
+> => {
+  const mutationKey = ["applicationCreateApplicationPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationCreateApplicationPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationCreateApplicationPost>>, TError,{data: ApplicationInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationCreateApplicationPost>>, TError,{data: ApplicationInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationCreateApplicationPost>>,
+    { data: ApplicationInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['applicationCreateApplicationPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return applicationCreateApplicationPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ApplicationCreateApplicationPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof applicationCreateApplicationPost>>
+>;
+export type ApplicationCreateApplicationPostMutationBody =
+  ApplicationInputEntity;
+export type ApplicationCreateApplicationPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationCreateApplicationPost>>, {data: ApplicationInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  applicationCreateApplicationPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationCreateApplicationPostMutationResult = NonNullable<Awaited<ReturnType<typeof applicationCreateApplicationPost>>>
-    export type ApplicationCreateApplicationPostMutationBody = ApplicationInputEntity
-    export type ApplicationCreateApplicationPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Create
  */
-export const useApplicationCreateApplicationPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationCreateApplicationPost>>, TError,{data: ApplicationInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationCreateApplicationPost>>,
-        TError,
-        {data: ApplicationInputEntity},
-        TContext
-      > => {
+export const useApplicationCreateApplicationPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationCreateApplicationPost>>,
+      TError,
+      { data: ApplicationInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationCreateApplicationPost>>,
+  TError,
+  { data: ApplicationInputEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationCreateApplicationPostMutationOptions(options);
 
-      const mutationOptions = getApplicationCreateApplicationPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Get
  */
 export const applicationGetApplicationGet = (
-    params: ApplicationGetApplicationGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ApplicationGetApplicationGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ApplicationOutputEntity>(
-      {url: `/application`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<ApplicationOutputEntity>(
+    { url: `/application`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getApplicationGetApplicationGetQueryKey = (params?: ApplicationGetApplicationGetParams,) => {
-    return [`/application`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getApplicationGetApplicationGetQueryOptions = <TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ApplicationGetApplicationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getApplicationGetApplicationGetQueryKey = (
+  params?: ApplicationGetApplicationGetParams,
 ) => {
+  return [`/application`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getApplicationGetApplicationGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ApplicationGetApplicationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getApplicationGetApplicationGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getApplicationGetApplicationGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof applicationGetApplicationGet>>
+  > = ({ signal }) =>
+    applicationGetApplicationGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof applicationGetApplicationGet>>> = ({ signal }) => applicationGetApplicationGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ApplicationGetApplicationGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof applicationGetApplicationGet>>
+>;
+export type ApplicationGetApplicationGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ApplicationGetApplicationGetQueryResult = NonNullable<Awaited<ReturnType<typeof applicationGetApplicationGet>>>
-export type ApplicationGetApplicationGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useApplicationGetApplicationGet<TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ApplicationGetApplicationGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError, TData>> & Pick<
+export function useApplicationGetApplicationGet<
+  TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ApplicationGetApplicationGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof applicationGetApplicationGet>>,
           TError,
           Awaited<ReturnType<typeof applicationGetApplicationGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useApplicationGetApplicationGet<TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ApplicationGetApplicationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useApplicationGetApplicationGet<
+  TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ApplicationGetApplicationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof applicationGetApplicationGet>>,
           TError,
           Awaited<ReturnType<typeof applicationGetApplicationGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useApplicationGetApplicationGet<TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ApplicationGetApplicationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useApplicationGetApplicationGet<
+  TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ApplicationGetApplicationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Application Get
  */
 
-export function useApplicationGetApplicationGet<TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ApplicationGetApplicationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationGetApplicationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useApplicationGetApplicationGet<
+  TData = Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ApplicationGetApplicationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationGetApplicationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getApplicationGetApplicationGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getApplicationGetApplicationGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Application Edit
  */
 export const applicationEditApplicationPut = (
-    applicationInputEntity: ApplicationInputEntity,
-    params: ApplicationEditApplicationPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ApplicationOutputEntity>(
-      {url: `/application`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  applicationInputEntity: ApplicationInputEntity,
+  params: ApplicationEditApplicationPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ApplicationOutputEntity>(
+    {
+      url: `/application`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: applicationInputEntity,
-        params
+      params,
     },
-      options);
+    options,
+  );
+};
+
+export const getApplicationEditApplicationPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationEditApplicationPut>>,
+    TError,
+    {
+      data: ApplicationInputEntity;
+      params: ApplicationEditApplicationPutParams;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationEditApplicationPut>>,
+  TError,
+  { data: ApplicationInputEntity; params: ApplicationEditApplicationPutParams },
+  TContext
+> => {
+  const mutationKey = ["applicationEditApplicationPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationEditApplicationPut>>,
+    {
+      data: ApplicationInputEntity;
+      params: ApplicationEditApplicationPutParams;
     }
-  
+  > = (props) => {
+    const { data, params } = props ?? {};
 
+    return applicationEditApplicationPut(data, params, requestOptions);
+  };
 
-export const getApplicationEditApplicationPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationEditApplicationPut>>, TError,{data: ApplicationInputEntity;params: ApplicationEditApplicationPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationEditApplicationPut>>, TError,{data: ApplicationInputEntity;params: ApplicationEditApplicationPutParams}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['applicationEditApplicationPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type ApplicationEditApplicationPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof applicationEditApplicationPut>>
+>;
+export type ApplicationEditApplicationPutMutationBody = ApplicationInputEntity;
+export type ApplicationEditApplicationPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationEditApplicationPut>>, {data: ApplicationInputEntity;params: ApplicationEditApplicationPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  applicationEditApplicationPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationEditApplicationPutMutationResult = NonNullable<Awaited<ReturnType<typeof applicationEditApplicationPut>>>
-    export type ApplicationEditApplicationPutMutationBody = ApplicationInputEntity
-    export type ApplicationEditApplicationPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Edit
  */
-export const useApplicationEditApplicationPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationEditApplicationPut>>, TError,{data: ApplicationInputEntity;params: ApplicationEditApplicationPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationEditApplicationPut>>,
-        TError,
-        {data: ApplicationInputEntity;params: ApplicationEditApplicationPutParams},
-        TContext
-      > => {
+export const useApplicationEditApplicationPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationEditApplicationPut>>,
+      TError,
+      {
+        data: ApplicationInputEntity;
+        params: ApplicationEditApplicationPutParams;
+      },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationEditApplicationPut>>,
+  TError,
+  { data: ApplicationInputEntity; params: ApplicationEditApplicationPutParams },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationEditApplicationPutMutationOptions(options);
 
-      const mutationOptions = getApplicationEditApplicationPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Delete
  */
 export const applicationDeleteApplicationDelete = (
-    params: ApplicationDeleteApplicationDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/application`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: ApplicationDeleteApplicationDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/application`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getApplicationDeleteApplicationDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>,
+    TError,
+    { params: ApplicationDeleteApplicationDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>,
+  TError,
+  { params: ApplicationDeleteApplicationDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["applicationDeleteApplicationDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationDeleteApplicationDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>, TError,{params: ApplicationDeleteApplicationDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>, TError,{params: ApplicationDeleteApplicationDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>,
+    { params: ApplicationDeleteApplicationDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['applicationDeleteApplicationDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return applicationDeleteApplicationDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ApplicationDeleteApplicationDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>, {params: ApplicationDeleteApplicationDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type ApplicationDeleteApplicationDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  applicationDeleteApplicationDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationDeleteApplicationDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>>
-    
-    export type ApplicationDeleteApplicationDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Delete
  */
-export const useApplicationDeleteApplicationDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>, TError,{params: ApplicationDeleteApplicationDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>,
-        TError,
-        {params: ApplicationDeleteApplicationDeleteParams},
-        TContext
-      > => {
+export const useApplicationDeleteApplicationDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>,
+      TError,
+      { params: ApplicationDeleteApplicationDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationDeleteApplicationDelete>>,
+  TError,
+  { params: ApplicationDeleteApplicationDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationDeleteApplicationDeleteMutationOptions(options);
 
-      const mutationOptions = getApplicationDeleteApplicationDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Forecast
  */
 export const applicationForecastApplicationForecastPut = (
-    applicationForecastInputEntity: ApplicationForecastInputEntity,
-    params: ApplicationForecastApplicationForecastPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ApplicationForecastOutputEntity>(
-      {url: `/application/forecast`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  applicationForecastInputEntity: ApplicationForecastInputEntity,
+  params: ApplicationForecastApplicationForecastPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ApplicationForecastOutputEntity>(
+    {
+      url: `/application/forecast`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       data: applicationForecastInputEntity,
-        params
+      params,
     },
-      options);
+    options,
+  );
+};
+
+export const getApplicationForecastApplicationForecastPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>,
+    TError,
+    {
+      data: ApplicationForecastInputEntity;
+      params: ApplicationForecastApplicationForecastPutParams;
+    },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>,
+  TError,
+  {
+    data: ApplicationForecastInputEntity;
+    params: ApplicationForecastApplicationForecastPutParams;
+  },
+  TContext
+> => {
+  const mutationKey = ["applicationForecastApplicationForecastPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>,
+    {
+      data: ApplicationForecastInputEntity;
+      params: ApplicationForecastApplicationForecastPutParams;
     }
-  
+  > = (props) => {
+    const { data, params } = props ?? {};
 
+    return applicationForecastApplicationForecastPut(
+      data,
+      params,
+      requestOptions,
+    );
+  };
 
-export const getApplicationForecastApplicationForecastPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>, TError,{data: ApplicationForecastInputEntity;params: ApplicationForecastApplicationForecastPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>, TError,{data: ApplicationForecastInputEntity;params: ApplicationForecastApplicationForecastPutParams}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['applicationForecastApplicationForecastPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type ApplicationForecastApplicationForecastPutMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>
+  >;
+export type ApplicationForecastApplicationForecastPutMutationBody =
+  ApplicationForecastInputEntity;
+export type ApplicationForecastApplicationForecastPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>, {data: ApplicationForecastInputEntity;params: ApplicationForecastApplicationForecastPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  applicationForecastApplicationForecastPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationForecastApplicationForecastPutMutationResult = NonNullable<Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>>
-    export type ApplicationForecastApplicationForecastPutMutationBody = ApplicationForecastInputEntity
-    export type ApplicationForecastApplicationForecastPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Forecast
  */
-export const useApplicationForecastApplicationForecastPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>, TError,{data: ApplicationForecastInputEntity;params: ApplicationForecastApplicationForecastPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>,
-        TError,
-        {data: ApplicationForecastInputEntity;params: ApplicationForecastApplicationForecastPutParams},
-        TContext
-      > => {
+export const useApplicationForecastApplicationForecastPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>,
+      TError,
+      {
+        data: ApplicationForecastInputEntity;
+        params: ApplicationForecastApplicationForecastPutParams;
+      },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationForecastApplicationForecastPut>>,
+  TError,
+  {
+    data: ApplicationForecastInputEntity;
+    params: ApplicationForecastApplicationForecastPutParams;
+  },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationForecastApplicationForecastPutMutationOptions(options);
 
-      const mutationOptions = getApplicationForecastApplicationForecastPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Measure
  */
 export const applicationMeasureApplicationMeasurePost = (
-    applicationTransactionMeasureEntity: ApplicationTransactionMeasureEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  applicationTransactionMeasureEntity: ApplicationTransactionMeasureEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ApplicationMeasureApplicationMeasurePost200>(
-      {url: `/application/measure`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: applicationTransactionMeasureEntity, signal
+  return customInstance<ApplicationMeasureApplicationMeasurePost200>(
+    {
+      url: `/application/measure`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: applicationTransactionMeasureEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getApplicationMeasureApplicationMeasurePostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>,
+    TError,
+    { data: ApplicationTransactionMeasureEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>,
+  TError,
+  { data: ApplicationTransactionMeasureEntity },
+  TContext
+> => {
+  const mutationKey = ["applicationMeasureApplicationMeasurePost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationMeasureApplicationMeasurePostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>, TError,{data: ApplicationTransactionMeasureEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>, TError,{data: ApplicationTransactionMeasureEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>,
+    { data: ApplicationTransactionMeasureEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['applicationMeasureApplicationMeasurePost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return applicationMeasureApplicationMeasurePost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ApplicationMeasureApplicationMeasurePostMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>
+  >;
+export type ApplicationMeasureApplicationMeasurePostMutationBody =
+  ApplicationTransactionMeasureEntity;
+export type ApplicationMeasureApplicationMeasurePostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>, {data: ApplicationTransactionMeasureEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  applicationMeasureApplicationMeasurePost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationMeasureApplicationMeasurePostMutationResult = NonNullable<Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>>
-    export type ApplicationMeasureApplicationMeasurePostMutationBody = ApplicationTransactionMeasureEntity
-    export type ApplicationMeasureApplicationMeasurePostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Measure
  */
-export const useApplicationMeasureApplicationMeasurePost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>, TError,{data: ApplicationTransactionMeasureEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>,
-        TError,
-        {data: ApplicationTransactionMeasureEntity},
-        TContext
-      > => {
+export const useApplicationMeasureApplicationMeasurePost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>,
+      TError,
+      { data: ApplicationTransactionMeasureEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationMeasureApplicationMeasurePost>>,
+  TError,
+  { data: ApplicationTransactionMeasureEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationMeasureApplicationMeasurePostMutationOptions(options);
 
-      const mutationOptions = getApplicationMeasureApplicationMeasurePostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Service Manager
  */
 export const applicationServiceManagerApplicationServiceManagerPost = (
-    applicationServiceManagerEntity: ApplicationServiceManagerEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  applicationServiceManagerEntity: ApplicationServiceManagerEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ApplicationServiceManagerApplicationServiceManagerPost200>(
-      {url: `/application/service/manager`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: applicationServiceManagerEntity, signal
+  return customInstance<ApplicationServiceManagerApplicationServiceManagerPost200>(
+    {
+      url: `/application/service/manager`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: applicationServiceManagerEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getApplicationServiceManagerApplicationServiceManagerPostMutationOptions =
+  <
+    TError = ErrorType<HTTPValidationErrorEntity>,
+    TContext = unknown,
+  >(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<
+          typeof applicationServiceManagerApplicationServiceManagerPost
+        >
+      >,
+      TError,
+      { data: ApplicationServiceManagerEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  }): UseMutationOptions<
+    Awaited<
+      ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>
+    >,
+    TError,
+    { data: ApplicationServiceManagerEntity },
+    TContext
+  > => {
+    const mutationKey = [
+      "applicationServiceManagerApplicationServiceManagerPost",
+    ];
+    const { mutation: mutationOptions, request: requestOptions } = options
+      ? options.mutation &&
+        "mutationKey" in options.mutation &&
+        options.mutation.mutationKey
+        ? options
+        : { ...options, mutation: { ...options.mutation, mutationKey } }
+      : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationServiceManagerApplicationServiceManagerPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>>, TError,{data: ApplicationServiceManagerEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>>, TError,{data: ApplicationServiceManagerEntity}, TContext> => {
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<
+          typeof applicationServiceManagerApplicationServiceManagerPost
+        >
+      >,
+      { data: ApplicationServiceManagerEntity }
+    > = (props) => {
+      const { data } = props ?? {};
 
-const mutationKey = ['applicationServiceManagerApplicationServiceManagerPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+      return applicationServiceManagerApplicationServiceManagerPost(
+        data,
+        requestOptions,
+      );
+    };
 
-      
+    return { mutationFn, ...mutationOptions };
+  };
 
+export type ApplicationServiceManagerApplicationServiceManagerPostMutationResult =
+  NonNullable<
+    Awaited<
+      ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>
+    >
+  >;
+export type ApplicationServiceManagerApplicationServiceManagerPostMutationBody =
+  ApplicationServiceManagerEntity;
+export type ApplicationServiceManagerApplicationServiceManagerPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>>, {data: ApplicationServiceManagerEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  applicationServiceManagerApplicationServiceManagerPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationServiceManagerApplicationServiceManagerPostMutationResult = NonNullable<Awaited<ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>>>
-    export type ApplicationServiceManagerApplicationServiceManagerPostMutationBody = ApplicationServiceManagerEntity
-    export type ApplicationServiceManagerApplicationServiceManagerPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Service Manager
  */
-export const useApplicationServiceManagerApplicationServiceManagerPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>>, TError,{data: ApplicationServiceManagerEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>>,
-        TError,
-        {data: ApplicationServiceManagerEntity},
-        TContext
-      > => {
+export const useApplicationServiceManagerApplicationServiceManagerPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<
+          typeof applicationServiceManagerApplicationServiceManagerPost
+        >
+      >,
+      TError,
+      { data: ApplicationServiceManagerEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<
+    ReturnType<typeof applicationServiceManagerApplicationServiceManagerPost>
+  >,
+  TError,
+  { data: ApplicationServiceManagerEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationServiceManagerApplicationServiceManagerPostMutationOptions(
+      options,
+    );
 
-      const mutationOptions = getApplicationServiceManagerApplicationServiceManagerPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Factory
  */
 export const applicationFactoryApplicationFactoryPut = (
-    params: ApplicationFactoryApplicationFactoryPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ApplicationOutputEntity>(
-      {url: `/application/factory`, method: 'PUT',
-        params
-    },
-      options);
-    }
-  
+  params: ApplicationFactoryApplicationFactoryPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ApplicationOutputEntity>(
+    { url: `/application/factory`, method: "PUT", params },
+    options,
+  );
+};
 
+export const getApplicationFactoryApplicationFactoryPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>,
+    TError,
+    { params: ApplicationFactoryApplicationFactoryPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>,
+  TError,
+  { params: ApplicationFactoryApplicationFactoryPutParams },
+  TContext
+> => {
+  const mutationKey = ["applicationFactoryApplicationFactoryPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationFactoryApplicationFactoryPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>, TError,{params: ApplicationFactoryApplicationFactoryPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>, TError,{params: ApplicationFactoryApplicationFactoryPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>,
+    { params: ApplicationFactoryApplicationFactoryPutParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['applicationFactoryApplicationFactoryPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return applicationFactoryApplicationFactoryPut(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ApplicationFactoryApplicationFactoryPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>, {params: ApplicationFactoryApplicationFactoryPutParams}> = (props) => {
-          const {params} = props ?? {};
+export type ApplicationFactoryApplicationFactoryPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  applicationFactoryApplicationFactoryPut(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationFactoryApplicationFactoryPutMutationResult = NonNullable<Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>>
-    
-    export type ApplicationFactoryApplicationFactoryPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Factory
  */
-export const useApplicationFactoryApplicationFactoryPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>, TError,{params: ApplicationFactoryApplicationFactoryPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>,
-        TError,
-        {params: ApplicationFactoryApplicationFactoryPutParams},
-        TContext
-      > => {
+export const useApplicationFactoryApplicationFactoryPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>,
+      TError,
+      { params: ApplicationFactoryApplicationFactoryPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationFactoryApplicationFactoryPut>>,
+  TError,
+  { params: ApplicationFactoryApplicationFactoryPutParams },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationFactoryApplicationFactoryPutMutationOptions(options);
 
-      const mutationOptions = getApplicationFactoryApplicationFactoryPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Telegram
  */
 export const applicationTelegramApplicationTelegramPost = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/application/telegram`, method: 'POST', signal
-    },
-      options);
-    }
-  
+  return customInstance<boolean>(
+    { url: `/application/telegram`, method: "POST", signal },
+    options,
+  );
+};
 
+export const getApplicationTelegramApplicationTelegramPostMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["applicationTelegramApplicationTelegramPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationTelegramApplicationTelegramPostMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>, TError,void, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>,
+    void
+  > = () => {
+    return applicationTelegramApplicationTelegramPost(requestOptions);
+  };
 
-const mutationKey = ['applicationTelegramApplicationTelegramPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type ApplicationTelegramApplicationTelegramPostMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>
+  >;
 
+export type ApplicationTelegramApplicationTelegramPostMutationError =
+  ErrorType<unknown>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>, void> = () => {
-          
-
-          return  applicationTelegramApplicationTelegramPost(requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationTelegramApplicationTelegramPostMutationResult = NonNullable<Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>>
-    
-    export type ApplicationTelegramApplicationTelegramPostMutationError = ErrorType<unknown>
-
-    /**
+/**
  * @summary Application Telegram
  */
-export const useApplicationTelegramApplicationTelegramPost = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>,
-        TError,
-        void,
-        TContext
-      > => {
+export const useApplicationTelegramApplicationTelegramPost = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>,
+      TError,
+      void,
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationTelegramApplicationTelegramPost>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationTelegramApplicationTelegramPostMutationOptions(options);
 
-      const mutationOptions = getApplicationTelegramApplicationTelegramPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Close
  */
 export const applicationCloseApplicationClosePost = (
-    params: ApplicationCloseApplicationClosePostParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ApplicationCloseApplicationClosePostParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/application/close`, method: 'POST',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<boolean>(
+    { url: `/application/close`, method: "POST", params, signal },
+    options,
+  );
+};
 
+export const getApplicationCloseApplicationClosePostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>,
+    TError,
+    { params: ApplicationCloseApplicationClosePostParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>,
+  TError,
+  { params: ApplicationCloseApplicationClosePostParams },
+  TContext
+> => {
+  const mutationKey = ["applicationCloseApplicationClosePost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getApplicationCloseApplicationClosePostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>, TError,{params: ApplicationCloseApplicationClosePostParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>, TError,{params: ApplicationCloseApplicationClosePostParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>,
+    { params: ApplicationCloseApplicationClosePostParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['applicationCloseApplicationClosePost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return applicationCloseApplicationClosePost(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ApplicationCloseApplicationClosePostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>, {params: ApplicationCloseApplicationClosePostParams}> = (props) => {
-          const {params} = props ?? {};
+export type ApplicationCloseApplicationClosePostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  applicationCloseApplicationClosePost(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ApplicationCloseApplicationClosePostMutationResult = NonNullable<Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>>
-    
-    export type ApplicationCloseApplicationClosePostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Application Close
  */
-export const useApplicationCloseApplicationClosePost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>, TError,{params: ApplicationCloseApplicationClosePostParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>,
-        TError,
-        {params: ApplicationCloseApplicationClosePostParams},
-        TContext
-      > => {
+export const useApplicationCloseApplicationClosePost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>,
+      TError,
+      { params: ApplicationCloseApplicationClosePostParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof applicationCloseApplicationClosePost>>,
+  TError,
+  { params: ApplicationCloseApplicationClosePostParams },
+  TContext
+> => {
+  const mutationOptions =
+    getApplicationCloseApplicationClosePostMutationOptions(options);
 
-      const mutationOptions = getApplicationCloseApplicationClosePostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Application Read All
  */
 export const applicationReadAllApplicationAllGet = (
-    params?: ApplicationReadAllApplicationAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params?: ApplicationReadAllApplicationAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/application/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/application/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getApplicationReadAllApplicationAllGetQueryKey = (params?: ApplicationReadAllApplicationAllGetParams,) => {
-    return [`/application/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getApplicationReadAllApplicationAllGetQueryOptions = <TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params?: ApplicationReadAllApplicationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getApplicationReadAllApplicationAllGetQueryKey = (
+  params?: ApplicationReadAllApplicationAllGetParams,
 ) => {
+  return [`/application/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getApplicationReadAllApplicationAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: ApplicationReadAllApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getApplicationReadAllApplicationAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getApplicationReadAllApplicationAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>
+  > = ({ signal }) =>
+    applicationReadAllApplicationAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>> = ({ signal }) => applicationReadAllApplicationAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ApplicationReadAllApplicationAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>
+>;
+export type ApplicationReadAllApplicationAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ApplicationReadAllApplicationAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>>
-export type ApplicationReadAllApplicationAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useApplicationReadAllApplicationAllGet<TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: undefined |  ApplicationReadAllApplicationAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError, TData>> & Pick<
+export function useApplicationReadAllApplicationAllGet<
+  TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: undefined | ApplicationReadAllApplicationAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
           TError,
           Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useApplicationReadAllApplicationAllGet<TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params?: ApplicationReadAllApplicationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useApplicationReadAllApplicationAllGet<
+  TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: ApplicationReadAllApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
           TError,
           Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useApplicationReadAllApplicationAllGet<TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params?: ApplicationReadAllApplicationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useApplicationReadAllApplicationAllGet<
+  TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: ApplicationReadAllApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Application Read All
  */
 
-export function useApplicationReadAllApplicationAllGet<TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params?: ApplicationReadAllApplicationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useApplicationReadAllApplicationAllGet<
+  TData = Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: ApplicationReadAllApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof applicationReadAllApplicationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getApplicationReadAllApplicationAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getApplicationReadAllApplicationAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Customer Create
  */
 export const customerCreateCustomerPost = (
-    customerInputEntity: CustomerInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  customerInputEntity: CustomerInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<CustomerOutputEntity>(
-      {url: `/customer`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: customerInputEntity, signal
+  return customInstance<CustomerOutputEntity>(
+    {
+      url: `/customer`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: customerInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getCustomerCreateCustomerPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof customerCreateCustomerPost>>,
+    TError,
+    { data: CustomerInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof customerCreateCustomerPost>>,
+  TError,
+  { data: CustomerInputEntity },
+  TContext
+> => {
+  const mutationKey = ["customerCreateCustomerPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getCustomerCreateCustomerPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof customerCreateCustomerPost>>, TError,{data: CustomerInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof customerCreateCustomerPost>>, TError,{data: CustomerInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof customerCreateCustomerPost>>,
+    { data: CustomerInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['customerCreateCustomerPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return customerCreateCustomerPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CustomerCreateCustomerPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof customerCreateCustomerPost>>
+>;
+export type CustomerCreateCustomerPostMutationBody = CustomerInputEntity;
+export type CustomerCreateCustomerPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof customerCreateCustomerPost>>, {data: CustomerInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  customerCreateCustomerPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CustomerCreateCustomerPostMutationResult = NonNullable<Awaited<ReturnType<typeof customerCreateCustomerPost>>>
-    export type CustomerCreateCustomerPostMutationBody = CustomerInputEntity
-    export type CustomerCreateCustomerPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Customer Create
  */
-export const useCustomerCreateCustomerPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof customerCreateCustomerPost>>, TError,{data: CustomerInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof customerCreateCustomerPost>>,
-        TError,
-        {data: CustomerInputEntity},
-        TContext
-      > => {
+export const useCustomerCreateCustomerPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof customerCreateCustomerPost>>,
+      TError,
+      { data: CustomerInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof customerCreateCustomerPost>>,
+  TError,
+  { data: CustomerInputEntity },
+  TContext
+> => {
+  const mutationOptions = getCustomerCreateCustomerPostMutationOptions(options);
 
-      const mutationOptions = getCustomerCreateCustomerPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Customer Get
  */
 export const customerGetCustomerGet = (
-    params: CustomerGetCustomerGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: CustomerGetCustomerGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<CustomerOutputEntity>(
-      {url: `/customer`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<CustomerOutputEntity>(
+    { url: `/customer`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getCustomerGetCustomerGetQueryKey = (params?: CustomerGetCustomerGetParams,) => {
-    return [`/customer`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getCustomerGetCustomerGetQueryOptions = <TData = Awaited<ReturnType<typeof customerGetCustomerGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: CustomerGetCustomerGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerGetCustomerGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getCustomerGetCustomerGetQueryKey = (
+  params?: CustomerGetCustomerGetParams,
 ) => {
+  return [`/customer`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getCustomerGetCustomerGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof customerGetCustomerGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerGetCustomerGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerGetCustomerGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getCustomerGetCustomerGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getCustomerGetCustomerGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof customerGetCustomerGet>>
+  > = ({ signal }) => customerGetCustomerGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof customerGetCustomerGet>>> = ({ signal }) => customerGetCustomerGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof customerGetCustomerGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type CustomerGetCustomerGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof customerGetCustomerGet>>
+>;
+export type CustomerGetCustomerGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof customerGetCustomerGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type CustomerGetCustomerGetQueryResult = NonNullable<Awaited<ReturnType<typeof customerGetCustomerGet>>>
-export type CustomerGetCustomerGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useCustomerGetCustomerGet<TData = Awaited<ReturnType<typeof customerGetCustomerGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerGetCustomerGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerGetCustomerGet>>, TError, TData>> & Pick<
+export function useCustomerGetCustomerGet<
+  TData = Awaited<ReturnType<typeof customerGetCustomerGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerGetCustomerGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerGetCustomerGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof customerGetCustomerGet>>,
           TError,
           Awaited<ReturnType<typeof customerGetCustomerGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCustomerGetCustomerGet<TData = Awaited<ReturnType<typeof customerGetCustomerGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerGetCustomerGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerGetCustomerGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCustomerGetCustomerGet<
+  TData = Awaited<ReturnType<typeof customerGetCustomerGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerGetCustomerGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerGetCustomerGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof customerGetCustomerGet>>,
           TError,
           Awaited<ReturnType<typeof customerGetCustomerGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCustomerGetCustomerGet<TData = Awaited<ReturnType<typeof customerGetCustomerGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerGetCustomerGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerGetCustomerGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCustomerGetCustomerGet<
+  TData = Awaited<ReturnType<typeof customerGetCustomerGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerGetCustomerGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerGetCustomerGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Customer Get
  */
 
-export function useCustomerGetCustomerGet<TData = Awaited<ReturnType<typeof customerGetCustomerGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerGetCustomerGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerGetCustomerGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useCustomerGetCustomerGet<
+  TData = Awaited<ReturnType<typeof customerGetCustomerGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerGetCustomerGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerGetCustomerGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getCustomerGetCustomerGetQueryOptions(params, options);
 
-  const queryOptions = getCustomerGetCustomerGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Customer Edit
  */
 export const customerEditCustomerPut = (
-    customerInputEntity: CustomerInputEntity,
-    params: CustomerEditCustomerPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<CustomerOutputEntity>(
-      {url: `/customer`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  customerInputEntity: CustomerInputEntity,
+  params: CustomerEditCustomerPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<CustomerOutputEntity>(
+    {
+      url: `/customer`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: customerInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getCustomerEditCustomerPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof customerEditCustomerPut>>,
+    TError,
+    { data: CustomerInputEntity; params: CustomerEditCustomerPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof customerEditCustomerPut>>,
+  TError,
+  { data: CustomerInputEntity; params: CustomerEditCustomerPutParams },
+  TContext
+> => {
+  const mutationKey = ["customerEditCustomerPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getCustomerEditCustomerPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof customerEditCustomerPut>>, TError,{data: CustomerInputEntity;params: CustomerEditCustomerPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof customerEditCustomerPut>>, TError,{data: CustomerInputEntity;params: CustomerEditCustomerPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof customerEditCustomerPut>>,
+    { data: CustomerInputEntity; params: CustomerEditCustomerPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['customerEditCustomerPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return customerEditCustomerPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CustomerEditCustomerPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof customerEditCustomerPut>>
+>;
+export type CustomerEditCustomerPutMutationBody = CustomerInputEntity;
+export type CustomerEditCustomerPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof customerEditCustomerPut>>, {data: CustomerInputEntity;params: CustomerEditCustomerPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  customerEditCustomerPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CustomerEditCustomerPutMutationResult = NonNullable<Awaited<ReturnType<typeof customerEditCustomerPut>>>
-    export type CustomerEditCustomerPutMutationBody = CustomerInputEntity
-    export type CustomerEditCustomerPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Customer Edit
  */
-export const useCustomerEditCustomerPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof customerEditCustomerPut>>, TError,{data: CustomerInputEntity;params: CustomerEditCustomerPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof customerEditCustomerPut>>,
-        TError,
-        {data: CustomerInputEntity;params: CustomerEditCustomerPutParams},
-        TContext
-      > => {
+export const useCustomerEditCustomerPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof customerEditCustomerPut>>,
+      TError,
+      { data: CustomerInputEntity; params: CustomerEditCustomerPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof customerEditCustomerPut>>,
+  TError,
+  { data: CustomerInputEntity; params: CustomerEditCustomerPutParams },
+  TContext
+> => {
+  const mutationOptions = getCustomerEditCustomerPutMutationOptions(options);
 
-      const mutationOptions = getCustomerEditCustomerPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Customer Delete
  */
 export const customerDeleteCustomerDelete = (
-    params: CustomerDeleteCustomerDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/customer`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: CustomerDeleteCustomerDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/customer`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getCustomerDeleteCustomerDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof customerDeleteCustomerDelete>>,
+    TError,
+    { params: CustomerDeleteCustomerDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof customerDeleteCustomerDelete>>,
+  TError,
+  { params: CustomerDeleteCustomerDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["customerDeleteCustomerDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getCustomerDeleteCustomerDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof customerDeleteCustomerDelete>>, TError,{params: CustomerDeleteCustomerDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof customerDeleteCustomerDelete>>, TError,{params: CustomerDeleteCustomerDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof customerDeleteCustomerDelete>>,
+    { params: CustomerDeleteCustomerDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['customerDeleteCustomerDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return customerDeleteCustomerDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CustomerDeleteCustomerDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof customerDeleteCustomerDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof customerDeleteCustomerDelete>>, {params: CustomerDeleteCustomerDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type CustomerDeleteCustomerDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  customerDeleteCustomerDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CustomerDeleteCustomerDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof customerDeleteCustomerDelete>>>
-    
-    export type CustomerDeleteCustomerDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Customer Delete
  */
-export const useCustomerDeleteCustomerDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof customerDeleteCustomerDelete>>, TError,{params: CustomerDeleteCustomerDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof customerDeleteCustomerDelete>>,
-        TError,
-        {params: CustomerDeleteCustomerDeleteParams},
-        TContext
-      > => {
+export const useCustomerDeleteCustomerDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof customerDeleteCustomerDelete>>,
+      TError,
+      { params: CustomerDeleteCustomerDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof customerDeleteCustomerDelete>>,
+  TError,
+  { params: CustomerDeleteCustomerDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getCustomerDeleteCustomerDeleteMutationOptions(options);
 
-      const mutationOptions = getCustomerDeleteCustomerDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Customer Read All
  */
 export const customerReadAllCustomerAllGet = (
-    params: CustomerReadAllCustomerAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: CustomerReadAllCustomerAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/customer/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/customer/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getCustomerReadAllCustomerAllGetQueryKey = (params?: CustomerReadAllCustomerAllGetParams,) => {
-    return [`/customer/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getCustomerReadAllCustomerAllGetQueryOptions = <TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: CustomerReadAllCustomerAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getCustomerReadAllCustomerAllGetQueryKey = (
+  params?: CustomerReadAllCustomerAllGetParams,
 ) => {
+  return [`/customer/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getCustomerReadAllCustomerAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerReadAllCustomerAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getCustomerReadAllCustomerAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getCustomerReadAllCustomerAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>
+  > = ({ signal }) =>
+    customerReadAllCustomerAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>> = ({ signal }) => customerReadAllCustomerAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type CustomerReadAllCustomerAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>
+>;
+export type CustomerReadAllCustomerAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type CustomerReadAllCustomerAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>>
-export type CustomerReadAllCustomerAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useCustomerReadAllCustomerAllGet<TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerReadAllCustomerAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError, TData>> & Pick<
+export function useCustomerReadAllCustomerAllGet<
+  TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerReadAllCustomerAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
           TError,
           Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCustomerReadAllCustomerAllGet<TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerReadAllCustomerAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCustomerReadAllCustomerAllGet<
+  TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerReadAllCustomerAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
           TError,
           Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCustomerReadAllCustomerAllGet<TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerReadAllCustomerAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCustomerReadAllCustomerAllGet<
+  TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerReadAllCustomerAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Customer Read All
  */
 
-export function useCustomerReadAllCustomerAllGet<TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CustomerReadAllCustomerAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useCustomerReadAllCustomerAllGet<
+  TData = Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CustomerReadAllCustomerAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof customerReadAllCustomerAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getCustomerReadAllCustomerAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getCustomerReadAllCustomerAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Location Read All
  */
 export const locationReadAllLocationAllGet = (
-    params: LocationReadAllLocationAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: LocationReadAllLocationAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/location/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/location/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getLocationReadAllLocationAllGetQueryKey = (params?: LocationReadAllLocationAllGetParams,) => {
-    return [`/location/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getLocationReadAllLocationAllGetQueryOptions = <TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: LocationReadAllLocationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getLocationReadAllLocationAllGetQueryKey = (
+  params?: LocationReadAllLocationAllGetParams,
 ) => {
+  return [`/location/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getLocationReadAllLocationAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LocationReadAllLocationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getLocationReadAllLocationAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getLocationReadAllLocationAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof locationReadAllLocationAllGet>>
+  > = ({ signal }) =>
+    locationReadAllLocationAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>> = ({ signal }) => locationReadAllLocationAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type LocationReadAllLocationAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof locationReadAllLocationAllGet>>
+>;
+export type LocationReadAllLocationAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type LocationReadAllLocationAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>>
-export type LocationReadAllLocationAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useLocationReadAllLocationAllGet<TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LocationReadAllLocationAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError, TData>> & Pick<
+export function useLocationReadAllLocationAllGet<
+  TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LocationReadAllLocationAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
           TError,
           Awaited<ReturnType<typeof locationReadAllLocationAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLocationReadAllLocationAllGet<TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LocationReadAllLocationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLocationReadAllLocationAllGet<
+  TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LocationReadAllLocationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
           TError,
           Awaited<ReturnType<typeof locationReadAllLocationAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLocationReadAllLocationAllGet<TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LocationReadAllLocationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLocationReadAllLocationAllGet<
+  TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LocationReadAllLocationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Location Read All
  */
 
-export function useLocationReadAllLocationAllGet<TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LocationReadAllLocationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof locationReadAllLocationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useLocationReadAllLocationAllGet<
+  TData = Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LocationReadAllLocationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof locationReadAllLocationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getLocationReadAllLocationAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getLocationReadAllLocationAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Color Create
  */
 export const colorCreateColorPost = (
-    colorInputEntity: ColorInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  colorInputEntity: ColorInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ColorOutputEntity>(
-      {url: `/color`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: colorInputEntity, signal
+  return customInstance<ColorOutputEntity>(
+    {
+      url: `/color`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: colorInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getColorCreateColorPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof colorCreateColorPost>>,
+    TError,
+    { data: ColorInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof colorCreateColorPost>>,
+  TError,
+  { data: ColorInputEntity },
+  TContext
+> => {
+  const mutationKey = ["colorCreateColorPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getColorCreateColorPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof colorCreateColorPost>>, TError,{data: ColorInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof colorCreateColorPost>>, TError,{data: ColorInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof colorCreateColorPost>>,
+    { data: ColorInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['colorCreateColorPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return colorCreateColorPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ColorCreateColorPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof colorCreateColorPost>>
+>;
+export type ColorCreateColorPostMutationBody = ColorInputEntity;
+export type ColorCreateColorPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof colorCreateColorPost>>, {data: ColorInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  colorCreateColorPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ColorCreateColorPostMutationResult = NonNullable<Awaited<ReturnType<typeof colorCreateColorPost>>>
-    export type ColorCreateColorPostMutationBody = ColorInputEntity
-    export type ColorCreateColorPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Color Create
  */
-export const useColorCreateColorPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof colorCreateColorPost>>, TError,{data: ColorInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof colorCreateColorPost>>,
-        TError,
-        {data: ColorInputEntity},
-        TContext
-      > => {
+export const useColorCreateColorPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof colorCreateColorPost>>,
+      TError,
+      { data: ColorInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof colorCreateColorPost>>,
+  TError,
+  { data: ColorInputEntity },
+  TContext
+> => {
+  const mutationOptions = getColorCreateColorPostMutationOptions(options);
 
-      const mutationOptions = getColorCreateColorPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Color Get
  */
 export const colorGetColorGet = (
-    params: ColorGetColorGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ColorGetColorGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ColorOutputEntity>(
-      {url: `/color`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<ColorOutputEntity>(
+    { url: `/color`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getColorGetColorGetQueryKey = (params?: ColorGetColorGetParams,) => {
-    return [`/color`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getColorGetColorGetQueryOptions = <TData = Awaited<ReturnType<typeof colorGetColorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ColorGetColorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorGetColorGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getColorGetColorGetQueryKey = (
+  params?: ColorGetColorGetParams,
 ) => {
+  return [`/color`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getColorGetColorGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof colorGetColorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorGetColorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorGetColorGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getColorGetColorGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getColorGetColorGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof colorGetColorGet>>
+  > = ({ signal }) => colorGetColorGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof colorGetColorGet>>> = ({ signal }) => colorGetColorGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof colorGetColorGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ColorGetColorGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof colorGetColorGet>>
+>;
+export type ColorGetColorGetQueryError = ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof colorGetColorGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ColorGetColorGetQueryResult = NonNullable<Awaited<ReturnType<typeof colorGetColorGet>>>
-export type ColorGetColorGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useColorGetColorGet<TData = Awaited<ReturnType<typeof colorGetColorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorGetColorGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorGetColorGet>>, TError, TData>> & Pick<
+export function useColorGetColorGet<
+  TData = Awaited<ReturnType<typeof colorGetColorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorGetColorGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorGetColorGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof colorGetColorGet>>,
           TError,
           Awaited<ReturnType<typeof colorGetColorGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useColorGetColorGet<TData = Awaited<ReturnType<typeof colorGetColorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorGetColorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorGetColorGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useColorGetColorGet<
+  TData = Awaited<ReturnType<typeof colorGetColorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorGetColorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorGetColorGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof colorGetColorGet>>,
           TError,
           Awaited<ReturnType<typeof colorGetColorGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useColorGetColorGet<TData = Awaited<ReturnType<typeof colorGetColorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorGetColorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorGetColorGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useColorGetColorGet<
+  TData = Awaited<ReturnType<typeof colorGetColorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorGetColorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorGetColorGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Color Get
  */
 
-export function useColorGetColorGet<TData = Awaited<ReturnType<typeof colorGetColorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorGetColorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorGetColorGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useColorGetColorGet<
+  TData = Awaited<ReturnType<typeof colorGetColorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorGetColorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorGetColorGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getColorGetColorGetQueryOptions(params, options);
 
-  const queryOptions = getColorGetColorGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Color Edit
  */
 export const colorEditColorPut = (
-    colorInputEntity: ColorInputEntity,
-    params: ColorEditColorPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ColorOutputEntity>(
-      {url: `/color`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  colorInputEntity: ColorInputEntity,
+  params: ColorEditColorPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ColorOutputEntity>(
+    {
+      url: `/color`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: colorInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getColorEditColorPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof colorEditColorPut>>,
+    TError,
+    { data: ColorInputEntity; params: ColorEditColorPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof colorEditColorPut>>,
+  TError,
+  { data: ColorInputEntity; params: ColorEditColorPutParams },
+  TContext
+> => {
+  const mutationKey = ["colorEditColorPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getColorEditColorPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof colorEditColorPut>>, TError,{data: ColorInputEntity;params: ColorEditColorPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof colorEditColorPut>>, TError,{data: ColorInputEntity;params: ColorEditColorPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof colorEditColorPut>>,
+    { data: ColorInputEntity; params: ColorEditColorPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['colorEditColorPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return colorEditColorPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ColorEditColorPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof colorEditColorPut>>
+>;
+export type ColorEditColorPutMutationBody = ColorInputEntity;
+export type ColorEditColorPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof colorEditColorPut>>, {data: ColorInputEntity;params: ColorEditColorPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  colorEditColorPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ColorEditColorPutMutationResult = NonNullable<Awaited<ReturnType<typeof colorEditColorPut>>>
-    export type ColorEditColorPutMutationBody = ColorInputEntity
-    export type ColorEditColorPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Color Edit
  */
-export const useColorEditColorPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof colorEditColorPut>>, TError,{data: ColorInputEntity;params: ColorEditColorPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof colorEditColorPut>>,
-        TError,
-        {data: ColorInputEntity;params: ColorEditColorPutParams},
-        TContext
-      > => {
+export const useColorEditColorPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof colorEditColorPut>>,
+      TError,
+      { data: ColorInputEntity; params: ColorEditColorPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof colorEditColorPut>>,
+  TError,
+  { data: ColorInputEntity; params: ColorEditColorPutParams },
+  TContext
+> => {
+  const mutationOptions = getColorEditColorPutMutationOptions(options);
 
-      const mutationOptions = getColorEditColorPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Color Read All
  */
 export const colorReadAllColorAllGet = (
-    params: ColorReadAllColorAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ColorReadAllColorAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/color/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/color/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getColorReadAllColorAllGetQueryKey = (params?: ColorReadAllColorAllGetParams,) => {
-    return [`/color/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getColorReadAllColorAllGetQueryOptions = <TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ColorReadAllColorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getColorReadAllColorAllGetQueryKey = (
+  params?: ColorReadAllColorAllGetParams,
 ) => {
+  return [`/color/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getColorReadAllColorAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorReadAllColorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getColorReadAllColorAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getColorReadAllColorAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof colorReadAllColorAllGet>>
+  > = ({ signal }) => colorReadAllColorAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof colorReadAllColorAllGet>>> = ({ signal }) => colorReadAllColorAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ColorReadAllColorAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof colorReadAllColorAllGet>>
+>;
+export type ColorReadAllColorAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ColorReadAllColorAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof colorReadAllColorAllGet>>>
-export type ColorReadAllColorAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useColorReadAllColorAllGet<TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorReadAllColorAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError, TData>> & Pick<
+export function useColorReadAllColorAllGet<
+  TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorReadAllColorAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
           TError,
           Awaited<ReturnType<typeof colorReadAllColorAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useColorReadAllColorAllGet<TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorReadAllColorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useColorReadAllColorAllGet<
+  TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorReadAllColorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
           TError,
           Awaited<ReturnType<typeof colorReadAllColorAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useColorReadAllColorAllGet<TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorReadAllColorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useColorReadAllColorAllGet<
+  TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorReadAllColorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Color Read All
  */
 
-export function useColorReadAllColorAllGet<TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ColorReadAllColorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof colorReadAllColorAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useColorReadAllColorAllGet<
+  TData = Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ColorReadAllColorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof colorReadAllColorAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getColorReadAllColorAllGetQueryOptions(params, options);
 
-  const queryOptions = getColorReadAllColorAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Category Create
  */
 export const categoryCreateCategoryPost = (
-    categoryInputEntity: CategoryInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  categoryInputEntity: CategoryInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<CategoryOutputEntity>(
-      {url: `/category`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: categoryInputEntity, signal
+  return customInstance<CategoryOutputEntity>(
+    {
+      url: `/category`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: categoryInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getCategoryCreateCategoryPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof categoryCreateCategoryPost>>,
+    TError,
+    { data: CategoryInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof categoryCreateCategoryPost>>,
+  TError,
+  { data: CategoryInputEntity },
+  TContext
+> => {
+  const mutationKey = ["categoryCreateCategoryPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getCategoryCreateCategoryPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoryCreateCategoryPost>>, TError,{data: CategoryInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof categoryCreateCategoryPost>>, TError,{data: CategoryInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof categoryCreateCategoryPost>>,
+    { data: CategoryInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['categoryCreateCategoryPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return categoryCreateCategoryPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CategoryCreateCategoryPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof categoryCreateCategoryPost>>
+>;
+export type CategoryCreateCategoryPostMutationBody = CategoryInputEntity;
+export type CategoryCreateCategoryPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoryCreateCategoryPost>>, {data: CategoryInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  categoryCreateCategoryPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CategoryCreateCategoryPostMutationResult = NonNullable<Awaited<ReturnType<typeof categoryCreateCategoryPost>>>
-    export type CategoryCreateCategoryPostMutationBody = CategoryInputEntity
-    export type CategoryCreateCategoryPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Category Create
  */
-export const useCategoryCreateCategoryPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoryCreateCategoryPost>>, TError,{data: CategoryInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof categoryCreateCategoryPost>>,
-        TError,
-        {data: CategoryInputEntity},
-        TContext
-      > => {
+export const useCategoryCreateCategoryPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof categoryCreateCategoryPost>>,
+      TError,
+      { data: CategoryInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof categoryCreateCategoryPost>>,
+  TError,
+  { data: CategoryInputEntity },
+  TContext
+> => {
+  const mutationOptions = getCategoryCreateCategoryPostMutationOptions(options);
 
-      const mutationOptions = getCategoryCreateCategoryPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Category Get
  */
 export const categoryGetCategoryGet = (
-    params: CategoryGetCategoryGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: CategoryGetCategoryGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<CategoryOutputEntity>(
-      {url: `/category`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<CategoryOutputEntity>(
+    { url: `/category`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getCategoryGetCategoryGetQueryKey = (params?: CategoryGetCategoryGetParams,) => {
-    return [`/category`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getCategoryGetCategoryGetQueryOptions = <TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: CategoryGetCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getCategoryGetCategoryGetQueryKey = (
+  params?: CategoryGetCategoryGetParams,
 ) => {
+  return [`/category`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getCategoryGetCategoryGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryGetCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getCategoryGetCategoryGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getCategoryGetCategoryGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof categoryGetCategoryGet>>
+  > = ({ signal }) => categoryGetCategoryGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof categoryGetCategoryGet>>> = ({ signal }) => categoryGetCategoryGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type CategoryGetCategoryGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof categoryGetCategoryGet>>
+>;
+export type CategoryGetCategoryGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type CategoryGetCategoryGetQueryResult = NonNullable<Awaited<ReturnType<typeof categoryGetCategoryGet>>>
-export type CategoryGetCategoryGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useCategoryGetCategoryGet<TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryGetCategoryGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError, TData>> & Pick<
+export function useCategoryGetCategoryGet<
+  TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryGetCategoryGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoryGetCategoryGet>>,
           TError,
           Awaited<ReturnType<typeof categoryGetCategoryGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCategoryGetCategoryGet<TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryGetCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCategoryGetCategoryGet<
+  TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryGetCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoryGetCategoryGet>>,
           TError,
           Awaited<ReturnType<typeof categoryGetCategoryGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCategoryGetCategoryGet<TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryGetCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCategoryGetCategoryGet<
+  TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryGetCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Category Get
  */
 
-export function useCategoryGetCategoryGet<TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryGetCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryGetCategoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useCategoryGetCategoryGet<
+  TData = Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryGetCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryGetCategoryGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getCategoryGetCategoryGetQueryOptions(params, options);
 
-  const queryOptions = getCategoryGetCategoryGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Category Edit
  */
 export const categoryEditCategoryPut = (
-    categoryInputEntity: CategoryInputEntity,
-    params: CategoryEditCategoryPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<CategoryOutputEntity>(
-      {url: `/category`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  categoryInputEntity: CategoryInputEntity,
+  params: CategoryEditCategoryPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<CategoryOutputEntity>(
+    {
+      url: `/category`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: categoryInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getCategoryEditCategoryPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof categoryEditCategoryPut>>,
+    TError,
+    { data: CategoryInputEntity; params: CategoryEditCategoryPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof categoryEditCategoryPut>>,
+  TError,
+  { data: CategoryInputEntity; params: CategoryEditCategoryPutParams },
+  TContext
+> => {
+  const mutationKey = ["categoryEditCategoryPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getCategoryEditCategoryPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoryEditCategoryPut>>, TError,{data: CategoryInputEntity;params: CategoryEditCategoryPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof categoryEditCategoryPut>>, TError,{data: CategoryInputEntity;params: CategoryEditCategoryPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof categoryEditCategoryPut>>,
+    { data: CategoryInputEntity; params: CategoryEditCategoryPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['categoryEditCategoryPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return categoryEditCategoryPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CategoryEditCategoryPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof categoryEditCategoryPut>>
+>;
+export type CategoryEditCategoryPutMutationBody = CategoryInputEntity;
+export type CategoryEditCategoryPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoryEditCategoryPut>>, {data: CategoryInputEntity;params: CategoryEditCategoryPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  categoryEditCategoryPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CategoryEditCategoryPutMutationResult = NonNullable<Awaited<ReturnType<typeof categoryEditCategoryPut>>>
-    export type CategoryEditCategoryPutMutationBody = CategoryInputEntity
-    export type CategoryEditCategoryPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Category Edit
  */
-export const useCategoryEditCategoryPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoryEditCategoryPut>>, TError,{data: CategoryInputEntity;params: CategoryEditCategoryPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof categoryEditCategoryPut>>,
-        TError,
-        {data: CategoryInputEntity;params: CategoryEditCategoryPutParams},
-        TContext
-      > => {
+export const useCategoryEditCategoryPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof categoryEditCategoryPut>>,
+      TError,
+      { data: CategoryInputEntity; params: CategoryEditCategoryPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof categoryEditCategoryPut>>,
+  TError,
+  { data: CategoryInputEntity; params: CategoryEditCategoryPutParams },
+  TContext
+> => {
+  const mutationOptions = getCategoryEditCategoryPutMutationOptions(options);
 
-      const mutationOptions = getCategoryEditCategoryPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Category Delete
  */
 export const categoryDeleteCategoryDelete = (
-    params: CategoryDeleteCategoryDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/category`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: CategoryDeleteCategoryDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/category`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getCategoryDeleteCategoryDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>,
+    TError,
+    { params: CategoryDeleteCategoryDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>,
+  TError,
+  { params: CategoryDeleteCategoryDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["categoryDeleteCategoryDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getCategoryDeleteCategoryDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>, TError,{params: CategoryDeleteCategoryDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>, TError,{params: CategoryDeleteCategoryDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>,
+    { params: CategoryDeleteCategoryDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['categoryDeleteCategoryDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return categoryDeleteCategoryDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CategoryDeleteCategoryDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>, {params: CategoryDeleteCategoryDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type CategoryDeleteCategoryDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  categoryDeleteCategoryDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CategoryDeleteCategoryDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>>
-    
-    export type CategoryDeleteCategoryDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Category Delete
  */
-export const useCategoryDeleteCategoryDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>, TError,{params: CategoryDeleteCategoryDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>,
-        TError,
-        {params: CategoryDeleteCategoryDeleteParams},
-        TContext
-      > => {
+export const useCategoryDeleteCategoryDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>,
+      TError,
+      { params: CategoryDeleteCategoryDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof categoryDeleteCategoryDelete>>,
+  TError,
+  { params: CategoryDeleteCategoryDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getCategoryDeleteCategoryDeleteMutationOptions(options);
 
-      const mutationOptions = getCategoryDeleteCategoryDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Category Read All
  */
 export const categoryReadAllCategoryAllGet = (
-    params: CategoryReadAllCategoryAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: CategoryReadAllCategoryAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/category/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/category/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getCategoryReadAllCategoryAllGetQueryKey = (params?: CategoryReadAllCategoryAllGetParams,) => {
-    return [`/category/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getCategoryReadAllCategoryAllGetQueryOptions = <TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: CategoryReadAllCategoryAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getCategoryReadAllCategoryAllGetQueryKey = (
+  params?: CategoryReadAllCategoryAllGetParams,
 ) => {
+  return [`/category/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getCategoryReadAllCategoryAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryReadAllCategoryAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getCategoryReadAllCategoryAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getCategoryReadAllCategoryAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>
+  > = ({ signal }) =>
+    categoryReadAllCategoryAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>> = ({ signal }) => categoryReadAllCategoryAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type CategoryReadAllCategoryAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>
+>;
+export type CategoryReadAllCategoryAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type CategoryReadAllCategoryAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>>
-export type CategoryReadAllCategoryAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useCategoryReadAllCategoryAllGet<TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryReadAllCategoryAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError, TData>> & Pick<
+export function useCategoryReadAllCategoryAllGet<
+  TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryReadAllCategoryAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
           TError,
           Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCategoryReadAllCategoryAllGet<TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryReadAllCategoryAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCategoryReadAllCategoryAllGet<
+  TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryReadAllCategoryAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
           TError,
           Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCategoryReadAllCategoryAllGet<TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryReadAllCategoryAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useCategoryReadAllCategoryAllGet<
+  TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryReadAllCategoryAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Category Read All
  */
 
-export function useCategoryReadAllCategoryAllGet<TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: CategoryReadAllCategoryAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useCategoryReadAllCategoryAllGet<
+  TData = Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: CategoryReadAllCategoryAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof categoryReadAllCategoryAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getCategoryReadAllCategoryAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getCategoryReadAllCategoryAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Product Create
  */
 export const productCreateProductPost = (
-    productInputEntity: ProductInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  productInputEntity: ProductInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ProductOutputEntity>(
-      {url: `/product`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: productInputEntity, signal
+  return customInstance<ProductOutputEntity>(
+    {
+      url: `/product`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: productInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getProductCreateProductPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof productCreateProductPost>>,
+    TError,
+    { data: ProductInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof productCreateProductPost>>,
+  TError,
+  { data: ProductInputEntity },
+  TContext
+> => {
+  const mutationKey = ["productCreateProductPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getProductCreateProductPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productCreateProductPost>>, TError,{data: ProductInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof productCreateProductPost>>, TError,{data: ProductInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof productCreateProductPost>>,
+    { data: ProductInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['productCreateProductPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return productCreateProductPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ProductCreateProductPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof productCreateProductPost>>
+>;
+export type ProductCreateProductPostMutationBody = ProductInputEntity;
+export type ProductCreateProductPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productCreateProductPost>>, {data: ProductInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  productCreateProductPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ProductCreateProductPostMutationResult = NonNullable<Awaited<ReturnType<typeof productCreateProductPost>>>
-    export type ProductCreateProductPostMutationBody = ProductInputEntity
-    export type ProductCreateProductPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Product Create
  */
-export const useProductCreateProductPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productCreateProductPost>>, TError,{data: ProductInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof productCreateProductPost>>,
-        TError,
-        {data: ProductInputEntity},
-        TContext
-      > => {
+export const useProductCreateProductPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof productCreateProductPost>>,
+      TError,
+      { data: ProductInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof productCreateProductPost>>,
+  TError,
+  { data: ProductInputEntity },
+  TContext
+> => {
+  const mutationOptions = getProductCreateProductPostMutationOptions(options);
 
-      const mutationOptions = getProductCreateProductPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Product Get
  */
 export const productGetProductGet = (
-    params: ProductGetProductGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ProductGetProductGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ProductOutputEntity>(
-      {url: `/product`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<ProductOutputEntity>(
+    { url: `/product`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getProductGetProductGetQueryKey = (params?: ProductGetProductGetParams,) => {
-    return [`/product`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getProductGetProductGetQueryOptions = <TData = Awaited<ReturnType<typeof productGetProductGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ProductGetProductGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productGetProductGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getProductGetProductGetQueryKey = (
+  params?: ProductGetProductGetParams,
 ) => {
+  return [`/product`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getProductGetProductGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof productGetProductGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductGetProductGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productGetProductGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getProductGetProductGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getProductGetProductGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof productGetProductGet>>
+  > = ({ signal }) => productGetProductGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof productGetProductGet>>> = ({ signal }) => productGetProductGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof productGetProductGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ProductGetProductGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof productGetProductGet>>
+>;
+export type ProductGetProductGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof productGetProductGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ProductGetProductGetQueryResult = NonNullable<Awaited<ReturnType<typeof productGetProductGet>>>
-export type ProductGetProductGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useProductGetProductGet<TData = Awaited<ReturnType<typeof productGetProductGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductGetProductGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productGetProductGet>>, TError, TData>> & Pick<
+export function useProductGetProductGet<
+  TData = Awaited<ReturnType<typeof productGetProductGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductGetProductGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productGetProductGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productGetProductGet>>,
           TError,
           Awaited<ReturnType<typeof productGetProductGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProductGetProductGet<TData = Awaited<ReturnType<typeof productGetProductGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductGetProductGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productGetProductGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useProductGetProductGet<
+  TData = Awaited<ReturnType<typeof productGetProductGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductGetProductGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productGetProductGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productGetProductGet>>,
           TError,
           Awaited<ReturnType<typeof productGetProductGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProductGetProductGet<TData = Awaited<ReturnType<typeof productGetProductGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductGetProductGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productGetProductGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useProductGetProductGet<
+  TData = Awaited<ReturnType<typeof productGetProductGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductGetProductGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productGetProductGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Product Get
  */
 
-export function useProductGetProductGet<TData = Awaited<ReturnType<typeof productGetProductGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductGetProductGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productGetProductGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useProductGetProductGet<
+  TData = Awaited<ReturnType<typeof productGetProductGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductGetProductGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productGetProductGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getProductGetProductGetQueryOptions(params, options);
 
-  const queryOptions = getProductGetProductGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Product Edit
  */
 export const productEditProductPut = (
-    productInputEntity: ProductInputEntity,
-    params: ProductEditProductPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ProductOutputEntity>(
-      {url: `/product`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  productInputEntity: ProductInputEntity,
+  params: ProductEditProductPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ProductOutputEntity>(
+    {
+      url: `/product`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: productInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getProductEditProductPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof productEditProductPut>>,
+    TError,
+    { data: ProductInputEntity; params: ProductEditProductPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof productEditProductPut>>,
+  TError,
+  { data: ProductInputEntity; params: ProductEditProductPutParams },
+  TContext
+> => {
+  const mutationKey = ["productEditProductPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getProductEditProductPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productEditProductPut>>, TError,{data: ProductInputEntity;params: ProductEditProductPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof productEditProductPut>>, TError,{data: ProductInputEntity;params: ProductEditProductPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof productEditProductPut>>,
+    { data: ProductInputEntity; params: ProductEditProductPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['productEditProductPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return productEditProductPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ProductEditProductPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof productEditProductPut>>
+>;
+export type ProductEditProductPutMutationBody = ProductInputEntity;
+export type ProductEditProductPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productEditProductPut>>, {data: ProductInputEntity;params: ProductEditProductPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  productEditProductPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ProductEditProductPutMutationResult = NonNullable<Awaited<ReturnType<typeof productEditProductPut>>>
-    export type ProductEditProductPutMutationBody = ProductInputEntity
-    export type ProductEditProductPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Product Edit
  */
-export const useProductEditProductPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productEditProductPut>>, TError,{data: ProductInputEntity;params: ProductEditProductPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof productEditProductPut>>,
-        TError,
-        {data: ProductInputEntity;params: ProductEditProductPutParams},
-        TContext
-      > => {
+export const useProductEditProductPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof productEditProductPut>>,
+      TError,
+      { data: ProductInputEntity; params: ProductEditProductPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof productEditProductPut>>,
+  TError,
+  { data: ProductInputEntity; params: ProductEditProductPutParams },
+  TContext
+> => {
+  const mutationOptions = getProductEditProductPutMutationOptions(options);
 
-      const mutationOptions = getProductEditProductPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Product Delete
  */
 export const productDeleteProductDelete = (
-    params: ProductDeleteProductDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/product`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: ProductDeleteProductDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/product`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getProductDeleteProductDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof productDeleteProductDelete>>,
+    TError,
+    { params: ProductDeleteProductDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof productDeleteProductDelete>>,
+  TError,
+  { params: ProductDeleteProductDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["productDeleteProductDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getProductDeleteProductDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productDeleteProductDelete>>, TError,{params: ProductDeleteProductDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof productDeleteProductDelete>>, TError,{params: ProductDeleteProductDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof productDeleteProductDelete>>,
+    { params: ProductDeleteProductDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['productDeleteProductDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return productDeleteProductDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ProductDeleteProductDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof productDeleteProductDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productDeleteProductDelete>>, {params: ProductDeleteProductDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type ProductDeleteProductDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  productDeleteProductDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ProductDeleteProductDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof productDeleteProductDelete>>>
-    
-    export type ProductDeleteProductDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Product Delete
  */
-export const useProductDeleteProductDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productDeleteProductDelete>>, TError,{params: ProductDeleteProductDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof productDeleteProductDelete>>,
-        TError,
-        {params: ProductDeleteProductDeleteParams},
-        TContext
-      > => {
+export const useProductDeleteProductDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof productDeleteProductDelete>>,
+      TError,
+      { params: ProductDeleteProductDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof productDeleteProductDelete>>,
+  TError,
+  { params: ProductDeleteProductDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getProductDeleteProductDeleteMutationOptions(options);
 
-      const mutationOptions = getProductDeleteProductDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Product Read All
  */
 export const productReadAllProductAllGet = (
-    params: ProductReadAllProductAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ProductReadAllProductAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/product/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/product/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getProductReadAllProductAllGetQueryKey = (params?: ProductReadAllProductAllGetParams,) => {
-    return [`/product/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getProductReadAllProductAllGetQueryOptions = <TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ProductReadAllProductAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getProductReadAllProductAllGetQueryKey = (
+  params?: ProductReadAllProductAllGetParams,
 ) => {
+  return [`/product/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getProductReadAllProductAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductReadAllProductAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getProductReadAllProductAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getProductReadAllProductAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof productReadAllProductAllGet>>
+  > = ({ signal }) =>
+    productReadAllProductAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof productReadAllProductAllGet>>> = ({ signal }) => productReadAllProductAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ProductReadAllProductAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof productReadAllProductAllGet>>
+>;
+export type ProductReadAllProductAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ProductReadAllProductAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof productReadAllProductAllGet>>>
-export type ProductReadAllProductAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useProductReadAllProductAllGet<TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductReadAllProductAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError, TData>> & Pick<
+export function useProductReadAllProductAllGet<
+  TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductReadAllProductAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productReadAllProductAllGet>>,
           TError,
           Awaited<ReturnType<typeof productReadAllProductAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProductReadAllProductAllGet<TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductReadAllProductAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useProductReadAllProductAllGet<
+  TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductReadAllProductAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productReadAllProductAllGet>>,
           TError,
           Awaited<ReturnType<typeof productReadAllProductAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProductReadAllProductAllGet<TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductReadAllProductAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useProductReadAllProductAllGet<
+  TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductReadAllProductAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Product Read All
  */
 
-export function useProductReadAllProductAllGet<TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductReadAllProductAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productReadAllProductAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useProductReadAllProductAllGet<
+  TData = Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductReadAllProductAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productReadAllProductAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getProductReadAllProductAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getProductReadAllProductAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Product By Category Read All
  */
 export const productByCategoryReadAllProductByCategoryGet = (
-    params: ProductByCategoryReadAllProductByCategoryGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ProductByCategoryReadAllProductByCategoryGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/product/by/category`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/product/by/category`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getProductByCategoryReadAllProductByCategoryGetQueryKey = (params?: ProductByCategoryReadAllProductByCategoryGetParams,) => {
-    return [`/product/by/category`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getProductByCategoryReadAllProductByCategoryGetQueryOptions = <TData = Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ProductByCategoryReadAllProductByCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getProductByCategoryReadAllProductByCategoryGetQueryKey = (
+  params?: ProductByCategoryReadAllProductByCategoryGetParams,
 ) => {
+  return [`/product/by/category`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getProductByCategoryReadAllProductByCategoryGetQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductByCategoryReadAllProductByCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getProductByCategoryReadAllProductByCategoryGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getProductByCategoryReadAllProductByCategoryGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>
+  > = ({ signal }) =>
+    productByCategoryReadAllProductByCategoryGet(
+      params,
+      requestOptions,
+      signal,
+    );
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>> = ({ signal }) => productByCategoryReadAllProductByCategoryGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ProductByCategoryReadAllProductByCategoryGetQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>
+  >;
+export type ProductByCategoryReadAllProductByCategoryGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ProductByCategoryReadAllProductByCategoryGetQueryResult = NonNullable<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>>
-export type ProductByCategoryReadAllProductByCategoryGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useProductByCategoryReadAllProductByCategoryGet<TData = Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductByCategoryReadAllProductByCategoryGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError, TData>> & Pick<
+export function useProductByCategoryReadAllProductByCategoryGet<
+  TData = Awaited<
+    ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductByCategoryReadAllProductByCategoryGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>,
+          Awaited<
+            ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+          >,
           TError,
-          Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProductByCategoryReadAllProductByCategoryGet<TData = Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductByCategoryReadAllProductByCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError, TData>> & Pick<
+          Awaited<
+            ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useProductByCategoryReadAllProductByCategoryGet<
+  TData = Awaited<
+    ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductByCategoryReadAllProductByCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>,
+          Awaited<
+            ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+          >,
           TError,
-          Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProductByCategoryReadAllProductByCategoryGet<TData = Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductByCategoryReadAllProductByCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+          Awaited<
+            ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useProductByCategoryReadAllProductByCategoryGet<
+  TData = Awaited<
+    ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductByCategoryReadAllProductByCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Product By Category Read All
  */
 
-export function useProductByCategoryReadAllProductByCategoryGet<TData = Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ProductByCategoryReadAllProductByCategoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productByCategoryReadAllProductByCategoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useProductByCategoryReadAllProductByCategoryGet<
+  TData = Awaited<
+    ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ProductByCategoryReadAllProductByCategoryGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof productByCategoryReadAllProductByCategoryGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getProductByCategoryReadAllProductByCategoryGetQueryOptions(
+      params,
+      options,
+    );
 
-  const queryOptions = getProductByCategoryReadAllProductByCategoryGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Molding Create
  */
 export const moldingCreateMoldingPost = (
-    moldingInputEntity: MoldingInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  moldingInputEntity: MoldingInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<MoldingOutputEntity>(
-      {url: `/molding`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: moldingInputEntity, signal
+  return customInstance<MoldingOutputEntity>(
+    {
+      url: `/molding`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: moldingInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getMoldingCreateMoldingPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof moldingCreateMoldingPost>>,
+    TError,
+    { data: MoldingInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof moldingCreateMoldingPost>>,
+  TError,
+  { data: MoldingInputEntity },
+  TContext
+> => {
+  const mutationKey = ["moldingCreateMoldingPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getMoldingCreateMoldingPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof moldingCreateMoldingPost>>, TError,{data: MoldingInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof moldingCreateMoldingPost>>, TError,{data: MoldingInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof moldingCreateMoldingPost>>,
+    { data: MoldingInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['moldingCreateMoldingPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return moldingCreateMoldingPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type MoldingCreateMoldingPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof moldingCreateMoldingPost>>
+>;
+export type MoldingCreateMoldingPostMutationBody = MoldingInputEntity;
+export type MoldingCreateMoldingPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof moldingCreateMoldingPost>>, {data: MoldingInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  moldingCreateMoldingPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type MoldingCreateMoldingPostMutationResult = NonNullable<Awaited<ReturnType<typeof moldingCreateMoldingPost>>>
-    export type MoldingCreateMoldingPostMutationBody = MoldingInputEntity
-    export type MoldingCreateMoldingPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Molding Create
  */
-export const useMoldingCreateMoldingPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof moldingCreateMoldingPost>>, TError,{data: MoldingInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof moldingCreateMoldingPost>>,
-        TError,
-        {data: MoldingInputEntity},
-        TContext
-      > => {
+export const useMoldingCreateMoldingPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof moldingCreateMoldingPost>>,
+      TError,
+      { data: MoldingInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof moldingCreateMoldingPost>>,
+  TError,
+  { data: MoldingInputEntity },
+  TContext
+> => {
+  const mutationOptions = getMoldingCreateMoldingPostMutationOptions(options);
 
-      const mutationOptions = getMoldingCreateMoldingPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Molding Get
  */
 export const moldingGetMoldingGet = (
-    params: MoldingGetMoldingGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: MoldingGetMoldingGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<MoldingOutputEntity>(
-      {url: `/molding`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<MoldingOutputEntity>(
+    { url: `/molding`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getMoldingGetMoldingGetQueryKey = (params?: MoldingGetMoldingGetParams,) => {
-    return [`/molding`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getMoldingGetMoldingGetQueryOptions = <TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: MoldingGetMoldingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getMoldingGetMoldingGetQueryKey = (
+  params?: MoldingGetMoldingGetParams,
 ) => {
+  return [`/molding`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getMoldingGetMoldingGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingGetMoldingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getMoldingGetMoldingGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getMoldingGetMoldingGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof moldingGetMoldingGet>>
+  > = ({ signal }) => moldingGetMoldingGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof moldingGetMoldingGet>>> = ({ signal }) => moldingGetMoldingGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type MoldingGetMoldingGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof moldingGetMoldingGet>>
+>;
+export type MoldingGetMoldingGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type MoldingGetMoldingGetQueryResult = NonNullable<Awaited<ReturnType<typeof moldingGetMoldingGet>>>
-export type MoldingGetMoldingGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useMoldingGetMoldingGet<TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingGetMoldingGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError, TData>> & Pick<
+export function useMoldingGetMoldingGet<
+  TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingGetMoldingGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof moldingGetMoldingGet>>,
           TError,
           Awaited<ReturnType<typeof moldingGetMoldingGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useMoldingGetMoldingGet<TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingGetMoldingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useMoldingGetMoldingGet<
+  TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingGetMoldingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof moldingGetMoldingGet>>,
           TError,
           Awaited<ReturnType<typeof moldingGetMoldingGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useMoldingGetMoldingGet<TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingGetMoldingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useMoldingGetMoldingGet<
+  TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingGetMoldingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Molding Get
  */
 
-export function useMoldingGetMoldingGet<TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingGetMoldingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingGetMoldingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useMoldingGetMoldingGet<
+  TData = Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingGetMoldingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingGetMoldingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getMoldingGetMoldingGetQueryOptions(params, options);
 
-  const queryOptions = getMoldingGetMoldingGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Molding Edit
  */
 export const moldingEditMoldingPut = (
-    moldingPatchEntity: MoldingPatchEntity,
-    params: MoldingEditMoldingPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<MoldingOutputEntity>(
-      {url: `/molding`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  moldingPatchEntity: MoldingPatchEntity,
+  params: MoldingEditMoldingPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<MoldingOutputEntity>(
+    {
+      url: `/molding`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: moldingPatchEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getMoldingEditMoldingPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof moldingEditMoldingPut>>,
+    TError,
+    { data: MoldingPatchEntity; params: MoldingEditMoldingPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof moldingEditMoldingPut>>,
+  TError,
+  { data: MoldingPatchEntity; params: MoldingEditMoldingPutParams },
+  TContext
+> => {
+  const mutationKey = ["moldingEditMoldingPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getMoldingEditMoldingPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof moldingEditMoldingPut>>, TError,{data: MoldingPatchEntity;params: MoldingEditMoldingPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof moldingEditMoldingPut>>, TError,{data: MoldingPatchEntity;params: MoldingEditMoldingPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof moldingEditMoldingPut>>,
+    { data: MoldingPatchEntity; params: MoldingEditMoldingPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['moldingEditMoldingPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return moldingEditMoldingPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type MoldingEditMoldingPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof moldingEditMoldingPut>>
+>;
+export type MoldingEditMoldingPutMutationBody = MoldingPatchEntity;
+export type MoldingEditMoldingPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof moldingEditMoldingPut>>, {data: MoldingPatchEntity;params: MoldingEditMoldingPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  moldingEditMoldingPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type MoldingEditMoldingPutMutationResult = NonNullable<Awaited<ReturnType<typeof moldingEditMoldingPut>>>
-    export type MoldingEditMoldingPutMutationBody = MoldingPatchEntity
-    export type MoldingEditMoldingPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Molding Edit
  */
-export const useMoldingEditMoldingPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof moldingEditMoldingPut>>, TError,{data: MoldingPatchEntity;params: MoldingEditMoldingPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof moldingEditMoldingPut>>,
-        TError,
-        {data: MoldingPatchEntity;params: MoldingEditMoldingPutParams},
-        TContext
-      > => {
+export const useMoldingEditMoldingPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof moldingEditMoldingPut>>,
+      TError,
+      { data: MoldingPatchEntity; params: MoldingEditMoldingPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof moldingEditMoldingPut>>,
+  TError,
+  { data: MoldingPatchEntity; params: MoldingEditMoldingPutParams },
+  TContext
+> => {
+  const mutationOptions = getMoldingEditMoldingPutMutationOptions(options);
 
-      const mutationOptions = getMoldingEditMoldingPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Molding Delete
  */
 export const moldingDeleteMoldingDelete = (
-    params: MoldingDeleteMoldingDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/molding`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: MoldingDeleteMoldingDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/molding`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getMoldingDeleteMoldingDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>,
+    TError,
+    { params: MoldingDeleteMoldingDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>,
+  TError,
+  { params: MoldingDeleteMoldingDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["moldingDeleteMoldingDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getMoldingDeleteMoldingDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>, TError,{params: MoldingDeleteMoldingDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>, TError,{params: MoldingDeleteMoldingDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>,
+    { params: MoldingDeleteMoldingDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['moldingDeleteMoldingDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return moldingDeleteMoldingDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type MoldingDeleteMoldingDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>, {params: MoldingDeleteMoldingDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type MoldingDeleteMoldingDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  moldingDeleteMoldingDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type MoldingDeleteMoldingDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>>
-    
-    export type MoldingDeleteMoldingDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Molding Delete
  */
-export const useMoldingDeleteMoldingDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>, TError,{params: MoldingDeleteMoldingDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>,
-        TError,
-        {params: MoldingDeleteMoldingDeleteParams},
-        TContext
-      > => {
+export const useMoldingDeleteMoldingDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>,
+      TError,
+      { params: MoldingDeleteMoldingDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof moldingDeleteMoldingDelete>>,
+  TError,
+  { params: MoldingDeleteMoldingDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getMoldingDeleteMoldingDeleteMutationOptions(options);
 
-      const mutationOptions = getMoldingDeleteMoldingDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Molding Read All
  */
 export const moldingReadAllMoldingAllGet = (
-    params: MoldingReadAllMoldingAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: MoldingReadAllMoldingAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/molding/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/molding/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getMoldingReadAllMoldingAllGetQueryKey = (params?: MoldingReadAllMoldingAllGetParams,) => {
-    return [`/molding/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getMoldingReadAllMoldingAllGetQueryOptions = <TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: MoldingReadAllMoldingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getMoldingReadAllMoldingAllGetQueryKey = (
+  params?: MoldingReadAllMoldingAllGetParams,
 ) => {
+  return [`/molding/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getMoldingReadAllMoldingAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingReadAllMoldingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getMoldingReadAllMoldingAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getMoldingReadAllMoldingAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>
+  > = ({ signal }) =>
+    moldingReadAllMoldingAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>> = ({ signal }) => moldingReadAllMoldingAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type MoldingReadAllMoldingAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>
+>;
+export type MoldingReadAllMoldingAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type MoldingReadAllMoldingAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>>
-export type MoldingReadAllMoldingAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useMoldingReadAllMoldingAllGet<TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingReadAllMoldingAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError, TData>> & Pick<
+export function useMoldingReadAllMoldingAllGet<
+  TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingReadAllMoldingAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
           TError,
           Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useMoldingReadAllMoldingAllGet<TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingReadAllMoldingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useMoldingReadAllMoldingAllGet<
+  TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingReadAllMoldingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
           TError,
           Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useMoldingReadAllMoldingAllGet<TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingReadAllMoldingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useMoldingReadAllMoldingAllGet<
+  TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingReadAllMoldingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Molding Read All
  */
 
-export function useMoldingReadAllMoldingAllGet<TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: MoldingReadAllMoldingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useMoldingReadAllMoldingAllGet<
+  TData = Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: MoldingReadAllMoldingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof moldingReadAllMoldingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getMoldingReadAllMoldingAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getMoldingReadAllMoldingAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Lining Create
  */
 export const liningCreateLiningPost = (
-    liningInputEntity: LiningInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  liningInputEntity: LiningInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<LiningOutputEntity>(
-      {url: `/lining`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: liningInputEntity, signal
+  return customInstance<LiningOutputEntity>(
+    {
+      url: `/lining`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: liningInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getLiningCreateLiningPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof liningCreateLiningPost>>,
+    TError,
+    { data: LiningInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof liningCreateLiningPost>>,
+  TError,
+  { data: LiningInputEntity },
+  TContext
+> => {
+  const mutationKey = ["liningCreateLiningPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getLiningCreateLiningPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof liningCreateLiningPost>>, TError,{data: LiningInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof liningCreateLiningPost>>, TError,{data: LiningInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof liningCreateLiningPost>>,
+    { data: LiningInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['liningCreateLiningPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return liningCreateLiningPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type LiningCreateLiningPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof liningCreateLiningPost>>
+>;
+export type LiningCreateLiningPostMutationBody = LiningInputEntity;
+export type LiningCreateLiningPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof liningCreateLiningPost>>, {data: LiningInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  liningCreateLiningPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LiningCreateLiningPostMutationResult = NonNullable<Awaited<ReturnType<typeof liningCreateLiningPost>>>
-    export type LiningCreateLiningPostMutationBody = LiningInputEntity
-    export type LiningCreateLiningPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Lining Create
  */
-export const useLiningCreateLiningPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof liningCreateLiningPost>>, TError,{data: LiningInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof liningCreateLiningPost>>,
-        TError,
-        {data: LiningInputEntity},
-        TContext
-      > => {
+export const useLiningCreateLiningPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof liningCreateLiningPost>>,
+      TError,
+      { data: LiningInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof liningCreateLiningPost>>,
+  TError,
+  { data: LiningInputEntity },
+  TContext
+> => {
+  const mutationOptions = getLiningCreateLiningPostMutationOptions(options);
 
-      const mutationOptions = getLiningCreateLiningPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Lining Get
  */
 export const liningGetLiningGet = (
-    params: LiningGetLiningGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: LiningGetLiningGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<LiningOutputEntity>(
-      {url: `/lining`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<LiningOutputEntity>(
+    { url: `/lining`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getLiningGetLiningGetQueryKey = (params?: LiningGetLiningGetParams,) => {
-    return [`/lining`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getLiningGetLiningGetQueryOptions = <TData = Awaited<ReturnType<typeof liningGetLiningGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: LiningGetLiningGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningGetLiningGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getLiningGetLiningGetQueryKey = (
+  params?: LiningGetLiningGetParams,
 ) => {
+  return [`/lining`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getLiningGetLiningGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof liningGetLiningGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningGetLiningGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningGetLiningGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getLiningGetLiningGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getLiningGetLiningGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof liningGetLiningGet>>
+  > = ({ signal }) => liningGetLiningGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof liningGetLiningGet>>> = ({ signal }) => liningGetLiningGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof liningGetLiningGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type LiningGetLiningGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof liningGetLiningGet>>
+>;
+export type LiningGetLiningGetQueryError = ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof liningGetLiningGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type LiningGetLiningGetQueryResult = NonNullable<Awaited<ReturnType<typeof liningGetLiningGet>>>
-export type LiningGetLiningGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useLiningGetLiningGet<TData = Awaited<ReturnType<typeof liningGetLiningGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningGetLiningGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningGetLiningGet>>, TError, TData>> & Pick<
+export function useLiningGetLiningGet<
+  TData = Awaited<ReturnType<typeof liningGetLiningGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningGetLiningGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningGetLiningGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof liningGetLiningGet>>,
           TError,
           Awaited<ReturnType<typeof liningGetLiningGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLiningGetLiningGet<TData = Awaited<ReturnType<typeof liningGetLiningGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningGetLiningGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningGetLiningGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLiningGetLiningGet<
+  TData = Awaited<ReturnType<typeof liningGetLiningGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningGetLiningGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningGetLiningGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof liningGetLiningGet>>,
           TError,
           Awaited<ReturnType<typeof liningGetLiningGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLiningGetLiningGet<TData = Awaited<ReturnType<typeof liningGetLiningGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningGetLiningGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningGetLiningGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLiningGetLiningGet<
+  TData = Awaited<ReturnType<typeof liningGetLiningGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningGetLiningGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningGetLiningGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Lining Get
  */
 
-export function useLiningGetLiningGet<TData = Awaited<ReturnType<typeof liningGetLiningGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningGetLiningGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningGetLiningGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useLiningGetLiningGet<
+  TData = Awaited<ReturnType<typeof liningGetLiningGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningGetLiningGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningGetLiningGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getLiningGetLiningGetQueryOptions(params, options);
 
-  const queryOptions = getLiningGetLiningGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Lining Edit
  */
 export const liningEditLiningPut = (
-    liningPatchEntity: LiningPatchEntity,
-    params: LiningEditLiningPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<LiningOutputEntity>(
-      {url: `/lining`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  liningPatchEntity: LiningPatchEntity,
+  params: LiningEditLiningPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<LiningOutputEntity>(
+    {
+      url: `/lining`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: liningPatchEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getLiningEditLiningPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof liningEditLiningPut>>,
+    TError,
+    { data: LiningPatchEntity; params: LiningEditLiningPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof liningEditLiningPut>>,
+  TError,
+  { data: LiningPatchEntity; params: LiningEditLiningPutParams },
+  TContext
+> => {
+  const mutationKey = ["liningEditLiningPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getLiningEditLiningPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof liningEditLiningPut>>, TError,{data: LiningPatchEntity;params: LiningEditLiningPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof liningEditLiningPut>>, TError,{data: LiningPatchEntity;params: LiningEditLiningPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof liningEditLiningPut>>,
+    { data: LiningPatchEntity; params: LiningEditLiningPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['liningEditLiningPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return liningEditLiningPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type LiningEditLiningPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof liningEditLiningPut>>
+>;
+export type LiningEditLiningPutMutationBody = LiningPatchEntity;
+export type LiningEditLiningPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof liningEditLiningPut>>, {data: LiningPatchEntity;params: LiningEditLiningPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  liningEditLiningPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LiningEditLiningPutMutationResult = NonNullable<Awaited<ReturnType<typeof liningEditLiningPut>>>
-    export type LiningEditLiningPutMutationBody = LiningPatchEntity
-    export type LiningEditLiningPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Lining Edit
  */
-export const useLiningEditLiningPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof liningEditLiningPut>>, TError,{data: LiningPatchEntity;params: LiningEditLiningPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof liningEditLiningPut>>,
-        TError,
-        {data: LiningPatchEntity;params: LiningEditLiningPutParams},
-        TContext
-      > => {
+export const useLiningEditLiningPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof liningEditLiningPut>>,
+      TError,
+      { data: LiningPatchEntity; params: LiningEditLiningPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof liningEditLiningPut>>,
+  TError,
+  { data: LiningPatchEntity; params: LiningEditLiningPutParams },
+  TContext
+> => {
+  const mutationOptions = getLiningEditLiningPutMutationOptions(options);
 
-      const mutationOptions = getLiningEditLiningPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Lining Delete
  */
 export const liningDeleteLiningDelete = (
-    params: LiningDeleteLiningDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/lining`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: LiningDeleteLiningDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/lining`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getLiningDeleteLiningDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof liningDeleteLiningDelete>>,
+    TError,
+    { params: LiningDeleteLiningDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof liningDeleteLiningDelete>>,
+  TError,
+  { params: LiningDeleteLiningDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["liningDeleteLiningDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getLiningDeleteLiningDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof liningDeleteLiningDelete>>, TError,{params: LiningDeleteLiningDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof liningDeleteLiningDelete>>, TError,{params: LiningDeleteLiningDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof liningDeleteLiningDelete>>,
+    { params: LiningDeleteLiningDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['liningDeleteLiningDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return liningDeleteLiningDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type LiningDeleteLiningDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof liningDeleteLiningDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof liningDeleteLiningDelete>>, {params: LiningDeleteLiningDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type LiningDeleteLiningDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  liningDeleteLiningDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LiningDeleteLiningDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof liningDeleteLiningDelete>>>
-    
-    export type LiningDeleteLiningDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Lining Delete
  */
-export const useLiningDeleteLiningDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof liningDeleteLiningDelete>>, TError,{params: LiningDeleteLiningDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof liningDeleteLiningDelete>>,
-        TError,
-        {params: LiningDeleteLiningDeleteParams},
-        TContext
-      > => {
+export const useLiningDeleteLiningDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof liningDeleteLiningDelete>>,
+      TError,
+      { params: LiningDeleteLiningDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof liningDeleteLiningDelete>>,
+  TError,
+  { params: LiningDeleteLiningDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getLiningDeleteLiningDeleteMutationOptions(options);
 
-      const mutationOptions = getLiningDeleteLiningDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Lining Read All
  */
 export const liningReadAllLiningAllGet = (
-    params: LiningReadAllLiningAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: LiningReadAllLiningAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/lining/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/lining/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getLiningReadAllLiningAllGetQueryKey = (params?: LiningReadAllLiningAllGetParams,) => {
-    return [`/lining/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getLiningReadAllLiningAllGetQueryOptions = <TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: LiningReadAllLiningAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getLiningReadAllLiningAllGetQueryKey = (
+  params?: LiningReadAllLiningAllGetParams,
 ) => {
+  return [`/lining/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getLiningReadAllLiningAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningReadAllLiningAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getLiningReadAllLiningAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getLiningReadAllLiningAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof liningReadAllLiningAllGet>>
+  > = ({ signal }) => liningReadAllLiningAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>> = ({ signal }) => liningReadAllLiningAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type LiningReadAllLiningAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof liningReadAllLiningAllGet>>
+>;
+export type LiningReadAllLiningAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type LiningReadAllLiningAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>>
-export type LiningReadAllLiningAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useLiningReadAllLiningAllGet<TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningReadAllLiningAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError, TData>> & Pick<
+export function useLiningReadAllLiningAllGet<
+  TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningReadAllLiningAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
           TError,
           Awaited<ReturnType<typeof liningReadAllLiningAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLiningReadAllLiningAllGet<TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningReadAllLiningAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLiningReadAllLiningAllGet<
+  TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningReadAllLiningAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
           TError,
           Awaited<ReturnType<typeof liningReadAllLiningAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLiningReadAllLiningAllGet<TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningReadAllLiningAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLiningReadAllLiningAllGet<
+  TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningReadAllLiningAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Lining Read All
  */
 
-export function useLiningReadAllLiningAllGet<TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LiningReadAllLiningAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liningReadAllLiningAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useLiningReadAllLiningAllGet<
+  TData = Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LiningReadAllLiningAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof liningReadAllLiningAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getLiningReadAllLiningAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getLiningReadAllLiningAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Chamfer Create
  */
 export const chamferCreateChamferPost = (
-    chamferInputEntity: ChamferInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  chamferInputEntity: ChamferInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ChamferOutputEntity>(
-      {url: `/chamfer`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: chamferInputEntity, signal
+  return customInstance<ChamferOutputEntity>(
+    {
+      url: `/chamfer`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: chamferInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getChamferCreateChamferPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof chamferCreateChamferPost>>,
+    TError,
+    { data: ChamferInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof chamferCreateChamferPost>>,
+  TError,
+  { data: ChamferInputEntity },
+  TContext
+> => {
+  const mutationKey = ["chamferCreateChamferPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getChamferCreateChamferPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chamferCreateChamferPost>>, TError,{data: ChamferInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof chamferCreateChamferPost>>, TError,{data: ChamferInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof chamferCreateChamferPost>>,
+    { data: ChamferInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['chamferCreateChamferPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return chamferCreateChamferPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ChamferCreateChamferPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof chamferCreateChamferPost>>
+>;
+export type ChamferCreateChamferPostMutationBody = ChamferInputEntity;
+export type ChamferCreateChamferPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof chamferCreateChamferPost>>, {data: ChamferInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  chamferCreateChamferPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ChamferCreateChamferPostMutationResult = NonNullable<Awaited<ReturnType<typeof chamferCreateChamferPost>>>
-    export type ChamferCreateChamferPostMutationBody = ChamferInputEntity
-    export type ChamferCreateChamferPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Chamfer Create
  */
-export const useChamferCreateChamferPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chamferCreateChamferPost>>, TError,{data: ChamferInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof chamferCreateChamferPost>>,
-        TError,
-        {data: ChamferInputEntity},
-        TContext
-      > => {
+export const useChamferCreateChamferPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof chamferCreateChamferPost>>,
+      TError,
+      { data: ChamferInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof chamferCreateChamferPost>>,
+  TError,
+  { data: ChamferInputEntity },
+  TContext
+> => {
+  const mutationOptions = getChamferCreateChamferPostMutationOptions(options);
 
-      const mutationOptions = getChamferCreateChamferPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Chamfer Get
  */
 export const chamferGetChamferGet = (
-    params: ChamferGetChamferGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ChamferGetChamferGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ChamferOutputEntity>(
-      {url: `/chamfer`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<ChamferOutputEntity>(
+    { url: `/chamfer`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getChamferGetChamferGetQueryKey = (params?: ChamferGetChamferGetParams,) => {
-    return [`/chamfer`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getChamferGetChamferGetQueryOptions = <TData = Awaited<ReturnType<typeof chamferGetChamferGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ChamferGetChamferGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferGetChamferGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getChamferGetChamferGetQueryKey = (
+  params?: ChamferGetChamferGetParams,
 ) => {
+  return [`/chamfer`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getChamferGetChamferGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof chamferGetChamferGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferGetChamferGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferGetChamferGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getChamferGetChamferGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getChamferGetChamferGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof chamferGetChamferGet>>
+  > = ({ signal }) => chamferGetChamferGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof chamferGetChamferGet>>> = ({ signal }) => chamferGetChamferGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof chamferGetChamferGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ChamferGetChamferGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof chamferGetChamferGet>>
+>;
+export type ChamferGetChamferGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof chamferGetChamferGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ChamferGetChamferGetQueryResult = NonNullable<Awaited<ReturnType<typeof chamferGetChamferGet>>>
-export type ChamferGetChamferGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useChamferGetChamferGet<TData = Awaited<ReturnType<typeof chamferGetChamferGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferGetChamferGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferGetChamferGet>>, TError, TData>> & Pick<
+export function useChamferGetChamferGet<
+  TData = Awaited<ReturnType<typeof chamferGetChamferGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferGetChamferGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferGetChamferGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof chamferGetChamferGet>>,
           TError,
           Awaited<ReturnType<typeof chamferGetChamferGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useChamferGetChamferGet<TData = Awaited<ReturnType<typeof chamferGetChamferGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferGetChamferGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferGetChamferGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useChamferGetChamferGet<
+  TData = Awaited<ReturnType<typeof chamferGetChamferGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferGetChamferGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferGetChamferGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof chamferGetChamferGet>>,
           TError,
           Awaited<ReturnType<typeof chamferGetChamferGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useChamferGetChamferGet<TData = Awaited<ReturnType<typeof chamferGetChamferGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferGetChamferGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferGetChamferGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useChamferGetChamferGet<
+  TData = Awaited<ReturnType<typeof chamferGetChamferGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferGetChamferGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferGetChamferGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Chamfer Get
  */
 
-export function useChamferGetChamferGet<TData = Awaited<ReturnType<typeof chamferGetChamferGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferGetChamferGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferGetChamferGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useChamferGetChamferGet<
+  TData = Awaited<ReturnType<typeof chamferGetChamferGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferGetChamferGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferGetChamferGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getChamferGetChamferGetQueryOptions(params, options);
 
-  const queryOptions = getChamferGetChamferGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Chamfer Edit
  */
 export const chamferEditChamferPut = (
-    chamferPatchEntity: ChamferPatchEntity,
-    params: ChamferEditChamferPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ChamferOutputEntity>(
-      {url: `/chamfer`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  chamferPatchEntity: ChamferPatchEntity,
+  params: ChamferEditChamferPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ChamferOutputEntity>(
+    {
+      url: `/chamfer`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: chamferPatchEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getChamferEditChamferPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof chamferEditChamferPut>>,
+    TError,
+    { data: ChamferPatchEntity; params: ChamferEditChamferPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof chamferEditChamferPut>>,
+  TError,
+  { data: ChamferPatchEntity; params: ChamferEditChamferPutParams },
+  TContext
+> => {
+  const mutationKey = ["chamferEditChamferPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getChamferEditChamferPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chamferEditChamferPut>>, TError,{data: ChamferPatchEntity;params: ChamferEditChamferPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof chamferEditChamferPut>>, TError,{data: ChamferPatchEntity;params: ChamferEditChamferPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof chamferEditChamferPut>>,
+    { data: ChamferPatchEntity; params: ChamferEditChamferPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['chamferEditChamferPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return chamferEditChamferPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ChamferEditChamferPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof chamferEditChamferPut>>
+>;
+export type ChamferEditChamferPutMutationBody = ChamferPatchEntity;
+export type ChamferEditChamferPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof chamferEditChamferPut>>, {data: ChamferPatchEntity;params: ChamferEditChamferPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  chamferEditChamferPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ChamferEditChamferPutMutationResult = NonNullable<Awaited<ReturnType<typeof chamferEditChamferPut>>>
-    export type ChamferEditChamferPutMutationBody = ChamferPatchEntity
-    export type ChamferEditChamferPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Chamfer Edit
  */
-export const useChamferEditChamferPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chamferEditChamferPut>>, TError,{data: ChamferPatchEntity;params: ChamferEditChamferPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof chamferEditChamferPut>>,
-        TError,
-        {data: ChamferPatchEntity;params: ChamferEditChamferPutParams},
-        TContext
-      > => {
+export const useChamferEditChamferPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof chamferEditChamferPut>>,
+      TError,
+      { data: ChamferPatchEntity; params: ChamferEditChamferPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof chamferEditChamferPut>>,
+  TError,
+  { data: ChamferPatchEntity; params: ChamferEditChamferPutParams },
+  TContext
+> => {
+  const mutationOptions = getChamferEditChamferPutMutationOptions(options);
 
-      const mutationOptions = getChamferEditChamferPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Chamfer Delete
  */
 export const chamferDeleteChamferDelete = (
-    params: ChamferDeleteChamferDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/chamfer`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: ChamferDeleteChamferDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/chamfer`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getChamferDeleteChamferDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof chamferDeleteChamferDelete>>,
+    TError,
+    { params: ChamferDeleteChamferDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof chamferDeleteChamferDelete>>,
+  TError,
+  { params: ChamferDeleteChamferDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["chamferDeleteChamferDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getChamferDeleteChamferDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chamferDeleteChamferDelete>>, TError,{params: ChamferDeleteChamferDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof chamferDeleteChamferDelete>>, TError,{params: ChamferDeleteChamferDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof chamferDeleteChamferDelete>>,
+    { params: ChamferDeleteChamferDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['chamferDeleteChamferDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return chamferDeleteChamferDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ChamferDeleteChamferDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof chamferDeleteChamferDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof chamferDeleteChamferDelete>>, {params: ChamferDeleteChamferDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type ChamferDeleteChamferDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  chamferDeleteChamferDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ChamferDeleteChamferDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof chamferDeleteChamferDelete>>>
-    
-    export type ChamferDeleteChamferDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Chamfer Delete
  */
-export const useChamferDeleteChamferDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chamferDeleteChamferDelete>>, TError,{params: ChamferDeleteChamferDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof chamferDeleteChamferDelete>>,
-        TError,
-        {params: ChamferDeleteChamferDeleteParams},
-        TContext
-      > => {
+export const useChamferDeleteChamferDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof chamferDeleteChamferDelete>>,
+      TError,
+      { params: ChamferDeleteChamferDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof chamferDeleteChamferDelete>>,
+  TError,
+  { params: ChamferDeleteChamferDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getChamferDeleteChamferDeleteMutationOptions(options);
 
-      const mutationOptions = getChamferDeleteChamferDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Chamfer Read All
  */
 export const chamferReadAllChamferAllGet = (
-    params: ChamferReadAllChamferAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ChamferReadAllChamferAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/chamfer/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/chamfer/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getChamferReadAllChamferAllGetQueryKey = (params?: ChamferReadAllChamferAllGetParams,) => {
-    return [`/chamfer/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getChamferReadAllChamferAllGetQueryOptions = <TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ChamferReadAllChamferAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getChamferReadAllChamferAllGetQueryKey = (
+  params?: ChamferReadAllChamferAllGetParams,
 ) => {
+  return [`/chamfer/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getChamferReadAllChamferAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferReadAllChamferAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getChamferReadAllChamferAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getChamferReadAllChamferAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>
+  > = ({ signal }) =>
+    chamferReadAllChamferAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>> = ({ signal }) => chamferReadAllChamferAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ChamferReadAllChamferAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>
+>;
+export type ChamferReadAllChamferAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ChamferReadAllChamferAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>>
-export type ChamferReadAllChamferAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useChamferReadAllChamferAllGet<TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferReadAllChamferAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError, TData>> & Pick<
+export function useChamferReadAllChamferAllGet<
+  TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferReadAllChamferAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
           TError,
           Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useChamferReadAllChamferAllGet<TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferReadAllChamferAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useChamferReadAllChamferAllGet<
+  TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferReadAllChamferAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
           TError,
           Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useChamferReadAllChamferAllGet<TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferReadAllChamferAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useChamferReadAllChamferAllGet<
+  TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferReadAllChamferAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Chamfer Read All
  */
 
-export function useChamferReadAllChamferAllGet<TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ChamferReadAllChamferAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useChamferReadAllChamferAllGet<
+  TData = Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ChamferReadAllChamferAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof chamferReadAllChamferAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getChamferReadAllChamferAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getChamferReadAllChamferAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Sheathing Create
  */
 export const sheathingCreateSheathingPost = (
-    sheathingInputEntity: SheathingInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  sheathingInputEntity: SheathingInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<SheathingOutputEntity>(
-      {url: `/sheathing`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sheathingInputEntity, signal
+  return customInstance<SheathingOutputEntity>(
+    {
+      url: `/sheathing`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: sheathingInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getSheathingCreateSheathingPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sheathingCreateSheathingPost>>,
+    TError,
+    { data: SheathingInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof sheathingCreateSheathingPost>>,
+  TError,
+  { data: SheathingInputEntity },
+  TContext
+> => {
+  const mutationKey = ["sheathingCreateSheathingPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getSheathingCreateSheathingPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sheathingCreateSheathingPost>>, TError,{data: SheathingInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof sheathingCreateSheathingPost>>, TError,{data: SheathingInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof sheathingCreateSheathingPost>>,
+    { data: SheathingInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['sheathingCreateSheathingPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return sheathingCreateSheathingPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type SheathingCreateSheathingPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof sheathingCreateSheathingPost>>
+>;
+export type SheathingCreateSheathingPostMutationBody = SheathingInputEntity;
+export type SheathingCreateSheathingPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sheathingCreateSheathingPost>>, {data: SheathingInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  sheathingCreateSheathingPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type SheathingCreateSheathingPostMutationResult = NonNullable<Awaited<ReturnType<typeof sheathingCreateSheathingPost>>>
-    export type SheathingCreateSheathingPostMutationBody = SheathingInputEntity
-    export type SheathingCreateSheathingPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Sheathing Create
  */
-export const useSheathingCreateSheathingPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sheathingCreateSheathingPost>>, TError,{data: SheathingInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof sheathingCreateSheathingPost>>,
-        TError,
-        {data: SheathingInputEntity},
-        TContext
-      > => {
+export const useSheathingCreateSheathingPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof sheathingCreateSheathingPost>>,
+      TError,
+      { data: SheathingInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof sheathingCreateSheathingPost>>,
+  TError,
+  { data: SheathingInputEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getSheathingCreateSheathingPostMutationOptions(options);
 
-      const mutationOptions = getSheathingCreateSheathingPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Sheathing Get
  */
 export const sheathingGetSheathingGet = (
-    params: SheathingGetSheathingGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: SheathingGetSheathingGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<SheathingOutputEntity>(
-      {url: `/sheathing`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<SheathingOutputEntity>(
+    { url: `/sheathing`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getSheathingGetSheathingGetQueryKey = (params?: SheathingGetSheathingGetParams,) => {
-    return [`/sheathing`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getSheathingGetSheathingGetQueryOptions = <TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: SheathingGetSheathingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getSheathingGetSheathingGetQueryKey = (
+  params?: SheathingGetSheathingGetParams,
 ) => {
+  return [`/sheathing`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getSheathingGetSheathingGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingGetSheathingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getSheathingGetSheathingGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getSheathingGetSheathingGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof sheathingGetSheathingGet>>
+  > = ({ signal }) => sheathingGetSheathingGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof sheathingGetSheathingGet>>> = ({ signal }) => sheathingGetSheathingGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type SheathingGetSheathingGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sheathingGetSheathingGet>>
+>;
+export type SheathingGetSheathingGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type SheathingGetSheathingGetQueryResult = NonNullable<Awaited<ReturnType<typeof sheathingGetSheathingGet>>>
-export type SheathingGetSheathingGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useSheathingGetSheathingGet<TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingGetSheathingGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError, TData>> & Pick<
+export function useSheathingGetSheathingGet<
+  TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingGetSheathingGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
           TError,
           Awaited<ReturnType<typeof sheathingGetSheathingGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSheathingGetSheathingGet<TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingGetSheathingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useSheathingGetSheathingGet<
+  TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingGetSheathingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
           TError,
           Awaited<ReturnType<typeof sheathingGetSheathingGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSheathingGetSheathingGet<TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingGetSheathingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useSheathingGetSheathingGet<
+  TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingGetSheathingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Sheathing Get
  */
 
-export function useSheathingGetSheathingGet<TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingGetSheathingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingGetSheathingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useSheathingGetSheathingGet<
+  TData = Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingGetSheathingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingGetSheathingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getSheathingGetSheathingGetQueryOptions(params, options);
 
-  const queryOptions = getSheathingGetSheathingGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Sheathing Edit
  */
 export const sheathingEditSheathingPut = (
-    sheathingInputEntity: SheathingInputEntity,
-    params: SheathingEditSheathingPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<SheathingOutputEntity>(
-      {url: `/sheathing`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  sheathingInputEntity: SheathingInputEntity,
+  params: SheathingEditSheathingPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<SheathingOutputEntity>(
+    {
+      url: `/sheathing`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: sheathingInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getSheathingEditSheathingPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sheathingEditSheathingPut>>,
+    TError,
+    { data: SheathingInputEntity; params: SheathingEditSheathingPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof sheathingEditSheathingPut>>,
+  TError,
+  { data: SheathingInputEntity; params: SheathingEditSheathingPutParams },
+  TContext
+> => {
+  const mutationKey = ["sheathingEditSheathingPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getSheathingEditSheathingPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sheathingEditSheathingPut>>, TError,{data: SheathingInputEntity;params: SheathingEditSheathingPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof sheathingEditSheathingPut>>, TError,{data: SheathingInputEntity;params: SheathingEditSheathingPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof sheathingEditSheathingPut>>,
+    { data: SheathingInputEntity; params: SheathingEditSheathingPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['sheathingEditSheathingPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return sheathingEditSheathingPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type SheathingEditSheathingPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof sheathingEditSheathingPut>>
+>;
+export type SheathingEditSheathingPutMutationBody = SheathingInputEntity;
+export type SheathingEditSheathingPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sheathingEditSheathingPut>>, {data: SheathingInputEntity;params: SheathingEditSheathingPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  sheathingEditSheathingPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type SheathingEditSheathingPutMutationResult = NonNullable<Awaited<ReturnType<typeof sheathingEditSheathingPut>>>
-    export type SheathingEditSheathingPutMutationBody = SheathingInputEntity
-    export type SheathingEditSheathingPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Sheathing Edit
  */
-export const useSheathingEditSheathingPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sheathingEditSheathingPut>>, TError,{data: SheathingInputEntity;params: SheathingEditSheathingPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof sheathingEditSheathingPut>>,
-        TError,
-        {data: SheathingInputEntity;params: SheathingEditSheathingPutParams},
-        TContext
-      > => {
+export const useSheathingEditSheathingPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof sheathingEditSheathingPut>>,
+      TError,
+      { data: SheathingInputEntity; params: SheathingEditSheathingPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof sheathingEditSheathingPut>>,
+  TError,
+  { data: SheathingInputEntity; params: SheathingEditSheathingPutParams },
+  TContext
+> => {
+  const mutationOptions = getSheathingEditSheathingPutMutationOptions(options);
 
-      const mutationOptions = getSheathingEditSheathingPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Sheathing Delete
  */
 export const sheathingDeleteSheathingDelete = (
-    params: SheathingDeleteSheathingDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/sheathing`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: SheathingDeleteSheathingDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/sheathing`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getSheathingDeleteSheathingDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>,
+    TError,
+    { params: SheathingDeleteSheathingDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>,
+  TError,
+  { params: SheathingDeleteSheathingDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["sheathingDeleteSheathingDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getSheathingDeleteSheathingDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>, TError,{params: SheathingDeleteSheathingDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>, TError,{params: SheathingDeleteSheathingDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>,
+    { params: SheathingDeleteSheathingDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['sheathingDeleteSheathingDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return sheathingDeleteSheathingDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type SheathingDeleteSheathingDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>, {params: SheathingDeleteSheathingDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type SheathingDeleteSheathingDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  sheathingDeleteSheathingDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type SheathingDeleteSheathingDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>>
-    
-    export type SheathingDeleteSheathingDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Sheathing Delete
  */
-export const useSheathingDeleteSheathingDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>, TError,{params: SheathingDeleteSheathingDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>,
-        TError,
-        {params: SheathingDeleteSheathingDeleteParams},
-        TContext
-      > => {
+export const useSheathingDeleteSheathingDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>,
+      TError,
+      { params: SheathingDeleteSheathingDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof sheathingDeleteSheathingDelete>>,
+  TError,
+  { params: SheathingDeleteSheathingDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getSheathingDeleteSheathingDeleteMutationOptions(options);
 
-      const mutationOptions = getSheathingDeleteSheathingDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Sheathing Read All
  */
 export const sheathingReadAllSheathingAllGet = (
-    params: SheathingReadAllSheathingAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: SheathingReadAllSheathingAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/sheathing/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/sheathing/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getSheathingReadAllSheathingAllGetQueryKey = (params?: SheathingReadAllSheathingAllGetParams,) => {
-    return [`/sheathing/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getSheathingReadAllSheathingAllGetQueryOptions = <TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: SheathingReadAllSheathingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getSheathingReadAllSheathingAllGetQueryKey = (
+  params?: SheathingReadAllSheathingAllGetParams,
 ) => {
+  return [`/sheathing/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getSheathingReadAllSheathingAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingReadAllSheathingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getSheathingReadAllSheathingAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getSheathingReadAllSheathingAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>
+  > = ({ signal }) =>
+    sheathingReadAllSheathingAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>> = ({ signal }) => sheathingReadAllSheathingAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type SheathingReadAllSheathingAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>
+>;
+export type SheathingReadAllSheathingAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type SheathingReadAllSheathingAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>>
-export type SheathingReadAllSheathingAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useSheathingReadAllSheathingAllGet<TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingReadAllSheathingAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError, TData>> & Pick<
+export function useSheathingReadAllSheathingAllGet<
+  TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingReadAllSheathingAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
           TError,
           Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSheathingReadAllSheathingAllGet<TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingReadAllSheathingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useSheathingReadAllSheathingAllGet<
+  TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingReadAllSheathingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
           TError,
           Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSheathingReadAllSheathingAllGet<TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingReadAllSheathingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useSheathingReadAllSheathingAllGet<
+  TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingReadAllSheathingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Sheathing Read All
  */
 
-export function useSheathingReadAllSheathingAllGet<TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: SheathingReadAllSheathingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useSheathingReadAllSheathingAllGet<
+  TData = Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: SheathingReadAllSheathingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof sheathingReadAllSheathingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getSheathingReadAllSheathingAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getSheathingReadAllSheathingAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Baseboard Create
  */
 export const baseboardCreateBaseboardPost = (
-    baseboardInputEntity: BaseboardInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  baseboardInputEntity: BaseboardInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<BaseboardOutputEntity>(
-      {url: `/baseboard`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: baseboardInputEntity, signal
+  return customInstance<BaseboardOutputEntity>(
+    {
+      url: `/baseboard`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: baseboardInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getBaseboardCreateBaseboardPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>,
+    TError,
+    { data: BaseboardInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>,
+  TError,
+  { data: BaseboardInputEntity },
+  TContext
+> => {
+  const mutationKey = ["baseboardCreateBaseboardPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getBaseboardCreateBaseboardPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>, TError,{data: BaseboardInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>, TError,{data: BaseboardInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>,
+    { data: BaseboardInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['baseboardCreateBaseboardPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return baseboardCreateBaseboardPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type BaseboardCreateBaseboardPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>
+>;
+export type BaseboardCreateBaseboardPostMutationBody = BaseboardInputEntity;
+export type BaseboardCreateBaseboardPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>, {data: BaseboardInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  baseboardCreateBaseboardPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type BaseboardCreateBaseboardPostMutationResult = NonNullable<Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>>
-    export type BaseboardCreateBaseboardPostMutationBody = BaseboardInputEntity
-    export type BaseboardCreateBaseboardPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Baseboard Create
  */
-export const useBaseboardCreateBaseboardPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>, TError,{data: BaseboardInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>,
-        TError,
-        {data: BaseboardInputEntity},
-        TContext
-      > => {
+export const useBaseboardCreateBaseboardPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>,
+      TError,
+      { data: BaseboardInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof baseboardCreateBaseboardPost>>,
+  TError,
+  { data: BaseboardInputEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getBaseboardCreateBaseboardPostMutationOptions(options);
 
-      const mutationOptions = getBaseboardCreateBaseboardPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Baseboard Get
  */
 export const baseboardGetBaseboardGet = (
-    params: BaseboardGetBaseboardGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: BaseboardGetBaseboardGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<BaseboardOutputEntity>(
-      {url: `/baseboard`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<BaseboardOutputEntity>(
+    { url: `/baseboard`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getBaseboardGetBaseboardGetQueryKey = (params?: BaseboardGetBaseboardGetParams,) => {
-    return [`/baseboard`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getBaseboardGetBaseboardGetQueryOptions = <TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: BaseboardGetBaseboardGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getBaseboardGetBaseboardGetQueryKey = (
+  params?: BaseboardGetBaseboardGetParams,
 ) => {
+  return [`/baseboard`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getBaseboardGetBaseboardGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardGetBaseboardGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getBaseboardGetBaseboardGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getBaseboardGetBaseboardGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof baseboardGetBaseboardGet>>
+  > = ({ signal }) => baseboardGetBaseboardGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>> = ({ signal }) => baseboardGetBaseboardGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type BaseboardGetBaseboardGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof baseboardGetBaseboardGet>>
+>;
+export type BaseboardGetBaseboardGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type BaseboardGetBaseboardGetQueryResult = NonNullable<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>>
-export type BaseboardGetBaseboardGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useBaseboardGetBaseboardGet<TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardGetBaseboardGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError, TData>> & Pick<
+export function useBaseboardGetBaseboardGet<
+  TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardGetBaseboardGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
           TError,
           Awaited<ReturnType<typeof baseboardGetBaseboardGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useBaseboardGetBaseboardGet<TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardGetBaseboardGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useBaseboardGetBaseboardGet<
+  TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardGetBaseboardGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
           TError,
           Awaited<ReturnType<typeof baseboardGetBaseboardGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useBaseboardGetBaseboardGet<TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardGetBaseboardGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useBaseboardGetBaseboardGet<
+  TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardGetBaseboardGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Baseboard Get
  */
 
-export function useBaseboardGetBaseboardGet<TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardGetBaseboardGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardGetBaseboardGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useBaseboardGetBaseboardGet<
+  TData = Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardGetBaseboardGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardGetBaseboardGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getBaseboardGetBaseboardGetQueryOptions(params, options);
 
-  const queryOptions = getBaseboardGetBaseboardGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Baseboard Edit
  */
 export const baseboardEditBaseboardPut = (
-    baseboardInputEntity: BaseboardInputEntity,
-    params: BaseboardEditBaseboardPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<BaseboardOutputEntity>(
-      {url: `/baseboard`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  baseboardInputEntity: BaseboardInputEntity,
+  params: BaseboardEditBaseboardPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<BaseboardOutputEntity>(
+    {
+      url: `/baseboard`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: baseboardInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getBaseboardEditBaseboardPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof baseboardEditBaseboardPut>>,
+    TError,
+    { data: BaseboardInputEntity; params: BaseboardEditBaseboardPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof baseboardEditBaseboardPut>>,
+  TError,
+  { data: BaseboardInputEntity; params: BaseboardEditBaseboardPutParams },
+  TContext
+> => {
+  const mutationKey = ["baseboardEditBaseboardPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getBaseboardEditBaseboardPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof baseboardEditBaseboardPut>>, TError,{data: BaseboardInputEntity;params: BaseboardEditBaseboardPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof baseboardEditBaseboardPut>>, TError,{data: BaseboardInputEntity;params: BaseboardEditBaseboardPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof baseboardEditBaseboardPut>>,
+    { data: BaseboardInputEntity; params: BaseboardEditBaseboardPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['baseboardEditBaseboardPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return baseboardEditBaseboardPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type BaseboardEditBaseboardPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof baseboardEditBaseboardPut>>
+>;
+export type BaseboardEditBaseboardPutMutationBody = BaseboardInputEntity;
+export type BaseboardEditBaseboardPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof baseboardEditBaseboardPut>>, {data: BaseboardInputEntity;params: BaseboardEditBaseboardPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  baseboardEditBaseboardPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type BaseboardEditBaseboardPutMutationResult = NonNullable<Awaited<ReturnType<typeof baseboardEditBaseboardPut>>>
-    export type BaseboardEditBaseboardPutMutationBody = BaseboardInputEntity
-    export type BaseboardEditBaseboardPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Baseboard Edit
  */
-export const useBaseboardEditBaseboardPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof baseboardEditBaseboardPut>>, TError,{data: BaseboardInputEntity;params: BaseboardEditBaseboardPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof baseboardEditBaseboardPut>>,
-        TError,
-        {data: BaseboardInputEntity;params: BaseboardEditBaseboardPutParams},
-        TContext
-      > => {
+export const useBaseboardEditBaseboardPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof baseboardEditBaseboardPut>>,
+      TError,
+      { data: BaseboardInputEntity; params: BaseboardEditBaseboardPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof baseboardEditBaseboardPut>>,
+  TError,
+  { data: BaseboardInputEntity; params: BaseboardEditBaseboardPutParams },
+  TContext
+> => {
+  const mutationOptions = getBaseboardEditBaseboardPutMutationOptions(options);
 
-      const mutationOptions = getBaseboardEditBaseboardPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Baseboard Delete
  */
 export const baseboardDeleteBaseboardDelete = (
-    params: BaseboardDeleteBaseboardDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/baseboard`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: BaseboardDeleteBaseboardDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/baseboard`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getBaseboardDeleteBaseboardDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>,
+    TError,
+    { params: BaseboardDeleteBaseboardDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>,
+  TError,
+  { params: BaseboardDeleteBaseboardDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["baseboardDeleteBaseboardDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getBaseboardDeleteBaseboardDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>, TError,{params: BaseboardDeleteBaseboardDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>, TError,{params: BaseboardDeleteBaseboardDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>,
+    { params: BaseboardDeleteBaseboardDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['baseboardDeleteBaseboardDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return baseboardDeleteBaseboardDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type BaseboardDeleteBaseboardDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>, {params: BaseboardDeleteBaseboardDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type BaseboardDeleteBaseboardDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  baseboardDeleteBaseboardDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type BaseboardDeleteBaseboardDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>>
-    
-    export type BaseboardDeleteBaseboardDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Baseboard Delete
  */
-export const useBaseboardDeleteBaseboardDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>, TError,{params: BaseboardDeleteBaseboardDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>,
-        TError,
-        {params: BaseboardDeleteBaseboardDeleteParams},
-        TContext
-      > => {
+export const useBaseboardDeleteBaseboardDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>,
+      TError,
+      { params: BaseboardDeleteBaseboardDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof baseboardDeleteBaseboardDelete>>,
+  TError,
+  { params: BaseboardDeleteBaseboardDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getBaseboardDeleteBaseboardDeleteMutationOptions(options);
 
-      const mutationOptions = getBaseboardDeleteBaseboardDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Baseboard Read All
  */
 export const baseboardReadAllBaseboardAllGet = (
-    params: BaseboardReadAllBaseboardAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: BaseboardReadAllBaseboardAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/baseboard/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/baseboard/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getBaseboardReadAllBaseboardAllGetQueryKey = (params?: BaseboardReadAllBaseboardAllGetParams,) => {
-    return [`/baseboard/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getBaseboardReadAllBaseboardAllGetQueryOptions = <TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: BaseboardReadAllBaseboardAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getBaseboardReadAllBaseboardAllGetQueryKey = (
+  params?: BaseboardReadAllBaseboardAllGetParams,
 ) => {
+  return [`/baseboard/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getBaseboardReadAllBaseboardAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardReadAllBaseboardAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getBaseboardReadAllBaseboardAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getBaseboardReadAllBaseboardAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>
+  > = ({ signal }) =>
+    baseboardReadAllBaseboardAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>> = ({ signal }) => baseboardReadAllBaseboardAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type BaseboardReadAllBaseboardAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>
+>;
+export type BaseboardReadAllBaseboardAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type BaseboardReadAllBaseboardAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>>
-export type BaseboardReadAllBaseboardAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useBaseboardReadAllBaseboardAllGet<TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardReadAllBaseboardAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError, TData>> & Pick<
+export function useBaseboardReadAllBaseboardAllGet<
+  TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardReadAllBaseboardAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
           TError,
           Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useBaseboardReadAllBaseboardAllGet<TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardReadAllBaseboardAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useBaseboardReadAllBaseboardAllGet<
+  TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardReadAllBaseboardAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
           TError,
           Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useBaseboardReadAllBaseboardAllGet<TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardReadAllBaseboardAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useBaseboardReadAllBaseboardAllGet<
+  TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardReadAllBaseboardAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Baseboard Read All
  */
 
-export function useBaseboardReadAllBaseboardAllGet<TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: BaseboardReadAllBaseboardAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useBaseboardReadAllBaseboardAllGet<
+  TData = Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: BaseboardReadAllBaseboardAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof baseboardReadAllBaseboardAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getBaseboardReadAllBaseboardAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getBaseboardReadAllBaseboardAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Floor Create
  */
 export const floorCreateFloorPost = (
-    floorInputEntity: FloorInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  floorInputEntity: FloorInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<FloorOutputEntity>(
-      {url: `/floor`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: floorInputEntity, signal
+  return customInstance<FloorOutputEntity>(
+    {
+      url: `/floor`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: floorInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getFloorCreateFloorPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof floorCreateFloorPost>>,
+    TError,
+    { data: FloorInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof floorCreateFloorPost>>,
+  TError,
+  { data: FloorInputEntity },
+  TContext
+> => {
+  const mutationKey = ["floorCreateFloorPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getFloorCreateFloorPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof floorCreateFloorPost>>, TError,{data: FloorInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof floorCreateFloorPost>>, TError,{data: FloorInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof floorCreateFloorPost>>,
+    { data: FloorInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['floorCreateFloorPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return floorCreateFloorPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type FloorCreateFloorPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof floorCreateFloorPost>>
+>;
+export type FloorCreateFloorPostMutationBody = FloorInputEntity;
+export type FloorCreateFloorPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof floorCreateFloorPost>>, {data: FloorInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  floorCreateFloorPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type FloorCreateFloorPostMutationResult = NonNullable<Awaited<ReturnType<typeof floorCreateFloorPost>>>
-    export type FloorCreateFloorPostMutationBody = FloorInputEntity
-    export type FloorCreateFloorPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Floor Create
  */
-export const useFloorCreateFloorPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof floorCreateFloorPost>>, TError,{data: FloorInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof floorCreateFloorPost>>,
-        TError,
-        {data: FloorInputEntity},
-        TContext
-      > => {
+export const useFloorCreateFloorPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof floorCreateFloorPost>>,
+      TError,
+      { data: FloorInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof floorCreateFloorPost>>,
+  TError,
+  { data: FloorInputEntity },
+  TContext
+> => {
+  const mutationOptions = getFloorCreateFloorPostMutationOptions(options);
 
-      const mutationOptions = getFloorCreateFloorPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Floor Get
  */
 export const floorGetFloorGet = (
-    params: FloorGetFloorGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: FloorGetFloorGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<FloorOutputEntity>(
-      {url: `/floor`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<FloorOutputEntity>(
+    { url: `/floor`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getFloorGetFloorGetQueryKey = (params?: FloorGetFloorGetParams,) => {
-    return [`/floor`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getFloorGetFloorGetQueryOptions = <TData = Awaited<ReturnType<typeof floorGetFloorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: FloorGetFloorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorGetFloorGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getFloorGetFloorGetQueryKey = (
+  params?: FloorGetFloorGetParams,
 ) => {
+  return [`/floor`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getFloorGetFloorGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof floorGetFloorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorGetFloorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorGetFloorGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getFloorGetFloorGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getFloorGetFloorGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof floorGetFloorGet>>
+  > = ({ signal }) => floorGetFloorGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof floorGetFloorGet>>> = ({ signal }) => floorGetFloorGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof floorGetFloorGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type FloorGetFloorGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof floorGetFloorGet>>
+>;
+export type FloorGetFloorGetQueryError = ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof floorGetFloorGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FloorGetFloorGetQueryResult = NonNullable<Awaited<ReturnType<typeof floorGetFloorGet>>>
-export type FloorGetFloorGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useFloorGetFloorGet<TData = Awaited<ReturnType<typeof floorGetFloorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorGetFloorGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorGetFloorGet>>, TError, TData>> & Pick<
+export function useFloorGetFloorGet<
+  TData = Awaited<ReturnType<typeof floorGetFloorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorGetFloorGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorGetFloorGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof floorGetFloorGet>>,
           TError,
           Awaited<ReturnType<typeof floorGetFloorGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFloorGetFloorGet<TData = Awaited<ReturnType<typeof floorGetFloorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorGetFloorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorGetFloorGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFloorGetFloorGet<
+  TData = Awaited<ReturnType<typeof floorGetFloorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorGetFloorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorGetFloorGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof floorGetFloorGet>>,
           TError,
           Awaited<ReturnType<typeof floorGetFloorGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFloorGetFloorGet<TData = Awaited<ReturnType<typeof floorGetFloorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorGetFloorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorGetFloorGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFloorGetFloorGet<
+  TData = Awaited<ReturnType<typeof floorGetFloorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorGetFloorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorGetFloorGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Floor Get
  */
 
-export function useFloorGetFloorGet<TData = Awaited<ReturnType<typeof floorGetFloorGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorGetFloorGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorGetFloorGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useFloorGetFloorGet<
+  TData = Awaited<ReturnType<typeof floorGetFloorGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorGetFloorGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorGetFloorGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFloorGetFloorGetQueryOptions(params, options);
 
-  const queryOptions = getFloorGetFloorGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Floor Edit
  */
 export const floorEditFloorPut = (
-    floorInputEntity: FloorInputEntity,
-    params: FloorEditFloorPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<FloorOutputEntity>(
-      {url: `/floor`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  floorInputEntity: FloorInputEntity,
+  params: FloorEditFloorPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<FloorOutputEntity>(
+    {
+      url: `/floor`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: floorInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getFloorEditFloorPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof floorEditFloorPut>>,
+    TError,
+    { data: FloorInputEntity; params: FloorEditFloorPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof floorEditFloorPut>>,
+  TError,
+  { data: FloorInputEntity; params: FloorEditFloorPutParams },
+  TContext
+> => {
+  const mutationKey = ["floorEditFloorPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getFloorEditFloorPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof floorEditFloorPut>>, TError,{data: FloorInputEntity;params: FloorEditFloorPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof floorEditFloorPut>>, TError,{data: FloorInputEntity;params: FloorEditFloorPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof floorEditFloorPut>>,
+    { data: FloorInputEntity; params: FloorEditFloorPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['floorEditFloorPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return floorEditFloorPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type FloorEditFloorPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof floorEditFloorPut>>
+>;
+export type FloorEditFloorPutMutationBody = FloorInputEntity;
+export type FloorEditFloorPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof floorEditFloorPut>>, {data: FloorInputEntity;params: FloorEditFloorPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  floorEditFloorPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type FloorEditFloorPutMutationResult = NonNullable<Awaited<ReturnType<typeof floorEditFloorPut>>>
-    export type FloorEditFloorPutMutationBody = FloorInputEntity
-    export type FloorEditFloorPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Floor Edit
  */
-export const useFloorEditFloorPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof floorEditFloorPut>>, TError,{data: FloorInputEntity;params: FloorEditFloorPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof floorEditFloorPut>>,
-        TError,
-        {data: FloorInputEntity;params: FloorEditFloorPutParams},
-        TContext
-      > => {
+export const useFloorEditFloorPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof floorEditFloorPut>>,
+      TError,
+      { data: FloorInputEntity; params: FloorEditFloorPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof floorEditFloorPut>>,
+  TError,
+  { data: FloorInputEntity; params: FloorEditFloorPutParams },
+  TContext
+> => {
+  const mutationOptions = getFloorEditFloorPutMutationOptions(options);
 
-      const mutationOptions = getFloorEditFloorPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Floor Delete
  */
 export const floorDeleteFloorDelete = (
-    params: FloorDeleteFloorDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/floor`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: FloorDeleteFloorDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/floor`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getFloorDeleteFloorDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof floorDeleteFloorDelete>>,
+    TError,
+    { params: FloorDeleteFloorDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof floorDeleteFloorDelete>>,
+  TError,
+  { params: FloorDeleteFloorDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["floorDeleteFloorDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getFloorDeleteFloorDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof floorDeleteFloorDelete>>, TError,{params: FloorDeleteFloorDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof floorDeleteFloorDelete>>, TError,{params: FloorDeleteFloorDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof floorDeleteFloorDelete>>,
+    { params: FloorDeleteFloorDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['floorDeleteFloorDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return floorDeleteFloorDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type FloorDeleteFloorDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof floorDeleteFloorDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof floorDeleteFloorDelete>>, {params: FloorDeleteFloorDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type FloorDeleteFloorDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  floorDeleteFloorDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type FloorDeleteFloorDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof floorDeleteFloorDelete>>>
-    
-    export type FloorDeleteFloorDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Floor Delete
  */
-export const useFloorDeleteFloorDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof floorDeleteFloorDelete>>, TError,{params: FloorDeleteFloorDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof floorDeleteFloorDelete>>,
-        TError,
-        {params: FloorDeleteFloorDeleteParams},
-        TContext
-      > => {
+export const useFloorDeleteFloorDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof floorDeleteFloorDelete>>,
+      TError,
+      { params: FloorDeleteFloorDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof floorDeleteFloorDelete>>,
+  TError,
+  { params: FloorDeleteFloorDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getFloorDeleteFloorDeleteMutationOptions(options);
 
-      const mutationOptions = getFloorDeleteFloorDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Floor Read All
  */
 export const floorReadAllFloorAllGet = (
-    params: FloorReadAllFloorAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: FloorReadAllFloorAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/floor/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/floor/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getFloorReadAllFloorAllGetQueryKey = (params?: FloorReadAllFloorAllGetParams,) => {
-    return [`/floor/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getFloorReadAllFloorAllGetQueryOptions = <TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: FloorReadAllFloorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getFloorReadAllFloorAllGetQueryKey = (
+  params?: FloorReadAllFloorAllGetParams,
 ) => {
+  return [`/floor/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getFloorReadAllFloorAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorReadAllFloorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getFloorReadAllFloorAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getFloorReadAllFloorAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof floorReadAllFloorAllGet>>
+  > = ({ signal }) => floorReadAllFloorAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>> = ({ signal }) => floorReadAllFloorAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type FloorReadAllFloorAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof floorReadAllFloorAllGet>>
+>;
+export type FloorReadAllFloorAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FloorReadAllFloorAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>>
-export type FloorReadAllFloorAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useFloorReadAllFloorAllGet<TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorReadAllFloorAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError, TData>> & Pick<
+export function useFloorReadAllFloorAllGet<
+  TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorReadAllFloorAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
           TError,
           Awaited<ReturnType<typeof floorReadAllFloorAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFloorReadAllFloorAllGet<TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorReadAllFloorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFloorReadAllFloorAllGet<
+  TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorReadAllFloorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
           TError,
           Awaited<ReturnType<typeof floorReadAllFloorAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFloorReadAllFloorAllGet<TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorReadAllFloorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFloorReadAllFloorAllGet<
+  TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorReadAllFloorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Floor Read All
  */
 
-export function useFloorReadAllFloorAllGet<TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FloorReadAllFloorAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof floorReadAllFloorAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useFloorReadAllFloorAllGet<
+  TData = Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FloorReadAllFloorAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof floorReadAllFloorAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFloorReadAllFloorAllGetQueryOptions(params, options);
 
-  const queryOptions = getFloorReadAllFloorAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Windowsill Create
  */
 export const windowsillCreateWindowsillPost = (
-    windowsillInputEntity: WindowsillInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  windowsillInputEntity: WindowsillInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<WindowsillOutputEntity>(
-      {url: `/windowsill`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: windowsillInputEntity, signal
+  return customInstance<WindowsillOutputEntity>(
+    {
+      url: `/windowsill`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: windowsillInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getWindowsillCreateWindowsillPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>,
+    TError,
+    { data: WindowsillInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>,
+  TError,
+  { data: WindowsillInputEntity },
+  TContext
+> => {
+  const mutationKey = ["windowsillCreateWindowsillPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getWindowsillCreateWindowsillPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>, TError,{data: WindowsillInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>, TError,{data: WindowsillInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>,
+    { data: WindowsillInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['windowsillCreateWindowsillPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return windowsillCreateWindowsillPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type WindowsillCreateWindowsillPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>
+>;
+export type WindowsillCreateWindowsillPostMutationBody = WindowsillInputEntity;
+export type WindowsillCreateWindowsillPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>, {data: WindowsillInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  windowsillCreateWindowsillPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type WindowsillCreateWindowsillPostMutationResult = NonNullable<Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>>
-    export type WindowsillCreateWindowsillPostMutationBody = WindowsillInputEntity
-    export type WindowsillCreateWindowsillPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Windowsill Create
  */
-export const useWindowsillCreateWindowsillPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>, TError,{data: WindowsillInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>,
-        TError,
-        {data: WindowsillInputEntity},
-        TContext
-      > => {
+export const useWindowsillCreateWindowsillPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>,
+      TError,
+      { data: WindowsillInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof windowsillCreateWindowsillPost>>,
+  TError,
+  { data: WindowsillInputEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getWindowsillCreateWindowsillPostMutationOptions(options);
 
-      const mutationOptions = getWindowsillCreateWindowsillPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Windowsill Get
  */
 export const windowsillGetWindowsillGet = (
-    params: WindowsillGetWindowsillGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: WindowsillGetWindowsillGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<WindowsillOutputEntity>(
-      {url: `/windowsill`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<WindowsillOutputEntity>(
+    { url: `/windowsill`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getWindowsillGetWindowsillGetQueryKey = (params?: WindowsillGetWindowsillGetParams,) => {
-    return [`/windowsill`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getWindowsillGetWindowsillGetQueryOptions = <TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: WindowsillGetWindowsillGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getWindowsillGetWindowsillGetQueryKey = (
+  params?: WindowsillGetWindowsillGetParams,
 ) => {
+  return [`/windowsill`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getWindowsillGetWindowsillGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillGetWindowsillGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getWindowsillGetWindowsillGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getWindowsillGetWindowsillGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof windowsillGetWindowsillGet>>
+  > = ({ signal }) =>
+    windowsillGetWindowsillGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>> = ({ signal }) => windowsillGetWindowsillGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type WindowsillGetWindowsillGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof windowsillGetWindowsillGet>>
+>;
+export type WindowsillGetWindowsillGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type WindowsillGetWindowsillGetQueryResult = NonNullable<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>>
-export type WindowsillGetWindowsillGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useWindowsillGetWindowsillGet<TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillGetWindowsillGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError, TData>> & Pick<
+export function useWindowsillGetWindowsillGet<
+  TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillGetWindowsillGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
           TError,
           Awaited<ReturnType<typeof windowsillGetWindowsillGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useWindowsillGetWindowsillGet<TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillGetWindowsillGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWindowsillGetWindowsillGet<
+  TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillGetWindowsillGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
           TError,
           Awaited<ReturnType<typeof windowsillGetWindowsillGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useWindowsillGetWindowsillGet<TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillGetWindowsillGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWindowsillGetWindowsillGet<
+  TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillGetWindowsillGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Windowsill Get
  */
 
-export function useWindowsillGetWindowsillGet<TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillGetWindowsillGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillGetWindowsillGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useWindowsillGetWindowsillGet<
+  TData = Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillGetWindowsillGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillGetWindowsillGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getWindowsillGetWindowsillGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getWindowsillGetWindowsillGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Windowsill Edit
  */
 export const windowsillEditWindowsillPut = (
-    windowsillInputEntity: WindowsillInputEntity,
-    params: WindowsillEditWindowsillPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<WindowsillOutputEntity>(
-      {url: `/windowsill`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  windowsillInputEntity: WindowsillInputEntity,
+  params: WindowsillEditWindowsillPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<WindowsillOutputEntity>(
+    {
+      url: `/windowsill`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: windowsillInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getWindowsillEditWindowsillPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof windowsillEditWindowsillPut>>,
+    TError,
+    { data: WindowsillInputEntity; params: WindowsillEditWindowsillPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof windowsillEditWindowsillPut>>,
+  TError,
+  { data: WindowsillInputEntity; params: WindowsillEditWindowsillPutParams },
+  TContext
+> => {
+  const mutationKey = ["windowsillEditWindowsillPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getWindowsillEditWindowsillPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof windowsillEditWindowsillPut>>, TError,{data: WindowsillInputEntity;params: WindowsillEditWindowsillPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof windowsillEditWindowsillPut>>, TError,{data: WindowsillInputEntity;params: WindowsillEditWindowsillPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof windowsillEditWindowsillPut>>,
+    { data: WindowsillInputEntity; params: WindowsillEditWindowsillPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['windowsillEditWindowsillPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return windowsillEditWindowsillPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type WindowsillEditWindowsillPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof windowsillEditWindowsillPut>>
+>;
+export type WindowsillEditWindowsillPutMutationBody = WindowsillInputEntity;
+export type WindowsillEditWindowsillPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof windowsillEditWindowsillPut>>, {data: WindowsillInputEntity;params: WindowsillEditWindowsillPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  windowsillEditWindowsillPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type WindowsillEditWindowsillPutMutationResult = NonNullable<Awaited<ReturnType<typeof windowsillEditWindowsillPut>>>
-    export type WindowsillEditWindowsillPutMutationBody = WindowsillInputEntity
-    export type WindowsillEditWindowsillPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Windowsill Edit
  */
-export const useWindowsillEditWindowsillPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof windowsillEditWindowsillPut>>, TError,{data: WindowsillInputEntity;params: WindowsillEditWindowsillPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof windowsillEditWindowsillPut>>,
-        TError,
-        {data: WindowsillInputEntity;params: WindowsillEditWindowsillPutParams},
-        TContext
-      > => {
+export const useWindowsillEditWindowsillPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof windowsillEditWindowsillPut>>,
+      TError,
+      {
+        data: WindowsillInputEntity;
+        params: WindowsillEditWindowsillPutParams;
+      },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof windowsillEditWindowsillPut>>,
+  TError,
+  { data: WindowsillInputEntity; params: WindowsillEditWindowsillPutParams },
+  TContext
+> => {
+  const mutationOptions =
+    getWindowsillEditWindowsillPutMutationOptions(options);
 
-      const mutationOptions = getWindowsillEditWindowsillPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Windowsill Delete
  */
 export const windowsillDeleteWindowsillDelete = (
-    params: WindowsillDeleteWindowsillDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/windowsill`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: WindowsillDeleteWindowsillDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/windowsill`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getWindowsillDeleteWindowsillDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>,
+    TError,
+    { params: WindowsillDeleteWindowsillDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>,
+  TError,
+  { params: WindowsillDeleteWindowsillDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["windowsillDeleteWindowsillDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getWindowsillDeleteWindowsillDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>, TError,{params: WindowsillDeleteWindowsillDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>, TError,{params: WindowsillDeleteWindowsillDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>,
+    { params: WindowsillDeleteWindowsillDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['windowsillDeleteWindowsillDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return windowsillDeleteWindowsillDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type WindowsillDeleteWindowsillDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>, {params: WindowsillDeleteWindowsillDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type WindowsillDeleteWindowsillDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  windowsillDeleteWindowsillDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type WindowsillDeleteWindowsillDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>>
-    
-    export type WindowsillDeleteWindowsillDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Windowsill Delete
  */
-export const useWindowsillDeleteWindowsillDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>, TError,{params: WindowsillDeleteWindowsillDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>,
-        TError,
-        {params: WindowsillDeleteWindowsillDeleteParams},
-        TContext
-      > => {
+export const useWindowsillDeleteWindowsillDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>,
+      TError,
+      { params: WindowsillDeleteWindowsillDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof windowsillDeleteWindowsillDelete>>,
+  TError,
+  { params: WindowsillDeleteWindowsillDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getWindowsillDeleteWindowsillDeleteMutationOptions(options);
 
-      const mutationOptions = getWindowsillDeleteWindowsillDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Windowsill Read All
  */
 export const windowsillReadAllWindowsillAllGet = (
-    params: WindowsillReadAllWindowsillAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: WindowsillReadAllWindowsillAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/windowsill/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/windowsill/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getWindowsillReadAllWindowsillAllGetQueryKey = (params?: WindowsillReadAllWindowsillAllGetParams,) => {
-    return [`/windowsill/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getWindowsillReadAllWindowsillAllGetQueryOptions = <TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: WindowsillReadAllWindowsillAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getWindowsillReadAllWindowsillAllGetQueryKey = (
+  params?: WindowsillReadAllWindowsillAllGetParams,
 ) => {
+  return [`/windowsill/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getWindowsillReadAllWindowsillAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillReadAllWindowsillAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getWindowsillReadAllWindowsillAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getWindowsillReadAllWindowsillAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>
+  > = ({ signal }) =>
+    windowsillReadAllWindowsillAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>> = ({ signal }) => windowsillReadAllWindowsillAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type WindowsillReadAllWindowsillAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>
+>;
+export type WindowsillReadAllWindowsillAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type WindowsillReadAllWindowsillAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>>
-export type WindowsillReadAllWindowsillAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useWindowsillReadAllWindowsillAllGet<TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillReadAllWindowsillAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError, TData>> & Pick<
+export function useWindowsillReadAllWindowsillAllGet<
+  TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillReadAllWindowsillAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
           TError,
           Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useWindowsillReadAllWindowsillAllGet<TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillReadAllWindowsillAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWindowsillReadAllWindowsillAllGet<
+  TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillReadAllWindowsillAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
           TError,
           Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useWindowsillReadAllWindowsillAllGet<TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillReadAllWindowsillAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useWindowsillReadAllWindowsillAllGet<
+  TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillReadAllWindowsillAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Windowsill Read All
  */
 
-export function useWindowsillReadAllWindowsillAllGet<TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: WindowsillReadAllWindowsillAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useWindowsillReadAllWindowsillAllGet<
+  TData = Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: WindowsillReadAllWindowsillAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof windowsillReadAllWindowsillAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getWindowsillReadAllWindowsillAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getWindowsillReadAllWindowsillAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Latting Create
  */
 export const lattingCreateLattingPost = (
-    lattingInputEntity: LattingInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  lattingInputEntity: LattingInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<LattingOutputEntity>(
-      {url: `/latting`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: lattingInputEntity, signal
+  return customInstance<LattingOutputEntity>(
+    {
+      url: `/latting`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: lattingInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getLattingCreateLattingPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof lattingCreateLattingPost>>,
+    TError,
+    { data: LattingInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof lattingCreateLattingPost>>,
+  TError,
+  { data: LattingInputEntity },
+  TContext
+> => {
+  const mutationKey = ["lattingCreateLattingPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getLattingCreateLattingPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lattingCreateLattingPost>>, TError,{data: LattingInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof lattingCreateLattingPost>>, TError,{data: LattingInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof lattingCreateLattingPost>>,
+    { data: LattingInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['lattingCreateLattingPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return lattingCreateLattingPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type LattingCreateLattingPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof lattingCreateLattingPost>>
+>;
+export type LattingCreateLattingPostMutationBody = LattingInputEntity;
+export type LattingCreateLattingPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof lattingCreateLattingPost>>, {data: LattingInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  lattingCreateLattingPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LattingCreateLattingPostMutationResult = NonNullable<Awaited<ReturnType<typeof lattingCreateLattingPost>>>
-    export type LattingCreateLattingPostMutationBody = LattingInputEntity
-    export type LattingCreateLattingPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Latting Create
  */
-export const useLattingCreateLattingPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lattingCreateLattingPost>>, TError,{data: LattingInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof lattingCreateLattingPost>>,
-        TError,
-        {data: LattingInputEntity},
-        TContext
-      > => {
+export const useLattingCreateLattingPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof lattingCreateLattingPost>>,
+      TError,
+      { data: LattingInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof lattingCreateLattingPost>>,
+  TError,
+  { data: LattingInputEntity },
+  TContext
+> => {
+  const mutationOptions = getLattingCreateLattingPostMutationOptions(options);
 
-      const mutationOptions = getLattingCreateLattingPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Latting Get
  */
 export const lattingGetLattingGet = (
-    params: LattingGetLattingGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: LattingGetLattingGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<LattingOutputEntity>(
-      {url: `/latting`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<LattingOutputEntity>(
+    { url: `/latting`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getLattingGetLattingGetQueryKey = (params?: LattingGetLattingGetParams,) => {
-    return [`/latting`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getLattingGetLattingGetQueryOptions = <TData = Awaited<ReturnType<typeof lattingGetLattingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: LattingGetLattingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingGetLattingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getLattingGetLattingGetQueryKey = (
+  params?: LattingGetLattingGetParams,
 ) => {
+  return [`/latting`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getLattingGetLattingGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof lattingGetLattingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingGetLattingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingGetLattingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getLattingGetLattingGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getLattingGetLattingGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof lattingGetLattingGet>>
+  > = ({ signal }) => lattingGetLattingGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof lattingGetLattingGet>>> = ({ signal }) => lattingGetLattingGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof lattingGetLattingGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type LattingGetLattingGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof lattingGetLattingGet>>
+>;
+export type LattingGetLattingGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof lattingGetLattingGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type LattingGetLattingGetQueryResult = NonNullable<Awaited<ReturnType<typeof lattingGetLattingGet>>>
-export type LattingGetLattingGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useLattingGetLattingGet<TData = Awaited<ReturnType<typeof lattingGetLattingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingGetLattingGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingGetLattingGet>>, TError, TData>> & Pick<
+export function useLattingGetLattingGet<
+  TData = Awaited<ReturnType<typeof lattingGetLattingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingGetLattingGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingGetLattingGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof lattingGetLattingGet>>,
           TError,
           Awaited<ReturnType<typeof lattingGetLattingGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLattingGetLattingGet<TData = Awaited<ReturnType<typeof lattingGetLattingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingGetLattingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingGetLattingGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLattingGetLattingGet<
+  TData = Awaited<ReturnType<typeof lattingGetLattingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingGetLattingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingGetLattingGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof lattingGetLattingGet>>,
           TError,
           Awaited<ReturnType<typeof lattingGetLattingGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLattingGetLattingGet<TData = Awaited<ReturnType<typeof lattingGetLattingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingGetLattingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingGetLattingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLattingGetLattingGet<
+  TData = Awaited<ReturnType<typeof lattingGetLattingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingGetLattingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingGetLattingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Latting Get
  */
 
-export function useLattingGetLattingGet<TData = Awaited<ReturnType<typeof lattingGetLattingGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingGetLattingGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingGetLattingGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useLattingGetLattingGet<
+  TData = Awaited<ReturnType<typeof lattingGetLattingGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingGetLattingGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingGetLattingGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getLattingGetLattingGetQueryOptions(params, options);
 
-  const queryOptions = getLattingGetLattingGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Latting Edit
  */
 export const lattingEditLattingPut = (
-    lattingInputEntity: LattingInputEntity,
-    params: LattingEditLattingPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<LattingOutputEntity>(
-      {url: `/latting`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  lattingInputEntity: LattingInputEntity,
+  params: LattingEditLattingPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<LattingOutputEntity>(
+    {
+      url: `/latting`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: lattingInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getLattingEditLattingPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof lattingEditLattingPut>>,
+    TError,
+    { data: LattingInputEntity; params: LattingEditLattingPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof lattingEditLattingPut>>,
+  TError,
+  { data: LattingInputEntity; params: LattingEditLattingPutParams },
+  TContext
+> => {
+  const mutationKey = ["lattingEditLattingPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getLattingEditLattingPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lattingEditLattingPut>>, TError,{data: LattingInputEntity;params: LattingEditLattingPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof lattingEditLattingPut>>, TError,{data: LattingInputEntity;params: LattingEditLattingPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof lattingEditLattingPut>>,
+    { data: LattingInputEntity; params: LattingEditLattingPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['lattingEditLattingPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return lattingEditLattingPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type LattingEditLattingPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof lattingEditLattingPut>>
+>;
+export type LattingEditLattingPutMutationBody = LattingInputEntity;
+export type LattingEditLattingPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof lattingEditLattingPut>>, {data: LattingInputEntity;params: LattingEditLattingPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  lattingEditLattingPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LattingEditLattingPutMutationResult = NonNullable<Awaited<ReturnType<typeof lattingEditLattingPut>>>
-    export type LattingEditLattingPutMutationBody = LattingInputEntity
-    export type LattingEditLattingPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Latting Edit
  */
-export const useLattingEditLattingPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lattingEditLattingPut>>, TError,{data: LattingInputEntity;params: LattingEditLattingPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof lattingEditLattingPut>>,
-        TError,
-        {data: LattingInputEntity;params: LattingEditLattingPutParams},
-        TContext
-      > => {
+export const useLattingEditLattingPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof lattingEditLattingPut>>,
+      TError,
+      { data: LattingInputEntity; params: LattingEditLattingPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof lattingEditLattingPut>>,
+  TError,
+  { data: LattingInputEntity; params: LattingEditLattingPutParams },
+  TContext
+> => {
+  const mutationOptions = getLattingEditLattingPutMutationOptions(options);
 
-      const mutationOptions = getLattingEditLattingPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Latting Delete
  */
 export const lattingDeleteLattingDelete = (
-    params: LattingDeleteLattingDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/latting`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: LattingDeleteLattingDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/latting`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getLattingDeleteLattingDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof lattingDeleteLattingDelete>>,
+    TError,
+    { params: LattingDeleteLattingDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof lattingDeleteLattingDelete>>,
+  TError,
+  { params: LattingDeleteLattingDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["lattingDeleteLattingDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getLattingDeleteLattingDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lattingDeleteLattingDelete>>, TError,{params: LattingDeleteLattingDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof lattingDeleteLattingDelete>>, TError,{params: LattingDeleteLattingDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof lattingDeleteLattingDelete>>,
+    { params: LattingDeleteLattingDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['lattingDeleteLattingDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return lattingDeleteLattingDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type LattingDeleteLattingDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof lattingDeleteLattingDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof lattingDeleteLattingDelete>>, {params: LattingDeleteLattingDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type LattingDeleteLattingDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  lattingDeleteLattingDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type LattingDeleteLattingDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof lattingDeleteLattingDelete>>>
-    
-    export type LattingDeleteLattingDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Latting Delete
  */
-export const useLattingDeleteLattingDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof lattingDeleteLattingDelete>>, TError,{params: LattingDeleteLattingDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof lattingDeleteLattingDelete>>,
-        TError,
-        {params: LattingDeleteLattingDeleteParams},
-        TContext
-      > => {
+export const useLattingDeleteLattingDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof lattingDeleteLattingDelete>>,
+      TError,
+      { params: LattingDeleteLattingDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof lattingDeleteLattingDelete>>,
+  TError,
+  { params: LattingDeleteLattingDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getLattingDeleteLattingDeleteMutationOptions(options);
 
-      const mutationOptions = getLattingDeleteLattingDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Latting Read All
  */
 export const lattingReadAllLattingAllGet = (
-    params: LattingReadAllLattingAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: LattingReadAllLattingAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/latting/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/latting/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getLattingReadAllLattingAllGetQueryKey = (params?: LattingReadAllLattingAllGetParams,) => {
-    return [`/latting/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getLattingReadAllLattingAllGetQueryOptions = <TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: LattingReadAllLattingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getLattingReadAllLattingAllGetQueryKey = (
+  params?: LattingReadAllLattingAllGetParams,
 ) => {
+  return [`/latting/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getLattingReadAllLattingAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingReadAllLattingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getLattingReadAllLattingAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getLattingReadAllLattingAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>
+  > = ({ signal }) =>
+    lattingReadAllLattingAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>> = ({ signal }) => lattingReadAllLattingAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type LattingReadAllLattingAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>
+>;
+export type LattingReadAllLattingAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type LattingReadAllLattingAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>>
-export type LattingReadAllLattingAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useLattingReadAllLattingAllGet<TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingReadAllLattingAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError, TData>> & Pick<
+export function useLattingReadAllLattingAllGet<
+  TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingReadAllLattingAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
           TError,
           Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLattingReadAllLattingAllGet<TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingReadAllLattingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLattingReadAllLattingAllGet<
+  TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingReadAllLattingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
           TError,
           Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useLattingReadAllLattingAllGet<TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingReadAllLattingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useLattingReadAllLattingAllGet<
+  TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingReadAllLattingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Latting Read All
  */
 
-export function useLattingReadAllLattingAllGet<TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: LattingReadAllLattingAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useLattingReadAllLattingAllGet<
+  TData = Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: LattingReadAllLattingAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof lattingReadAllLattingAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getLattingReadAllLattingAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getLattingReadAllLattingAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Framework Create
  */
 export const frameworkCreateFrameworkPost = (
-    frameworkInputEntity: FrameworkInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  frameworkInputEntity: FrameworkInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<FrameworkOutputEntity>(
-      {url: `/framework`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: frameworkInputEntity, signal
+  return customInstance<FrameworkOutputEntity>(
+    {
+      url: `/framework`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: frameworkInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getFrameworkCreateFrameworkPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>,
+    TError,
+    { data: FrameworkInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>,
+  TError,
+  { data: FrameworkInputEntity },
+  TContext
+> => {
+  const mutationKey = ["frameworkCreateFrameworkPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getFrameworkCreateFrameworkPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>, TError,{data: FrameworkInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>, TError,{data: FrameworkInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>,
+    { data: FrameworkInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['frameworkCreateFrameworkPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return frameworkCreateFrameworkPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type FrameworkCreateFrameworkPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>
+>;
+export type FrameworkCreateFrameworkPostMutationBody = FrameworkInputEntity;
+export type FrameworkCreateFrameworkPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>, {data: FrameworkInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  frameworkCreateFrameworkPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type FrameworkCreateFrameworkPostMutationResult = NonNullable<Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>>
-    export type FrameworkCreateFrameworkPostMutationBody = FrameworkInputEntity
-    export type FrameworkCreateFrameworkPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Framework Create
  */
-export const useFrameworkCreateFrameworkPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>, TError,{data: FrameworkInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>,
-        TError,
-        {data: FrameworkInputEntity},
-        TContext
-      > => {
+export const useFrameworkCreateFrameworkPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>,
+      TError,
+      { data: FrameworkInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof frameworkCreateFrameworkPost>>,
+  TError,
+  { data: FrameworkInputEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getFrameworkCreateFrameworkPostMutationOptions(options);
 
-      const mutationOptions = getFrameworkCreateFrameworkPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Framework Get
  */
 export const frameworkGetFrameworkGet = (
-    params: FrameworkGetFrameworkGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: FrameworkGetFrameworkGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<FrameworkOutputEntity>(
-      {url: `/framework`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<FrameworkOutputEntity>(
+    { url: `/framework`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getFrameworkGetFrameworkGetQueryKey = (params?: FrameworkGetFrameworkGetParams,) => {
-    return [`/framework`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getFrameworkGetFrameworkGetQueryOptions = <TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: FrameworkGetFrameworkGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getFrameworkGetFrameworkGetQueryKey = (
+  params?: FrameworkGetFrameworkGetParams,
 ) => {
+  return [`/framework`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getFrameworkGetFrameworkGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkGetFrameworkGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getFrameworkGetFrameworkGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getFrameworkGetFrameworkGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof frameworkGetFrameworkGet>>
+  > = ({ signal }) => frameworkGetFrameworkGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>> = ({ signal }) => frameworkGetFrameworkGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type FrameworkGetFrameworkGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof frameworkGetFrameworkGet>>
+>;
+export type FrameworkGetFrameworkGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FrameworkGetFrameworkGetQueryResult = NonNullable<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>>
-export type FrameworkGetFrameworkGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useFrameworkGetFrameworkGet<TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkGetFrameworkGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError, TData>> & Pick<
+export function useFrameworkGetFrameworkGet<
+  TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkGetFrameworkGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
           TError,
           Awaited<ReturnType<typeof frameworkGetFrameworkGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFrameworkGetFrameworkGet<TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkGetFrameworkGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFrameworkGetFrameworkGet<
+  TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkGetFrameworkGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
           TError,
           Awaited<ReturnType<typeof frameworkGetFrameworkGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFrameworkGetFrameworkGet<TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkGetFrameworkGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFrameworkGetFrameworkGet<
+  TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkGetFrameworkGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Framework Get
  */
 
-export function useFrameworkGetFrameworkGet<TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkGetFrameworkGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkGetFrameworkGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useFrameworkGetFrameworkGet<
+  TData = Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkGetFrameworkGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkGetFrameworkGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFrameworkGetFrameworkGetQueryOptions(params, options);
 
-  const queryOptions = getFrameworkGetFrameworkGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Framework Edit
  */
 export const frameworkEditFrameworkPut = (
-    frameworkInputEntity: FrameworkInputEntity,
-    params: FrameworkEditFrameworkPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<FrameworkOutputEntity>(
-      {url: `/framework`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  frameworkInputEntity: FrameworkInputEntity,
+  params: FrameworkEditFrameworkPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<FrameworkOutputEntity>(
+    {
+      url: `/framework`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: frameworkInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getFrameworkEditFrameworkPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof frameworkEditFrameworkPut>>,
+    TError,
+    { data: FrameworkInputEntity; params: FrameworkEditFrameworkPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof frameworkEditFrameworkPut>>,
+  TError,
+  { data: FrameworkInputEntity; params: FrameworkEditFrameworkPutParams },
+  TContext
+> => {
+  const mutationKey = ["frameworkEditFrameworkPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getFrameworkEditFrameworkPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof frameworkEditFrameworkPut>>, TError,{data: FrameworkInputEntity;params: FrameworkEditFrameworkPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof frameworkEditFrameworkPut>>, TError,{data: FrameworkInputEntity;params: FrameworkEditFrameworkPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof frameworkEditFrameworkPut>>,
+    { data: FrameworkInputEntity; params: FrameworkEditFrameworkPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['frameworkEditFrameworkPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return frameworkEditFrameworkPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type FrameworkEditFrameworkPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof frameworkEditFrameworkPut>>
+>;
+export type FrameworkEditFrameworkPutMutationBody = FrameworkInputEntity;
+export type FrameworkEditFrameworkPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof frameworkEditFrameworkPut>>, {data: FrameworkInputEntity;params: FrameworkEditFrameworkPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  frameworkEditFrameworkPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type FrameworkEditFrameworkPutMutationResult = NonNullable<Awaited<ReturnType<typeof frameworkEditFrameworkPut>>>
-    export type FrameworkEditFrameworkPutMutationBody = FrameworkInputEntity
-    export type FrameworkEditFrameworkPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Framework Edit
  */
-export const useFrameworkEditFrameworkPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof frameworkEditFrameworkPut>>, TError,{data: FrameworkInputEntity;params: FrameworkEditFrameworkPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof frameworkEditFrameworkPut>>,
-        TError,
-        {data: FrameworkInputEntity;params: FrameworkEditFrameworkPutParams},
-        TContext
-      > => {
+export const useFrameworkEditFrameworkPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof frameworkEditFrameworkPut>>,
+      TError,
+      { data: FrameworkInputEntity; params: FrameworkEditFrameworkPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof frameworkEditFrameworkPut>>,
+  TError,
+  { data: FrameworkInputEntity; params: FrameworkEditFrameworkPutParams },
+  TContext
+> => {
+  const mutationOptions = getFrameworkEditFrameworkPutMutationOptions(options);
 
-      const mutationOptions = getFrameworkEditFrameworkPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Framework Delete
  */
 export const frameworkDeleteFrameworkDelete = (
-    params: FrameworkDeleteFrameworkDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/framework`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: FrameworkDeleteFrameworkDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/framework`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getFrameworkDeleteFrameworkDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>,
+    TError,
+    { params: FrameworkDeleteFrameworkDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>,
+  TError,
+  { params: FrameworkDeleteFrameworkDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["frameworkDeleteFrameworkDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getFrameworkDeleteFrameworkDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>, TError,{params: FrameworkDeleteFrameworkDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>, TError,{params: FrameworkDeleteFrameworkDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>,
+    { params: FrameworkDeleteFrameworkDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['frameworkDeleteFrameworkDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return frameworkDeleteFrameworkDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type FrameworkDeleteFrameworkDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>, {params: FrameworkDeleteFrameworkDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type FrameworkDeleteFrameworkDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  frameworkDeleteFrameworkDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type FrameworkDeleteFrameworkDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>>
-    
-    export type FrameworkDeleteFrameworkDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Framework Delete
  */
-export const useFrameworkDeleteFrameworkDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>, TError,{params: FrameworkDeleteFrameworkDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>,
-        TError,
-        {params: FrameworkDeleteFrameworkDeleteParams},
-        TContext
-      > => {
+export const useFrameworkDeleteFrameworkDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>,
+      TError,
+      { params: FrameworkDeleteFrameworkDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof frameworkDeleteFrameworkDelete>>,
+  TError,
+  { params: FrameworkDeleteFrameworkDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getFrameworkDeleteFrameworkDeleteMutationOptions(options);
 
-      const mutationOptions = getFrameworkDeleteFrameworkDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Framework Read All
  */
 export const frameworkReadAllFrameworkAllGet = (
-    params: FrameworkReadAllFrameworkAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: FrameworkReadAllFrameworkAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/framework/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/framework/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getFrameworkReadAllFrameworkAllGetQueryKey = (params?: FrameworkReadAllFrameworkAllGetParams,) => {
-    return [`/framework/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getFrameworkReadAllFrameworkAllGetQueryOptions = <TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: FrameworkReadAllFrameworkAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getFrameworkReadAllFrameworkAllGetQueryKey = (
+  params?: FrameworkReadAllFrameworkAllGetParams,
 ) => {
+  return [`/framework/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getFrameworkReadAllFrameworkAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkReadAllFrameworkAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getFrameworkReadAllFrameworkAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getFrameworkReadAllFrameworkAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>
+  > = ({ signal }) =>
+    frameworkReadAllFrameworkAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>> = ({ signal }) => frameworkReadAllFrameworkAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type FrameworkReadAllFrameworkAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>
+>;
+export type FrameworkReadAllFrameworkAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FrameworkReadAllFrameworkAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>>
-export type FrameworkReadAllFrameworkAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useFrameworkReadAllFrameworkAllGet<TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkReadAllFrameworkAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError, TData>> & Pick<
+export function useFrameworkReadAllFrameworkAllGet<
+  TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkReadAllFrameworkAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
           TError,
           Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFrameworkReadAllFrameworkAllGet<TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkReadAllFrameworkAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFrameworkReadAllFrameworkAllGet<
+  TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkReadAllFrameworkAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
           TError,
           Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useFrameworkReadAllFrameworkAllGet<TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkReadAllFrameworkAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFrameworkReadAllFrameworkAllGet<
+  TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkReadAllFrameworkAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Framework Read All
  */
 
-export function useFrameworkReadAllFrameworkAllGet<TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: FrameworkReadAllFrameworkAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useFrameworkReadAllFrameworkAllGet<
+  TData = Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: FrameworkReadAllFrameworkAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof frameworkReadAllFrameworkAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFrameworkReadAllFrameworkAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getFrameworkReadAllFrameworkAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Decoration Create
  */
 export const decorationCreateDecorationPost = (
-    decorationInputEntity: DecorationInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  decorationInputEntity: DecorationInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<DecorationOutputEntity>(
-      {url: `/decoration`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: decorationInputEntity, signal
+  return customInstance<DecorationOutputEntity>(
+    {
+      url: `/decoration`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: decorationInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getDecorationCreateDecorationPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof decorationCreateDecorationPost>>,
+    TError,
+    { data: DecorationInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof decorationCreateDecorationPost>>,
+  TError,
+  { data: DecorationInputEntity },
+  TContext
+> => {
+  const mutationKey = ["decorationCreateDecorationPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getDecorationCreateDecorationPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decorationCreateDecorationPost>>, TError,{data: DecorationInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof decorationCreateDecorationPost>>, TError,{data: DecorationInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof decorationCreateDecorationPost>>,
+    { data: DecorationInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['decorationCreateDecorationPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return decorationCreateDecorationPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DecorationCreateDecorationPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof decorationCreateDecorationPost>>
+>;
+export type DecorationCreateDecorationPostMutationBody = DecorationInputEntity;
+export type DecorationCreateDecorationPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof decorationCreateDecorationPost>>, {data: DecorationInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  decorationCreateDecorationPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DecorationCreateDecorationPostMutationResult = NonNullable<Awaited<ReturnType<typeof decorationCreateDecorationPost>>>
-    export type DecorationCreateDecorationPostMutationBody = DecorationInputEntity
-    export type DecorationCreateDecorationPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Decoration Create
  */
-export const useDecorationCreateDecorationPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decorationCreateDecorationPost>>, TError,{data: DecorationInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof decorationCreateDecorationPost>>,
-        TError,
-        {data: DecorationInputEntity},
-        TContext
-      > => {
+export const useDecorationCreateDecorationPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof decorationCreateDecorationPost>>,
+      TError,
+      { data: DecorationInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof decorationCreateDecorationPost>>,
+  TError,
+  { data: DecorationInputEntity },
+  TContext
+> => {
+  const mutationOptions =
+    getDecorationCreateDecorationPostMutationOptions(options);
 
-      const mutationOptions = getDecorationCreateDecorationPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Decoration Get
  */
 export const decorationGetDecorationGet = (
-    params: DecorationGetDecorationGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: DecorationGetDecorationGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<DecorationOutputEntity>(
-      {url: `/decoration`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<DecorationOutputEntity>(
+    { url: `/decoration`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getDecorationGetDecorationGetQueryKey = (params?: DecorationGetDecorationGetParams,) => {
-    return [`/decoration`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getDecorationGetDecorationGetQueryOptions = <TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: DecorationGetDecorationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getDecorationGetDecorationGetQueryKey = (
+  params?: DecorationGetDecorationGetParams,
 ) => {
+  return [`/decoration`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getDecorationGetDecorationGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationGetDecorationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getDecorationGetDecorationGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getDecorationGetDecorationGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof decorationGetDecorationGet>>
+  > = ({ signal }) =>
+    decorationGetDecorationGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof decorationGetDecorationGet>>> = ({ signal }) => decorationGetDecorationGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type DecorationGetDecorationGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof decorationGetDecorationGet>>
+>;
+export type DecorationGetDecorationGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type DecorationGetDecorationGetQueryResult = NonNullable<Awaited<ReturnType<typeof decorationGetDecorationGet>>>
-export type DecorationGetDecorationGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useDecorationGetDecorationGet<TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationGetDecorationGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError, TData>> & Pick<
+export function useDecorationGetDecorationGet<
+  TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationGetDecorationGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof decorationGetDecorationGet>>,
           TError,
           Awaited<ReturnType<typeof decorationGetDecorationGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDecorationGetDecorationGet<TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationGetDecorationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDecorationGetDecorationGet<
+  TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationGetDecorationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof decorationGetDecorationGet>>,
           TError,
           Awaited<ReturnType<typeof decorationGetDecorationGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDecorationGetDecorationGet<TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationGetDecorationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDecorationGetDecorationGet<
+  TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationGetDecorationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Decoration Get
  */
 
-export function useDecorationGetDecorationGet<TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationGetDecorationGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationGetDecorationGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useDecorationGetDecorationGet<
+  TData = Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationGetDecorationGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationGetDecorationGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getDecorationGetDecorationGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getDecorationGetDecorationGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Decoration Edit
  */
 export const decorationEditDecorationPut = (
-    decorationInputEntity: DecorationInputEntity,
-    params: DecorationEditDecorationPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<DecorationOutputEntity>(
-      {url: `/decoration`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  decorationInputEntity: DecorationInputEntity,
+  params: DecorationEditDecorationPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<DecorationOutputEntity>(
+    {
+      url: `/decoration`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: decorationInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getDecorationEditDecorationPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof decorationEditDecorationPut>>,
+    TError,
+    { data: DecorationInputEntity; params: DecorationEditDecorationPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof decorationEditDecorationPut>>,
+  TError,
+  { data: DecorationInputEntity; params: DecorationEditDecorationPutParams },
+  TContext
+> => {
+  const mutationKey = ["decorationEditDecorationPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getDecorationEditDecorationPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decorationEditDecorationPut>>, TError,{data: DecorationInputEntity;params: DecorationEditDecorationPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof decorationEditDecorationPut>>, TError,{data: DecorationInputEntity;params: DecorationEditDecorationPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof decorationEditDecorationPut>>,
+    { data: DecorationInputEntity; params: DecorationEditDecorationPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['decorationEditDecorationPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return decorationEditDecorationPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DecorationEditDecorationPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof decorationEditDecorationPut>>
+>;
+export type DecorationEditDecorationPutMutationBody = DecorationInputEntity;
+export type DecorationEditDecorationPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof decorationEditDecorationPut>>, {data: DecorationInputEntity;params: DecorationEditDecorationPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  decorationEditDecorationPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DecorationEditDecorationPutMutationResult = NonNullable<Awaited<ReturnType<typeof decorationEditDecorationPut>>>
-    export type DecorationEditDecorationPutMutationBody = DecorationInputEntity
-    export type DecorationEditDecorationPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Decoration Edit
  */
-export const useDecorationEditDecorationPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decorationEditDecorationPut>>, TError,{data: DecorationInputEntity;params: DecorationEditDecorationPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof decorationEditDecorationPut>>,
-        TError,
-        {data: DecorationInputEntity;params: DecorationEditDecorationPutParams},
-        TContext
-      > => {
+export const useDecorationEditDecorationPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof decorationEditDecorationPut>>,
+      TError,
+      {
+        data: DecorationInputEntity;
+        params: DecorationEditDecorationPutParams;
+      },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof decorationEditDecorationPut>>,
+  TError,
+  { data: DecorationInputEntity; params: DecorationEditDecorationPutParams },
+  TContext
+> => {
+  const mutationOptions =
+    getDecorationEditDecorationPutMutationOptions(options);
 
-      const mutationOptions = getDecorationEditDecorationPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Decoration Delete
  */
 export const decorationDeleteDecorationDelete = (
-    params: DecorationDeleteDecorationDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/decoration`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: DecorationDeleteDecorationDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/decoration`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getDecorationDeleteDecorationDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>,
+    TError,
+    { params: DecorationDeleteDecorationDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>,
+  TError,
+  { params: DecorationDeleteDecorationDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["decorationDeleteDecorationDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getDecorationDeleteDecorationDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>, TError,{params: DecorationDeleteDecorationDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>, TError,{params: DecorationDeleteDecorationDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>,
+    { params: DecorationDeleteDecorationDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['decorationDeleteDecorationDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return decorationDeleteDecorationDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DecorationDeleteDecorationDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>, {params: DecorationDeleteDecorationDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type DecorationDeleteDecorationDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  decorationDeleteDecorationDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DecorationDeleteDecorationDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>>
-    
-    export type DecorationDeleteDecorationDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Decoration Delete
  */
-export const useDecorationDeleteDecorationDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>, TError,{params: DecorationDeleteDecorationDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>,
-        TError,
-        {params: DecorationDeleteDecorationDeleteParams},
-        TContext
-      > => {
+export const useDecorationDeleteDecorationDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>,
+      TError,
+      { params: DecorationDeleteDecorationDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof decorationDeleteDecorationDelete>>,
+  TError,
+  { params: DecorationDeleteDecorationDeleteParams },
+  TContext
+> => {
+  const mutationOptions =
+    getDecorationDeleteDecorationDeleteMutationOptions(options);
 
-      const mutationOptions = getDecorationDeleteDecorationDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Decoration Read All
  */
 export const decorationReadAllDecorationAllGet = (
-    params: DecorationReadAllDecorationAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: DecorationReadAllDecorationAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/decoration/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/decoration/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getDecorationReadAllDecorationAllGetQueryKey = (params?: DecorationReadAllDecorationAllGetParams,) => {
-    return [`/decoration/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getDecorationReadAllDecorationAllGetQueryOptions = <TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: DecorationReadAllDecorationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getDecorationReadAllDecorationAllGetQueryKey = (
+  params?: DecorationReadAllDecorationAllGetParams,
 ) => {
+  return [`/decoration/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getDecorationReadAllDecorationAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationReadAllDecorationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getDecorationReadAllDecorationAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ??
+    getDecorationReadAllDecorationAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>
+  > = ({ signal }) =>
+    decorationReadAllDecorationAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>> = ({ signal }) => decorationReadAllDecorationAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type DecorationReadAllDecorationAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>
+>;
+export type DecorationReadAllDecorationAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type DecorationReadAllDecorationAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>>
-export type DecorationReadAllDecorationAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useDecorationReadAllDecorationAllGet<TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationReadAllDecorationAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError, TData>> & Pick<
+export function useDecorationReadAllDecorationAllGet<
+  TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationReadAllDecorationAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
           TError,
           Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDecorationReadAllDecorationAllGet<TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationReadAllDecorationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDecorationReadAllDecorationAllGet<
+  TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationReadAllDecorationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
           TError,
           Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDecorationReadAllDecorationAllGet<TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationReadAllDecorationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useDecorationReadAllDecorationAllGet<
+  TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationReadAllDecorationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Decoration Read All
  */
 
-export function useDecorationReadAllDecorationAllGet<TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: DecorationReadAllDecorationAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useDecorationReadAllDecorationAllGet<
+  TData = Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: DecorationReadAllDecorationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof decorationReadAllDecorationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getDecorationReadAllDecorationAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getDecorationReadAllDecorationAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Service Create
  */
 export const serviceCreateServicePost = (
-    serviceInputEntity: ServiceInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  serviceInputEntity: ServiceInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ServiceOutputEntity>(
-      {url: `/service`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: serviceInputEntity, signal
+  return customInstance<ServiceOutputEntity>(
+    {
+      url: `/service`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: serviceInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getServiceCreateServicePostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof serviceCreateServicePost>>,
+    TError,
+    { data: ServiceInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof serviceCreateServicePost>>,
+  TError,
+  { data: ServiceInputEntity },
+  TContext
+> => {
+  const mutationKey = ["serviceCreateServicePost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getServiceCreateServicePostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof serviceCreateServicePost>>, TError,{data: ServiceInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof serviceCreateServicePost>>, TError,{data: ServiceInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof serviceCreateServicePost>>,
+    { data: ServiceInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['serviceCreateServicePost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return serviceCreateServicePost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ServiceCreateServicePostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof serviceCreateServicePost>>
+>;
+export type ServiceCreateServicePostMutationBody = ServiceInputEntity;
+export type ServiceCreateServicePostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof serviceCreateServicePost>>, {data: ServiceInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  serviceCreateServicePost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ServiceCreateServicePostMutationResult = NonNullable<Awaited<ReturnType<typeof serviceCreateServicePost>>>
-    export type ServiceCreateServicePostMutationBody = ServiceInputEntity
-    export type ServiceCreateServicePostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Service Create
  */
-export const useServiceCreateServicePost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof serviceCreateServicePost>>, TError,{data: ServiceInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof serviceCreateServicePost>>,
-        TError,
-        {data: ServiceInputEntity},
-        TContext
-      > => {
+export const useServiceCreateServicePost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof serviceCreateServicePost>>,
+      TError,
+      { data: ServiceInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof serviceCreateServicePost>>,
+  TError,
+  { data: ServiceInputEntity },
+  TContext
+> => {
+  const mutationOptions = getServiceCreateServicePostMutationOptions(options);
 
-      const mutationOptions = getServiceCreateServicePostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Service Get
  */
 export const serviceGetServiceGet = (
-    params: ServiceGetServiceGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ServiceGetServiceGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<ServiceOutputEntity>(
-      {url: `/service`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<ServiceOutputEntity>(
+    { url: `/service`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getServiceGetServiceGetQueryKey = (params?: ServiceGetServiceGetParams,) => {
-    return [`/service`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getServiceGetServiceGetQueryOptions = <TData = Awaited<ReturnType<typeof serviceGetServiceGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ServiceGetServiceGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceGetServiceGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getServiceGetServiceGetQueryKey = (
+  params?: ServiceGetServiceGetParams,
 ) => {
+  return [`/service`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getServiceGetServiceGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof serviceGetServiceGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceGetServiceGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceGetServiceGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getServiceGetServiceGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getServiceGetServiceGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof serviceGetServiceGet>>
+  > = ({ signal }) => serviceGetServiceGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof serviceGetServiceGet>>> = ({ signal }) => serviceGetServiceGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof serviceGetServiceGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ServiceGetServiceGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof serviceGetServiceGet>>
+>;
+export type ServiceGetServiceGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof serviceGetServiceGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ServiceGetServiceGetQueryResult = NonNullable<Awaited<ReturnType<typeof serviceGetServiceGet>>>
-export type ServiceGetServiceGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useServiceGetServiceGet<TData = Awaited<ReturnType<typeof serviceGetServiceGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceGetServiceGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceGetServiceGet>>, TError, TData>> & Pick<
+export function useServiceGetServiceGet<
+  TData = Awaited<ReturnType<typeof serviceGetServiceGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceGetServiceGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceGetServiceGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof serviceGetServiceGet>>,
           TError,
           Awaited<ReturnType<typeof serviceGetServiceGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useServiceGetServiceGet<TData = Awaited<ReturnType<typeof serviceGetServiceGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceGetServiceGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceGetServiceGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useServiceGetServiceGet<
+  TData = Awaited<ReturnType<typeof serviceGetServiceGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceGetServiceGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceGetServiceGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof serviceGetServiceGet>>,
           TError,
           Awaited<ReturnType<typeof serviceGetServiceGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useServiceGetServiceGet<TData = Awaited<ReturnType<typeof serviceGetServiceGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceGetServiceGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceGetServiceGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useServiceGetServiceGet<
+  TData = Awaited<ReturnType<typeof serviceGetServiceGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceGetServiceGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceGetServiceGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Service Get
  */
 
-export function useServiceGetServiceGet<TData = Awaited<ReturnType<typeof serviceGetServiceGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceGetServiceGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceGetServiceGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useServiceGetServiceGet<
+  TData = Awaited<ReturnType<typeof serviceGetServiceGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceGetServiceGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceGetServiceGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getServiceGetServiceGetQueryOptions(params, options);
 
-  const queryOptions = getServiceGetServiceGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Service Edit
  */
 export const serviceEditServicePut = (
-    serviceInputEntity: ServiceInputEntity,
-    params: ServiceEditServicePutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<ServiceOutputEntity>(
-      {url: `/service`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  serviceInputEntity: ServiceInputEntity,
+  params: ServiceEditServicePutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<ServiceOutputEntity>(
+    {
+      url: `/service`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: serviceInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getServiceEditServicePutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof serviceEditServicePut>>,
+    TError,
+    { data: ServiceInputEntity; params: ServiceEditServicePutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof serviceEditServicePut>>,
+  TError,
+  { data: ServiceInputEntity; params: ServiceEditServicePutParams },
+  TContext
+> => {
+  const mutationKey = ["serviceEditServicePut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getServiceEditServicePutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof serviceEditServicePut>>, TError,{data: ServiceInputEntity;params: ServiceEditServicePutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof serviceEditServicePut>>, TError,{data: ServiceInputEntity;params: ServiceEditServicePutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof serviceEditServicePut>>,
+    { data: ServiceInputEntity; params: ServiceEditServicePutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['serviceEditServicePut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return serviceEditServicePut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ServiceEditServicePutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof serviceEditServicePut>>
+>;
+export type ServiceEditServicePutMutationBody = ServiceInputEntity;
+export type ServiceEditServicePutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof serviceEditServicePut>>, {data: ServiceInputEntity;params: ServiceEditServicePutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  serviceEditServicePut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ServiceEditServicePutMutationResult = NonNullable<Awaited<ReturnType<typeof serviceEditServicePut>>>
-    export type ServiceEditServicePutMutationBody = ServiceInputEntity
-    export type ServiceEditServicePutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Service Edit
  */
-export const useServiceEditServicePut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof serviceEditServicePut>>, TError,{data: ServiceInputEntity;params: ServiceEditServicePutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof serviceEditServicePut>>,
-        TError,
-        {data: ServiceInputEntity;params: ServiceEditServicePutParams},
-        TContext
-      > => {
+export const useServiceEditServicePut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof serviceEditServicePut>>,
+      TError,
+      { data: ServiceInputEntity; params: ServiceEditServicePutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof serviceEditServicePut>>,
+  TError,
+  { data: ServiceInputEntity; params: ServiceEditServicePutParams },
+  TContext
+> => {
+  const mutationOptions = getServiceEditServicePutMutationOptions(options);
 
-      const mutationOptions = getServiceEditServicePutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Service Delete
  */
 export const serviceDeleteServiceDelete = (
-    params: ServiceDeleteServiceDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/service`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: ServiceDeleteServiceDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/service`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getServiceDeleteServiceDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof serviceDeleteServiceDelete>>,
+    TError,
+    { params: ServiceDeleteServiceDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof serviceDeleteServiceDelete>>,
+  TError,
+  { params: ServiceDeleteServiceDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["serviceDeleteServiceDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getServiceDeleteServiceDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof serviceDeleteServiceDelete>>, TError,{params: ServiceDeleteServiceDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof serviceDeleteServiceDelete>>, TError,{params: ServiceDeleteServiceDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof serviceDeleteServiceDelete>>,
+    { params: ServiceDeleteServiceDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['serviceDeleteServiceDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return serviceDeleteServiceDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type ServiceDeleteServiceDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof serviceDeleteServiceDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof serviceDeleteServiceDelete>>, {params: ServiceDeleteServiceDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type ServiceDeleteServiceDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  serviceDeleteServiceDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ServiceDeleteServiceDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof serviceDeleteServiceDelete>>>
-    
-    export type ServiceDeleteServiceDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Service Delete
  */
-export const useServiceDeleteServiceDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof serviceDeleteServiceDelete>>, TError,{params: ServiceDeleteServiceDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof serviceDeleteServiceDelete>>,
-        TError,
-        {params: ServiceDeleteServiceDeleteParams},
-        TContext
-      > => {
+export const useServiceDeleteServiceDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof serviceDeleteServiceDelete>>,
+      TError,
+      { params: ServiceDeleteServiceDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof serviceDeleteServiceDelete>>,
+  TError,
+  { params: ServiceDeleteServiceDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getServiceDeleteServiceDeleteMutationOptions(options);
 
-      const mutationOptions = getServiceDeleteServiceDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Service Read All
  */
 export const serviceReadAllServiceAllGet = (
-    params: ServiceReadAllServiceAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: ServiceReadAllServiceAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/service/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/service/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getServiceReadAllServiceAllGetQueryKey = (params?: ServiceReadAllServiceAllGetParams,) => {
-    return [`/service/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getServiceReadAllServiceAllGetQueryOptions = <TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: ServiceReadAllServiceAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getServiceReadAllServiceAllGetQueryKey = (
+  params?: ServiceReadAllServiceAllGetParams,
 ) => {
+  return [`/service/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getServiceReadAllServiceAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceReadAllServiceAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getServiceReadAllServiceAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getServiceReadAllServiceAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>
+  > = ({ signal }) =>
+    serviceReadAllServiceAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>> = ({ signal }) => serviceReadAllServiceAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type ServiceReadAllServiceAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>
+>;
+export type ServiceReadAllServiceAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ServiceReadAllServiceAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>>
-export type ServiceReadAllServiceAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useServiceReadAllServiceAllGet<TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceReadAllServiceAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError, TData>> & Pick<
+export function useServiceReadAllServiceAllGet<
+  TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceReadAllServiceAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
           TError,
           Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useServiceReadAllServiceAllGet<TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceReadAllServiceAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useServiceReadAllServiceAllGet<
+  TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceReadAllServiceAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
           TError,
           Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useServiceReadAllServiceAllGet<TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceReadAllServiceAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useServiceReadAllServiceAllGet<
+  TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceReadAllServiceAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Service Read All
  */
 
-export function useServiceReadAllServiceAllGet<TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: ServiceReadAllServiceAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useServiceReadAllServiceAllGet<
+  TData = Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: ServiceReadAllServiceAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof serviceReadAllServiceAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getServiceReadAllServiceAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getServiceReadAllServiceAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Quality Create
  */
 export const qualityCreateQualityPost = (
-    qualityInputEntity: QualityInputEntity,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  qualityInputEntity: QualityInputEntity,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<QualityOutputEntity>(
-      {url: `/quality`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: qualityInputEntity, signal
+  return customInstance<QualityOutputEntity>(
+    {
+      url: `/quality`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: qualityInputEntity,
+      signal,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getQualityCreateQualityPostMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof qualityCreateQualityPost>>,
+    TError,
+    { data: QualityInputEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof qualityCreateQualityPost>>,
+  TError,
+  { data: QualityInputEntity },
+  TContext
+> => {
+  const mutationKey = ["qualityCreateQualityPost"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getQualityCreateQualityPostMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof qualityCreateQualityPost>>, TError,{data: QualityInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof qualityCreateQualityPost>>, TError,{data: QualityInputEntity}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof qualityCreateQualityPost>>,
+    { data: QualityInputEntity }
+  > = (props) => {
+    const { data } = props ?? {};
 
-const mutationKey = ['qualityCreateQualityPost'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return qualityCreateQualityPost(data, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type QualityCreateQualityPostMutationResult = NonNullable<
+  Awaited<ReturnType<typeof qualityCreateQualityPost>>
+>;
+export type QualityCreateQualityPostMutationBody = QualityInputEntity;
+export type QualityCreateQualityPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof qualityCreateQualityPost>>, {data: QualityInputEntity}> = (props) => {
-          const {data} = props ?? {};
-
-          return  qualityCreateQualityPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type QualityCreateQualityPostMutationResult = NonNullable<Awaited<ReturnType<typeof qualityCreateQualityPost>>>
-    export type QualityCreateQualityPostMutationBody = QualityInputEntity
-    export type QualityCreateQualityPostMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Quality Create
  */
-export const useQualityCreateQualityPost = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof qualityCreateQualityPost>>, TError,{data: QualityInputEntity}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof qualityCreateQualityPost>>,
-        TError,
-        {data: QualityInputEntity},
-        TContext
-      > => {
+export const useQualityCreateQualityPost = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof qualityCreateQualityPost>>,
+      TError,
+      { data: QualityInputEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof qualityCreateQualityPost>>,
+  TError,
+  { data: QualityInputEntity },
+  TContext
+> => {
+  const mutationOptions = getQualityCreateQualityPostMutationOptions(options);
 
-      const mutationOptions = getQualityCreateQualityPostMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Quality Get
  */
 export const qualityGetQualityGet = (
-    params: QualityGetQualityGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: QualityGetQualityGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<QualityOutputEntity>(
-      {url: `/quality`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<QualityOutputEntity>(
+    { url: `/quality`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getQualityGetQualityGetQueryKey = (params?: QualityGetQualityGetParams,) => {
-    return [`/quality`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getQualityGetQualityGetQueryOptions = <TData = Awaited<ReturnType<typeof qualityGetQualityGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: QualityGetQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityGetQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getQualityGetQualityGetQueryKey = (
+  params?: QualityGetQualityGetParams,
 ) => {
+  return [`/quality`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getQualityGetQualityGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof qualityGetQualityGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityGetQualityGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityGetQualityGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getQualityGetQualityGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getQualityGetQualityGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof qualityGetQualityGet>>
+  > = ({ signal }) => qualityGetQualityGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof qualityGetQualityGet>>> = ({ signal }) => qualityGetQualityGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof qualityGetQualityGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type QualityGetQualityGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof qualityGetQualityGet>>
+>;
+export type QualityGetQualityGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof qualityGetQualityGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type QualityGetQualityGetQueryResult = NonNullable<Awaited<ReturnType<typeof qualityGetQualityGet>>>
-export type QualityGetQualityGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useQualityGetQualityGet<TData = Awaited<ReturnType<typeof qualityGetQualityGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityGetQualityGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityGetQualityGet>>, TError, TData>> & Pick<
+export function useQualityGetQualityGet<
+  TData = Awaited<ReturnType<typeof qualityGetQualityGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityGetQualityGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityGetQualityGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof qualityGetQualityGet>>,
           TError,
           Awaited<ReturnType<typeof qualityGetQualityGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useQualityGetQualityGet<TData = Awaited<ReturnType<typeof qualityGetQualityGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityGetQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityGetQualityGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useQualityGetQualityGet<
+  TData = Awaited<ReturnType<typeof qualityGetQualityGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityGetQualityGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityGetQualityGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof qualityGetQualityGet>>,
           TError,
           Awaited<ReturnType<typeof qualityGetQualityGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useQualityGetQualityGet<TData = Awaited<ReturnType<typeof qualityGetQualityGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityGetQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityGetQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useQualityGetQualityGet<
+  TData = Awaited<ReturnType<typeof qualityGetQualityGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityGetQualityGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityGetQualityGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Quality Get
  */
 
-export function useQualityGetQualityGet<TData = Awaited<ReturnType<typeof qualityGetQualityGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityGetQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityGetQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useQualityGetQualityGet<
+  TData = Awaited<ReturnType<typeof qualityGetQualityGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityGetQualityGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityGetQualityGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getQualityGetQualityGetQueryOptions(params, options);
 
-  const queryOptions = getQualityGetQualityGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Quality Edit
  */
 export const qualityEditQualityPut = (
-    qualityInputEntity: QualityInputEntity,
-    params: QualityEditQualityPutParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<QualityOutputEntity>(
-      {url: `/quality`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
+  qualityInputEntity: QualityInputEntity,
+  params: QualityEditQualityPutParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<QualityOutputEntity>(
+    {
+      url: `/quality`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       data: qualityInputEntity,
-        params
+      params,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getQualityEditQualityPutMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof qualityEditQualityPut>>,
+    TError,
+    { data: QualityInputEntity; params: QualityEditQualityPutParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof qualityEditQualityPut>>,
+  TError,
+  { data: QualityInputEntity; params: QualityEditQualityPutParams },
+  TContext
+> => {
+  const mutationKey = ["qualityEditQualityPut"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getQualityEditQualityPutMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof qualityEditQualityPut>>, TError,{data: QualityInputEntity;params: QualityEditQualityPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof qualityEditQualityPut>>, TError,{data: QualityInputEntity;params: QualityEditQualityPutParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof qualityEditQualityPut>>,
+    { data: QualityInputEntity; params: QualityEditQualityPutParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-const mutationKey = ['qualityEditQualityPut'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return qualityEditQualityPut(data, params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type QualityEditQualityPutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof qualityEditQualityPut>>
+>;
+export type QualityEditQualityPutMutationBody = QualityInputEntity;
+export type QualityEditQualityPutMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof qualityEditQualityPut>>, {data: QualityInputEntity;params: QualityEditQualityPutParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  qualityEditQualityPut(data,params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type QualityEditQualityPutMutationResult = NonNullable<Awaited<ReturnType<typeof qualityEditQualityPut>>>
-    export type QualityEditQualityPutMutationBody = QualityInputEntity
-    export type QualityEditQualityPutMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Quality Edit
  */
-export const useQualityEditQualityPut = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof qualityEditQualityPut>>, TError,{data: QualityInputEntity;params: QualityEditQualityPutParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof qualityEditQualityPut>>,
-        TError,
-        {data: QualityInputEntity;params: QualityEditQualityPutParams},
-        TContext
-      > => {
+export const useQualityEditQualityPut = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof qualityEditQualityPut>>,
+      TError,
+      { data: QualityInputEntity; params: QualityEditQualityPutParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof qualityEditQualityPut>>,
+  TError,
+  { data: QualityInputEntity; params: QualityEditQualityPutParams },
+  TContext
+> => {
+  const mutationOptions = getQualityEditQualityPutMutationOptions(options);
 
-      const mutationOptions = getQualityEditQualityPutMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Quality Delete
  */
 export const qualityDeleteQualityDelete = (
-    params: QualityDeleteQualityDeleteParams,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/quality`, method: 'DELETE',
-        params
-    },
-      options);
-    }
-  
+  params: QualityDeleteQualityDeleteParams,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<boolean>(
+    { url: `/quality`, method: "DELETE", params },
+    options,
+  );
+};
 
+export const getQualityDeleteQualityDeleteMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof qualityDeleteQualityDelete>>,
+    TError,
+    { params: QualityDeleteQualityDeleteParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof qualityDeleteQualityDelete>>,
+  TError,
+  { params: QualityDeleteQualityDeleteParams },
+  TContext
+> => {
+  const mutationKey = ["qualityDeleteQualityDelete"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getQualityDeleteQualityDeleteMutationOptions = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof qualityDeleteQualityDelete>>, TError,{params: QualityDeleteQualityDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof qualityDeleteQualityDelete>>, TError,{params: QualityDeleteQualityDeleteParams}, TContext> => {
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof qualityDeleteQualityDelete>>,
+    { params: QualityDeleteQualityDeleteParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-const mutationKey = ['qualityDeleteQualityDelete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+    return qualityDeleteQualityDelete(params, requestOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type QualityDeleteQualityDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof qualityDeleteQualityDelete>>
+>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof qualityDeleteQualityDelete>>, {params: QualityDeleteQualityDeleteParams}> = (props) => {
-          const {params} = props ?? {};
+export type QualityDeleteQualityDeleteMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-          return  qualityDeleteQualityDelete(params,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type QualityDeleteQualityDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof qualityDeleteQualityDelete>>>
-    
-    export type QualityDeleteQualityDeleteMutationError = ErrorType<HTTPValidationErrorEntity>
-
-    /**
+/**
  * @summary Quality Delete
  */
-export const useQualityDeleteQualityDelete = <TError = ErrorType<HTTPValidationErrorEntity>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof qualityDeleteQualityDelete>>, TError,{params: QualityDeleteQualityDeleteParams}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof qualityDeleteQualityDelete>>,
-        TError,
-        {params: QualityDeleteQualityDeleteParams},
-        TContext
-      > => {
+export const useQualityDeleteQualityDelete = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof qualityDeleteQualityDelete>>,
+      TError,
+      { params: QualityDeleteQualityDeleteParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof qualityDeleteQualityDelete>>,
+  TError,
+  { params: QualityDeleteQualityDeleteParams },
+  TContext
+> => {
+  const mutationOptions = getQualityDeleteQualityDeleteMutationOptions(options);
 
-      const mutationOptions = getQualityDeleteQualityDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Quality Read All
  */
 export const qualityReadAllQualityAllGet = (
-    params: QualityReadAllQualityAllGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params: QualityReadAllQualityAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/quality/all`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown>(
+    { url: `/quality/all`, method: "GET", params, signal },
+    options,
+  );
+};
 
-export const getQualityReadAllQualityAllGetQueryKey = (params?: QualityReadAllQualityAllGetParams,) => {
-    return [`/quality/all`, ...(params ? [params]: [])] as const;
-    }
-
-    
-export const getQualityReadAllQualityAllGetQueryOptions = <TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(params: QualityReadAllQualityAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getQualityReadAllQualityAllGetQueryKey = (
+  params?: QualityReadAllQualityAllGetParams,
 ) => {
+  return [`/quality/all`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getQualityReadAllQualityAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityReadAllQualityAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getQualityReadAllQualityAllGetQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getQualityReadAllQualityAllGetQueryKey(params);
 
-  
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>
+  > = ({ signal }) =>
+    qualityReadAllQualityAllGet(params, requestOptions, signal);
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>> = ({ signal }) => qualityReadAllQualityAllGet(params, requestOptions, signal);
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-      
+export type QualityReadAllQualityAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>
+>;
+export type QualityReadAllQualityAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
 
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type QualityReadAllQualityAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>>
-export type QualityReadAllQualityAllGetQueryError = ErrorType<HTTPValidationErrorEntity>
-
-
-export function useQualityReadAllQualityAllGet<TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityReadAllQualityAllGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError, TData>> & Pick<
+export function useQualityReadAllQualityAllGet<
+  TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityReadAllQualityAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
           TError,
           Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useQualityReadAllQualityAllGet<TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityReadAllQualityAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useQualityReadAllQualityAllGet<
+  TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityReadAllQualityAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
           TError,
           Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useQualityReadAllQualityAllGet<TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityReadAllQualityAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useQualityReadAllQualityAllGet<
+  TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityReadAllQualityAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Quality Read All
  */
 
-export function useQualityReadAllQualityAllGet<TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError = ErrorType<HTTPValidationErrorEntity>>(
- params: QualityReadAllQualityAllGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useQualityReadAllQualityAllGet<
+  TData = Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: QualityReadAllQualityAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof qualityReadAllQualityAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getQualityReadAllQualityAllGetQueryOptions(
+    params,
+    options,
+  );
 
-  const queryOptions = getQualityReadAllQualityAllGetQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * @summary Utils Rates
  */
 export const utilsRatesUtilsRatesGet = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<unknown[]>(
-      {url: `/utils/rates`, method: 'GET', signal
-    },
-      options);
-    }
-  
+  return customInstance<unknown[]>(
+    { url: `/utils/rates`, method: "GET", signal },
+    options,
+  );
+};
 
 export const getUtilsRatesUtilsRatesGetQueryKey = () => {
-    return [`/utils/rates`] as const;
-    }
+  return [`/utils/rates`] as const;
+};
 
-    
-export const getUtilsRatesUtilsRatesGetQueryOptions = <TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
+export const getUtilsRatesUtilsRatesGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey =
+    queryOptions?.queryKey ?? getUtilsRatesUtilsRatesGetQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getUtilsRatesUtilsRatesGetQueryKey();
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>
+  > = ({ signal }) => utilsRatesUtilsRatesGet(requestOptions, signal);
 
-  
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>> = ({ signal }) => utilsRatesUtilsRatesGet(requestOptions, signal);
+export type UtilsRatesUtilsRatesGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>
+>;
+export type UtilsRatesUtilsRatesGetQueryError = ErrorType<unknown>;
 
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type UtilsRatesUtilsRatesGetQueryResult = NonNullable<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>>
-export type UtilsRatesUtilsRatesGetQueryError = ErrorType<unknown>
-
-
-export function useUtilsRatesUtilsRatesGet<TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError, TData>> & Pick<
+export function useUtilsRatesUtilsRatesGet<
+  TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
           TError,
           Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useUtilsRatesUtilsRatesGet<TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useUtilsRatesUtilsRatesGet<
+  TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
           TError,
           Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useUtilsRatesUtilsRatesGet<TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useUtilsRatesUtilsRatesGet<
+  TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Utils Rates
  */
 
-export function useUtilsRatesUtilsRatesGet<TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useUtilsRatesUtilsRatesGet<
+  TData = Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+  TError = ErrorType<unknown>,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof utilsRatesUtilsRatesGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getUtilsRatesUtilsRatesGetQueryOptions(options);
 
-  const queryOptions = getUtilsRatesUtilsRatesGetQueryOptions(options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
-

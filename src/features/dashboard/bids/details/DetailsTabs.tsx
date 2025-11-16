@@ -28,9 +28,9 @@ export const ApplicationDetailsTabs: FC<Props> = ({ application, id }) => {
       label: t("tabs.summary"),
       disabled: false,
       children: (
-        <ApplicationCalc 
-          application={application} 
-          id={id} 
+        <ApplicationCalc
+          application={application}
+          id={id}
           onForecastDataUpdate={setForecastData}
         />
       ),
@@ -38,7 +38,6 @@ export const ApplicationDetailsTabs: FC<Props> = ({ application, id }) => {
     {
       key: "3",
       label: t("tabs.calculationResults"),
-      disabled: !forecastData,
       children: forecastData ? (
         <CalculationResults application={forecastData} />
       ) : (

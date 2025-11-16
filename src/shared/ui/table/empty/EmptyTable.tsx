@@ -22,8 +22,8 @@ export const EmptyTable: FC<Props> = function ({
   return (
     <div
       className={cn(
-        className,
         "flex h-full min-h-[calc(60vh_-_90px)] items-center justify-center",
+        className,
       )}
     >
       <div className="grid place-items-center gap-6">

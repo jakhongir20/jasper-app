@@ -185,7 +185,7 @@ export const ApplicationCalc: FC<Props> = ({
         </div>
 
         <div className="flex flex-col gap-2 rounded-lg border border-gray-500/30 p-4 sm:grid lg:col-span-1 lg:grid-cols-1">
-          <Form.Item name="forecaster" label={t("calculated_by")}>
+          <Form.Item name={["forecaster", "company", "display_name"]} label={t("calculated_by")}>
             <Input placeholder={t("common.placeholder.address")} />
           </Form.Item>
           <Form.Item
