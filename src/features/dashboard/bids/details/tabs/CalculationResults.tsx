@@ -15,61 +15,57 @@ export const CalculationResults: FC<Props> = ({ application }) => {
 
   const { t } = useTranslation();
 
+  type TxProduct = { name?: string; price_usd?: number; } | null | undefined;
+  type TransactionRow = Record<string, unknown>;
+
+  const txs: TransactionRow[] = (application as unknown as { application_transactions?: TransactionRow[]; })
+    .application_transactions || [];
+  const appServices: Record<string, unknown>[] = (application as unknown as { application_services?: Record<string, unknown>[]; })
+    .application_services || [];
+
   // Helper function to calculate total forecast for a specific category
-  const calculateTotalForecast = (transactions: any[], forecastKey: string) => {
-    const total = transactions.reduce((sum, transaction) => {
-      return sum + (transaction[forecastKey] || 0);
+  const calculateTotalForecast = (transactions: TransactionRow[], forecastKey: string) => {
+    const total = transactions.reduce((sum: number, transaction: TransactionRow) => {
+      const value = Number((transaction as Record<string, unknown>)[forecastKey] as number | string | undefined) || 0;
+      return sum + value;
     }, 0);
-    return (total * 100) / 100;
+    return Math.round(total * 100) / 100;
   };
 
   // Main Products Table
   const mainProductsColumns = [
     {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
-      dataIndex: "product",
+      dataIndex: "door_product",
       key: "name",
-      render: (product: any) => product?.name || "",
+      render: (product: TxProduct) => product?.name || "",
     },
     {
       title: t("common.labels.quantity"),
-      dataIndex: "quantity",
+      dataIndex: "entity_quantity",
       key: "quantity",
       width: 100,
     },
     {
       title: t("common.labels.volume"),
-      dataIndex: "volume_product",
+      dataIndex: "volume_door",
       key: "volume",
       width: 100,
-      render: (volume: number) => volume?.toFixed(2) || "0.00",
+      render: (volume: number) => (typeof volume === "number" ? volume.toFixed(2) : "0.00"),
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "product",
+      dataIndex: "door_product",
       key: "unit_price",
       width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
+      render: (product: TxProduct) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_product || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_door_product) || 0, 2);
       },
     },
   ];
@@ -77,20 +73,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
   // Sheathing Table
   const sheathingColumns = [
     {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
-      dataIndex: "sheathing",
+      dataIndex: "sheathing_product",
       key: "name",
-      render: (sheathing: any) => sheathing?.name || "",
+      render: (sheathing: TxProduct) => sheathing?.name || "",
     },
     {
       title: t("common.labels.quantity"),
-      dataIndex: "quantity",
+      dataIndex: "entity_quantity",
       key: "quantity",
       width: 100,
     },
@@ -99,101 +89,75 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "volume_sheathing",
       key: "volume",
       width: 100,
-      render: (volume: number) => volume?.toFixed(2) || "0.00",
+      render: (volume: number) => (typeof volume === "number" ? volume.toFixed(2) : "0.00"),
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "sheathing",
+      dataIndex: "sheathing_product",
       key: "unit_price",
       width: 150,
-      render: (sheathing: any) =>
+      render: (sheathing: TxProduct) =>
         formatMoneyDecimal(sheathing?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_sheathing || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_sheathing_product) || 0, 2);
       },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
   // Trim Table
   const trimColumns = [
     {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
-      dataIndex: "trim",
+      dataIndex: "trim_product",
       key: "name",
-      render: (trim: any) => trim?.name || "",
+      render: (trim: TxProduct) => trim?.name || "",
     },
     {
       title: t("common.labels.quantity"),
-      dataIndex: "trim_quantity",
+      dataIndex: "entity_quantity",
       key: "quantity",
       width: 100,
     },
     {
       title: t("common.labels.volume"),
-      dataIndex: "volume_trim",
+      dataIndex: "percent_trim",
       key: "volume",
       width: 100,
-      render: (volume: number) => volume?.toFixed(2) || "0.00",
+      render: (value: number) => (typeof value === "number" ? value.toFixed(2) : "0.00"),
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "trim",
+      dataIndex: "trim_product",
       key: "unit_price",
       width: 150,
-      render: (trim: any) => formatMoneyDecimal(trim?.price_usd || 0, 2),
+      render: (trim: TxProduct) => formatMoneyDecimal(trim?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_trim || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_trim_product) || 0, 2);
       },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
   // Filler Table
   const fillerColumns = [
     {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
-      dataIndex: "filler",
+      dataIndex: "filler_product",
       key: "name",
-      render: (filler: any) => filler?.name || "",
+      render: (filler: TxProduct) => filler?.name || "",
     },
     {
       title: t("common.labels.quantity"),
-      dataIndex: "filler_quantity",
+      dataIndex: "entity_quantity",
       key: "quantity",
       width: 100,
     },
@@ -202,45 +166,32 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "volume_filler",
       key: "volume",
       width: 100,
-      render: (volume: number) => volume?.toFixed(2) || "0.00",
+      render: (volume: number) => (typeof volume === "number" ? volume.toFixed(2) : "0.00"),
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "filler",
+      dataIndex: "filler_product",
       key: "unit_price",
       width: 150,
-      render: (filler: any) => formatMoneyDecimal(filler?.price_usd || 0, 2),
+      render: (filler: TxProduct) => formatMoneyDecimal(filler?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_filler || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_filler_product) || 0, 2);
       },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
   // Door Lock Table
   const doorLockColumns = [
     {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
-      dataIndex: "door_lock",
+      dataIndex: "door_lock_product",
       key: "name",
-      render: (doorLock: any) => doorLock?.name || "",
+      render: (doorLock: TxProduct) => doorLock?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -250,86 +201,60 @@ export const CalculationResults: FC<Props> = ({ application }) => {
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "door_lock",
+      dataIndex: "door_lock_product",
       key: "unit_price",
       width: 150,
-      render: (doorLock: any) =>
-        formatMoneyDecimal(doorLock?.price_uzs || 0, 2),
+      render: (doorLock: TxProduct) =>
+        formatMoneyDecimal(doorLock?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_door_lock || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_door_lock_product) || 0, 2);
       },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
-  // Canopy Table
-  const canopyColumns = [
-    {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
+  // Hinge Table
+  const hingeColumns = [
     {
       title: t("common.labels.name"),
-      dataIndex: "canopy",
+      dataIndex: "hinge_product",
       key: "name",
-      render: (canopy: any) => canopy?.name || "",
+      render: (hinge: TxProduct) => hinge?.name || "",
     },
     {
       title: t("common.labels.quantity"),
-      dataIndex: "canopy_quantity",
+      dataIndex: "hinge_quantity",
       key: "quantity",
       width: 100,
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "canopy",
+      dataIndex: "hinge_product",
       key: "unit_price",
       width: 150,
-      render: (canopy: any) => formatMoneyDecimal(canopy?.price_uzs || 0, 2),
+      render: (hinge: TxProduct) => formatMoneyDecimal(hinge?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_canopy || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_hinge_product) || 0, 2);
       },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
   // Glass Table
   const glassColumns = [
     {
-      title: "№",
-      dataIndex: "application_transaction_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
-      dataIndex: "glass",
+      dataIndex: "glass_product",
       key: "name",
-      render: (glass: any) => glass?.name || "",
+      render: (glass: TxProduct) => glass?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -339,41 +264,28 @@ export const CalculationResults: FC<Props> = ({ application }) => {
     },
     {
       title: t("common.labels.unit_price"),
-      dataIndex: "glass",
+      dataIndex: "glass_product",
       key: "unit_price",
       width: 150,
-      render: (glass: any) => formatMoneyDecimal(glass?.price_usd || 0, 2),
+      render: (glass: TxProduct) => formatMoneyDecimal(glass?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast_glass || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast_glass_product) || 0, 2);
       },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
   // Services Table
   const servicesColumns = [
     {
-      title: "№",
-      dataIndex: "application_service_id",
-      key: "id",
-      width: 60,
-    },
-    {
       title: t("common.labels.name"),
       dataIndex: "service",
       key: "name",
-      render: (service: any) => service?.name || "",
+      render: (service: Record<string, unknown>) => service?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -386,14 +298,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "service",
       key: "unit_price",
       width: 150,
-      render: (service: any) => formatMoneyDecimal(service?.price_uzs || 0, 2),
+      render: (service: Record<string, unknown>) => formatMoneyDecimal(Number(service?.price_uzs) || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast || 0, 2);
+      render: (_: any, record: Record<string, unknown>) => {
+        return formatMoneyDecimal(Number(record.forecast) || 0, 2);
       },
     },
     {
@@ -401,7 +313,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "forecast_product",
       key: "forecast_product",
       width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
+      render: (product: TxProduct) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
@@ -417,7 +329,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "baseboard",
       key: "name",
-      render: (baseboard: any) => baseboard?.name || "",
+      render: (baseboard: TxProduct) => baseboard?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -436,15 +348,15 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "baseboard",
       key: "unit_price",
       width: 150,
-      render: (baseboard: any) =>
+      render: (baseboard: TxProduct) =>
         formatMoneyDecimal(baseboard?.price_usd || 0, 2),
     },
     {
       title: t("common.labels.total_price"),
       key: "total_price",
       width: 150,
-      render: (_: any, record: any) => {
-        return formatMoneyDecimal(record.forecast || 0, 2);
+      render: (_: any, record: TransactionRow) => {
+        return formatMoneyDecimal(Number(record.forecast) || 0, 2);
       },
     },
     {
@@ -452,7 +364,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "forecast_product",
       key: "forecast_product",
       width: 150,
-      render: (product: any) => formatMoneyDecimal(product?.price_usd || 0, 2),
+      render: (product: TxProduct) => formatMoneyDecimal(product?.price_usd || 0, 2),
     },
   ];
 
@@ -463,7 +375,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
         <Title level={4}>{t("common.labels.main_products")}</Title>
         <TableWrapper
           columns={mainProductsColumns}
-          data={application.application_transactions?.filter((t) => t.door_product) || []}
+          data={txs.filter((t: TransactionRow) => Boolean((t as any).door_product))}
           loading={false}
           showSearch={false}
           showAddButton={false}
@@ -473,11 +385,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
           title={() => (
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-500">
-                {t("common.labels.total")}:{" "}
+                {t("common.labels.total")}: {" "}
                 {formatMoneyDecimal(
                   calculateTotalForecast(
-                    application.application_transactions || [],
-                    "forecast_product",
+                    txs,
+                    "forecast_door_product",
                   ),
                   2,
                 )}
@@ -488,12 +400,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       </Card>
 
       {/* Sheathing */}
-      {application.application_transactions?.some((t) => t.sheathing_product) && (
+      {txs.some((t: TransactionRow) => Boolean((t as any).sheathing_product)) && (
         <Card>
           <Title level={4}>{t("common.labels.sheathing")}</Title>
           <TableWrapper
             columns={sheathingColumns}
-            data={application.application_transactions?.filter((t) => t.sheathing_product) || []}
+            data={txs.filter((t: TransactionRow) => Boolean((t as any).sheathing_product))}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -503,11 +415,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application.application_transactions || [],
-                      "forecast_sheathing",
+                      txs,
+                      "forecast_sheathing_product",
                     ),
                     2,
                   )}
@@ -519,12 +431,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Trims */}
-      {application?.application_transactions?.some((t) => t.trim_product) && (
+      {txs.some((t: TransactionRow) => Boolean((t as any).trim_product)) && (
         <Card>
           <Title level={4}>{t("common.labels.trims")}</Title>
           <TableWrapper
             columns={trimColumns}
-            data={application?.application_transactions?.filter((t) => t.trim_product) || []}
+            data={txs.filter((t: TransactionRow) => Boolean((t as any).trim_product))}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -534,11 +446,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application?.application_transactions || [],
-                      "forecast_trim",
+                      txs,
+                      "forecast_trim_product",
                     ),
                     2,
                   )}
@@ -550,12 +462,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Fillers */}
-      {application?.application_transactions?.some((t) => t.filler_product) && (
+      {txs.some((t: TransactionRow) => Boolean((t as any).filler_product)) && (
         <Card>
           <Title level={4}>{t("common.labels.fillers")}</Title>
           <TableWrapper
             columns={fillerColumns}
-            data={application?.application_transactions?.filter((t) => t.filler_product) || []}
+            data={txs.filter((t: TransactionRow) => Boolean((t as any).filler_product))}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -565,11 +477,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application?.application_transactions || [],
-                      "forecast_filler",
+                      txs,
+                      "forecast_filler_product",
                     ),
                     2,
                   )}
@@ -581,12 +493,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Door Locks */}
-      {application?.application_transactions?.some((t) => t.door_lock_product) && (
+      {txs.some((t: TransactionRow) => Boolean((t as any).door_lock_product)) && (
         <Card>
           <Title level={4}>{t("common.labels.door_locks")}</Title>
           <TableWrapper
             columns={doorLockColumns}
-            data={application?.application_transactions?.filter((t) => t.door_lock_product) || []}
+            data={txs.filter((t: TransactionRow) => Boolean((t as any).door_lock_product))}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -596,11 +508,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application?.application_transactions || [],
-                      "forecast_door_lock",
+                      txs,
+                      "forecast_door_lock_product",
                     ),
                     2,
                   )}
@@ -611,13 +523,13 @@ export const CalculationResults: FC<Props> = ({ application }) => {
         </Card>
       )}
 
-      {/* Canopies */}
-      {application?.application_transactions?.some((t) => t.canopy) && (
+      {/* Hinges */}
+      {txs.some((t: TransactionRow) => Boolean((t as any).hinge_product)) && (
         <Card>
-          <Title level={4}>{t("common.labels.canopies")}</Title>
+          <Title level={4}>{t("common.labels.hinges")}</Title>
           <TableWrapper
-            columns={canopyColumns}
-            data={application?.application_transactions?.filter((t) => t.canopy) || []}
+            columns={hingeColumns}
+            data={txs.filter((t: TransactionRow) => Boolean((t as any).hinge_product))}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -627,11 +539,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application?.application_transactions || [],
-                      "forecast_canopy",
+                      txs,
+                      "forecast_hinge_product",
                     ),
                     2,
                   )}
@@ -643,12 +555,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Glass */}
-      {application?.application_transactions?.some((t) => t.glass_product) && (
+      {txs.some((t: TransactionRow) => Boolean((t as any).glass_product)) && (
         <Card>
           <Title level={4}>{t("common.labels.glass")}</Title>
           <TableWrapper
             columns={glassColumns}
-            data={application?.application_transactions?.filter((t) => t.glass_product) || []}
+            data={txs.filter((t: TransactionRow) => Boolean((t as any).glass_product))}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -658,11 +570,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     calculateTotalForecast(
-                      application?.application_transactions || [],
-                      "forecast_glass",
+                      txs,
+                      "forecast_glass_product",
                     ),
                     2,
                   )}
@@ -674,12 +586,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       )}
 
       {/* Services */}
-      {application.application_services && application.application_services.length > 0 && (
+      {appServices && appServices.length > 0 && (
         <Card>
           <Title level={4}>{t("common.labels.services")}</Title>
           <TableWrapper
             columns={servicesColumns}
-            data={application.application_services || []}
+            data={appServices}
             loading={false}
             showSearch={false}
             showAddButton={false}
@@ -689,11 +601,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}:{" "}
+                  {t("common.labels.total")}: {" "}
                   {formatMoneyDecimal(
                     Math.round(
-                      (application.application_services || []).reduce(
-                        (sum, item) => sum + (item.forecast || 0),
+                      (appServices || []).reduce(
+                        (sum: number, item: Record<string, unknown>) => sum + (Number((item as any).forecast) || 0),
                         0,
                       ) * 100,
                     ) / 100,
@@ -726,9 +638,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
                   {formatMoneyDecimal(
                     Math.round(
                       (application.baseboards || []).reduce((sum, item) => {
-                        const unitPrice = item.baseboard?.price_usd || 0;
-                        const quantity = item.quantity || 0;
-                        const length = item.length || 0;
+                        const unitPrice = Number(item.baseboard?.price_usd) || 0;
+                        const quantity = Number(item.quantity) || 0;
+                        const length = Number(item.length) || 0;
                         return (
                           sum +
                           unitPrice *
