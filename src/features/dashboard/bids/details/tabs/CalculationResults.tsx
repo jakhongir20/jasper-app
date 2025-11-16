@@ -463,7 +463,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
         <Title level={4}>{t("common.labels.main_products")}</Title>
         <TableWrapper
           columns={mainProductsColumns}
-          data={application.application_transactions?.filter((t) => t.product) || []}
+          data={application.application_transactions?.filter((t) => t.door_product) || []}
           loading={false}
           showSearch={false}
           showAddButton={false}
