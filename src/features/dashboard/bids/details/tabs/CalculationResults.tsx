@@ -38,7 +38,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "door_product",
       key: "name",
-      render: (product: TxProduct) => product?.name || "",
+      render: (product: any) => product?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -58,15 +58,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "door_product",
       key: "unit_price",
       width: 150,
-      render: (product: TxProduct) => formatMoneyDecimal(product?.price_usd || 0, 2),
+      render: (product: any) => product?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_door_product",
+      key: "forecast_door_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_door_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -76,7 +75,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "sheathing_product",
       key: "name",
-      render: (sheathing: TxProduct) => sheathing?.name || "",
+      render: (sheathing: any) => sheathing?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -96,16 +95,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "sheathing_product",
       key: "unit_price",
       width: 150,
-      render: (sheathing: TxProduct) =>
-        formatMoneyDecimal(sheathing?.price_usd || 0, 2),
+      render: (sheathing: any) => sheathing?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_sheathing_product",
+      key: "forecast_sheathing_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_sheathing_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -115,7 +112,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "trim_product",
       key: "name",
-      render: (trim: TxProduct) => trim?.name || "",
+      render: (trim: any) => trim?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -135,15 +132,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "trim_product",
       key: "unit_price",
       width: 150,
-      render: (trim: TxProduct) => formatMoneyDecimal(trim?.price_usd || 0, 2),
+      render: (trim: any) => trim?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_trim_product",
+      key: "forecast_trim_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_trim_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -153,7 +149,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "filler_product",
       key: "name",
-      render: (filler: TxProduct) => filler?.name || "",
+      render: (filler: any) => filler?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -173,15 +169,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "filler_product",
       key: "unit_price",
       width: 150,
-      render: (filler: TxProduct) => formatMoneyDecimal(filler?.price_usd || 0, 2),
+      render: (filler: any) => filler?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_filler_product",
+      key: "forecast_filler_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_filler_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -191,7 +186,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "door_lock_product",
       key: "name",
-      render: (doorLock: TxProduct) => doorLock?.name || "",
+      render: (doorLock: any) => doorLock?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -204,16 +199,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "door_lock_product",
       key: "unit_price",
       width: 150,
-      render: (doorLock: TxProduct) =>
-        formatMoneyDecimal(doorLock?.price_usd || 0, 2),
+      render: (doorLock: any) => doorLock?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_door_lock_product",
+      key: "forecast_door_lock_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_door_lock_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -223,7 +216,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "hinge_product",
       key: "name",
-      render: (hinge: TxProduct) => hinge?.name || "",
+      render: (hinge: any) => hinge?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -236,15 +229,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "hinge_product",
       key: "unit_price",
       width: 150,
-      render: (hinge: TxProduct) => formatMoneyDecimal(hinge?.price_usd || 0, 2),
+      render: (hinge: any) => hinge?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_hinge_product",
+      key: "forecast_hinge_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_hinge_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -254,7 +246,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "glass_product",
       key: "name",
-      render: (glass: TxProduct) => glass?.name || "",
+      render: (glass: any) => glass?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -267,15 +259,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "glass_product",
       key: "unit_price",
       width: 150,
-      render: (glass: TxProduct) => formatMoneyDecimal(glass?.price_usd || 0, 2),
+      render: (glass: any) => glass?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast_glass_product",
+      key: "forecast_glass_product",
       width: 150,
-      render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast_glass_product) || 0, 2);
-      },
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -285,7 +276,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: t("common.labels.name"),
       dataIndex: "service",
       key: "name",
-      render: (service: Record<string, unknown>) => service?.name || "",
+      render: (service: any) => service?.name || "",
     },
     {
       title: t("common.labels.quantity"),
@@ -298,22 +289,14 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "service",
       key: "unit_price",
       width: 150,
-      render: (service: Record<string, unknown>) => formatMoneyDecimal(Number(service?.price_uzs) || 0, 2),
+      render: (service: any) => service?.price_uzs ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast",
+      key: "forecast",
       width: 150,
-      render: (_: any, record: Record<string, unknown>) => {
-        return formatMoneyDecimal(Number(record.forecast) || 0, 2);
-      },
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "forecast_product",
-      key: "forecast_product",
-      width: 150,
-      render: (product: TxProduct) => formatMoneyDecimal(product?.price_usd || 0, 2),
+      render: (value: number) => value ?? 0,
     },
   ];
 
@@ -349,14 +332,15 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       key: "unit_price",
       width: 150,
       render: (baseboard: TxProduct) =>
-        formatMoneyDecimal(baseboard?.price_usd || 0, 2),
+        baseboard?.price_usd ?? 0,
     },
     {
-      title: t("common.labels.total_price"),
-      key: "total_price",
+      title: "Итого",
+      dataIndex: "forecast",
+      key: "forecast",
       width: 150,
       render: (_: any, record: TransactionRow) => {
-        return formatMoneyDecimal(Number(record.forecast) || 0, 2);
+        return record.forecast ?? 0;
       },
     },
     {
@@ -364,7 +348,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "forecast_product",
       key: "forecast_product",
       width: 150,
-      render: (product: TxProduct) => formatMoneyDecimal(product?.price_usd || 0, 2),
+      render: (product: TxProduct) => product?.price_usd ?? 0,
     },
   ];
 
@@ -386,12 +370,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-500">
                 {t("common.labels.total")}: {" "}
-                {formatMoneyDecimal(
-                  calculateTotalForecast(
-                    txs,
-                    "forecast_door_product",
-                  ),
-                  2,
+                {calculateTotalForecast(
+                  txs,
+                  "forecast_door_product",
                 )}
               </span>
             </div>
@@ -416,12 +397,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    calculateTotalForecast(
-                      txs,
-                      "forecast_sheathing_product",
-                    ),
-                    2,
+                  {calculateTotalForecast(
+                    txs,
+                    "forecast_sheathing_product",
                   )}
                 </span>
               </div>
@@ -447,12 +425,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    calculateTotalForecast(
-                      txs,
-                      "forecast_trim_product",
-                    ),
-                    2,
+                  {calculateTotalForecast(
+                    txs,
+                    "forecast_trim_product",
                   )}
                 </span>
               </div>
@@ -478,12 +453,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    calculateTotalForecast(
-                      txs,
-                      "forecast_filler_product",
-                    ),
-                    2,
+                  {calculateTotalForecast(
+                    txs,
+                    "forecast_filler_product",
                   )}
                 </span>
               </div>
@@ -509,12 +481,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    calculateTotalForecast(
-                      txs,
-                      "forecast_door_lock_product",
-                    ),
-                    2,
+                  {calculateTotalForecast(
+                    txs,
+                    "forecast_door_lock_product",
                   )}
                 </span>
               </div>
@@ -540,12 +509,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    calculateTotalForecast(
-                      txs,
-                      "forecast_hinge_product",
-                    ),
-                    2,
+                  {calculateTotalForecast(
+                    txs,
+                    "forecast_hinge_product",
                   )}
                 </span>
               </div>
@@ -571,12 +537,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    calculateTotalForecast(
-                      txs,
-                      "forecast_glass_product",
-                    ),
-                    2,
+                  {calculateTotalForecast(
+                    txs,
+                    "forecast_glass_product",
                   )}
                 </span>
               </div>
@@ -602,15 +565,12 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}: {" "}
-                  {formatMoneyDecimal(
-                    Math.round(
-                      (appServices || []).reduce(
-                        (sum: number, item: Record<string, unknown>) => sum + (Number((item as any).forecast) || 0),
-                        0,
-                      ) * 100,
-                    ) / 100,
-                    2,
-                  )}
+                  {Math.round(
+                    (appServices || []).reduce(
+                      (sum: number, item: Record<string, unknown>) => sum + (Number((item as any).forecast) || 0),
+                      0,
+                    ) * 100,
+                  ) / 100}
                 </span>
               </div>
             )}
@@ -635,23 +595,20 @@ export const CalculationResults: FC<Props> = ({ application }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
                   {t("common.labels.total")}:{" "}
-                  {formatMoneyDecimal(
-                    Math.round(
-                      (application.baseboards || []).reduce((sum, item) => {
-                        const unitPrice = Number(item.baseboard?.price_usd) || 0;
-                        const quantity = Number(item.quantity) || 0;
-                        const length = Number(item.length) || 0;
-                        return (
-                          sum +
-                          unitPrice *
-                          quantity *
-                          length *
-                          (application.forecast_rate || 1)
-                        );
-                      }, 0) * 100,
-                    ) / 100,
-                    2,
-                  )}
+                  {Math.round(
+                    (application.baseboards || []).reduce((sum, item) => {
+                      const unitPrice = Number(item.baseboard?.price_usd) || 0;
+                      const quantity = Number(item.quantity) || 0;
+                      const length = Number(item.length) || 0;
+                      return (
+                        sum +
+                        unitPrice *
+                        quantity *
+                        length *
+                        (application.forecast_rate || 1)
+                      );
+                    }, 0) * 100,
+                  ) / 100}
                 </span>
               </div>
             )}
