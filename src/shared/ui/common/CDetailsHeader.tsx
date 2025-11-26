@@ -26,19 +26,20 @@ export const CDetailsHeader: FC<Props> = ({
   className,
   onDelete,
   onEdit,
-  title = "Title",
+  title,
   status,
   showEditButton = true,
   showDeleteButton = true,
   duplicateButtonOptions = { show: false, text: "" },
 }) => {
   const { t } = useTranslation();
+  const defaultTitle = t("tabs.calculationResults");
 
   return (
     <ContentWrapper className={cn("h-[64px] px-4", className)}>
       <div className="flex w-full items-center justify-between">
         <div className={"flex flex-row items-center gap-3"}>
-          <CTitle value={title} />
+          <CTitle value={title || defaultTitle} />
 
           {status ? <Status value={status} /> : null}
         </div>

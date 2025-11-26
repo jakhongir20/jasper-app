@@ -777,7 +777,7 @@
   "tabs": {
     "generalInfo": "Общая информация",
     "summary": "Сводка",
-    "calculationResults": "Результаты расчета"
+    "calculationResults": "Результаты расчёта"
   },
   "auth": {
     "login": {
