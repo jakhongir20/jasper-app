@@ -12,7 +12,7 @@ import { BreadcrumbItem } from "@/shared/types";
 
 export default function CustomerDetailsPage() {
   const { t } = useTranslation();
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useParams<{ guid: string; }>();
   const customerId = parseInt(guid || "0");
   const { data: customer, isLoading } = useCustomerGetCustomerGet(
     { customer_id: customerId },
@@ -29,7 +29,14 @@ export default function CustomerDetailsPage() {
       link: "/admin/clients",
       icon: "users",
     },
-    { label: customer?.name || "N/A" },
+    {
+      label:
+        customer?.name ||
+        customer?.unique_id ||
+        customer?.customer_id?.toString() ||
+        guid ||
+        "N/A",
+    },
   ];
 
   if (isLoading) {

@@ -13,7 +13,7 @@ import { BreadcrumbItem } from "@/shared/types";
 
 export default function CategoryDetailsPage() {
   const { t } = useTranslation();
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useParams<{ guid: string; }>();
   const categoryId = parseInt(guid || "0");
   const { data: category, isLoading } = useCategoryDetail(categoryId);
 
@@ -21,9 +21,12 @@ export default function CategoryDetailsPage() {
     {
       label: t("adminModule.navigation.categories"),
       link: "/admin/categories",
-      icon: "tags",
+      icon: "hashtag",
     },
-    { label: category?.name || "N/A" },
+    {
+      label:
+        category?.name || category?.category_id?.toString() || guid || "N/A",
+    },
   ];
 
   if (isLoading) {

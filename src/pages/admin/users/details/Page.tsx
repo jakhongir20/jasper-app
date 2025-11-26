@@ -12,7 +12,7 @@ import { BreadcrumbItem } from "@/shared/types";
 
 export default function UserDetailsPage() {
   const { t } = useTranslation();
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useParams<{ guid: string; }>();
   const userId = parseInt(guid || "0");
   const { data: user, isLoading } = useUserDetail(userId);
 
@@ -22,7 +22,14 @@ export default function UserDetailsPage() {
       link: "/admin/users",
       icon: "users",
     },
-    { label: user?.name || "N/A" },
+    {
+      label:
+        user?.name ||
+        user?.unique_id ||
+        user?.user_id?.toString() ||
+        guid ||
+        "N/A",
+    },
   ];
 
   if (isLoading) {

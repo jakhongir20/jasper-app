@@ -7,7 +7,7 @@ import { Breadcrumb, ContentWrapper } from "@/shared/ui";
 
 export default function Page() {
   const { t } = useTranslation();
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useParams<{ guid: string; }>();
   const { data, isLoading } = useOrganizationDetail(guid || "");
 
   const breadcrumb = [
@@ -16,7 +16,9 @@ export default function Page() {
       link: "/crm/organizations",
       icon: "handshake",
     },
-    { label: data?.code || "N/A" },
+    {
+      label: data?.code || data?.unique_id || data?.id?.toString() || guid || "N/A",
+    },
   ];
 
   return (
