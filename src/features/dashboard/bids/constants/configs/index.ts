@@ -661,7 +661,7 @@ export const frameworkFormFields: FormFieldConfig[] = [
     type: "selectInfinitive",
     required: true,
     apiConfig: {
-      fetchUrl: "/framework/all",
+      fetchUrl: "/admin/framework/all",
       valueKey: "framework_id",
       labelKey: ["name", "features"],
     },

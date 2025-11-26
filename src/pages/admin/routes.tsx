@@ -103,10 +103,10 @@ const modules = (
     { name: "users", title: "navigation.users", icon: "users" },
     { name: "clients", title: "navigation.clients", icon: "people" },
     { name: "products", title: "navigation.products", icon: "cube" },
-    { name: "colors", title: "navigation.colors", icon: "badge-percent" },
+    // { name: "colors", title: "navigation.colors", icon: "badge-percent" },
     { name: "categories", title: "navigation.categories", icon: "layer-group" },
     { name: "moldings", title: "navigation.moldings", icon: "manufacture" },
-  ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
+  ] as { name: keyof typeof moduleImports; title: string; icon: IconType; }[]
 ).map(createModuleRoutes);
 
 const adminRoutes: AppRouteObject[] = [

@@ -10,7 +10,7 @@ import { TableWrapper, ContentInner } from "@/shared/ui";
 
 export default function Page() {
   const { tableData: products, isLoading, pagination, onPageChange } = useTableFetch<Product>(
-    "/product/all",
+    "/admin/product/all",
     {},
     ["tab", "page"],
     false,

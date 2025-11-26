@@ -7,7 +7,7 @@ import {
 
 export class ProductService {
   static async getAll(): Promise<Product[]> {
-    return await apiService.$get<Product[]>("/product/all");
+    return await apiService.$get<Product[]>("/admin/product/all");
   }
 
   static async getById(productId: number): Promise<Product> {
