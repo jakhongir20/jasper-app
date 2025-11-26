@@ -8,7 +8,7 @@ import { BreadcrumbItem } from "@/shared/types";
 
 function Page() {
   const { t } = useTranslation();
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string; }>();
   const { data, isLoading } = useApplicationDetail(String(id));
 
   const breadcrumb: BreadcrumbItem[] = [
@@ -17,7 +17,7 @@ function Page() {
       link: "/dashboard/bids",
       icon: "file",
     },
-    { label: data?.customer_name || "N/A" },
+    { label: data?.customer_name || data?.unique_id },
   ];
 
   if (isLoading || !data) return null;
