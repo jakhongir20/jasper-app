@@ -98,13 +98,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
     useApplicationDetail(id as string);
 
   const { mutate, isPending: isLoading } = useUpdateApplication({
-    onSuccess: async (_, variables: { id: string }) => {
-      try {
-        await BidsService.forecastServices(variables.id);
-      } catch {
-        // ignore forecast errors silently
-      }
-
+    onSuccess: async (_, variables: { id: string; }) => {
       navigate(`/dashboard/bids`);
       toast(t("toast.successUpdate"), "success");
     },
@@ -140,8 +134,8 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
           lastWindowsills = windowsills;
         }
 
-        // Calculate services when these fields change
-        calculateServices();
+        // Don't auto-calculate services when editing
+        // calculateServices();
       }
     }, 1000); // Check every 1 second
 
@@ -274,7 +268,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             ? dayjs(applicationDate)
             : applicationDetail.date
               ? dayjs(applicationDetail.date)
-            : undefined,
+              : undefined,
           category_name: applicationDetail.category_name || "",
           date: applicationDetail.date
             ? dayjs(applicationDetail.date)
@@ -774,16 +768,17 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         autoCalculateVolumes();
       }
 
+      // Don't auto-calculate services when editing
       // Calculate services when transactions, baseboards, or windowsills change
-      if (
-        changedValues.transactions ||
-        changedValues.baseboards ||
-        changedValues.windowsills
-      ) {
-        calculateServices();
-      }
+      // if (
+      //   changedValues.transactions ||
+      //   changedValues.baseboards ||
+      //   changedValues.windowsills
+      // ) {
+      //   calculateServices();
+      // }
     },
-    [autoCalculateVolumes, calculateServices],
+    [autoCalculateVolumes],
   );
 
   return (
