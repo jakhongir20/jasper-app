@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { ApplicationDetail } from "@/features/dashboard/bids/details";
 import { useTranslation } from "react-i18next";
-import { formatMoneyDecimal } from "@/shared/utils";
 import { Card, Typography } from "antd";
 import { TableWrapper } from "@/shared/ui/table/TableWrapper";
 
@@ -289,7 +288,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "service",
       key: "unit_price",
       width: 150,
-      render: (service: any) => service?.price_uzs ?? 0,
+      render: (service: any) => service?.price_usd ?? 0,
     },
     {
       title: "Итого",

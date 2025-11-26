@@ -140,7 +140,7 @@ export const ApplicationCalc: FC<Props> = ({
           >
             <h2 className="text-sm">{t("production_amount")}</h2>
             <span className="text-3xl font-bold">
-              {formatMoneyDecimal(displayData?.forecast_production)} UZS
+              {formatMoneyDecimal(displayData?.forecast_production)} USD
             </span>
             <Form.Item name={"forecast_production"}>
               <Input hidden />
@@ -153,7 +153,7 @@ export const ApplicationCalc: FC<Props> = ({
           >
             <h2 className="text-sm">{t("total_to_pay")}</h2>
             <span className="text-3xl font-bold">
-              {formatMoneyDecimal(displayData?.forecast_sum)} UZS
+              {formatMoneyDecimal(displayData?.forecast_sum)} USD
             </span>
           </div>
           <div
@@ -163,7 +163,7 @@ export const ApplicationCalc: FC<Props> = ({
           >
             <h2 className="text-sm">{t("remaining_to_pay")}</h2>
             <span className="text-3xl font-bold">
-              {formatMoneyDecimal(displayData?.forecast_final)} UZS
+              {formatMoneyDecimal(displayData?.forecast_final)} USD
             </span>
           </div>
 
