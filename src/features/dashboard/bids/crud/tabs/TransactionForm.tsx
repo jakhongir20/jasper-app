@@ -1371,16 +1371,9 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     return filterVisibleSections(ALL_SECTIONS, transactionValues, productType);
   }, [transactionValues, productType]);
 
-  useEffect(() => {
-    const defaultKeys = ALL_SECTIONS.map((section) => section.key);
-    const productKeys = combinedSections.map((section) => section.key);
-    const initialKeys = productType ? productKeys : defaultKeys;
-    setActiveSectionKeys(initialKeys);
-  }, [combinedSections, productType]);
-
   return (
     <div className={cn(className)}>
-      <Collapse ghost defaultActiveKey={["measuring"]}>
+      <Collapse ghost defaultActiveKey={[]}>
         <Collapse.Panel
           key="measuring"
           header={
@@ -1488,3 +1481,59 @@ export const getTransactionValidationPaths = (
   return names.map((name) => ["transactions", 0, name] as (string | number)[]);
 };
 
+const getFieldLabel = (fieldName: string): string => {
+  const measurementField = MEASUREMENT_FIELDS.find((f) => f.name === fieldName);
+  if (measurementField) {
+    return measurementField.label;
+  }
+
+  for (const section of ALL_SECTIONS) {
+    const field = section.fields.find((f) => f.name === fieldName);
+    if (field) {
+      return field.label;
+    }
+  }
+
+  return fieldName;
+};
+
+export const getUnfilledRequiredFields = (
+  values: TransactionValues,
+): Array<{ name: string; label: string; }> => {
+  const productType = resolveProductType(values);
+  const config = productType ? PRODUCT_CONFIG[productType] : undefined;
+
+  if (!config) {
+    return [];
+  }
+
+  const unfilledFields: Array<{ name: string; label: string; }> = [];
+
+  const checkField = (fieldName: string) => {
+    const value = values[fieldName];
+    if (!hasValue(value)) {
+      unfilledFields.push({
+        name: fieldName,
+        label: getFieldLabel(fieldName),
+      });
+    }
+  };
+
+  config.requiredFields.forEach(checkField);
+
+  if (config.conditionalRequired) {
+    Object.entries(config.conditionalRequired).forEach(
+      ([fieldName, condition]) => {
+        try {
+          if (condition(values)) {
+            checkField(fieldName);
+          }
+        } catch {
+          // Ignore errors in conditional checks
+        }
+      },
+    );
+  }
+
+  return unfilledFields;
+};

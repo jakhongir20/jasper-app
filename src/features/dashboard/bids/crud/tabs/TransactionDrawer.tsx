@@ -4,6 +4,7 @@ import { Button } from "@/shared/ui";
 import {
   TransactionForm,
   getTransactionValidationPaths,
+  getUnfilledRequiredFields,
 } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
 import {
   ApplicationLocalForm,
@@ -78,8 +79,23 @@ export const TransactionDrawer: FC<Props> = ({
     const transactions = form.getFieldValue("transactions") || [];
     const currentTransaction =
       (transactions?.[0] as Record<string, any>) || {};
-    const validationPaths =
-      getTransactionValidationPaths(currentTransaction);
+
+    // Check for unfilled required fields
+    const unfilledFields = getUnfilledRequiredFields(currentTransaction);
+    if (unfilledFields.length > 0) {
+      // Set validation errors for unfilled fields to show red borders
+      const fieldsWithErrors = unfilledFields.map((field) => ({
+        name: ["transactions", 0, field.name] as (string | number)[],
+        errors: [`Заполните поле «${field.label}»`],
+      }));
+      form.setFields(fieldsWithErrors as any);
+
+      const fieldNames = unfilledFields.map((f) => f.label).join(", ");
+      message.warning(`Заполните обязательные поля: ${fieldNames}`, 5);
+      return;
+    }
+
+    const validationPaths = getTransactionValidationPaths(currentTransaction);
 
     try {
       await form.validateFields(validationPaths as any);
@@ -237,12 +253,34 @@ export const TransactionDrawer: FC<Props> = ({
       message.success("Транзакция успешно подтверждена");
       onClose(true);
     } catch (error: any) {
-      const apiMessage =
-        error?.response?.data?.message ??
-        error?.response?.data?.detail ??
-        error?.message ??
-        "Не удалось подтвердить транзакцию";
-      message.error(apiMessage);
+      const errorData = error?.response?.data;
+
+      // Handle validation errors with detail array
+      if (errorData?.detail && Array.isArray(errorData.detail)) {
+        const errorMessages = errorData.detail.map((err: any) => {
+          const field =
+            err.loc && err.loc.length > 1
+              ? err.loc[err.loc.length - 1]
+              : "поле";
+          const msg = err.msg || "Ошибка валидации";
+          const input =
+            err.input !== undefined ? ` (значение: ${err.input})` : "";
+          return `${field}: ${msg}${input}`;
+        });
+        message.error(`Ошибка валидации: ${errorMessages.join("; ")}`, 8);
+      } else if (errorData?.detail && typeof errorData.detail === "string") {
+        // Handle string detail
+        message.error(errorData.detail, 8);
+      } else if (errorData?.message) {
+        // Handle message field
+        message.error(errorData.message, 8);
+      } else if (error?.message) {
+        // Handle general error message
+        message.error(error.message, 8);
+      } else {
+        // Default error message
+        message.error("Не удалось подтвердить транзакцию", 8);
+      }
     } finally {
       setIsSubmitting(false);
     }
