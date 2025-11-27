@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 *.lockb
 *-lock.json
-.env
 
 # Generated API files - commented out to include in build
 # src/shared/lib/api/generated/
