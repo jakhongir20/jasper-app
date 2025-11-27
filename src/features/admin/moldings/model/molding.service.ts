@@ -7,7 +7,7 @@ import { ApiService } from "@/shared/lib/services";
 
 export class MoldingService {
   static async getAll(): Promise<Molding[]> {
-    return await ApiService.$get<Molding[]>("/molding/all");
+    return await ApiService.$get<Molding[]>("/admin/framework/all");
   }
 
   static async getById(moldingId: number): Promise<Molding> {

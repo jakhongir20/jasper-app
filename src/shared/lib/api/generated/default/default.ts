@@ -2043,7 +2043,7 @@ export const customerReadAllCustomerAllGet = (
   signal?: AbortSignal,
 ) => {
   return customInstance<unknown>(
-    { url: `/customer/all`, method: "GET", params, signal },
+    { url: `/admin/customer/all`, method: "GET", params, signal },
     options,
   );
 };
@@ -2051,7 +2051,7 @@ export const customerReadAllCustomerAllGet = (
 export const getCustomerReadAllCustomerAllGetQueryKey = (
   params?: CustomerReadAllCustomerAllGetParams,
 ) => {
-  return [`/customer/all`, ...(params ? [params] : [])] as const;
+  return [`/admin/customer/all`, ...(params ? [params] : [])] as const;
 };
 
 export const getCustomerReadAllCustomerAllGetQueryOptions = <

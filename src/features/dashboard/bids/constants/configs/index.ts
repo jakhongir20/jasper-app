@@ -113,8 +113,8 @@ export const transactionFormFields: FormFieldConfig[] = [
     label: "common.input.frame_front",
     type: "image",
     apiConfig: {
-      fetchUrl: "/molding/all",
-      valueKey: "molding_id",
+      fetchUrl: "/admin/framework/all",
+      valueKey: "framework_id",
       labelKey: "image_url",
     },
   },
@@ -124,8 +124,8 @@ export const transactionFormFields: FormFieldConfig[] = [
     label: "common.input.frame_back",
     type: "image",
     apiConfig: {
-      fetchUrl: "/molding/all",
-      valueKey: "molding_id",
+      fetchUrl: "/admin/framework/all",
+      valueKey: "framework_id",
       labelKey: "image_url",
     },
   },

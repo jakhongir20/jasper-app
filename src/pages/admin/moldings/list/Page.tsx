@@ -14,7 +14,7 @@ import { columns } from "./TableColumn";
 
 export default function Page() {
   const { tableData: moldings, isLoading } =
-    useTableFetch<Molding>("/molding/all");
+    useTableFetch<Molding>("/admin/framework/all");
 
   const { t } = useTranslation();
   const { getStaticAssetsBaseUrl } = useConfiguration();

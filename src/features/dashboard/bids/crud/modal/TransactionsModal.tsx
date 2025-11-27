@@ -171,22 +171,22 @@ export const TransactionsModal: FC<Props> = ({
             doorway_thickness: values.doorway_thickness || 0,
             frame_front_id:
               typeof values.frame_front_id === "object" &&
-              (values.frame_front_id as any)?.molding_id
-                ? (values.frame_front_id as any).molding_id
+                (values.frame_front_id as any)?.framework_id
+                ? (values.frame_front_id as any).framework_id
                 : values.frame_front_id || null,
             frame_back_id:
               typeof values.frame_back_id === "object" &&
-              (values.frame_back_id as any)?.molding_id
-                ? (values.frame_back_id as any).molding_id
+                (values.frame_back_id as any)?.framework_id
+                ? (values.frame_back_id as any).framework_id
                 : values.frame_back_id || null,
             trim_id:
               typeof values.trim_id === "object" &&
-              (values.trim_id as any)?.product_id
+                (values.trim_id as any)?.product_id
                 ? (values.trim_id as any).product_id
                 : values.trim_id || null,
             filler_id:
               typeof values.filler_id === "object" &&
-              (values.filler_id as any)?.product_id
+                (values.filler_id as any)?.product_id
                 ? (values.filler_id as any).product_id
                 : values.filler_id || null,
             sash: values.sash || null,
