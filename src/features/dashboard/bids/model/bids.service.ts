@@ -25,6 +25,13 @@ export class BidsService {
     });
   }
 
+  static serviceManager(id: string, form: unknown) {
+    return ApiService.$post<unknown>(
+      `/application/service-manager?application_id=${id}`,
+      form,
+    );
+  }
+
   static forecast(id: string, form: unknown): Promise<ApplicationDetail> {
     return ApiService.$post<ApplicationDetail>(
       `/application/forecast?application_id=${id}`,

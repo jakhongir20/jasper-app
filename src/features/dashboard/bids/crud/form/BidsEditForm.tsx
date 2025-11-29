@@ -98,9 +98,20 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
     useApplicationDetail(id as string);
 
   const { mutate, isPending: isLoading } = useUpdateApplication({
-    onSuccess: async (_, variables: { id: string; }) => {
-      navigate(`/dashboard/bids`);
-      toast(t("toast.successUpdate"), "success");
+    onSuccess: async (_, variables: { id: string; formData: any }) => {
+      try {
+        // Sequential execution: service-manager → forecast
+        await BidsService.serviceManager(variables.id, variables.formData);
+        await BidsService.forecastServices(variables.id);
+
+        // All steps succeeded
+        toast(t("toast.successUpdate"), "success");
+        navigate(`/dashboard/bids`);
+      } catch (error) {
+        // Error in service-manager or forecast
+        console.error("Post-update error:", error);
+        toast(t("common.messages.error"), "error");
+      }
     },
   });
 
@@ -603,56 +614,11 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
   };
 
   // Calculate services based on form data
+  // NOTE: Forecast API should NOT be called in edit mode, only in create mode
   const calculateServices = useCallback(async () => {
-    try {
-      const transactions = form.getFieldValue("transactions") || [];
-      const baseboards = form.getFieldValue("baseboards") || [];
-      const windowsills = form.getFieldValue("windowsills") || [];
-
-      // Only proceed if we have data
-      if (
-        transactions.length === 0 &&
-        baseboards.length === 0 &&
-        windowsills.length === 0
-      ) {
-        return;
-      }
-
-      // Transform data to API format
-      const applicationIdRaw =
-        (applicationDetail as any)?.application_id ?? id;
-      const applicationId = applicationIdRaw ? Number(applicationIdRaw) : 0;
-
-      const response = await BidsService.forecastServices(applicationId);
-
-      if ((response as any)?.results?.services) {
-        // Get existing services and separate user vs API services
-        const existingServices =
-          form.getFieldValue("application_services") || [];
-        const userServices = existingServices.filter(
-          (s: any) => s.source !== "api",
-        );
-
-        // Create new API services with source field
-        const apiServices = response.results.services.map((service: any) => ({
-          ...service,
-          _uid: getRandomId("service_"),
-          service_id: service.service_id,
-          quantity: service.quantity || 0,
-          source: "api", // Mark as API generated
-        }));
-
-        // Merge: keep user services + replace API services
-        const updatedServices = [...userServices, ...apiServices];
-        form.setFieldsValue({
-          application_services: updatedServices,
-          services: updatedServices,
-        });
-      }
-    } catch (error) {
-      // Silently fail as per requirements
-    }
-  }, [form]);
+    // Do nothing in edit mode - forecast is only for creating applications
+    return;
+  }, []);
 
   // Calculate advanced transaction fields via API
 

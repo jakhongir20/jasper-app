@@ -128,26 +128,31 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
   const { mutate: createApplication, isPending: isLoading } =
     useCreateApplication({
-      onSuccess: (response: any) => {
-        toast(t("toast.success"), "success");
-
+      onSuccess: async (response: any, variables: any) => {
         try {
           const createdId =
             response?.application_id ??
             response?.data?.application_id ??
             response?.id;
 
-          if (createdId) {
-            BidsService.forecastServices(createdId).catch(() => {
-              // Ignore forecast errors silently
-            });
+          if (!createdId) {
+            toast(t("common.messages.error"), "error");
+            return;
           }
-        } catch {
-          // ignore
-        }
 
-      navigate(`/dashboard/bids`);
-    },
+          // Sequential execution: service-manager → forecast
+          await BidsService.serviceManager(createdId, variables);
+          await BidsService.forecastServices(createdId);
+
+          // All steps succeeded
+          toast(t("toast.success"), "success");
+          navigate(`/dashboard/bids`);
+        } catch (error) {
+          // Error in service-manager or forecast
+          console.error("Post-creation error:", error);
+          toast(t("common.messages.error"), "error");
+        }
+      },
     onError: (error) => {
       // Store the error for validation error handling
       // setValidationError(error); // This line is removed

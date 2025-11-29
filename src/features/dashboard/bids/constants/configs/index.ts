@@ -113,7 +113,7 @@ export const transactionFormFields: FormFieldConfig[] = [
     label: "common.input.frame_front",
     type: "image",
     apiConfig: {
-      fetchUrl: "/admin/framework/all",
+      fetchUrl: "/framework/all",
       valueKey: "framework_id",
       labelKey: "image_url",
     },
@@ -124,7 +124,7 @@ export const transactionFormFields: FormFieldConfig[] = [
     label: "common.input.frame_back",
     type: "image",
     apiConfig: {
-      fetchUrl: "/admin/framework/all",
+      fetchUrl: "/framework/all",
       valueKey: "framework_id",
       labelKey: "image_url",
     },
@@ -661,7 +661,7 @@ export const frameworkFormFields: FormFieldConfig[] = [
     type: "selectInfinitive",
     required: true,
     apiConfig: {
-      fetchUrl: "/admin/framework/all",
+      fetchUrl: "/framework/all",
       valueKey: "framework_id",
       labelKey: ["name", "features"],
     },

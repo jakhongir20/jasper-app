@@ -20,7 +20,7 @@ interface Design {
 
 export default function Page() {
   const { tableData, isLoading, pagination } = useTableFetch<Design>(
-    "/gateway/design/all/",
+    "/design/all/",
     {
       user_id: "1",
     },
