@@ -1,6 +1,7 @@
 import { Divider, Form } from "antd";
 import React, { type FC } from "react";
 import { useTranslation } from "react-i18next";
+import dayjs, { Dayjs } from "dayjs";
 import { cn } from "@/shared/helpers";
 import {
   Button,
@@ -115,6 +116,10 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
             valueName="date"
             placeholder={t("common.table.date")}
+            disabledDate={(current: Dayjs) => {
+              // Disable dates before today (start of day)
+              return current && current.isBefore(dayjs().startOf('day'));
+            }}
           />
         </Form.Item>
         <Form.Item

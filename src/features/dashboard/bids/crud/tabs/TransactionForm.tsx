@@ -110,7 +110,7 @@ type ProductTypeConfig = {
   sections: SectionConfig[];
 };
 
-const ALWAYS_REQUIRED_FIELDS: string[] = [];
+const ALWAYS_REQUIRED_FIELDS: string[] = ["product_type"];
 
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
@@ -1097,7 +1097,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     name: "product_type",
     label: "Тип продукта",
     type: "select",
-    allowClear: true,
+    allowClear: false,
     placeholder: "Выберите тип продукта",
     options: PRODUCT_TYPES,
     aliases: ["door_type"],
