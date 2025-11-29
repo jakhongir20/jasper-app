@@ -106,7 +106,7 @@ const modules = (
     // { name: "colors", title: "navigation.colors", icon: "badge-percent" },
     { name: "categories", title: "navigation.categories", icon: "layer-group" },
     { name: "moldings", title: "navigation.moldings", icon: "manufacture" },
-  ] as { name: keyof typeof moduleImports; title: string; icon: IconType; }[]
+  ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
 
 const adminRoutes: AppRouteObject[] = [

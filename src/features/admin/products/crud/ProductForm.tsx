@@ -1,7 +1,8 @@
 import { Form } from "antd";
 import { useTranslation } from "react-i18next";
 import { Product } from "@/features/admin/products";
-import { ContentInner, Input, NumberInput, TextAreaInput } from "@/shared/ui";
+import { ContentInner, Input, NumberInput, Select } from "@/shared/ui";
+import { ImageUpload } from "@/shared/ui/imageUpload";
 
 interface ProductFormProps {
   product?: Product;
@@ -51,17 +52,61 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
         <Form.Item
           name="product_type"
           label={t("common.input.type")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
         >
-          <Input placeholder={t("common.placeholder.productType")} />
+          <Select
+            placeholder={t("common.placeholder.productType")}
+            options={[
+              { value: "door-window", label: "ДО дверь" },
+              { value: "door-deaf", label: "ДГ дверь" },
+              { value: "transom", label: "Фрамуга" },
+              { value: "doorway", label: "Обшивочный проём" },
+              { value: "frame", label: "Наличник" },
+              { value: "filler", label: "Нашельник" },
+              { value: "crown", label: "Корона" },
+              { value: "up_frame", label: "Надналичник" },
+              { value: "under_frame", label: "Подналичник" },
+              { value: "trim", label: "Обклад" },
+              { value: "molding", label: "Молдинг" },
+              { value: "covering_primary", label: "Покрытие I" },
+              { value: "covering_secondary", label: "Покрытие II" },
+              { value: "color", label: "Цвет" },
+              { value: "floor_skirting", label: "Плинтус" },
+              { value: "heated-floor", label: "Тёплый пол" },
+              { value: "latting", label: "Обрешётка" },
+              { value: "window", label: "Окно" },
+              { value: "windowsill", label: "Подоконник" },
+              { value: "glass", label: "Стекло" },
+              { value: "door_lock", label: "Замок двери" },
+              { value: "hinge", label: "Петля" },
+              { value: "door_bolt", label: "Шпингалет" },
+              { value: "door_stopper", label: "Стоппер" },
+              { value: "anti_threshold", label: "Анти-порог" },
+              { value: "box_width", label: "Ширина коробки" },
+              { value: "extra_options", label: "Доп. опции" },
+            ]}
+          />
         </Form.Item>
 
         <Form.Item
-          name="measure"
+          name="measurement_unit"
           label={t("common.input.measure")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
         >
           <Input placeholder={t("common.placeholder.measure")} />
+        </Form.Item>
+      </div>
+
+      {/* Image Upload */}
+      <div className="mb-8">
+        <Form.Item
+          name="product_image"
+          label={t("common.labels.image")}
+        >
+          <ImageUpload
+            label={t("common.labels.uploadImage")}
+            buttonText={t("common.button.uploadImage")}
+            maxSize={5}
+            allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
+          />
         </Form.Item>
       </div>
 
@@ -70,7 +115,6 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
         <Form.Item
           name="price_uzs"
           label={t("common.input.priceUZS")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
         >
           <NumberInput min={0} placeholder={t("common.placeholder.priceUZS")} />
         </Form.Item>
@@ -92,48 +136,116 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
         </Form.Item>
       </div>
 
-      {/* Features - Third Row */}
+      {/* Frame Dimensions - Third Row */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
         <Form.Item
-          name="crown_coefficient"
-          label={t("common.input.crownCoefficient")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
+          name="frame_thickness"
+          label="Frame Thickness"
         >
           <NumberInput
             min={0}
-            placeholder={t("common.placeholder.crownCoefficient")}
+            step={0.01}
+            placeholder="Enter frame thickness"
           />
         </Form.Item>
 
         <Form.Item
-          name="up_under_trim_height"
-          label={t("common.input.trimHeight")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
+          name="frame_width"
+          label="Frame Width"
         >
           <NumberInput
             min={0}
-            placeholder={t("common.placeholder.trimHeight")}
+            step={0.01}
+            placeholder="Enter frame width"
           />
         </Form.Item>
 
         <Form.Item
-          name="up_under_trim_width"
-          label={t("common.input.trimWidth")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
+          name="under_frame_height"
+          label="Under Frame Height"
         >
           <NumberInput
             min={0}
-            placeholder={t("common.placeholder.trimWidth")}
+            step={0.01}
+            placeholder="Enter under frame height"
           />
         </Form.Item>
       </div>
 
-      {/* Feature Description - Full Width */}
-      <div className="w-full">
-        <Form.Item name="feature" label={t("common.input.feature")}>
-          <TextAreaInput
-            rows={3}
-            placeholder={t("common.placeholder.feature")}
+      {/* Percentages - Fourth Row */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+        <Form.Item
+          name="percent_trim"
+          label="Percent Trim (%)"
+        >
+          <NumberInput
+            min={0}
+            max={100}
+            step={0.01}
+            placeholder="Enter percent trim"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="percent_molding"
+          label="Percent Molding (%)"
+        >
+          <NumberInput
+            min={0}
+            max={100}
+            step={0.01}
+            placeholder="Enter percent molding"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="percent_covering_primary"
+          label="Percent Covering Primary (%)"
+        >
+          <NumberInput
+            min={0}
+            max={100}
+            step={0.01}
+            placeholder="Enter percent covering primary"
+          />
+        </Form.Item>
+      </div>
+
+      {/* More Percentages - Fifth Row */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+        <Form.Item
+          name="percent_covering_secondary"
+          label="Percent Covering Secondary (%)"
+        >
+          <NumberInput
+            min={0}
+            max={100}
+            step={0.01}
+            placeholder="Enter percent covering secondary"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="percent_color"
+          label="Percent Color (%)"
+        >
+          <NumberInput
+            min={0}
+            max={100}
+            step={0.01}
+            placeholder="Enter percent color"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="percent_extra_option"
+          label="Percent Extra Option (%)"
+        >
+          <NumberInput
+            min={0}
+            max={100}
+            step={0.01}
+            placeholder="Enter percent extra option"
           />
         </Form.Item>
       </div>

@@ -25,7 +25,7 @@ export const UserDetails: FC<Props> = ({ user, className }) => {
 
   return (
     <div className={cn("px-10", className)}>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="my-6 flex items-center justify-between">
         <h4 className="text-xl font-semibold text-gray-900">
           {t("common.labels.userDetails")}
         </h4>

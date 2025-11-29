@@ -52,6 +52,29 @@ export default function Page() {
     );
   }
 
+  // Transform product data to match form field names
+  const formInitialValues = {
+    product_id: product.product_id,
+    created_at: product.created_at,
+    name: product.name,
+    product_type: product.product_type,
+    measurement_unit: product.measure, // Old API uses 'measure'
+    product_image: "", // Will need to fetch/transform if exists
+    price_uzs: product.price_uzs,
+    price_usd: product.price_usd,
+    category_id: product.category_id,
+    category: product.category,
+    frame_thickness: 0, // Default values for new fields
+    frame_width: 0,
+    under_frame_height: product.up_under_trim_height || 0,
+    percent_trim: 0,
+    percent_molding: 0,
+    percent_covering_primary: 0,
+    percent_covering_secondary: 0,
+    percent_color: 0,
+    percent_extra_option: 0,
+  };
+
   return (
     <div className="px-10">
       <CAddHeader
@@ -61,7 +84,7 @@ export default function Page() {
         onSave={handleSave}
       />
 
-      <Form form={form} layout="vertical" initialValues={product}>
+      <Form form={form} layout="vertical" initialValues={formInitialValues}>
         <ProductForm mode="edit" product={product} />
       </Form>
     </div>
