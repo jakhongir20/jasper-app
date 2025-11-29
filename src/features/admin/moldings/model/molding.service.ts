@@ -15,7 +15,7 @@ export class MoldingService {
   }
 
   static async create(payload: CreateMoldingPayload): Promise<Molding> {
-    return await ApiService.$post<Molding>("/admin/molding", payload);
+    return await ApiService.$post<Molding>("/molding", payload);
   }
 
   static async update(
@@ -23,12 +23,12 @@ export class MoldingService {
     payload: UpdateMoldingPayload,
   ): Promise<Molding> {
     return await ApiService.$put<Molding>(
-      `/admin/molding?molding_id=${moldingId}`,
+      `/molding?molding_id=${moldingId}`,
       payload,
     );
   }
 
   static async delete(moldingId: number): Promise<void> {
-    return await ApiService.$delete(`/admin/molding?molding_id=${moldingId}`);
+    return await ApiService.$delete(`/molding?molding_id=${moldingId}`);
   }
 }

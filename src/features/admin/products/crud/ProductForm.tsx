@@ -13,6 +13,31 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
 
   return (
     <ContentInner>
+      {/* Read-only fields - shown only in edit mode */}
+      {mode === "edit" && product && (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+          <Form.Item name="product_id" label={t("common.input.productId")}>
+            <Input disabled className="bg-gray-100" />
+          </Form.Item>
+
+          <Form.Item name="created_at" label={t("common.input.createdAt")}>
+            <Input
+              disabled
+              className="bg-gray-100"
+              value={
+                product.created_at
+                  ? new Date(product.created_at * 1000).toLocaleString()
+                  : ""
+              }
+            />
+          </Form.Item>
+
+          <Form.Item name={["category", "name"]} label={t("common.input.categoryName")}>
+            <Input disabled className="bg-gray-100" />
+          </Form.Item>
+        </div>
+      )}
+
       {/* Basic Information - First Row */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
         <Form.Item

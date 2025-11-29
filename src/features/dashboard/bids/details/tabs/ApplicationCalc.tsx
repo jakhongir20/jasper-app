@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useState, useEffect } from "react";
-import { ContentInner, Input, NumberInput, Button } from "@/shared/ui";
+import { ContentInner, Input, NumberInput, Button, Select } from "@/shared/ui";
 import { ApplicationDetail } from "@/features/dashboard/bids/details";
 import { Form, message } from "antd";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ interface ForecastRequest {
   forecast_discount_percent: number;
   forecast_prepayment: number;
   status: number;
+  discount_type?: number;
 }
 
 export const ApplicationCalc: FC<Props> = ({
@@ -53,6 +54,7 @@ export const ApplicationCalc: FC<Props> = ({
         forecast_discount: application.forecast_discount || 0,
         forecast_discount_percent: application.forecast_discount_percent || 0,
         forecast_prepayment: application.forecast_prepayment || 0,
+        discount_type: 1, // Default to "Точная сумма" (Exact amount)
       });
 
       // Automatically send calculation request if we have existing forecast data
@@ -188,25 +190,66 @@ export const ApplicationCalc: FC<Props> = ({
           <Form.Item name={["forecaster", "company", "display_name"]} label={t("calculated_by")}>
             <Input placeholder={t("common.placeholder.address")} />
           </Form.Item>
+
           <Form.Item
-            name="forecast_discount"
-            label={`${t("discount")} (${t("common.labels.amount")})`}
-            rules={[{ type: "number", min: 0, message: "" }]}
+            name="discount_type"
+            label={t("discount_type")}
+            rules={[{ required: true, message: "Выберите тип скидки" }]}
           >
-            <NumberInput
-              placeholder={t("common.labels.amount")}
-              onChange={handleDiscountAmountChange}
+            <Select
+              placeholder="Выберите тип скидки"
+              options={[
+                { value: 1, label: "Точная сумма" },
+                { value: 2, label: "В процентах" },
+              ]}
+              onChange={(value) => {
+                // Reset discount values when type changes
+                if (value === 1) {
+                  form.setFieldValue("forecast_discount_percent", 0);
+                } else {
+                  form.setFieldValue("forecast_discount", 0);
+                }
+              }}
             />
           </Form.Item>
 
           <Form.Item
-            name="forecast_discount_percent"
-            label={`${t("discount")} (%)`}
+            noStyle
+            shouldUpdate={(prevValues, currentValues) =>
+              prevValues.discount_type !== currentValues.discount_type
+            }
           >
-            <NumberInput
-              placeholder={t("percentage")}
-              onChange={handleDiscountPercentChange}
-            />
+            {({ getFieldValue }) => {
+              const discountType = getFieldValue("discount_type");
+
+              if (discountType === 1) {
+                return (
+                  <Form.Item
+                    name="forecast_discount"
+                    label={`${t("discount")} (${t("common.labels.amount")})`}
+                    rules={[{ type: "number", min: 0, message: "" }]}
+                  >
+                    <NumberInput
+                      placeholder={t("common.labels.amount")}
+                      onChange={handleDiscountAmountChange}
+                    />
+                  </Form.Item>
+                );
+              } else if (discountType === 2) {
+                return (
+                  <Form.Item
+                    name="forecast_discount_percent"
+                    label={`${t("discount")} (%)`}
+                  >
+                    <NumberInput
+                      placeholder={t("percentage")}
+                      onChange={handleDiscountPercentChange}
+                    />
+                  </Form.Item>
+                );
+              }
+              return null;
+            }}
           </Form.Item>
 
           <Form.Item name="forecast_prepayment" label={`${t("prepayment")}`}>
