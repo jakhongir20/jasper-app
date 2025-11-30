@@ -56,9 +56,9 @@ export const columns = (
         render: renderImage,
       },
       {
-        key: "order",
+        key: "order_number",
         title: t("common.labels.order"),
-        dataIndex: "order",
+        dataIndex: "order_number",
         width: 100,
         render: renderOrder,
       },

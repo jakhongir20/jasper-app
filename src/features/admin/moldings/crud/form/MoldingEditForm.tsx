@@ -52,16 +52,23 @@ export const MoldingEditForm: FC<Props> = ({
     },
   });
 
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
+    }
+  }, [open, form]);
+
   // Set form values when detail data is loaded
   useEffect(() => {
-    if (!isLoadingDetail && molding) {
-      const fullImageUrl = molding.framework_image
-        ? `${getStaticAssetsBaseUrl()}/${molding.framework_image}`
+    if (open && !isLoadingDetail && molding) {
+      const fullImageUrl = molding.image_url
+        ? `${getStaticAssetsBaseUrl()}/${molding.image_url}`
         : null;
 
       const transformedData = {
         name: molding.name,
-        framework_image: fullImageUrl,
+        image_url: fullImageUrl,
         order_number: molding.order_number,
         doorway_type: molding.doorway_type,
         is_frame: molding.is_frame,
@@ -70,19 +77,29 @@ export const MoldingEditForm: FC<Props> = ({
 
       form.setFieldsValue(transformedData);
     }
-  }, [molding, isLoadingDetail, form, getStaticAssetsBaseUrl]);
+  }, [open, molding, isLoadingDetail, form, getStaticAssetsBaseUrl]);
 
   const handleSave = () => {
     form.validateFields().then((values) => {
       // Extract relative path from full URL if it's a full URL
-      let imageUrl = values.framework_image;
-      if (imageUrl && imageUrl.startsWith(getStaticAssetsBaseUrl())) {
-        imageUrl = imageUrl.replace(`${getStaticAssetsBaseUrl()}/`, "");
+      // If it's a base64 string (new upload), use it as is
+      // If it's a full URL (existing image), extract the relative path
+      let imageUrl = values.image_url;
+      if (imageUrl) {
+        // Check if it's a base64 data URL (new upload)
+        if (imageUrl.startsWith("data:image/")) {
+          // Keep base64 as is - it will be handled by the backend
+          imageUrl = imageUrl;
+        } else if (imageUrl.startsWith(getStaticAssetsBaseUrl())) {
+          // Extract relative path from full URL
+          imageUrl = imageUrl.replace(`${getStaticAssetsBaseUrl()}/`, "");
+        }
+        // If it's already a relative path, use it as is
       }
 
       const payload: UpdateMoldingPayload = {
         name: values.name,
-        framework_image: imageUrl,
+        image_url: imageUrl,
         order_number: values.order_number,
         doorway_type: values.doorway_type,
         is_frame: values.is_frame,

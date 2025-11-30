@@ -49,7 +49,7 @@ export const MoldingAddForm: FC<Props> = ({
       .then((values) => {
         const payload: CreateMoldingPayload = {
           name: values.name,
-          framework_image: values.framework_image,
+          image_url: values.image_url,
           order_number: values.order_number,
           doorway_type: values.doorway_type,
           is_frame: values.is_frame,
@@ -58,7 +58,7 @@ export const MoldingAddForm: FC<Props> = ({
 
         mutate(payload);
       })
-      .catch((errorInfo) => {});
+      .catch((errorInfo) => { });
   };
 
   const handleCancel = () => {

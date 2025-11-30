@@ -47,13 +47,13 @@ export const MoldingDetails: FC<Props> = ({
           column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
         >
           <Descriptions.Item label={t("common.labels.id")}>
-            {molding.molding_id}
+            {molding.framework_id}
           </Descriptions.Item>
           <Descriptions.Item label={t("common.labels.name")}>
             {molding.name}
           </Descriptions.Item>
           <Descriptions.Item label={t("common.labels.order")}>
-            {molding.order}
+            {molding.order_number}
           </Descriptions.Item>
           <Descriptions.Item label={t("common.labels.image")}>
             <div className="flex items-center gap-4">

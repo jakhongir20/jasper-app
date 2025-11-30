@@ -1,17 +1,26 @@
 export type Molding = {
-  molding_id: number;
+  framework_id: number;
   name: string;
-  framework_image: string;
+  image_url: string;
   order_number: number;
   doorway_type: number;
   is_frame: boolean;
   is_filler: boolean;
   created_at?: number;
+  has_up_frame?: boolean;
+  has_under_frame?: boolean;
+  has_crown?: boolean;
+  has_transom?: boolean;
+  is_deleted?: boolean;
+  deleted_at?: number;
 };
+
+// Alias for backward compatibility
+export type MoldingWithLegacyId = Molding & { molding_id: number };
 
 export type CreateMoldingPayload = {
   name: string;
-  framework_image: string;
+  image_url: string;
   order_number: number;
   doorway_type: number;
   is_frame: boolean;
@@ -20,7 +29,7 @@ export type CreateMoldingPayload = {
 
 export type UpdateMoldingPayload = {
   name: string;
-  framework_image: string;
+  image_url: string;
   order_number: number;
   doorway_type: number;
   is_frame: boolean;
@@ -29,7 +38,7 @@ export type UpdateMoldingPayload = {
 
 export type MoldingFormData = {
   name: string;
-  framework_image: string;
+  image_url: string;
   order_number: number;
   doorway_type: number;
   is_frame: boolean;

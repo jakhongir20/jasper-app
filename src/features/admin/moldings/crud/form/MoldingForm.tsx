@@ -59,7 +59,7 @@ export const MoldingForm: FC<Props> = ({
 
       {/* Image Upload */}
       <Form.Item
-        name="framework_image"
+        name="image_url"
         label={t("common.labels.image")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >

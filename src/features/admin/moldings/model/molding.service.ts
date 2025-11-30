@@ -22,7 +22,7 @@ export class MoldingService {
     moldingId: number,
     payload: UpdateMoldingPayload,
   ): Promise<Molding> {
-    return await ApiService.$put<Molding>(
+    return await ApiService.$patch<Molding>(
       `/admin/framework?framework_id=${moldingId}`,
       payload,
     );

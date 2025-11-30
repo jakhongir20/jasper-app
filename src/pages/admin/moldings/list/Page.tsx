@@ -82,7 +82,7 @@ export default function Page() {
           open={openEdit}
           onCancel={handleCancel}
           onSuccess={handleSuccess}
-          moldingId={selectedMolding.molding_id}
+          moldingId={selectedMolding.framework_id}
         />
       )}
 
@@ -91,7 +91,7 @@ export default function Page() {
         <DeleteAction
           open={openDelete}
           closeModal={handleCancel}
-          moldingId={selectedMolding.molding_id}
+          moldingId={selectedMolding.framework_id}
           submit={handleSuccess}
         />
       )}
