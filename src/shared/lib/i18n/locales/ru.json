@@ -118,6 +118,7 @@
   },
   "common": {
     "selectImage": "Выберите изображение",
+    "select": "Выберите",
     "input": {
       "customerName": "Иван Иванов",
       "customerPhone": "Введите телефон клиента",

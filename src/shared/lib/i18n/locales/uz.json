@@ -18,6 +18,7 @@
   },
   "common": {
     "selectImage": "Rasmni tanlang",
+    "select": "Tanlang",
     "locale": {
       "en": "English",
       "ru": "Русский",

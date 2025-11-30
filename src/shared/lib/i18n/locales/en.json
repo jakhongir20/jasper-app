@@ -18,6 +18,7 @@
   },
   "common": {
     "selectImage": "Select Image",
+    "select": "Select",
     "locale": {
       "en": "English",
       "ru": "Русский",

@@ -3,6 +3,7 @@ import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
 import { Input, Select, SelectInfinitive } from "@/shared/ui";
+import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 
 interface Props {
   className?: string;
@@ -71,7 +72,7 @@ const CATEGORY_SECTION_INDEX = {
 
 type TransactionValues = Record<string, unknown>;
 
-type FieldType = "text" | "number" | "select" | "selectInfinitive";
+type FieldType = "text" | "number" | "select" | "selectInfinitive" | "image";
 
 type FieldConfig = {
   name: string;
@@ -1099,36 +1100,25 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     aliases: ["quantity"],
   },
   {
-    name: "box_width",
-    label: "Ширина коробки",
-    type: "number",
-    numberStep: 0.01,
-    placeholder: "Введите ширину коробки",
-    visible: (_, productType) =>
-      isDoorType(productType) || productType === "box_width",
-  },
-  {
     name: "framework_front_id",
     label: "Каркас передний",
-    type: "selectInfinitive",
+    type: "image",
     placeholder: "Выберите передний каркас",
     queryKey: "framework_front",
     fetchUrl: "/framework/all",
-    labelKey: "name",
+    labelKey: "image_url",
     valueKey: "framework_id",
-    useValueAsLabel: true,
     visible: (_, productType) => isDoorType(productType),
   },
   {
     name: "framework_back_id",
     label: "Каркас задний",
-    type: "selectInfinitive",
+    type: "image",
     placeholder: "Выберите задний каркас",
     queryKey: "framework_back",
     fetchUrl: "/framework/all",
-    labelKey: "name",
+    labelKey: "image_url",
     valueKey: "framework_id",
-    useValueAsLabel: true,
     visible: (_, productType) => isDoorType(productType),
   },
   {
@@ -1312,6 +1302,37 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               useValueAsLabel={field.useValueAsLabel}
               allowClear={field.allowClear}
               onChange={(value) => {
+                if (field.aliases) {
+                  field.aliases.forEach((alias) =>
+                    setTransactionField(alias, value),
+                  );
+                }
+              }}
+            />
+          </Form.Item>
+        );
+      case "image":
+        return (
+          <Form.Item
+            name={namePath}
+            label={field.label}
+            rules={rules}
+            getValueFromEvent={(item) => {
+              return item?.[field.valueKey ?? "framework_id"];
+            }}
+          >
+            <ImageSelectPopover
+              placeholder={field.placeholder}
+              fetchUrl={field.fetchUrl ?? ""}
+              params={
+                typeof field.params === "function"
+                  ? field.params(transactionValues, productType)
+                  : field.params
+              }
+              labelKey={(field.labelKey ?? "image_url") as string}
+              valueKey={(field.valueKey ?? "framework_id") as string}
+              onChange={(item) => {
+                const value = item?.[field.valueKey ?? "framework_id"];
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
                     setTransactionField(alias, value),
