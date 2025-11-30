@@ -49,27 +49,11 @@ export const MoldingAddForm: FC<Props> = ({
       .then((values) => {
         const payload: CreateMoldingPayload = {
           name: values.name,
-          molding_image: values.molding_image,
-          order: values.order || 0,
-          has_up_trim: values.has_up_trim || false,
-          has_under_trim: values.has_under_trim || false,
-          has_crown: values.has_crown || false,
-          height_minus_coefficient: values.height_minus_coefficient || 0,
-          width_minus_coefficient: values.width_minus_coefficient || 0,
-          height_plus_coefficient: values.height_plus_coefficient || 0,
-          width_plus_coefficient: values.width_plus_coefficient || 0,
-          is_height_coefficient_applicable:
-            values.is_height_coefficient_applicable || false,
-          height_coefficient_use_case:
-            values.height_coefficient_use_case || false,
-          is_height_coefficient_double:
-            values.is_height_coefficient_double || false,
-          is_width_coefficient_applicable:
-            values.is_width_coefficient_applicable || false,
-          width_coefficient_use_case:
-            values.width_coefficient_use_case || false,
-          is_width_coefficient_double:
-            values.is_width_coefficient_double || false,
+          framework_image: values.framework_image,
+          order_number: values.order_number,
+          doorway_type: values.doorway_type,
+          is_frame: values.is_frame,
+          is_filler: values.is_filler,
         };
 
         mutate(payload);

@@ -55,29 +55,17 @@ export const MoldingEditForm: FC<Props> = ({
   // Set form values when detail data is loaded
   useEffect(() => {
     if (!isLoadingDetail && molding) {
-      const fullImageUrl = molding.image_url
-        ? `${getStaticAssetsBaseUrl()}/${molding.image_url}`
+      const fullImageUrl = molding.framework_image
+        ? `${getStaticAssetsBaseUrl()}/${molding.framework_image}`
         : null;
 
       const transformedData = {
         name: molding.name,
-        molding_image: fullImageUrl,
-        order: molding.order,
-        has_up_trim: molding.has_up_trim,
-        has_under_trim: molding.has_under_trim,
-        has_crown: molding.has_crown,
-        height_minus_coefficient: molding.height_minus_coefficient,
-        width_minus_coefficient: molding.width_minus_coefficient,
-        height_plus_coefficient: molding.height_plus_coefficient,
-        width_plus_coefficient: molding.width_plus_coefficient,
-        is_height_coefficient_applicable:
-          molding.is_height_coefficient_applicable,
-        height_coefficient_use_case: molding.height_coefficient_use_case,
-        is_height_coefficient_double: molding.is_height_coefficient_double,
-        is_width_coefficient_applicable:
-          molding.is_width_coefficient_applicable,
-        width_coefficient_use_case: molding.width_coefficient_use_case,
-        is_width_coefficient_double: molding.is_width_coefficient_double,
+        framework_image: fullImageUrl,
+        order_number: molding.order_number,
+        doorway_type: molding.doorway_type,
+        is_frame: molding.is_frame,
+        is_filler: molding.is_filler,
       };
 
       form.setFieldsValue(transformedData);
@@ -87,34 +75,18 @@ export const MoldingEditForm: FC<Props> = ({
   const handleSave = () => {
     form.validateFields().then((values) => {
       // Extract relative path from full URL if it's a full URL
-      let imageUrl = values.molding_image;
+      let imageUrl = values.framework_image;
       if (imageUrl && imageUrl.startsWith(getStaticAssetsBaseUrl())) {
         imageUrl = imageUrl.replace(`${getStaticAssetsBaseUrl()}/`, "");
       }
 
       const payload: UpdateMoldingPayload = {
-        molding_id: moldingId,
         name: values.name,
-        molding_image: imageUrl,
-        order: values.order || 0,
-        has_up_trim: values.has_up_trim || false,
-        has_under_trim: values.has_under_trim || false,
-        has_crown: values.has_crown || false,
-        height_minus_coefficient: values.height_minus_coefficient || 0,
-        width_minus_coefficient: values.width_minus_coefficient || 0,
-        height_plus_coefficient: values.height_plus_coefficient || 0,
-        width_plus_coefficient: values.width_plus_coefficient || 0,
-        is_height_coefficient_applicable:
-          values.is_height_coefficient_applicable || false,
-        height_coefficient_use_case:
-          values.height_coefficient_use_case || false,
-        is_height_coefficient_double:
-          values.is_height_coefficient_double || false,
-        is_width_coefficient_applicable:
-          values.is_width_coefficient_applicable || false,
-        width_coefficient_use_case: values.width_coefficient_use_case || false,
-        is_width_coefficient_double:
-          values.is_width_coefficient_double || false,
+        framework_image: imageUrl,
+        order_number: values.order_number,
+        doorway_type: values.doorway_type,
+        is_frame: values.is_frame,
+        is_filler: values.is_filler,
       };
 
       mutate({ moldingId, payload });

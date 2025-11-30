@@ -32,9 +32,8 @@ export const MoldingForm: FC<Props> = ({
         </Form.Item>
 
         <Form.Item
-          name="order"
+          name="order_number"
           label={t("common.labels.order")}
-          initialValue={0}
           rules={[{ required: true, message: t("common.validation.required") }]}
         >
           <NumberInput
@@ -45,9 +44,22 @@ export const MoldingForm: FC<Props> = ({
         </Form.Item>
       </div>
 
+      {/* Doorway Type */}
+      <Form.Item
+        name="doorway_type"
+        label={t("common.labels.doorwayType")}
+        rules={[{ required: true, message: t("common.validation.required") }]}
+      >
+        <NumberInput
+          placeholder={t("common.labels.doorwayType")}
+          min={0}
+          max={999}
+        />
+      </Form.Item>
+
       {/* Image Upload */}
       <Form.Item
-        name="molding_image"
+        name="framework_image"
         label={t("common.labels.image")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
@@ -62,137 +74,26 @@ export const MoldingForm: FC<Props> = ({
         />
       </Form.Item>
 
-      {/* Trim Options */}
+      {/* Frame and Filler Options */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-gray-200">
-          {t("common.labels.trimOptions")}
+          {t("common.labels.frameFillerOptions")}
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Form.Item
-            name="has_up_trim"
+            name="is_frame"
             valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.hasUpTrim")}
+            label={t("common.labels.isFrame")}
+            rules={[{ required: true, message: t("common.validation.required") }]}
           >
             <CSwitch />
           </Form.Item>
 
           <Form.Item
-            name="has_under_trim"
+            name="is_filler"
             valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.hasUnderTrim")}
-          >
-            <CSwitch />
-          </Form.Item>
-
-          <Form.Item
-            name="has_crown"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.hasCrown")}
-          >
-            <CSwitch />
-          </Form.Item>
-        </div>
-      </div>
-
-      {/* Height Coefficients */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-200">
-          {t("common.labels.heightCoefficients")}
-        </h3>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Form.Item
-            name="height_minus_coefficient"
-            label={t("common.labels.heightMinusCoefficient")}
-            initialValue={0}
-          >
-            <NumberInput placeholder="0" min={0} step={0.01} />
-          </Form.Item>
-
-          <Form.Item
-            name="height_plus_coefficient"
-            label={t("common.labels.heightPlusCoefficient")}
-            initialValue={0}
-          >
-            <NumberInput placeholder="0" min={0} step={0.01} />
-          </Form.Item>
-
-          <Form.Item
-            name="is_height_coefficient_applicable"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.isHeightCoefficientApplicable")}
-          >
-            <CSwitch />
-          </Form.Item>
-
-          <Form.Item
-            name="height_coefficient_use_case"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.heightCoefficientUseCase")}
-          >
-            <CSwitch />
-          </Form.Item>
-
-          <Form.Item
-            name="is_height_coefficient_double"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.isHeightCoefficientDouble")}
-          >
-            <CSwitch />
-          </Form.Item>
-        </div>
-      </div>
-
-      {/* Width Coefficients */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-200">
-          {t("common.labels.widthCoefficients")}
-        </h3>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Form.Item
-            name="width_minus_coefficient"
-            label={t("common.labels.widthMinusCoefficient")}
-            initialValue={0}
-          >
-            <NumberInput placeholder="0" min={0} step={0.01} />
-          </Form.Item>
-
-          <Form.Item
-            name="width_plus_coefficient"
-            label={t("common.labels.widthPlusCoefficient")}
-            initialValue={0}
-          >
-            <NumberInput placeholder="0" min={0} step={0.01} />
-          </Form.Item>
-
-          <Form.Item
-            name="is_width_coefficient_applicable"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.isWidthCoefficientApplicable")}
-          >
-            <CSwitch />
-          </Form.Item>
-
-          <Form.Item
-            name="width_coefficient_use_case"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.widthCoefficientUseCase")}
-          >
-            <CSwitch />
-          </Form.Item>
-
-          <Form.Item
-            name="is_width_coefficient_double"
-            valuePropName="checked"
-            initialValue={false}
-            label={t("common.labels.isWidthCoefficientDouble")}
+            label={t("common.labels.isFiller")}
+            rules={[{ required: true, message: t("common.validation.required") }]}
           >
             <CSwitch />
           </Form.Item>
