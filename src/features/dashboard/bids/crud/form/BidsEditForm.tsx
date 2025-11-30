@@ -106,7 +106,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
 
         // All steps succeeded
         toast(t("toast.successUpdate"), "success");
-        navigate(`/dashboard/bids`);
+        navigate(`/dashboard/bids/${variables.id}?tab=2`);
       } catch (error) {
         // Error in service-manager or forecast
         console.error("Post-update error:", error);

@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { Tabs } from "@/shared/ui";
 import { useTranslation } from "react-i18next";
@@ -15,7 +16,11 @@ interface Props {
 
 export const ApplicationDetailsTabs: FC<Props> = ({ application, id }) => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const [forecastData, setForecastData] = useState<ApplicationDetail | null>(null);
+
+  // Get initial active tab from URL or default to "1"
+  const initialTab = searchParams.get("tab") || "1";
 
   const tabs = [
     {
@@ -48,5 +53,5 @@ export const ApplicationDetailsTabs: FC<Props> = ({ application, id }) => {
     },
   ];
 
-  return <Tabs items={tabs} activeTabKey={"1"} />;
+  return <Tabs items={tabs} activeTabKey={initialTab} useQuery={true} />;
 };

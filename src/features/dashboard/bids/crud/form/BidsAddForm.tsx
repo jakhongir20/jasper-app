@@ -146,7 +146,7 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
           // All steps succeeded
           toast(t("toast.success"), "success");
-          navigate(`/dashboard/bids`);
+          navigate(`/dashboard/bids/${createdId}?tab=2`);
         } catch (error) {
           // Error in service-manager or forecast
           console.error("Post-creation error:", error);

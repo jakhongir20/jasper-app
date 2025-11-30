@@ -46,13 +46,6 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       width: 100,
     },
     {
-      title: t("common.labels.volume"),
-      dataIndex: "volume_door",
-      key: "volume",
-      width: 100,
-      render: (volume: number) => (typeof volume === "number" ? volume.toFixed(2) : "0.00"),
-    },
-    {
       title: t("common.labels.unit_price"),
       dataIndex: "door_product",
       key: "unit_price",
@@ -63,43 +56,6 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       title: "Итого",
       dataIndex: "forecast_door_product",
       key: "forecast_door_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
-    },
-  ];
-
-  // Sheathing Table
-  const sheathingColumns = [
-    {
-      title: t("common.labels.name"),
-      dataIndex: "sheathing_product",
-      key: "name",
-      render: (sheathing: any) => sheathing?.name || "",
-    },
-    {
-      title: t("common.labels.quantity"),
-      dataIndex: "entity_quantity",
-      key: "quantity",
-      width: 100,
-    },
-    {
-      title: t("common.labels.volume"),
-      dataIndex: "volume_sheathing",
-      key: "volume",
-      width: 100,
-      render: (volume: number) => (typeof volume === "number" ? volume.toFixed(2) : "0.00"),
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "sheathing_product",
-      key: "unit_price",
-      width: 150,
-      render: (sheathing: any) => sheathing?.price_usd ?? 0,
-    },
-    {
-      title: "Итого",
-      dataIndex: "forecast_sheathing_product",
-      key: "forecast_sheathing_product",
       width: 150,
       render: (value: number) => value ?? 0,
     },
@@ -378,34 +334,6 @@ export const CalculationResults: FC<Props> = ({ application }) => {
           )}
         />
       </Card>
-
-      {/* Sheathing */}
-      {txs.some((t: TransactionRow) => Boolean((t as any).sheathing_product)) && (
-        <Card>
-          <Title level={4}>{t("common.labels.sheathing")}</Title>
-          <TableWrapper
-            columns={sheathingColumns}
-            data={txs.filter((t: TransactionRow) => Boolean((t as any).sheathing_product))}
-            loading={false}
-            showSearch={false}
-            showAddButton={false}
-            showFilter={false}
-            pagination={false}
-            emptyTableClassName="min-h-0"
-            title={() => (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
-                  {calculateTotalForecast(
-                    txs,
-                    "forecast_sheathing_product",
-                  )}
-                </span>
-              </div>
-            )}
-          />
-        </Card>
-      )}
 
       {/* Trims */}
       {txs.some((t: TransactionRow) => Boolean((t as any).trim_product)) && (

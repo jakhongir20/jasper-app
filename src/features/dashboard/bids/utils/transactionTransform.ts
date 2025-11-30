@@ -85,9 +85,6 @@ export const buildTransactionPayload = (
   transom_height_front: toNullableNumber(transaction.transom_height_front),
   transom_height_back: toNullableNumber(transaction.transom_height_back),
   door_product_id: extractId(transaction.door_product_id),
-  volume_door: toNullableNumber(transaction.volume_door),
-  sheathing_product_id: extractId(transaction.sheathing_product_id),
-  volume_sheathing: toNullableNumber(transaction.volume_sheathing),
   frame_product_id: extractId(transaction.frame_product_id),
   volume_frame: toNullableNumber(transaction.volume_frame),
   filler_product_id: extractId(transaction.filler_product_id),
@@ -239,11 +236,6 @@ export const transformTransactionDetailToForm = (
       transaction.product_id ??
       transaction?.product?.product_id,
   );
-  const sheathingProductId = extractId(
-    transaction.sheathing_product_id ??
-      transaction.sheathing_id ??
-      transaction?.sheathing?.product_id,
-  );
   const frameProductId = extractId(
     transaction.frame_product_id ??
       transaction.frame_id ??
@@ -388,10 +380,6 @@ export const transformTransactionDetailToForm = (
     transom_product_id: transomProductId,
     door_product_id: doorProductId,
     product_id: doorProductId,
-    volume_door: transaction.volume_door ?? transaction.volume_product ?? null,
-    sheathing_product_id: sheathingProductId,
-    sheathing_id: sheathingProductId,
-    volume_sheathing: transaction.volume_sheathing ?? null,
     frame_product_id: frameProductId,
     volume_frame: transaction.volume_frame ?? null,
     filler_product_id: fillerProductId,
