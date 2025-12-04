@@ -935,10 +935,10 @@ const getNestedValue = (values: TransactionValues, path: string): unknown =>
   }, values);
 
 const lattingHasFront = (values: TransactionValues) =>
-  hasValue(values.framework_front_id);
+  hasValue(values.frame_front_id);
 
 const lattingHasBack = (values: TransactionValues) =>
-  hasValue(values.framework_back_id);
+  hasValue(values.frame_back_id);
 
 const lattingFrontFlag = (values: TransactionValues, flag: string) =>
   toBoolean(getNestedValue(values, `frame_front.${flag}`));
@@ -959,8 +959,8 @@ const CONDITIONAL_REQUIREMENTS: Record<
       Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
   },
   latting: {
-    framework_front_id: lattingHasFront,
-    framework_back_id: lattingHasBack,
+    frame_front_id: lattingHasFront,
+    frame_back_id: lattingHasBack,
     up_frame_product_id: (values) =>
       lattingFrontFlag(values, "has_up_frame") ||
       lattingBackFlag(values, "has_up_frame"),
@@ -1100,7 +1100,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     aliases: ["quantity"],
   },
   {
-    name: "framework_front_id",
+    name: "frame_front_id",
     label: "Каркас передний",
     type: "image",
     placeholder: "Выберите передний каркас",
@@ -1111,7 +1111,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     visible: (_, productType) => isDoorType(productType),
   },
   {
-    name: "framework_back_id",
+    name: "frame_back_id",
     label: "Каркас задний",
     type: "image",
     placeholder: "Выберите задний каркас",

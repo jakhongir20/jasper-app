@@ -36,6 +36,10 @@ export const ApplicationGeneralInfo: FC<Props> = ({ application }) => {
           subValue={dayjs(application?.date).format("DD.MM.YYYY HH:mm")}
         />
         <CInfo
+          value={t("common.labels.deliveryDate")}
+          subValue={application?.delivery_date ? dayjs(application.delivery_date).format("DD.MM.YYYY") : "-"}
+        />
+        <CInfo
           value={t("common.labels.measurementNumber")}
           subValue={application?.application_id}
         />
@@ -75,7 +79,7 @@ export const ApplicationGeneralInfo: FC<Props> = ({ application }) => {
         />
       </div>
 
-      <CNotation label={t("common.labels.additionalInfo")} value={"-"} />
+      <CNotation label={t("common.labels.additionalInfo")} value={application?.remark || "-"} />
     </ContentInner>
   );
 };

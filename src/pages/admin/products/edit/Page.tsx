@@ -29,9 +29,25 @@ export default function Page() {
   const handleSave = () => {
     form.validateFields().then((values) => {
       if (product) {
+        // Extract base64 images from file list
+        const product_images = values.product_images?.map((file: any) => {
+          // If file has preview (new upload), use preview as base64
+          if (file.preview) {
+            return file.preview;
+          }
+          // If file has url (existing image), keep url
+          if (file.url) {
+            return file.url;
+          }
+          return null;
+        }).filter(Boolean) || [];
+
         updateProductMutation.mutate({
           productId: product.product_id,
-          payload: values,
+          payload: {
+            ...values,
+            product_images, // Array of base64 or URLs
+          },
         });
       }
     });
@@ -59,7 +75,12 @@ export default function Page() {
     name: product.name,
     product_type: product.product_type,
     measurement_unit: product.measure, // Old API uses 'measure'
-    product_image: "", // Will need to fetch/transform if exists
+    product_images: product.product_images?.map((img: any, index: number) => ({
+      uid: img.image_id || `-${index}`,
+      name: `image-${index}.png`,
+      status: 'done',
+      url: img.url || img.image_url,
+    })) || [],
     price_uzs: product.price_uzs,
     price_usd: product.price_usd,
     category_id: product.category_id,

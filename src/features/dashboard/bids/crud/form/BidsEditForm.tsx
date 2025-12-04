@@ -240,6 +240,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
           }) ?? [];
 
       const applicationDate = (applicationDetail as any)?.application_date;
+      const deliveryDate = (applicationDetail as any)?.delivery_date;
 
       const customerFromDetail = (applicationDetail as any)?.customer;
       const customerIdValue =
@@ -280,6 +281,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             : applicationDetail.date
               ? dayjs(applicationDetail.date)
               : undefined,
+          delivery_date: deliveryDate
+            ? dayjs(deliveryDate)
+            : undefined,
           category_name: applicationDetail.category_name || "",
           date: applicationDetail.date
             ? dayjs(applicationDetail.date)
@@ -491,6 +495,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
           : undefined,
         application_date: generalValues?.application_date
           ? getDateTime(generalValues.application_date)
+          : null,
+        delivery_date: generalValues?.delivery_date
+          ? getDateTime(generalValues.delivery_date)
           : null,
         color:
           generalValues?.color?.name || (generalValues as any)?.color || "",

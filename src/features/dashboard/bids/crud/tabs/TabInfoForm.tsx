@@ -123,6 +123,21 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           />
         </Form.Item>
         <Form.Item
+          name={["general", "delivery_date"]}
+          label={"Дата доставки"}
+        >
+          <DatePicker
+            size="small"
+            className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
+            valueName="date"
+            placeholder={"Выберите дату доставки"}
+            disabledDate={(current: Dayjs) => {
+              // Disable dates before today (start of day)
+              return current && current.isBefore(dayjs().startOf('day'));
+            }}
+          />
+        </Form.Item>
+        <Form.Item
           className="col-span-2"
           name={["general", "sizes"]}
           label={t("common.labels.dimensions")}

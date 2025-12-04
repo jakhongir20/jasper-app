@@ -24,7 +24,23 @@ export default function Page() {
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      createProductMutation.mutate(values);
+      // Extract base64 images from file list
+      const product_images = values.product_images?.map((file: any) => {
+        // If file has preview (new upload), use preview as base64
+        if (file.preview) {
+          return file.preview;
+        }
+        // If file has url (existing image), keep url
+        if (file.url) {
+          return file.url;
+        }
+        return null;
+      }).filter(Boolean) || [];
+
+      createProductMutation.mutate({
+        ...values,
+        product_images, // Array of base64 strings
+      });
     });
   };
 

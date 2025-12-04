@@ -2,7 +2,7 @@ import { Form } from "antd";
 import { useTranslation } from "react-i18next";
 import { Product } from "@/features/admin/products";
 import { ContentInner, Input, NumberInput, Select } from "@/shared/ui";
-import { ImageUpload } from "@/shared/ui/imageUpload";
+import { MultipleImageUpload } from "@/shared/ui/imageUpload";
 
 interface ProductFormProps {
   product?: Product;
@@ -95,17 +95,19 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
         </Form.Item>
       </div>
 
-      {/* Image Upload */}
+      {/* Multiple Images Upload */}
       <div className="mb-8">
         <Form.Item
-          name="product_image"
-          label={t("common.labels.image")}
+          name="product_images"
+          label={t("common.labels.images")}
+          valuePropName="value"
+          getValueFromEvent={(fileList) => fileList}
         >
-          <ImageUpload
-            label={t("common.labels.uploadImage")}
-            buttonText={t("common.button.uploadImage")}
+          <MultipleImageUpload
+            maxCount={10}
             maxSize={5}
             allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
+            productId={product?.product_id}
           />
         </Form.Item>
       </div>
