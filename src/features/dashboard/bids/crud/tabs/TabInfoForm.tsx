@@ -129,7 +129,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           <Input
             type="number"
             step={0.01}
-            placeholder={"Автоматически заполняется из настроек"}
+            placeholder={"Введите ширина коробки"}
           />
         </Form.Item>
 

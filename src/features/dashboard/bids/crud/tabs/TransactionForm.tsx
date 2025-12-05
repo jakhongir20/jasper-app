@@ -2,7 +2,7 @@ import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
-import { Input, Select, SelectInfinitive } from "@/shared/ui";
+import { CSwitch, Input, Select, SelectInfinitive } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 
 interface Props {
@@ -80,7 +80,7 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
-  options?: { value: string | number; label: string; }[];
+  options?: { value: string | number; label: string }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -90,11 +90,11 @@ type FieldConfig = {
   aliases?: string[];
   disabled?: boolean; // Field is disabled and cannot be edited by user
   params?:
-  | Record<string, string | number | boolean>
-  | ((
-    values: TransactionValues,
-    productType: string,
-  ) => Record<string, string | number | boolean>);
+    | Record<string, string | number | boolean>
+    | ((
+        values: TransactionValues,
+        productType: string,
+      ) => Record<string, string | number | boolean>);
   visible?: (values: TransactionValues, productType: string) => boolean;
 };
 
@@ -160,6 +160,25 @@ const ALL_SECTIONS: SectionConfig[] = [
         numberStep: 0.01,
         placeholder: "Введите высоту фрамуги (тыл)",
         visible: (values) => values.transom_type === 2, // Per 2.6.6: Only visible when transom_type is "Скрытая" (Hidden)
+      },
+    ],
+  },
+  {
+    key: "sheathing",
+    title: "Обшивка",
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
+    fields: [
+      {
+        name: "sheathing_product_id",
+        label: "Модель обшивки",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель обшивки",
+        queryKey: "sheathing_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.sheathing },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
       },
     ],
   },
@@ -440,7 +459,14 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "color",
     title: "Цвет",
-    allowedProductTypes: ["door-window", "door-deaf", "color", "doorway", "window", "windowsill"], // Added doorway per 2.4.3, window per 2.4.4, windowsill per 2.4.5
+    allowedProductTypes: [
+      "door-window",
+      "door-deaf",
+      "color",
+      "doorway",
+      "window",
+      "windowsill",
+    ], // Added doorway per 2.4.3, window per 2.4.4, windowsill per 2.4.5
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -473,7 +499,12 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "floor-skirting",
     title: "Плинтус",
-    allowedProductTypes: ["door-window", "door-deaf", "floor_skirting", "doorway"], // Added doorway per 2.4.3
+    allowedProductTypes: [
+      "door-window",
+      "door-deaf",
+      "floor_skirting",
+      "doorway",
+    ], // Added doorway per 2.4.3
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -778,7 +809,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         label: "Ширина коробки",
         type: "number",
         numberStep: 0.01,
-        placeholder: "Автоматически заполняется из настроек",
+        placeholder: "Введите ширина коробки",
         disabled: false, // Changed: box_width is now editable, auto-filled from company_configuration but can be manually overridden
       },
       {
@@ -793,7 +824,12 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "extra-options",
     title: "Доп. опция",
-    allowedProductTypes: ["door-window", "door-deaf", "extra_options", "doorway"], // Added doorway per 2.4.3
+    allowedProductTypes: [
+      "door-window",
+      "door-deaf",
+      "extra_options",
+      "doorway",
+    ], // Added doorway per 2.4.3
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -823,7 +859,10 @@ const ALL_SECTIONS: SectionConfig[] = [
 
 const getSectionsForProductType = (productType: string) =>
   ALL_SECTIONS.filter((section) => {
-    if (!section.allowedProductTypes || section.allowedProductTypes.length === 0) {
+    if (
+      !section.allowedProductTypes ||
+      section.allowedProductTypes.length === 0
+    ) {
       return true;
     }
     return section.allowedProductTypes.includes(productType);
@@ -833,7 +872,6 @@ const DEFAULT_PRODUCT_SECTIONS: SectionConfig[] = ALL_SECTIONS;
 
 const resolveProductType = (values: TransactionValues) =>
   ((values.product_type ?? values.door_type) as string | undefined) ?? "";
-
 
 const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   "door-window": [
@@ -849,7 +887,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "door_lock_product_id", // Модель замка
     "hinge_product_id", // Модель петель
     "door_bolt_product_id", // Модель шпингалета
-    // Note: sheathing_product_id from requirements not found in current implementation
+    "sheathing_product_id", // Модель обшивки
   ],
   "door-deaf": [
     // Measurement fields (required for all)
@@ -864,7 +902,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "door_lock_product_id", // Модель замка
     "hinge_product_id", // Модель петель
     "door_bolt_product_id", // Модель шпингалета
-    // Note: sheathing_product_id from requirements not found in current implementation
+    "sheathing_product_id", // Модель обшивки
   ],
   doorway: [
     // Measurement fields (required for all)
@@ -873,7 +911,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "opening_thickness",
     "entity_quantity",
     // Required modelling fields per 2.4.3
-    // Note: sheathing_product_id not found in current implementation
+    "sheathing_product_id", // Модель обшивки
   ],
   window: [
     // Measurement fields (required for all)
@@ -1221,6 +1259,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const sections = useMemo(() => config?.sections ?? [], [config]);
   const [activeSectionKeys, setActiveSectionKeys] = useState<string[]>([]);
   const [locationSearch, setLocationSearch] = useState<string>(""); // Per 2.6.4: Track location search term
+  const [expandAll, setExpandAll] = useState<boolean>(false);
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1254,11 +1293,11 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const getRules = (fieldName: string, label: string) =>
     isFieldRequired(fieldName)
       ? [
-        {
-          required: true,
-          message: `Заполните поле «${label}»`,
-        },
-      ]
+          {
+            required: true,
+            message: `Заполните поле «${label}»`,
+          },
+        ]
       : undefined;
 
   useEffect(() => {
@@ -1302,7 +1341,10 @@ export const TransactionForm: FC<Props> = ({ className }) => {
 
   // 2.6.2: Auto-fill default door lock and hinge from application defaults
   useEffect(() => {
-    const defaultDoorLockId = form.getFieldValue(["general", "default_door_lock_id"]);
+    const defaultDoorLockId = form.getFieldValue([
+      "general",
+      "default_door_lock_id",
+    ]);
     const defaultHingeId = form.getFieldValue(["general", "default_hinge_id"]);
 
     // Pre-fill door_lock_product_id if not already set
@@ -1441,8 +1483,14 @@ export const TransactionForm: FC<Props> = ({ className }) => {
                   };
 
                   const percentFieldName = autoFillMappings[field.name];
-                  if (percentFieldName && selectedOption.percent !== undefined) {
-                    setTransactionField(percentFieldName, selectedOption.percent);
+                  if (
+                    percentFieldName &&
+                    selectedOption.percent !== undefined
+                  ) {
+                    setTransactionField(
+                      percentFieldName,
+                      selectedOption.percent,
+                    );
                   }
                 }
               }}
@@ -1500,6 +1548,18 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     return filterVisibleSections(ALL_SECTIONS, transactionValues, productType);
   }, [transactionValues, productType]);
 
+  const handleExpandAllToggle = (checked: boolean) => {
+    setExpandAll(checked);
+    if (checked) {
+      // Open all sections
+      const allKeys = combinedSections.map((section) => section.key);
+      setActiveSectionKeys(allKeys);
+    } else {
+      // Close all sections
+      setActiveSectionKeys([]);
+    }
+  };
+
   return (
     <div className={cn(className)}>
       <Collapse ghost defaultActiveKey={[]}>
@@ -1522,59 +1582,71 @@ export const TransactionForm: FC<Props> = ({ className }) => {
       <Divider />
 
       {!productType && (
-        <div className="text-center text-gray-500 py-8">
+        <div className="py-8 text-center text-gray-500">
           Выберите тип продукта для активации этапа моделирования
         </div>
       )}
 
       {productType && (
         <div className="space-y-4">
+          <div className="mb-4 flex items-center gap-2">
+            <CSwitch checked={expandAll} onChange={handleExpandAllToggle} />
+            <span className="text-sm text-gray-400">
+              {expandAll ? "Свернуть все секции" : "Развернуть все секции"}
+            </span>
+          </div>
           {combinedSections.map((section) => {
-          const isActive = activeSectionKeys.includes(section.key);
-          return (
-            <Collapse
-              key={section.key}
-              activeKey={isActive ? [section.key] : []}
-              onChange={(key) => {
-                const open = Array.isArray(key)
-                  ? key.includes(section.key)
-                  : key === section.key;
-                setActiveSectionKeys((prev) => {
-                  if (open) {
-                    return Array.from(new Set([...prev, section.key]));
-                  }
-                  return prev.filter((value) => value !== section.key);
-                });
-              }}
-              expandIconPosition="end"
-            >
-              <Collapse.Panel
-                header={
-                  <p className={"!text-medium !text-[#218395]"}>
-                    {section.title ?? "Параметры"}
-                  </p>
-                }
+            const isActive = activeSectionKeys.includes(section.key);
+            return (
+              <Collapse
                 key={section.key}
+                activeKey={isActive ? [section.key] : []}
+                onChange={(key) => {
+                  const open = Array.isArray(key)
+                    ? key.includes(section.key)
+                    : key === section.key;
+                  setActiveSectionKeys((prev) => {
+                    const newKeys = open
+                      ? Array.from(new Set([...prev, section.key]))
+                      : prev.filter((value) => value !== section.key);
+
+                    // Update expandAll state based on whether all sections are open
+                    setExpandAll(newKeys.length === combinedSections.length);
+
+                    return newKeys;
+                  });
+                }}
+                expandIconPosition="end"
               >
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {section.fields.map((field) => {
-                    const node = renderField(field);
-                    if (!node) return null;
-                    return (
-                      <Fragment key={`${section.key}-${field.name}`}>
-                        {node}
-                      </Fragment>
-                    );
-                  })}
-                </div>
-              </Collapse.Panel>
-            </Collapse>
-          );
-        })}
+                <Collapse.Panel
+                  header={
+                    <p className={"!text-medium !text-[#218395]"}>
+                      {section.title ?? "Параметры"}
+                    </p>
+                  }
+                  key={section.key}
+                >
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {section.fields.map((field) => {
+                      const node = renderField(field);
+                      if (!node) return null;
+                      return (
+                        <Fragment key={`${section.key}-${field.name}`}>
+                          {node}
+                        </Fragment>
+                      );
+                    })}
+                  </div>
+                </Collapse.Panel>
+              </Collapse>
+            );
+          })}
 
           {combinedSections.length === 0 && productType && (
             <div className="text-sm text-gray-500">
-              {"Для выбранного типа продукта дополнительных полей пока не настроено."}
+              {
+                "Для выбранного типа продукта дополнительных полей пока не настроено."
+              }
             </div>
           )}
         </div>
@@ -1636,7 +1708,7 @@ const getFieldLabel = (fieldName: string): string => {
 
 export const getUnfilledRequiredFields = (
   values: TransactionValues,
-): Array<{ name: string; label: string; }> => {
+): Array<{ name: string; label: string }> => {
   const productType = resolveProductType(values);
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
 
@@ -1644,7 +1716,7 @@ export const getUnfilledRequiredFields = (
     return [];
   }
 
-  const unfilledFields: Array<{ name: string; label: string; }> = [];
+  const unfilledFields: Array<{ name: string; label: string }> = [];
 
   const checkField = (fieldName: string) => {
     const value = values[fieldName];
