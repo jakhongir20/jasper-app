@@ -103,6 +103,17 @@ export const TabTransactionsForm: FC<Props> = ({
       {
         title: "Местоположение",
         dataIndex: "location",
+        render: (location: any) => {
+          // Handle if location is a string (location_id or name)
+          if (typeof location === "string") {
+            return location || "-";
+          }
+          // Handle if location is an object with name property
+          if (location && typeof location === "object" && "name" in location) {
+            return location.name || "-";
+          }
+          return "-";
+        },
       },
       {
         title: "Тип продукта",

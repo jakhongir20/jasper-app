@@ -406,7 +406,11 @@ export const transformTransactionDetailToForm = (
   );
 
   return {
-    location: transaction.location ?? "",
+    // Keep location as-is if it's an object (from API), otherwise use empty string
+    location:
+      transaction.location && typeof transaction.location === "object"
+        ? transaction.location
+        : (transaction.location ?? ""),
     product_type: productType,
     door_type: productType,
     opening_height: openingHeight,

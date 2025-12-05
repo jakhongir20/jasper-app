@@ -31,7 +31,17 @@ export const useTableTransactionColumns = (options: {
     {
       title: t("common.labels.location"),
       dataIndex: "location",
-      render: (location) => location || "-",
+      render: (location) => {
+        // Handle if location is a string (location_id or name)
+        if (typeof location === "string") {
+          return location || "-";
+        }
+        // Handle if location is an object with name property
+        if (location && typeof location === "object" && "name" in location) {
+          return location.name || "-";
+        }
+        return "-";
+      },
     },
     {
       title: t("common.labels.doorType"),

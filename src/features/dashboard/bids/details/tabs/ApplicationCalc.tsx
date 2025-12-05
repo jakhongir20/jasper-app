@@ -14,13 +14,16 @@ interface Props {
 }
 
 interface ForecastRequest {
-  forecaster: string;
+  forecaster?: string;
   forecast_rate: number;
-  forecast_discount: number;
-  forecast_discount_percent: number;
+  forecast_discount?: number;
+  forecast_discount_percent?: number;
   forecast_prepayment: number;
   status: number;
   discount_type?: number;
+  forecast_active_currency?: number;
+  forecast_discount_type?: number;
+  forecast_discount_amount?: number;
 }
 
 export const ApplicationCalc: FC<Props> = ({
@@ -114,13 +117,17 @@ export const ApplicationCalc: FC<Props> = ({
     try {
       const values = await form.validateFields();
 
-      const requestBody: ForecastRequest = {
+      const requestBody: any = {
         forecaster: values.forecaster || "",
         forecast_rate: values.forecast_rate || 0,
         forecast_discount: values.forecast_discount || 0,
         forecast_discount_percent: values.forecast_discount_percent || 0,
         forecast_prepayment: values.forecast_prepayment || 0,
         status: 2,
+        // Include transactions if they exist in the application
+        ...(application.application_transactions && {
+          application_transactions: application.application_transactions,
+        }),
       };
 
       forecastApplication({ id: id.toString(), formData: requestBody });
