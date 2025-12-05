@@ -8,6 +8,7 @@ import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 interface Props {
   className?: string;
   mode: "add" | "edit";
+  drawerOpen?: boolean;
 }
 
 // Only include valid product types accepted by the API
@@ -1227,7 +1228,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
   },
 ];
 
-export const TransactionForm: FC<Props> = ({ className }) => {
+export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
 
   const transactionValues =
@@ -1242,6 +1243,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const [activeSectionKeys, setActiveSectionKeys] = useState<string[]>([]);
   const [locationSearch, setLocationSearch] = useState<string>(""); // Per 2.6.4: Track location search term
   const [expandAll, setExpandAll] = useState<boolean>(false);
+  const [measuringActive, setMeasuringActive] = useState<string[]>([]);
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1363,6 +1365,23 @@ export const TransactionForm: FC<Props> = ({ className }) => {
       }
     }
   }, [transactionValues.transom_type, form]);
+
+  // Auto-open "Замерка" collapse and expand all sections when drawer opens in edit mode
+  useEffect(() => {
+    if (drawerOpen && mode === "edit") {
+      const timer = setTimeout(() => {
+        setMeasuringActive(["measuring"]);
+        setExpandAll(true);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    } else {
+      // Reset when drawer closes
+      setMeasuringActive([]);
+      setExpandAll(false);
+      setActiveSectionKeys([]);
+    }
+  }, [drawerOpen, mode]);
 
   const renderField = (field: FieldConfig) => {
     if (field.visible && !field.visible(transactionValues, productType)) {
@@ -1530,6 +1549,14 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     return filterVisibleSections(ALL_SECTIONS, transactionValues, productType);
   }, [transactionValues, productType]);
 
+  // Auto-expand all sections when expandAll becomes true
+  useEffect(() => {
+    if (expandAll) {
+      const allKeys = combinedSections.map((section) => section.key);
+      setActiveSectionKeys(allKeys);
+    }
+  }, [expandAll, combinedSections]);
+
   const handleExpandAllToggle = (checked: boolean) => {
     setExpandAll(checked);
     if (checked) {
@@ -1544,7 +1571,11 @@ export const TransactionForm: FC<Props> = ({ className }) => {
 
   return (
     <div className={cn(className)}>
-      <Collapse ghost defaultActiveKey={[]}>
+      <Collapse
+        ghost
+        activeKey={measuringActive}
+        onChange={(key) => setMeasuringActive(Array.isArray(key) ? key : [key])}
+      >
         <Collapse.Panel
           key="measuring"
           header={

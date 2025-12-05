@@ -317,7 +317,7 @@ export const TransactionDrawer: FC<Props> = ({
         </div>
       }
     >
-      <TransactionForm mode={mode} />
+      <TransactionForm mode={mode} drawerOpen={open} />
     </Drawer>
   );
 };
