@@ -25,7 +25,6 @@ export const CATEGORY_DOORLOCK_ID = 21;
 export const TabInfoForm: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
   const form = Form.useFormInstance();
-  const user = JSON.parse(localStorage.getItem("__user") || "{}");
   const [openCustomerModal, setOpenCustomerModal] = React.useState(false);
   const [search, setSearch] = React.useState("");
 
@@ -35,7 +34,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         open={openCustomerModal}
         onCloseModal={() => setOpenCustomerModal(false)}
       />
-      <div className="flex flex-col gap-4 sm:grid lg:grid-cols-4">
+      <div className="flex flex-col gap-4 sm:grid lg:grid-cols-3">
         <Form.Item
           name={["general", "customer_id"]}
           label={t("common.labels.customerName")}
@@ -93,15 +92,6 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           <Input placeholder={t("common.placeholder.address")} />
         </Form.Item>
         <Form.Item
-          name={["general", "author_id"]}
-          label={t("common.labels.applicationAuthor")}
-          initialValue={user?.user?.user_id}
-        >
-          <div className="flex-y-center h-10 rounded-lg border border-gray-50 bg-gray-100 px-3">
-            {user?.user?.name}
-          </div>
-        </Form.Item>
-        <Form.Item
           name={["general", "application_date"]}
           label={"Дата заявки"}
           rules={[
@@ -118,14 +108,11 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             placeholder={t("common.table.date")}
             disabledDate={(current: Dayjs) => {
               // Disable dates before today (start of day)
-              return current && current.isBefore(dayjs().startOf('day'));
+              return current && current.isBefore(dayjs().startOf("day"));
             }}
           />
         </Form.Item>
-        <Form.Item
-          name={["general", "delivery_date"]}
-          label={"Дата доставки"}
-        >
+        <Form.Item name={["general", "delivery_date"]} label={"Дата доставки"}>
           <DatePicker
             size="small"
             className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
@@ -133,53 +120,42 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             placeholder={"Выберите дату доставки"}
             disabledDate={(current: Dayjs) => {
               // Disable dates before today (start of day)
-              return current && current.isBefore(dayjs().startOf('day'));
+              return current && current.isBefore(dayjs().startOf("day"));
             }}
           />
         </Form.Item>
-        <Form.Item
-          className="col-span-2"
-          name={["general", "sizes"]}
-          label={t("common.labels.dimensions")}
-        >
-          <Input placeholder={t("common.placeholder.sizes")} />
-        </Form.Item>
-      </div>
-      <Divider />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Form.Item
-          name={["general", "box_width"]}
-          label={"Ширина коробки (по умолчанию)"}
-        >
+
+        <Form.Item name={["general", "box_width"]} label={"Ширина коробки"}>
           <Input
             type="number"
             step={0.01}
-            placeholder={"Введите ширину коробки"}
+            placeholder={"Автоматически заполняется из настроек"}
           />
         </Form.Item>
+
         <Form.Item
-          name={["general", "default_hinge_id"]}
-          label={"Продукт петли дверей"}
+          name={["general", "default_hinge"]}
+          label={"Петля по умолчанию"}
         >
           <SelectInfinitive
-            placeholder={"Выберите продукт петли дверей"}
-            queryKey="default_hinge_id"
+            placeholder={"Выберите петлю"}
+            queryKey="default_hinge"
             fetchUrl={`/product/by/category?category_id=${CATEGORY_HINCH_ID}`}
             labelKey="name"
-            valueKey={"category_id"}
+            valueKey="product_id"
             useValueAsLabel
           />
         </Form.Item>
         <Form.Item
-          name={["general", "default_door_lock_id"]}
-          label={"Продукт замка дверей"}
+          name={["general", "default_door_lock"]}
+          label={"Замок по умолчанию"}
         >
           <SelectInfinitive
-            placeholder={"Выберите продукт замка дверей"}
-            queryKey="default_door_lock_id"
+            placeholder={"Выберите замок"}
+            queryKey="default_door_lock"
             fetchUrl={`/product/by/category?category_id=${CATEGORY_DOORLOCK_ID}`}
             labelKey="name"
-            valueKey="category_id"
+            valueKey="product_id"
             useValueAsLabel
           />
         </Form.Item>

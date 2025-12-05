@@ -44,7 +44,7 @@ export const ImageWithFallback: FC<ImageWithFallbackProps> = ({
     return (
       <div
         className={cn(
-          "flex items-center justify-center text-center text-xs text-gray-600",
+          "flex items-center justify-center text-center text-xs text-gray-400",
           fallbackClassName,
           className,
         )}
@@ -58,7 +58,7 @@ export const ImageWithFallback: FC<ImageWithFallbackProps> = ({
     return (
       <div
         className={cn(
-          "flex items-center justify-center text-center text-xs text-gray-600",
+          "flex items-center justify-center text-center text-xs text-gray-400",
           fallbackClassName,
           className,
         )}

@@ -779,7 +779,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         type: "number",
         numberStep: 0.01,
         placeholder: "Автоматически заполняется из настроек",
-        disabled: true, // Per 2.6.1: box_width must be disabled, auto-filled from company_configuration
+        disabled: false, // Changed: box_width is now editable, auto-filled from company_configuration but can be manually overridden
       },
       {
         name: "box_width_length",
