@@ -52,14 +52,77 @@ export const extractId = (
   return Number.isNaN(numeric) ? null : numeric;
 };
 
+const LEGACY_PRODUCT_TYPE_MAP: Record<string, string> = {
+  ДО: "door-window",
+  "ДО дверь": "door-window",
+  ДГ: "door-deaf",
+  "ДГ дверь": "door-deaf",
+  "Обшивочный проём": "doorway",
+  "Обшивочный проем": "doorway",
+  Окно: "window",
+  Подоконник: "windowsill",
+  "Тёплый пол": "heated-floor",
+  "Теплый пол": "heated-floor",
+  Обрешётка: "latting",
+  Обрешетка: "latting",
+  // Map component types to their typical product type
+  transom: "door-window",
+  Фрамуга: "door-window",
+  frame: "doorway",
+  Наличник: "doorway",
+  filler: "doorway",
+  Нашельник: "doorway",
+  crown: "doorway",
+  Корона: "doorway",
+  up_frame: "doorway",
+  Надналичник: "doorway",
+  under_frame: "doorway",
+  Подналичник: "doorway",
+  trim: "doorway",
+  Обклад: "doorway",
+  molding: "doorway",
+  Молдинг: "doorway",
+  covering_primary: "door-window",
+  "Покрытие I": "door-window",
+  covering_secondary: "door-window",
+  "Покрытие II": "door-window",
+  color: "door-window",
+  Цвет: "door-window",
+  floor_skirting: "doorway",
+  Плинтус: "doorway",
+  glass: "window",
+  Стекло: "window",
+  door_lock: "door-window",
+  "Замок двери": "door-window",
+  hinge: "door-window",
+  Петля: "door-window",
+  door_bolt: "door-window",
+  Шпингалет: "door-window",
+  door_stopper: "door-window",
+  Стоппер: "door-window",
+  anti_threshold: "door-window",
+  "Анти-порог": "door-window",
+  box_width: "door-window",
+  "Ширина коробки": "door-window",
+  extra_options: "door-window",
+  "Доп. опции": "door-window",
+};
+
+const normalizeProductType = (rawType: any): string | null => {
+  if (!rawType) {
+    return null;
+  }
+  const normalized = String(rawType).trim();
+  return LEGACY_PRODUCT_TYPE_MAP[normalized] ?? normalized;
+};
+
 export const buildTransactionPayload = (
   transaction: PrimitiveRecord,
 ): PrimitiveRecord => ({
   location: normalizeString(transaction.location),
-  product_type:
-    transaction.product_type ??
-    transaction.door_type ??
-    normalizeString(transaction.product_type),
+  product_type: normalizeProductType(
+    transaction.product_type ?? transaction.door_type,
+  ),
   opening_height: toNullableNumber(transaction.opening_height),
   opening_width: toNullableNumber(transaction.opening_width),
   opening_thickness: toNullableNumber(transaction.opening_thickness),
@@ -149,21 +212,6 @@ export const buildTransactionPayload = (
   extra_option_product_id: extractId(transaction.extra_option_product_id),
 });
 
-const LEGACY_PRODUCT_TYPE_MAP: Record<string, string> = {
-  ДО: "door-window",
-  "ДО дверь": "door-window",
-  ДГ: "door-deaf",
-  "ДГ дверь": "door-deaf",
-  "Обшивочный проём": "doorway",
-  "Обшивочный проем": "doorway",
-  Окно: "window",
-  Подоконник: "windowsill",
-  "Тёплый пол": "heated-floor",
-  "Теплый пол": "heated-floor",
-  Обрешётка: "latting",
-  Обрешетка: "latting",
-};
-
 const resolveProductType = (transaction: PrimitiveRecord): string | null => {
   const rawType =
     transaction.product_type ??
@@ -172,12 +220,7 @@ const resolveProductType = (transaction: PrimitiveRecord): string | null => {
     transaction?.product?.category?.name ??
     null;
 
-  if (!rawType) {
-    return null;
-  }
-
-  const normalized = String(rawType).trim();
-  return LEGACY_PRODUCT_TYPE_MAP[normalized] ?? normalized;
+  return normalizeProductType(rawType);
 };
 
 const resolveOpeningLogic = (transaction: PrimitiveRecord) =>
