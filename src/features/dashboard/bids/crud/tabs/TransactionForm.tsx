@@ -88,6 +88,7 @@ type FieldConfig = {
   useValueAsLabel?: boolean;
   allowClear?: boolean;
   aliases?: string[];
+  disabled?: boolean; // Field is disabled and cannot be edited by user
   params?:
   | Record<string, string | number | boolean>
   | ((
@@ -120,7 +121,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "transom",
     title: "Фрамуга",
-    allowedProductTypes: ["door-window", "door-deaf", "transom"],
+    allowedProductTypes: ["door-window", "door-deaf", "transom", "doorway"], // Added doorway per 2.4.3
     fields: [
       {
         name: "transom_type",
@@ -150,6 +151,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         type: "number",
         numberStep: 0.01,
         placeholder: "Введите высоту фрамуги (лицо)",
+        visible: (values) => values.transom_type === 2, // Per 2.6.6: Only visible when transom_type is "Скрытая" (Hidden)
       },
       {
         name: "transom_height_back",
@@ -157,6 +159,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         type: "number",
         numberStep: 0.01,
         placeholder: "Введите высоту фрамуги (тыл)",
+        visible: (values) => values.transom_type === 2, // Per 2.6.6: Only visible when transom_type is "Скрытая" (Hidden)
       },
     ],
   },
@@ -165,20 +168,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Полотно (дверь)",
     allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
-      {
-        name: "sash",
-        label: "Распашка",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите значение распашки",
-      },
-      {
-        name: "chamfer",
-        label: "Фаска",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите значение фаски",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "door_product_id",
         label: "Модель двери",
@@ -196,6 +186,20 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "sash",
+        label: "Распашка",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите значение распашки",
+      },
+      {
+        name: "chamfer",
+        label: "Фаска",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите значение фаски",
+      },
     ],
   },
   {
@@ -203,13 +207,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Наличник",
     allowedProductTypes: ["door-window", "door-deaf", "frame"],
     fields: [
-      {
-        name: "volume_frame",
-        label: "Объём наличника",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём наличника",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "frame_product_id",
         label: "Модель наличника",
@@ -222,6 +220,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      // Per 2.6.7: volume_frame removed
     ],
   },
   {
@@ -229,13 +228,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Нашельник",
     allowedProductTypes: ["door-window", "door-deaf", "filler"],
     fields: [
-      {
-        name: "volume_filler",
-        label: "Объём нашельника",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём нашельника",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "filler_product_id",
         label: "Модель нашельника",
@@ -248,20 +241,15 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      // Per 2.6.7: volume_filler removed
     ],
   },
   {
     key: "crown",
     title: "Корона",
-    allowedProductTypes: ["door-window", "door-deaf", "crown"],
+    allowedProductTypes: ["door-window", "door-deaf", "crown", "doorway"], // Added doorway per 2.4.3
     fields: [
-      {
-        name: "volume_crown",
-        label: "Объём короны",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём короны",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "crown_product_id",
         label: "Модель короны",
@@ -274,12 +262,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      // Per 2.6.7: volume_crown removed
     ],
   },
   {
     key: "up-frame",
     title: "Кубик (Надналичник)",
-    allowedProductTypes: ["door-window", "door-deaf", "up_frame"],
+    allowedProductTypes: ["door-window", "door-deaf", "up_frame", "doorway"], // Added doorway per 2.4.3
     fields: [
       {
         name: "up_frame_quantity",
@@ -305,8 +294,21 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "under-frame",
     title: "Сапожок (Подналичник)",
-    allowedProductTypes: ["door-window", "door-deaf", "under_frame"],
+    allowedProductTypes: ["door-window", "door-deaf", "under_frame", "doorway"], // Added doorway per 2.4.3
     fields: [
+      // Per 2.6.8: Model selector first
+      {
+        name: "under_frame_product_id",
+        label: "Модель подналичника",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель подналичника",
+        queryKey: "under_frame_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
       {
         name: "under_frame_quantity",
         label: "Количество подналичников",
@@ -321,18 +323,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         numberStep: 0.01,
         placeholder: "Введите высоту подналичника",
       },
-      {
-        name: "under_frame_product_id",
-        label: "Модель подналичника",
-        type: "selectInfinitive",
-        placeholder: "Выберите модель подналичника",
-        queryKey: "under_frame_product",
-        fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
-        labelKey: ["name", "feature"],
-        valueKey: "product_id",
-        useValueAsLabel: true,
-      },
     ],
   },
   {
@@ -340,13 +330,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Обклад",
     allowedProductTypes: ["door-window", "door-deaf", "trim"],
     fields: [
-      {
-        name: "percent_trim",
-        label: "Процент обкладки",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите процент обкладки",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "trim_product_id",
         label: "Модель обкладки",
@@ -359,6 +343,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "percent_trim",
+        label: "Процент обкладки",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент обкладки",
+      },
     ],
   },
   {
@@ -366,13 +357,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Молдинг",
     allowedProductTypes: ["door-window", "door-deaf", "molding"],
     fields: [
-      {
-        name: "percent_molding",
-        label: "Процент молдинга",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите процент молдинга",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "molding_product_id",
         label: "Модель молдинга",
@@ -385,6 +370,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "percent_molding",
+        label: "Процент молдинга",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент молдинга",
+      },
     ],
   },
   {
@@ -392,13 +384,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Покрытие I",
     allowedProductTypes: ["door-window", "door-deaf", "covering_primary"],
     fields: [
-      {
-        name: "percent_covering_primary",
-        label: "Покрытие I, %",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите процент покрытия I",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "covering_primary_product_id",
         label: "Модель покрытия I",
@@ -413,6 +399,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "percent_covering_primary",
+        label: "Покрытие I, %",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент покрытия I",
+      },
     ],
   },
   {
@@ -420,13 +413,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Покрытие II",
     allowedProductTypes: ["door-window", "door-deaf", "covering_secondary"],
     fields: [
-      {
-        name: "percent_covering_secondary",
-        label: "Покрытие II, %",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите процент покрытия II",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "covering_secondary_product_id",
         label: "Модель покрытия II",
@@ -441,13 +428,33 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "percent_covering_secondary",
+        label: "Покрытие II, %",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент покрытия II",
+      },
     ],
   },
   {
     key: "color",
     title: "Цвет",
-    allowedProductTypes: ["door-window", "door-deaf", "color"],
+    allowedProductTypes: ["door-window", "door-deaf", "color", "doorway", "window", "windowsill"], // Added doorway per 2.4.3, window per 2.4.4, windowsill per 2.4.5
     fields: [
+      // Per 2.6.8: Model selector first
+      {
+        name: "color_product_id",
+        label: "Модель цвета",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель цвета",
+        queryKey: "color_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.color },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
       {
         name: "percent_color",
         label: "Цвет, %",
@@ -461,32 +468,14 @@ const ALL_SECTIONS: SectionConfig[] = [
         type: "text",
         placeholder: "Введите название цвета",
       },
-      {
-        name: "color_product_id",
-        label: "Модель цвета",
-        type: "selectInfinitive",
-        placeholder: "Выберите модель цвета",
-        queryKey: "color_product",
-        fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: CATEGORY_SECTION_INDEX.color },
-        labelKey: ["name", "feature"],
-        valueKey: "product_id",
-        useValueAsLabel: true,
-      },
     ],
   },
   {
     key: "floor-skirting",
     title: "Плинтус",
-    allowedProductTypes: ["door-window", "door-deaf", "floor_skirting"],
+    allowedProductTypes: ["door-window", "door-deaf", "floor_skirting", "doorway"], // Added doorway per 2.4.3
     fields: [
-      {
-        name: "floor_skirting_length",
-        label: "Длина плинтуса",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите длину плинтуса",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "floor_skirting_product_id",
         label: "Модель плинтуса",
@@ -501,20 +490,21 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "floor_skirting_length",
+        label: "Длина плинтуса",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите длину плинтуса",
+      },
     ],
   },
   {
     key: "heated-floor",
     title: "Тёплый пол",
-    allowedProductTypes: ["door-window", "door-deaf", "heated-floor"],
+    allowedProductTypes: ["door-window", "heated-floor"], // Removed door-deaf per 2.4.2
     fields: [
-      {
-        name: "volume_heated_floor",
-        label: "Объём тёплого пола",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём тёплого пола",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "heated_floor_product_id",
         label: "Модель тёплого пола",
@@ -529,6 +519,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      // Per 2.6.7: volume_heated_floor removed
     ],
   },
   {
@@ -536,13 +527,8 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Обрешётка",
     allowedProductTypes: ["door-window", "door-deaf", "latting"],
     fields: [
-      {
-        name: "volume_latting",
-        label: "Объём обрешётки",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём обрешётки",
-      },
+      // Per 2.6.7: volume_latting removed
+      // Per 2.6.8: Model selector first
       {
         name: "latting_product_id",
         label: "Модель обрешётки",
@@ -562,13 +548,8 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Окно",
     allowedProductTypes: ["door-window", "window"],
     fields: [
-      {
-        name: "volume_window",
-        label: "Объём окна",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём окна",
-      },
+      // Per 2.6.7: volume_window removed
+      // Per 2.6.8: Model selector first
       {
         name: "window_product_id",
         label: "Модель окна",
@@ -588,13 +569,8 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Подоконник",
     allowedProductTypes: ["door-window", "windowsill"],
     fields: [
-      {
-        name: "volume_windowsill",
-        label: "Объём подоконника",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём подоконника",
-      },
+      // Per 2.6.7: volume_windowsill removed
+      // Per 2.6.8: Model selector first
       {
         name: "windowsill_product_id",
         label: "Модель подоконника",
@@ -614,13 +590,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Стекло",
     allowedProductTypes: ["door-window", "glass"],
     fields: [
-      {
-        name: "glass_quantity",
-        label: "Количество стекол",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество стекол",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "glass_product_id",
         label: "Модель стекла",
@@ -634,12 +604,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         useValueAsLabel: true,
       },
       {
-        name: "volume_glass",
-        label: "Объём стекла",
+        name: "glass_quantity",
+        label: "Количество стекол",
         type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите объём стекла",
+        numberStep: 1,
+        placeholder: "Введите количество стекол",
       },
+      // Per 2.6.7: volume_glass removed
     ],
   },
   {
@@ -647,6 +618,19 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Замок двери",
     allowedProductTypes: ["door-window", "door-deaf", "door_lock"],
     fields: [
+      // Per 2.6.8: Model selector first
+      {
+        name: "door_lock_product_id",
+        label: "Модель замка",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель замка",
+        queryKey: "door_lock_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.door_lock },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
       {
         name: "door_lock_quantity",
         label: "Количество замков",
@@ -662,18 +646,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите механизм замка",
         options: [],
       },
-      {
-        name: "door_lock_product_id",
-        label: "Модель замка",
-        type: "selectInfinitive",
-        placeholder: "Выберите модель замка",
-        queryKey: "door_lock_product",
-        fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: CATEGORY_SECTION_INDEX.door_lock },
-        labelKey: ["name", "feature"],
-        valueKey: "product_id",
-        useValueAsLabel: true,
-      },
     ],
   },
   {
@@ -681,6 +653,19 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Петля",
     allowedProductTypes: ["door-window", "door-deaf", "hinge"],
     fields: [
+      // Per 2.6.8: Model selector first
+      {
+        name: "hinge_product_id",
+        label: "Модель петли",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель петли",
+        queryKey: "hinge_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.hinge },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
       {
         name: "hinge_quantity",
         label: "Количество петель",
@@ -696,18 +681,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите механизм петли",
         options: [],
       },
-      {
-        name: "hinge_product_id",
-        label: "Модель петли",
-        type: "selectInfinitive",
-        placeholder: "Выберите модель петли",
-        queryKey: "hinge_product",
-        fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: CATEGORY_SECTION_INDEX.hinge },
-        labelKey: ["name", "feature"],
-        valueKey: "product_id",
-        useValueAsLabel: true,
-      },
     ],
   },
   {
@@ -715,13 +688,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Шпингалет",
     allowedProductTypes: ["door-window", "door-deaf", "door_bolt"],
     fields: [
-      {
-        name: "door_bolt_quantity",
-        label: "Количество шпингалетов",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество шпингалетов",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "door_bolt_product_id",
         label: "Модель шпингалета",
@@ -734,6 +701,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "door_bolt_quantity",
+        label: "Количество шпингалетов",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество шпингалетов",
+      },
     ],
   },
   {
@@ -741,13 +715,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Стоппер",
     allowedProductTypes: ["door-window", "door-deaf", "door_stopper"],
     fields: [
-      {
-        name: "door_stopper_quantity",
-        label: "Количество стопперов",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество стопперов",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "door_stopper_product_id",
         label: "Модель стоппера",
@@ -762,6 +730,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "door_stopper_quantity",
+        label: "Количество стопперов",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество стопперов",
+      },
     ],
   },
   {
@@ -769,13 +744,7 @@ const ALL_SECTIONS: SectionConfig[] = [
     title: "Анти-порог",
     allowedProductTypes: ["door-window", "door-deaf", "anti_threshold"],
     fields: [
-      {
-        name: "anti_threshold_quantity",
-        label: "Количество анти-порогов",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество анти-порогов",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "anti_threshold_product_id",
         label: "Модель анти-порога",
@@ -790,6 +759,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
+      {
+        name: "anti_threshold_quantity",
+        label: "Количество анти-порогов",
+        type: "number",
+        numberStep: 1,
+        placeholder: "Введите количество анти-порогов",
+      },
     ],
   },
   {
@@ -802,7 +778,8 @@ const ALL_SECTIONS: SectionConfig[] = [
         label: "Ширина коробки",
         type: "number",
         numberStep: 0.01,
-        placeholder: "Введите ширину коробки",
+        placeholder: "Автоматически заполняется из настроек",
+        disabled: true, // Per 2.6.1: box_width must be disabled, auto-filled from company_configuration
       },
       {
         name: "box_width_length",
@@ -816,15 +793,9 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "extra-options",
     title: "Доп. опция",
-    allowedProductTypes: ["door-window", "door-deaf", "extra_options"],
+    allowedProductTypes: ["door-window", "door-deaf", "extra_options", "doorway"], // Added doorway per 2.4.3
     fields: [
-      {
-        name: "percent_extra_option",
-        label: "Процент доп. опции",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите процент доп. опции",
-      },
+      // Per 2.6.8: Model selector first
       {
         name: "extra_option_product_id",
         label: "Модель доп. опции",
@@ -838,6 +809,13 @@ const ALL_SECTIONS: SectionConfig[] = [
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
+      },
+      {
+        name: "percent_extra_option",
+        label: "Процент доп. опции",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите процент доп. опции",
       },
     ],
   },
@@ -859,57 +837,75 @@ const resolveProductType = (values: TransactionValues) =>
 
 const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   "door-window": [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "opening_thickness",
     "entity_quantity",
-    "box_width",
-    "door_product_id",
-    "glass_product_id",
-    "door_lock_product_id",
-    "hinge_product_id",
-    "door_bolt_product_id",
+    // Required modelling fields per 2.4.1
+    "box_width", // Ширина коробки
+    "door_product_id", // Модель двери
+    "glass_product_id", // Модель стекла
+    "door_lock_product_id", // Модель замка
+    "hinge_product_id", // Модель петель
+    "door_bolt_product_id", // Модель шпингалета
+    // Note: sheathing_product_id from requirements not found in current implementation
   ],
   "door-deaf": [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "opening_thickness",
     "entity_quantity",
-    "box_width",
-    "door_product_id",
-    "door_lock_product_id",
-    "hinge_product_id",
-    "door_bolt_product_id",
+    // Required modelling fields per 2.4.2
+    // Same as door-window except NO glass_product_id
+    "box_width", // Ширина коробки
+    "door_product_id", // Модель двери
+    "door_lock_product_id", // Модель замка
+    "hinge_product_id", // Модель петель
+    "door_bolt_product_id", // Модель шпингалета
+    // Note: sheathing_product_id from requirements not found in current implementation
   ],
   doorway: [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "opening_thickness",
     "entity_quantity",
+    // Required modelling fields per 2.4.3
+    // Note: sheathing_product_id not found in current implementation
   ],
   window: [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "entity_quantity",
-    "window_product_id",
+    // Required modelling fields per 2.4.4
+    "window_product_id", // Модель окна
   ],
   windowsill: [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "entity_quantity",
-    "windowsill_product_id",
+    // Required modelling fields per 2.4.5
+    "windowsill_product_id", // Модель подоконника
   ],
   "heated-floor": [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "entity_quantity",
-    "heated_floor_product_id",
+    // Required modelling fields per 2.4.6
+    "heated_floor_product_id", // Модель тёплого пола
   ],
   latting: [
+    // Measurement fields (required for all)
     "opening_height",
     "opening_width",
     "entity_quantity",
-    "latting_product_id",
+    // Required modelling fields per 2.4.7
+    "latting_product_id", // Модель обрешётки
   ],
 };
 
@@ -953,10 +949,66 @@ const CONDITIONAL_REQUIREMENTS: Record<
   "door-window": {
     door_bolt_product_id: (values) =>
       Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
+    // Frame/Decor Logic per 2.5.1: If frame_front_id or frame_back_id selected,
+    // decorative components become conditionally required based on frame flags
+    up_frame_product_id: (values) =>
+      lattingFrontFlag(values, "has_up_frame") ||
+      lattingBackFlag(values, "has_up_frame"),
+    under_frame_height: (values) =>
+      lattingFrontFlag(values, "has_under_frame") ||
+      lattingBackFlag(values, "has_under_frame"),
+    under_frame_product_id: (values) =>
+      lattingFrontFlag(values, "has_under_frame") ||
+      lattingBackFlag(values, "has_under_frame"),
+    crown_product_id: (values) =>
+      lattingFrontFlag(values, "has_crown") ||
+      lattingBackFlag(values, "has_crown"),
+    transom_type: (values) =>
+      lattingFrontFlag(values, "has_transom") ||
+      lattingBackFlag(values, "has_transom"),
+    transom_height_front: (values) => lattingFrontFlag(values, "has_transom"),
+    transom_height_back: (values) => lattingBackFlag(values, "has_transom"),
+    transom_product_id: (values) =>
+      lattingFrontFlag(values, "has_transom") ||
+      lattingBackFlag(values, "has_transom"),
+    frame_product_id: (values) =>
+      lattingFrontFlag(values, "is_frame") ||
+      lattingBackFlag(values, "is_frame"),
+    filler_product_id: (values) =>
+      lattingFrontFlag(values, "is_filler") ||
+      lattingBackFlag(values, "is_filler"),
   },
   "door-deaf": {
     door_bolt_product_id: (values) =>
       Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
+    // Frame/Decor Logic per 2.5.1: If frame_front_id or frame_back_id selected,
+    // decorative components become conditionally required based on frame flags
+    up_frame_product_id: (values) =>
+      lattingFrontFlag(values, "has_up_frame") ||
+      lattingBackFlag(values, "has_up_frame"),
+    under_frame_height: (values) =>
+      lattingFrontFlag(values, "has_under_frame") ||
+      lattingBackFlag(values, "has_under_frame"),
+    under_frame_product_id: (values) =>
+      lattingFrontFlag(values, "has_under_frame") ||
+      lattingBackFlag(values, "has_under_frame"),
+    crown_product_id: (values) =>
+      lattingFrontFlag(values, "has_crown") ||
+      lattingBackFlag(values, "has_crown"),
+    transom_type: (values) =>
+      lattingFrontFlag(values, "has_transom") ||
+      lattingBackFlag(values, "has_transom"),
+    transom_height_front: (values) => lattingFrontFlag(values, "has_transom"),
+    transom_height_back: (values) => lattingBackFlag(values, "has_transom"),
+    transom_product_id: (values) =>
+      lattingFrontFlag(values, "has_transom") ||
+      lattingBackFlag(values, "has_transom"),
+    frame_product_id: (values) =>
+      lattingFrontFlag(values, "is_frame") ||
+      lattingBackFlag(values, "is_frame"),
+    filler_product_id: (values) =>
+      lattingFrontFlag(values, "is_filler") ||
+      lattingBackFlag(values, "is_filler"),
   },
   latting: {
     frame_front_id: lattingHasFront,
@@ -1055,8 +1107,15 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
   {
     name: "location",
     label: "Местоположение",
-    type: "text",
-    placeholder: "Введите местоположение",
+    type: "selectInfinitive", // Per 2.6.4: Auto-suggest with Locations API
+    placeholder: "Выберите местоположение",
+    queryKey: "location",
+    fetchUrl: "/location/all",
+    labelKey: "name",
+    valueKey: "location_id",
+    useValueAsLabel: true,
+    allowClear: true,
+    // Note: params with query will be added dynamically in renderField based on search term
   },
   {
     name: "product_type",
@@ -1161,6 +1220,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
   const sections = useMemo(() => config?.sections ?? [], [config]);
   const [activeSectionKeys, setActiveSectionKeys] = useState<string[]>([]);
+  const [locationSearch, setLocationSearch] = useState<string>(""); // Per 2.6.4: Track location search term
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1224,6 +1284,62 @@ export const TransactionForm: FC<Props> = ({ className }) => {
     });
   }, [form, transactionValues]);
 
+  // 2.6.1: Auto-fill box_width from company_configuration (application general form)
+  useEffect(() => {
+    const generalBoxWidth = form.getFieldValue(["general", "box_width"]);
+    const transactionBoxWidth = transactionValues.box_width;
+
+    // Auto-fill box_width if it's not set and general box_width exists
+    if (generalBoxWidth && !transactionBoxWidth) {
+      setTransactionField("box_width", generalBoxWidth);
+    }
+
+    // Keep transaction box_width in sync with general box_width
+    if (generalBoxWidth && generalBoxWidth !== transactionBoxWidth) {
+      setTransactionField("box_width", generalBoxWidth);
+    }
+  }, [form, transactionValues]);
+
+  // 2.6.2: Auto-fill default door lock and hinge from application defaults
+  useEffect(() => {
+    const defaultDoorLockId = form.getFieldValue(["general", "default_door_lock_id"]);
+    const defaultHingeId = form.getFieldValue(["general", "default_hinge_id"]);
+
+    // Pre-fill door_lock_product_id if not already set
+    if (defaultDoorLockId && !transactionValues.door_lock_product_id) {
+      setTransactionField("door_lock_product_id", defaultDoorLockId);
+    }
+
+    // Pre-fill hinge_product_id if not already set
+    if (defaultHingeId && !transactionValues.hinge_product_id) {
+      setTransactionField("hinge_product_id", defaultHingeId);
+    }
+  }, [form, transactionValues]);
+
+  // 2.6.5: Default entity_quantity to 1
+  useEffect(() => {
+    // Set default quantity to 1 if not already set
+    if (!transactionValues.entity_quantity && !transactionValues.quantity) {
+      setTransactionField("entity_quantity", 1);
+      setTransactionField("quantity", 1);
+    }
+  }, [form, transactionValues]);
+
+  // 2.6.6: Transom conditional fields - hide and clear if transom_type != "Скрытая" (Hidden = 2)
+  useEffect(() => {
+    const transomType = transactionValues.transom_type;
+
+    // If transom_type is not "Скрытая" (value 2), clear height fields
+    if (transomType !== 2) {
+      if (transactionValues.transom_height_front) {
+        setTransactionField("transom_height_front", undefined);
+      }
+      if (transactionValues.transom_height_back) {
+        setTransactionField("transom_height_back", undefined);
+      }
+    }
+  }, [transactionValues.transom_type, form]);
+
   const renderField = (field: FieldConfig) => {
     if (field.visible && !field.visible(transactionValues, productType)) {
       return null;
@@ -1255,6 +1371,7 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               type="number"
               step={field.numberStep ?? 0.01}
               placeholder={field.placeholder}
+              disabled={field.disabled}
               onChange={(event) => {
                 const rawValue = event.target.value;
                 const normalized =
@@ -1293,14 +1410,42 @@ export const TransactionForm: FC<Props> = ({ className }) => {
               queryKey={field.queryKey}
               fetchUrl={field.fetchUrl}
               params={
-                typeof field.params === "function"
-                  ? field.params(transactionValues, productType)
-                  : field.params
+                // Per 2.6.4: For location field, add query param for search
+                field.name === "location"
+                  ? { query: locationSearch }
+                  : typeof field.params === "function"
+                    ? field.params(transactionValues, productType)
+                    : field.params
               }
               labelKey={field.labelKey ?? "name"}
               valueKey={(field.valueKey ?? "product_id") as string}
               useValueAsLabel={field.useValueAsLabel}
               allowClear={field.allowClear}
+              onSearch={
+                // Per 2.6.4: For location field, handle search input
+                field.name === "location"
+                  ? (search: string) => setLocationSearch(search)
+                  : undefined
+              }
+              onSelect={(value: string, selectedOption?: any) => {
+                // Per 2.6.9: Auto-fill percent attributes from selected product
+                if (selectedOption) {
+                  const autoFillMappings: Record<string, string> = {
+                    trim_product_id: "percent_trim",
+                    molding_product_id: "percent_molding",
+                    covering_primary_product_id: "percent_covering_primary",
+                    covering_secondary_product_id: "percent_covering_secondary",
+                    color_product_id: "percent_color",
+                    extra_option_product_id: "percent_extra_option",
+                    under_frame_product_id: "under_frame_height",
+                  };
+
+                  const percentFieldName = autoFillMappings[field.name];
+                  if (percentFieldName && selectedOption.percent !== undefined) {
+                    setTransactionField(percentFieldName, selectedOption.percent);
+                  }
+                }
+              }}
               onChange={(value) => {
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
@@ -1376,8 +1521,15 @@ export const TransactionForm: FC<Props> = ({ className }) => {
 
       <Divider />
 
-      <div className="space-y-4">
-        {combinedSections.map((section) => {
+      {!productType && (
+        <div className="text-center text-gray-500 py-8">
+          Выберите тип продукта для активации этапа моделирования
+        </div>
+      )}
+
+      {productType && (
+        <div className="space-y-4">
+          {combinedSections.map((section) => {
           const isActive = activeSectionKeys.includes(section.key);
           return (
             <Collapse
@@ -1420,12 +1572,13 @@ export const TransactionForm: FC<Props> = ({ className }) => {
           );
         })}
 
-        {combinedSections.length === 0 && productType && (
-          <div className="text-sm text-gray-500">
-            {"Для выбранного типа продукта дополнительных полей пока не настроено."}
-          </div>
-        )}
-      </div>
+          {combinedSections.length === 0 && productType && (
+            <div className="text-sm text-gray-500">
+              {"Для выбранного типа продукта дополнительных полей пока не настроено."}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

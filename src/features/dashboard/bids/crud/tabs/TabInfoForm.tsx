@@ -146,7 +146,17 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         </Form.Item>
       </div>
       <Divider />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Form.Item
+          name={["general", "box_width"]}
+          label={"Ширина коробки (по умолчанию)"}
+        >
+          <Input
+            type="number"
+            step={0.01}
+            placeholder={"Введите ширину коробки"}
+          />
+        </Form.Item>
         <Form.Item
           name={["general", "default_hinge_id"]}
           label={"Продукт петли дверей"}

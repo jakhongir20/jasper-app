@@ -37,6 +37,7 @@ export type GeneralFormType = {
   remark: string;
   sizes: string;
   production_date: Dayjs; // Changed from string to Dayjs for DatePicker compatibility
+  box_width?: number; // Per 2.6.1: Company configuration for default box width
 };
 
 export type ApplicationLocalForm = {
