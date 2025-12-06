@@ -125,14 +125,6 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           />
         </Form.Item>
 
-        <Form.Item name={["general", "box_width"]} label={"Ширина коробки"}>
-          <Input
-            type="number"
-            step={0.01}
-            placeholder={"Введите ширина коробки"}
-          />
-        </Form.Item>
-
         <Form.Item
           name={["general", "default_hinge"]}
           label={"Петля по умолчанию"}

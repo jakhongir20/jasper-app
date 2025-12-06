@@ -62,7 +62,7 @@ export class BidsService {
           quantity: number;
         }>;
       };
-    }>("/application/forecast", undefined, {
+    }>("/application/forecast", { status: 2 }, {
       params: { application_id: applicationId },
     });
   }
