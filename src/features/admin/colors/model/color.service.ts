@@ -18,4 +18,8 @@ export class ColorService {
     const { color_id, ...data } = payload;
     return await apiService.$put<Color>(`/admin/color?color_id=${color_id}`, data);
   }
+
+  static async delete(colorId: number): Promise<void> {
+    return await apiService.$delete(`/admin/color?color_id=${colorId}`);
+  }
 }

@@ -34,11 +34,11 @@ const moduleImports = {
     add: () => import("@/pages/admin/categories/add/Page"),
     edit: () => import("@/pages/admin/categories/edit/Page"),
   },
-  moldings: {
-    list: () => import("@/pages/admin/moldings/list/Page"),
-    details: () => import("@/pages/admin/moldings/details/Page"),
-    add: () => import("@/pages/admin/moldings/add/Page"),
-    edit: () => import("@/pages/admin/moldings/edit/Page"),
+  frameworks: {
+    list: () => import("@/pages/admin/frameworks/list/Page"),
+    details: () => import("@/pages/admin/frameworks/details/Page"),
+    add: () => import("@/pages/admin/frameworks/add/Page"),
+    edit: () => import("@/pages/admin/frameworks/edit/Page"),
   },
 };
 
@@ -105,7 +105,7 @@ const modules = (
     { name: "products", title: "navigation.products", icon: "cube" },
     // { name: "colors", title: "navigation.colors", icon: "badge-percent" },
     { name: "categories", title: "navigation.categories", icon: "layer-group" },
-    { name: "moldings", title: "navigation.moldings", icon: "manufacture" },
+    { name: "frameworks", title: "navigation.frameworks", icon: "manufacture" },
   ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
 

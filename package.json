@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "generate:icon-type": "node generate-icon-types.js",
-    "generate:api": "bunx orval --config ./orval.config.ts",
-    "generate:api:watch": "bunx orval --config ./orval.config.ts --watch",
+    "generate:api": "npx orval --config ./orval.config.ts",
+    "generate:api:watch": "npx orval --config ./orval.config.ts --watch",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
