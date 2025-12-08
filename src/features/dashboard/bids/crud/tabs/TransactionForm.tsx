@@ -150,7 +150,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "sheathing",
     title: "Обшивка",
-    allowedProductTypes: ["door-window", "doorway"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       {
         name: "sheathing_product_id",
@@ -515,7 +515,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "heated-floor",
     title: "Тёплый пол",
-    allowedProductTypes: ["door-window"],
+    allowedProductTypes: ["heated-floor"],
     fields: [
       // Per 2.6.8: Model selector first
       {
