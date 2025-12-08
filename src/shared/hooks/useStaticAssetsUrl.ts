@@ -1,7 +1,5 @@
-import { useConfiguration } from "@/shared/contexts/ConfigurationContext";
-
 export function useStaticAssetsUrl() {
-  const { getStaticAssetsBaseUrl, isLoading } = useConfiguration();
+  const baseUrl = import.meta.env.VITE_STATIC_ASSETS_BASE_URL as string || "https://ozbegim.jaspercrm.uz";
 
   const getAssetUrl = (path: string): string => {
     if (!path) return "";
@@ -9,12 +7,12 @@ export function useStaticAssetsUrl() {
     // Remove leading slash if present
     const cleanPath = path.startsWith("/") ? path.slice(1) : path;
 
-    return `${getStaticAssetsBaseUrl()}/${cleanPath}`;
+    return `${baseUrl}/${cleanPath}`;
   };
 
   return {
     getAssetUrl,
-    baseUrl: getStaticAssetsBaseUrl(),
-    isLoading,
+    baseUrl,
+    isLoading: false,
   };
 }

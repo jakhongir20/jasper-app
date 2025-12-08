@@ -68,6 +68,7 @@ type FieldConfig = {
   fetchUrl?: string;
   valueKey?: string;
   labelKey?: string | string[];
+  imageKey?: string;
   useValueAsLabel?: boolean;
   allowClear?: boolean;
   aliases?: string[];
@@ -1186,7 +1187,8 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     placeholder: "Выберите передний каркас",
     queryKey: "framework_front",
     fetchUrl: "/framework/all",
-    labelKey: "image_url",
+    labelKey: "name",
+    imageKey: "image_url",
     valueKey: "framework_id",
     visible: (_, productType) => isDoorType(productType),
   },
@@ -1197,7 +1199,8 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     placeholder: "Выберите задний каркас",
     queryKey: "framework_back",
     fetchUrl: "/framework/all",
-    labelKey: "image_url",
+    labelKey: "name",
+    imageKey: "image_url",
     valueKey: "framework_id",
     visible: (_, productType) => isDoorType(productType),
   },
@@ -1523,7 +1526,8 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                   ? field.params(transactionValues, productType)
                   : field.params
               }
-              labelKey={(field.labelKey ?? "image_url") as string}
+              labelKey={(field.labelKey ?? "name") as string}
+              imageKey={field.imageKey}
               valueKey={(field.valueKey ?? "framework_id") as string}
               onChange={(item) => {
                 const value = item?.[field.valueKey ?? "framework_id"];

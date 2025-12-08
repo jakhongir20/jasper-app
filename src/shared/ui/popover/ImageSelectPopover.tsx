@@ -28,6 +28,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
   fetchUrl,
   labelKey = "name",
   valueKey = "id",
+  imageKey,
   renderItem,
   value,
   onChange,
@@ -37,6 +38,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
   fetchUrl: string;
   labelKey: string;
   valueKey: string;
+  imageKey?: string;
   renderItem?: (item: T) => ReactNode;
   value?: string | number | T;
   onChange: (item: T) => void;
@@ -65,9 +67,35 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
       | undefined;
     return String(
       (possibleName && String(possibleName).trim()) ||
-      (possibleTitle && String(possibleTitle).trim()) ||
-      (possibleLabel !== undefined ? possibleLabel : "-"),
+        (possibleTitle && String(possibleTitle).trim()) ||
+        (possibleLabel !== undefined ? possibleLabel : "-"),
     );
+  };
+
+  const getItemImagePath = (item: T | null | undefined): string => {
+    if (!item) return "";
+
+    // If imageKey is provided, use it first
+    const imageKeyValue = imageKey
+      ? (item as unknown as Record<string, string | undefined>)?.[imageKey]
+      : undefined;
+
+    const primary = (item as unknown as Record<string, string | undefined>)?.[
+      labelKey
+    ];
+    const fallbackImageUrl = (item as unknown as { image_url?: string })
+      ?.image_url;
+    const fallbackFrameworkImage = (
+      item as unknown as { framework_image?: string }
+    )?.framework_image;
+
+    const rawPath =
+      imageKeyValue ||
+      primary ||
+      fallbackImageUrl ||
+      fallbackFrameworkImage ||
+      "";
+    return getAssetUrl(rawPath);
   };
 
   const fetchItems = async ({ pageParam = 0 }) =>
@@ -239,7 +267,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
       >
         {selectedItem ? (
           <ImageWithFallback
-            src={getAssetUrl(selectedItem?.[labelKey] as string)}
+            src={getItemImagePath(selectedItem)}
             alt=""
             fallbackText={getItemTextLabel(selectedItem)}
             className="h-full w-full"
@@ -277,7 +305,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
                   "group cursor-pointer rounded-lg border-2 p-2 transition-all duration-200 hover:shadow-lg",
                   item?.[valueKey] === selectedItem?.[valueKey]
                     ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 hover:border-blue-300"
+                    : "border-gray-200 hover:border-blue-300",
                 )}
                 onClick={() => handleSelect(item)}
               >
@@ -286,8 +314,8 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
                 ) : (
                   <div className="relative">
                     <ImageWithFallback
-                      src={getAssetUrl(item[labelKey] as string)}
-                      alt={String(item[labelKey] as string)}
+                      src={getItemImagePath(item)}
+                      alt={getItemTextLabel(item)}
                       fallbackText={getItemTextLabel(item)}
                       className="h-32 w-full"
                       imageClassName="h-32 w-full rounded object-cover"
@@ -302,13 +330,13 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
                       }
                     />
                     <div className="mt-2 text-center">
-                      <p className="text-xs text-gray-600 truncate">
+                      <p className="truncate text-xs text-gray-600">
                         {getItemTextLabel(item)}
                       </p>
                     </div>
                     {item?.[valueKey] === selectedItem?.[valueKey] && (
-                      <div className="absolute top-2 right-2">
-                        <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center">
+                      <div className="absolute right-2 top-2">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500">
                           <svg
                             className="h-4 w-4 text-white"
                             fill="currentColor"
