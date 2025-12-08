@@ -23,6 +23,7 @@ import {
   extractId,
   normalizeString,
   toNullableNumber,
+  cleanTransactionForServiceManager,
 } from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
@@ -140,8 +141,16 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
             return;
           }
 
+          // Clean transaction data for service-manager (stricter validation)
+          const cleanedVariables = {
+            ...variables,
+            application_transactions: variables.application_transactions?.map(
+              cleanTransactionForServiceManager
+            ) || [],
+          };
+
           // Sequential execution: service-manager → forecast
-          await BidsService.serviceManager(createdId, variables);
+          await BidsService.serviceManager(createdId, cleanedVariables);
           await BidsService.forecastServices(createdId);
 
           // All steps succeeded

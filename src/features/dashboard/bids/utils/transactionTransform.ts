@@ -116,6 +116,49 @@ const normalizeProductType = (rawType: any): string | null => {
   return LEGACY_PRODUCT_TYPE_MAP[normalized] ?? normalized;
 };
 
+/**
+ * Cleans transaction data to ensure product IDs are null if their volumes/quantities are null or 0
+ * This prevents validation errors in service-manager endpoint
+ */
+export const cleanTransactionForServiceManager = (
+  transaction: PrimitiveRecord,
+): PrimitiveRecord => {
+  const cleaned = { ...transaction };
+
+  // If latting has no volume or no product_id, clear both
+  if (!cleaned.volume_latting || !cleaned.latting_product_id) {
+    cleaned.latting_product_id = null;
+    cleaned.volume_latting = null;
+  }
+
+  // If windowsill has no volume or no product_id, clear both
+  if (!cleaned.volume_windowsill || !cleaned.windowsill_product_id) {
+    cleaned.windowsill_product_id = null;
+    cleaned.volume_windowsill = null;
+  }
+
+  // If heated floor has no volume or no product_id, clear both
+  if (!cleaned.volume_heated_floor || !cleaned.heated_floor_product_id) {
+    cleaned.heated_floor_product_id = null;
+    cleaned.volume_heated_floor = null;
+  }
+
+  // If window has no volume or no product_id, clear both
+  if (!cleaned.volume_window || !cleaned.window_product_id) {
+    cleaned.window_product_id = null;
+    cleaned.volume_window = null;
+  }
+
+  // If glass has no quantity or no product_id, clear both
+  if (!cleaned.glass_quantity || !cleaned.glass_product_id) {
+    cleaned.glass_product_id = null;
+    cleaned.glass_quantity = null;
+    cleaned.volume_glass = null;
+  }
+
+  return cleaned;
+};
+
 export const buildTransactionPayload = (
   transaction: PrimitiveRecord,
 ): PrimitiveRecord => ({
@@ -127,18 +170,14 @@ export const buildTransactionPayload = (
   opening_width: toNullableNumber(transaction.opening_width),
   opening_thickness: toNullableNumber(transaction.opening_thickness),
   entity_quantity: toNullableNumber(transaction.entity_quantity),
-  framework_front_id: extractId(transaction.framework_front_id, [
-    "framework_id",
-    "product_id",
-    "id",
-    "value",
-  ]),
-  framework_back_id: extractId(transaction.framework_back_id, [
-    "framework_id",
-    "product_id",
-    "id",
-    "value",
-  ]),
+  front_framework_id: extractId(
+    transaction.front_framework_id ?? transaction.framework_front_id,
+    ["framework_id", "product_id", "id", "value"]
+  ),
+  back_framework_id: extractId(
+    transaction.back_framework_id ?? transaction.framework_back_id,
+    ["framework_id", "product_id", "id", "value"]
+  ),
   threshold: normalizeString(transaction.threshold),
   opening_logic: normalizeString(transaction.opening_logic),
   sash: toNullableNumber(transaction.sash),
@@ -231,7 +270,8 @@ const resolveOpeningLogic = (transaction: PrimitiveRecord) =>
 
 const resolveFrameworkFrontId = (transaction: PrimitiveRecord) =>
   extractId(
-    transaction.framework_front_id ??
+    transaction.front_framework_id ??
+      transaction.framework_front_id ??
       transaction.frame_front_id ??
       transaction?.framework_front?.framework_id ??
       transaction?.frame_front?.framework_id ??
@@ -241,7 +281,8 @@ const resolveFrameworkFrontId = (transaction: PrimitiveRecord) =>
 
 const resolveFrameworkBackId = (transaction: PrimitiveRecord) =>
   extractId(
-    transaction.framework_back_id ??
+    transaction.back_framework_id ??
+      transaction.framework_back_id ??
       transaction.frame_back_id ??
       transaction?.framework_back?.framework_id ??
       transaction?.frame_back?.framework_id ??
@@ -421,6 +462,8 @@ export const transformTransactionDetailToForm = (
     doorway_thickness: openingThickness,
     entity_quantity: entityQuantity,
     quantity: entityQuantity,
+    front_framework_id: resolveFrameworkFrontId(transaction),
+    back_framework_id: resolveFrameworkBackId(transaction),
     framework_front_id: resolveFrameworkFrontId(transaction),
     framework_back_id: resolveFrameworkBackId(transaction),
     threshold: transaction.threshold ?? null,

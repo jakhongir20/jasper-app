@@ -26,6 +26,8 @@ import { BidsService } from "@/features/dashboard/bids/model/bids.service";
 import {
   buildTransactionPayload,
   transformTransactionDetailToForm,
+  extractId,
+  cleanTransactionForServiceManager,
 } from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
@@ -100,8 +102,19 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
   const { mutate, isPending: isLoading } = useUpdateApplication({
     onSuccess: async (_, variables: { id: string; formData: any }) => {
       try {
+        // Clean transaction data for service-manager (stricter validation)
+        const cleanedFormData = {
+          ...variables.formData,
+          application_transactions: variables.formData.application_transactions?.map(
+            cleanTransactionForServiceManager
+          ) || [],
+          transactions: variables.formData.transactions?.map(
+            cleanTransactionForServiceManager
+          ) || [],
+        };
+
         // Sequential execution: service-manager → forecast
-        await BidsService.serviceManager(variables.id, variables.formData);
+        await BidsService.serviceManager(variables.id, cleanedFormData);
         await BidsService.forecastServices(variables.id);
 
         // All steps succeeded
@@ -299,6 +312,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             (applicationDetail.door_lock as any)?.product_id?.toString() || "",
           canopy:
             (applicationDetail.canopy as any)?.product_id?.toString() || "",
+          default_hinge_id: (applicationDetail as any)?.default_hinge_id || undefined,
+          default_door_lock_id: (applicationDetail as any)?.default_door_lock_id || undefined,
+          box_width: (applicationDetail as any)?.box_width || undefined,
           transom_height_front: applicationDetail.transom_height_front || 0,
           transom_height_back: applicationDetail.transom_height_back || 0,
         } as any,
@@ -507,6 +523,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         canopy_id: generalValues?.canopy
           ? parseInt(generalValues.canopy)
           : null,
+        default_hinge_id: extractId(generalValues?.default_hinge_id),
+        default_door_lock_id: extractId(generalValues?.default_door_lock_id),
+        box_width: generalValues?.box_width || null,
         transom_height_front: generalValues?.transom_height_front || 0,
         transom_height_back: generalValues?.transom_height_back || 0,
         status: generalValues?.status || 1,
