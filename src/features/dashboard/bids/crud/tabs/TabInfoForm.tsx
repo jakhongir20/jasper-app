@@ -20,15 +20,23 @@ interface Props {
   className?: string;
 }
 
-export const CATEGORY_HINCH_ID = 22;
-export const CATEGORY_DOORLOCK_ID = 21;
-
 export const TabInfoForm: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
   const form = Form.useFormInstance();
   const [openCustomerModal, setOpenCustomerModal] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const { data: configuration } = useConfigurationDetail();
+
+  const CATEGORY_SECTION_INDEX_FALLBACK = {
+    hinge: 22,
+    door_lock: 21,
+  };
+
+  const getSectionIndex = (key: keyof typeof CATEGORY_SECTION_INDEX_FALLBACK) =>
+    // Prefer configuration mapping when available; fall back to named constants
+    (configuration as any)?.category_section_index?.[key] ??
+    (configuration as any)?.default_category_section_index?.[key] ??
+    CATEGORY_SECTION_INDEX_FALLBACK[key];
 
   // Set initial box_width from company configuration
   useEffect(() => {
@@ -143,8 +151,9 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         >
           <SelectInfinitive
             placeholder={"Выберите петлю"}
-            queryKey="default_hinge"
-            fetchUrl={`/product/by/category?category_id=${CATEGORY_HINCH_ID}`}
+            queryKey={`default_hinge_${getSectionIndex("hinge")}`}
+            fetchUrl={`/product/by/category-section-index`}
+            params={{ category_section_index: getSectionIndex("hinge") }}
             labelKey="name"
             valueKey="product_id"
             useValueAsLabel
@@ -156,8 +165,9 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         >
           <SelectInfinitive
             placeholder={"Выберите замок"}
-            queryKey="default_door_lock"
-            fetchUrl={`/product/by/category?category_id=${CATEGORY_DOORLOCK_ID}`}
+            queryKey={`default_door_lock_${getSectionIndex("door_lock")}`}
+            fetchUrl={`/product/by/category-section-index`}
+            params={{ category_section_index: getSectionIndex("door_lock") }}
             labelKey="name"
             valueKey="product_id"
             useValueAsLabel
