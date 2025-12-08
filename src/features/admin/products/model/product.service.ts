@@ -1,7 +1,7 @@
 import { apiService } from "@/shared/lib/services/ApiService";
 import {
-  Product,
   CreateProductPayload,
+  Product,
   UpdateProductPayload,
 } from "./model.types";
 
@@ -22,7 +22,7 @@ export class ProductService {
     productId: number,
     payload: UpdateProductPayload,
   ): Promise<Product> {
-    return await apiService.$put<Product>(
+    return await apiService.$patch<Product>(
       `/admin/product?product_id=${productId}`,
       payload,
     );

@@ -37,6 +37,7 @@ export const QualityAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
     form.validateFields().then((values) => {
       mutate({
         name: values.name,
+        price_multiplier: values.price_multiplier,
       });
     });
   };
@@ -64,6 +65,18 @@ export const QualityAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
         <Input placeholder={t("common.placeholder.qualityName")} />
+      </Form.Item>
+
+      <Form.Item
+        name="price_multiplier"
+        label={t("common.labels.priceMultiplier")}
+        rules={[{ required: true, message: t("common.validation.required") }]}
+      >
+        <Input
+          type="number"
+          step={0.01}
+          placeholder="Введите множитель цены"
+        />
       </Form.Item>
     </Modal>
   );

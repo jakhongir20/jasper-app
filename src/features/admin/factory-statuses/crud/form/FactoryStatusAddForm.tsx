@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateFactoryStatus } from "@/features/admin/factory-statuses/model";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal } from "@/shared/ui";
+import { Input, Modal, CSwitch } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -41,6 +41,10 @@ export const FactoryStatusAddForm: FC<Props> = ({
     form.validateFields().then((values) => {
       mutate({
         name: values.name,
+        status_index: values.status_index ?? 0,
+        status_order: values.status_order ?? 0,
+        is_initial_status: values.is_initial_status ?? false,
+        is_final_status: values.is_final_status ?? false,
       });
     });
   };
@@ -67,7 +71,51 @@ export const FactoryStatusAddForm: FC<Props> = ({
         label={t("common.labels.name")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <Input placeholder={".."} />
+        <Input placeholder="Введите название" />
+      </Form.Item>
+
+      <Form.Item
+        name="status_index"
+        label={t("common.labels.statusIndex")}
+        rules={[{ required: true, message: t("common.validation.required") }]}
+        initialValue={0}
+      >
+        <Input
+          type="number"
+          step={1}
+          placeholder="Введите индекс"
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="status_order"
+        label={t("common.labels.statusOrder")}
+        rules={[{ required: true, message: t("common.validation.required") }]}
+        initialValue={0}
+      >
+        <Input
+          type="number"
+          step={1}
+          placeholder="Введите порядок"
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="is_initial_status"
+        label={t("common.labels.isInitialStatus")}
+        valuePropName="checked"
+        initialValue={false}
+      >
+        <CSwitch />
+      </Form.Item>
+
+      <Form.Item
+        name="is_final_status"
+        label={t("common.labels.isFinalStatus")}
+        valuePropName="checked"
+        initialValue={false}
+      >
+        <CSwitch />
       </Form.Item>
     </Modal>
   );

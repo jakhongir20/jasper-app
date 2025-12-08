@@ -26,7 +26,8 @@ export const QualityEditForm: FC<Props> = ({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const { data: quality, isLoading: isLoadingQuality } = useQualityDetail(qualityId);
+  const { data: quality, isLoading: isLoadingQuality } =
+    useQualityDetail(qualityId);
 
   const { mutate, isPending: isUpdating } = useUpdateQuality({
     onSuccess: () => {
@@ -48,6 +49,7 @@ export const QualityEditForm: FC<Props> = ({
     if (quality) {
       form.setFieldsValue({
         name: quality.name,
+        price_multiplier: quality.price_multiplier,
       });
     }
   }, [quality, form]);
@@ -57,6 +59,7 @@ export const QualityEditForm: FC<Props> = ({
       mutate({
         quality_id: qualityId,
         name: values.name,
+        price_multiplier: values.price_multiplier,
       });
     });
   };
@@ -84,6 +87,14 @@ export const QualityEditForm: FC<Props> = ({
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
         <Input placeholder={t("common.placeholder.qualityName")} />
+      </Form.Item>
+
+      <Form.Item
+        name="price_multiplier"
+        label={t("common.labels.priceMultiplier")}
+        rules={[{ required: true, message: t("common.validation.required") }]}
+      >
+        <Input type="number" step={0.01} placeholder="Введите множитель цены" />
       </Form.Item>
     </Modal>
   );

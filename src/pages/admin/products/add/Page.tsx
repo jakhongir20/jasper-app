@@ -24,22 +24,31 @@ export default function Page() {
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      // Extract base64 images from file list
-      const product_images = values.product_images?.map((file: any) => {
-        // If file has preview (new upload), use preview as base64
-        if (file.preview) {
-          return file.preview;
-        }
-        // If file has url (existing image), keep url
-        if (file.url) {
-          return file.url;
-        }
-        return null;
-      }).filter(Boolean) || [];
+      // Format images according to ProductImageInputEntity
+      const product_images =
+        values.product_images
+          ?.map((file: any) => {
+            // For new uploads, use base64 with default assignment
+            if (file.preview) {
+              return {
+                assignment: "one-sash-door", // Default assignment
+                image_file: file.preview,
+              };
+            }
+            // For existing images (shouldn't happen in create mode)
+            if (file.url) {
+              return {
+                assignment: "one-sash-door",
+                image_file: file.url,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean) || [];
 
       createProductMutation.mutate({
         ...values,
-        product_images, // Array of base64 strings
+        product_images,
       });
     });
   };
