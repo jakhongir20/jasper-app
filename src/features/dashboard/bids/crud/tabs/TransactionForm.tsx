@@ -605,7 +605,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "glass",
     title: "Стекло",
-    allowedProductTypes: ["glass"],
+    allowedProductTypes: ["door-window", "glass"],
     fields: [
       // Per 2.6.8: Model selector first
       {
