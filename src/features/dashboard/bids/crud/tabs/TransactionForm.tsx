@@ -218,7 +218,9 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "frame",
     title: "Наличник",
-    allowedProductTypes: ["frame"],
+    allowedProductTypes: ["door-window", "door-deaf"],
+    visible: (values) =>
+      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -239,7 +241,9 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "filler",
     title: "Нашельник",
-    allowedProductTypes: ["filler"],
+    allowedProductTypes: ["door-window", "door-deaf"],
+    visible: (values) =>
+      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
     fields: [
       // Per 2.6.8: Model selector first
       {
