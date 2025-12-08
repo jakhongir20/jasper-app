@@ -51,7 +51,7 @@ export const FrameworkAddForm: FC<Props> = ({
       .then((values) => {
         const payload: CreateFrameworkPayload = {
           name: values.name,
-          image_url: values.image_url,
+          framework_image: values.image_url,
           order_number: values.order_number,
           doorway_type: values.doorway_type,
           is_frame: values.is_frame,

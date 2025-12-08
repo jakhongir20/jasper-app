@@ -63,8 +63,10 @@ export const FrameworkEditForm: FC<Props> = ({
   // Set form values when detail data is loaded
   useEffect(() => {
     if (open && !isLoadingDetail && framework) {
-      const fullImageUrl = framework.image_url
-        ? getAssetUrl(framework.image_url)
+      // Handle both image_url and framework_image for backward compatibility
+      const imageField = (framework as any).framework_image || framework.image_url;
+      const fullImageUrl = imageField
+        ? getAssetUrl(imageField)
         : null;
 
       const transformedData = {
@@ -100,7 +102,7 @@ export const FrameworkEditForm: FC<Props> = ({
 
       const payload: UpdateFrameworkPayload = {
         name: values.name,
-        image_url: imageUrl,
+        framework_image: imageUrl,
         order_number: values.order_number,
         doorway_type: values.doorway_type,
         is_frame: values.is_frame,
