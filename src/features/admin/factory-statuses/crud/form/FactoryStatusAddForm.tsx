@@ -12,7 +12,11 @@ interface Props {
   onSuccess: () => void;
 }
 
-export const FactoryStatusAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
+export const FactoryStatusAddForm: FC<Props> = ({
+  open,
+  onCancel,
+  onSuccess,
+}) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -63,7 +67,7 @@ export const FactoryStatusAddForm: FC<Props> = ({ open, onCancel, onSuccess }) =
         label={t("common.labels.name")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <Input placeholder={t("common.placeholder.factoryStatusName")} />
+        <Input placeholder={".."} />
       </Form.Item>
     </Modal>
   );

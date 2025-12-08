@@ -262,6 +262,7 @@
       "category": "Категория",
       "color": "Цвет",
       "discount_type": "Тип скидки",
+      "addFactoryStatus": "Добавить статус фабрики",
       "deliveryDate": "Дата доставки",
       "doorLock": "Замок двери",
       "doorHinge": "Навес двери",

@@ -26,7 +26,8 @@ export const FactoryStatusEditForm: FC<Props> = ({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const { data: factoryStatus, isLoading: isLoadingFactoryStatus } = useFactoryStatusDetail(factoryStatusId);
+  const { data: factoryStatus, isLoading: isLoadingFactoryStatus } =
+    useFactoryStatusDetail(factoryStatusId);
 
   const { mutate, isPending: isUpdating } = useUpdateFactoryStatus({
     onSuccess: () => {
@@ -83,7 +84,7 @@ export const FactoryStatusEditForm: FC<Props> = ({
         label={t("common.labels.name")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <Input placeholder={t("common.placeholder.factoryStatusName")} />
+        <Input placeholder={".."} />
       </Form.Item>
     </Modal>
   );

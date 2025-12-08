@@ -49,6 +49,7 @@
       "doorType": "Door Type",
       "type": "Type",
       "deliveryDate": "Delivery Date",
+      "addFactoryStatus": "Add factory status",
       "veenerType": "Veneer Type",
       "product_id": "Product",
       "veneer_type": "Veneer Type",

@@ -44,6 +44,7 @@
       "remark": "Qo'shimcha ma'lumot",
       "location": "Joylashuv",
       "doorType": "Eshik turi",
+      "addFactoryStatus": "Fabrika statusini qo'shish",
       "type": "Turi",
       "deliveryDate": "Yetkazish vaqti",
       "veenerType": "Shpon turi",
