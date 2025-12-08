@@ -15,7 +15,9 @@
     "bids": "O'lchash so'rovi",
     "proposals": "Takliflar",
     "design": "Dizayn",
-    "calculator": "Kalkulyator"
+    "calculator": "Kalkulyator",
+    "qualities": "Sifatlar",
+    "factoryStatuses": "Fabrika holatlari"
   },
   "common": {
     "selectImage": "Rasmni tanlang",
@@ -1035,6 +1037,26 @@
     "warehouse": "Ombor",
     "aspect": "Aspect",
     "aspectFileName": "Aspect fayl nomi",
-    "comment": "Izoh"
+    "comment": "Izoh",
+    "company": "Kompaniya",
+    "companySettings": "Kompaniya sozlamalari",
+    "companyName": "Kompaniya nomi",
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Manzil",
+    "configuration": "Konfiguratsiya",
+    "configurationSettings": "Konfiguratsiya sozlamalari",
+    "usdRate": "USD kursi",
+    "hostingDomain": "Hosting domeni",
+    "moldingCoefficient": "Molding koeffitsienti",
+    "companyUpdated": "Kompaniya muvaffaqiyatli yangilandi",
+    "configurationUpdated": "Konfiguratsiya muvaffaqiyatli yangilandi",
+    "companyNamePlaceholder": "Kompaniya nomini kiriting",
+    "emailPlaceholder": "Email kiriting",
+    "phonePlaceholder": "Telefon raqamini kiriting",
+    "addressPlaceholder": "Manzilni kiriting",
+    "usdRatePlaceholder": "USD kursini kiriting",
+    "hostingDomainPlaceholder": "Hosting domenini kiriting",
+    "moldingCoefficientPlaceholder": "Molding koeffitsientini kiriting"
   }
 }

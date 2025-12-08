@@ -49,6 +49,9 @@ const moduleImports = {
   qualities: {
     list: () => import("@/pages/admin/qualities/list/Page"),
   },
+  settings: {
+    list: () => import("@/pages/admin/settings/Page"),
+  },
 };
 
 function createModuleRoutes(module: {
@@ -118,6 +121,7 @@ const modules = (
     { name: "services", title: "navigation.services", icon: "wrench" },
     { name: "qualities", title: "navigation.qualities", icon: "star" },
     { name: "factoryStatuses", title: "navigation.factoryStatuses", icon: "factory" },
+    { name: "settings", title: "navigation.settings", icon: "settings" },
   ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
 

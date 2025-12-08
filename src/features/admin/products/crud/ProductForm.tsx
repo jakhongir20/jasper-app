@@ -142,34 +142,34 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
         <Form.Item
           name="frame_thickness"
-          label="Frame Thickness"
+          label={t("common.labels.frameThickness")}
         >
           <NumberInput
             min={0}
             step={0.01}
-            placeholder="Enter frame thickness"
+            placeholder={t("common.placeholder.frameThickness")}
           />
         </Form.Item>
 
         <Form.Item
           name="frame_width"
-          label="Frame Width"
+          label={t("common.labels.frameWidth")}
         >
           <NumberInput
             min={0}
             step={0.01}
-            placeholder="Enter frame width"
+            placeholder={t("common.placeholder.frameWidth")}
           />
         </Form.Item>
 
         <Form.Item
           name="under_frame_height"
-          label="Under Frame Height"
+          label={t("common.labels.underFrameHeight")}
         >
           <NumberInput
             min={0}
             step={0.01}
-            placeholder="Enter under frame height"
+            placeholder={t("common.placeholder.underFrameHeight")}
           />
         </Form.Item>
       </div>
@@ -178,37 +178,37 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
         <Form.Item
           name="percent_trim"
-          label="Percent Trim (%)"
+          label={t("common.labels.percentTrim")}
         >
           <NumberInput
             min={0}
             max={100}
             step={0.01}
-            placeholder="Enter percent trim"
+            placeholder={t("common.placeholder.percentTrim")}
           />
         </Form.Item>
 
         <Form.Item
           name="percent_molding"
-          label="Percent Molding (%)"
+          label={t("common.labels.percentMolding")}
         >
           <NumberInput
             min={0}
             max={100}
             step={0.01}
-            placeholder="Enter percent molding"
+            placeholder={t("common.placeholder.percentMolding")}
           />
         </Form.Item>
 
         <Form.Item
           name="percent_covering_primary"
-          label="Percent Covering Primary (%)"
+          label={t("common.labels.percentCoveringPrimary")}
         >
           <NumberInput
             min={0}
             max={100}
             step={0.01}
-            placeholder="Enter percent covering primary"
+            placeholder={t("common.placeholder.percentCoveringPrimary")}
           />
         </Form.Item>
       </div>
@@ -217,37 +217,37 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
         <Form.Item
           name="percent_covering_secondary"
-          label="Percent Covering Secondary (%)"
+          label={t("common.labels.percentCoveringSecondary")}
         >
           <NumberInput
             min={0}
             max={100}
             step={0.01}
-            placeholder="Enter percent covering secondary"
+            placeholder={t("common.placeholder.percentCoveringSecondary")}
           />
         </Form.Item>
 
         <Form.Item
           name="percent_color"
-          label="Percent Color (%)"
+          label={t("common.labels.percentColor")}
         >
           <NumberInput
             min={0}
             max={100}
             step={0.01}
-            placeholder="Enter percent color"
+            placeholder={t("common.placeholder.percentColor")}
           />
         </Form.Item>
 
         <Form.Item
           name="percent_extra_option"
-          label="Percent Extra Option (%)"
+          label={t("common.labels.percentExtraOption")}
         >
           <NumberInput
             min={0}
             max={100}
             step={0.01}
-            placeholder="Enter percent extra option"
+            placeholder={t("common.placeholder.percentExtraOption")}
           />
         </Form.Item>
       </div>
