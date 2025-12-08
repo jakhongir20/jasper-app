@@ -1,10 +1,11 @@
-import { type FC } from "react";
+import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button, Descriptions, Space } from "antd";
 import { cn } from "@/shared/helpers";
 import { User } from "@/features/admin/users/model";
 import { Status } from "@/shared/ui";
+import { UserPermissionsModal } from "@/features/admin/users";
 
 interface Props {
   user: User;
@@ -14,6 +15,7 @@ interface Props {
 export const UserDetails: FC<Props> = ({ user, className }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [isPermissionsModalOpen, setIsPermissionsModalOpen] = useState(false);
 
   const handleEdit = () => {
     navigate(`/admin/users/edit/${user.user_id}`);
@@ -21,6 +23,14 @@ export const UserDetails: FC<Props> = ({ user, className }) => {
 
   const handleBack = () => {
     navigate("/admin/users");
+  };
+
+  const handleOpenPermissions = () => {
+    setIsPermissionsModalOpen(true);
+  };
+
+  const handleClosePermissions = () => {
+    setIsPermissionsModalOpen(false);
   };
 
   return (
@@ -31,6 +41,9 @@ export const UserDetails: FC<Props> = ({ user, className }) => {
         </h4>
         <Space>
           <Button onClick={handleBack}>{t("common.button.back")}</Button>
+          <Button onClick={handleOpenPermissions}>
+            {t("common.button.permissions")}
+          </Button>
           <Button type="primary" onClick={handleEdit}>
             {t("common.button.edit")}
           </Button>
@@ -72,6 +85,13 @@ export const UserDetails: FC<Props> = ({ user, className }) => {
           </Descriptions.Item>
         </Descriptions>
       </div>
+
+      <UserPermissionsModal
+        open={isPermissionsModalOpen}
+        onCancel={handleClosePermissions}
+        userId={user.user_id}
+        userName={user.name || user.username || `User ${user.user_id}`}
+      />
     </div>
   );
 };

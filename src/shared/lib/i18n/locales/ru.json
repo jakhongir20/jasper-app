@@ -278,6 +278,7 @@
       "supervisor": "Управляющий",
       "admin": "Админ",
       "factory": "Завод",
+      "permissions": "Права доступа",
       "yes": "Да",
       "no": "Нет",
       "editUser": "Редактировать пользователя",
@@ -655,6 +656,10 @@
       "userCreated": "Пользователь успешно создан",
       "userUpdated": "Пользователь успешно обновлен",
       "passwordMismatch": "Пароли не совпадают",
+      "permissionsUpdatedSuccessfully": "Права успешно обновлены",
+      "permissionsUpdateFailed": "Не удалось обновить права",
+      "noPermissionsAvailable": "Нет доступных прав",
+      "failedToLoadData": "Не удалось загрузить данные",
       "error": "Произошла ошибка",
       "confirmDelete": "Подтвердить удаление",
       "categoryCreated": "Категория успешно создана",
@@ -797,7 +802,8 @@
       "apply": "Применить",
       "duplicate": "Дублировать",
       "calculate": "Рассчитать",
-      "uploadImage": "Загрузить изображение"
+      "uploadImage": "Загрузить изображение",
+      "permissions": "Права доступа"
     },
     "locale": {
       "en": "English",
