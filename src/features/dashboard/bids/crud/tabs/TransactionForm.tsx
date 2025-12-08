@@ -1477,25 +1477,26 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               onSelect={(value: string, selectedOption?: any) => {
                 // Per 2.6.9: Auto-fill percent attributes from selected product
                 if (selectedOption) {
-                  const autoFillMappings: Record<string, string> = {
-                    trim_product_id: "percent_trim",
-                    molding_product_id: "percent_molding",
-                    covering_primary_product_id: "percent_covering_primary",
-                    covering_secondary_product_id: "percent_covering_secondary",
-                    color_product_id: "percent_color",
-                    extra_option_product_id: "percent_extra_option",
-                    under_frame_product_id: "under_frame_height",
+                  // Map product selection fields to their corresponding transaction fields
+                  const autoFillMappings: Record<string, { field: string; sourceKey?: string }> = {
+                    trim_product_id: { field: "percent_trim", sourceKey: "percent" },
+                    molding_product_id: { field: "percent_molding", sourceKey: "percent" },
+                    covering_primary_product_id: { field: "percent_covering_primary", sourceKey: "percent" },
+                    covering_secondary_product_id: { field: "percent_covering_secondary", sourceKey: "percent" },
+                    color_product_id: { field: "percent_color", sourceKey: "percent" },
+                    extra_option_product_id: { field: "percent_extra_option", sourceKey: "percent" },
+                    under_frame_product_id: { field: "under_frame_height", sourceKey: "height" },
                   };
 
-                  const percentFieldName = autoFillMappings[field.name];
-                  if (
-                    percentFieldName &&
-                    selectedOption.percent !== undefined
-                  ) {
-                    setTransactionField(
-                      percentFieldName,
-                      selectedOption.percent,
-                    );
+                  const mapping = autoFillMappings[field.name];
+                  if (mapping) {
+                    const sourceKey = mapping.sourceKey || "percent";
+                    const sourceValue = selectedOption[sourceKey];
+
+                    // Auto-fill if source value exists
+                    if (sourceValue !== undefined && sourceValue !== null) {
+                      setTransactionField(mapping.field, sourceValue);
+                    }
                   }
                 }
               }}
