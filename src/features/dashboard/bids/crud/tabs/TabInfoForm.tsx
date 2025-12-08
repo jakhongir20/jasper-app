@@ -1,5 +1,5 @@
 import { Divider, Form } from "antd";
-import React, { type FC } from "react";
+import React, { type FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import dayjs, { Dayjs } from "dayjs";
 import { cn } from "@/shared/helpers";
@@ -14,6 +14,7 @@ import {
 } from "@/shared/ui";
 import { validatePhone } from "@/shared/utils/validations";
 import { CustomerCreate } from "@/features/dashboard/bids/crud/tabs/CustomerCreate";
+import { useConfigurationDetail } from "@/features/admin/settings/model/settings.queries";
 
 interface Props {
   className?: string;
@@ -27,6 +28,17 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
   const form = Form.useFormInstance();
   const [openCustomerModal, setOpenCustomerModal] = React.useState(false);
   const [search, setSearch] = React.useState("");
+  const { data: configuration } = useConfigurationDetail();
+
+  // Set initial box_width from company configuration
+  useEffect(() => {
+    if (configuration?.standard_box_width) {
+      const currentBoxWidth = form.getFieldValue(["general", "box_width"]);
+      if (!currentBoxWidth) {
+        form.setFieldValue(["general", "box_width"], configuration.standard_box_width);
+      }
+    }
+  }, [configuration, form]);
 
   return (
     <div className={cn("flex flex-col gap-4 py-1", className)}>
@@ -149,6 +161,16 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
             labelKey="name"
             valueKey="product_id"
             useValueAsLabel
+          />
+        </Form.Item>
+        <Form.Item
+          name={["general", "box_width"]}
+          label={"Ширина коробки (по умолчанию)"}
+        >
+          <Input
+            type="number"
+            step="0.01"
+            placeholder="Введите ширину коробки"
           />
         </Form.Item>
       </div>

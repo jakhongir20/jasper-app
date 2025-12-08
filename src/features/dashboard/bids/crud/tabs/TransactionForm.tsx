@@ -801,7 +801,8 @@ const ALL_SECTIONS: SectionConfig[] = [
         label: "Длина коробки",
         type: "number",
         numberStep: 0.01,
-        placeholder: "Введите длину коробки",
+        placeholder: "Авто-расчет",
+        disabled: true, // Auto-calculated, not editable by user
       },
     ],
   },
