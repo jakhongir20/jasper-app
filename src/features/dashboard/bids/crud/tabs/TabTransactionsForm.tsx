@@ -169,7 +169,11 @@ export const TabTransactionsForm: FC<Props> = ({
     toggleProductModal();
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (confirmed?: boolean) => {
+    // Only show success message if confirmed
+    if (confirmed) {
+      // Success message is already shown in TransactionDrawer
+    }
     setEditingTransaction(null);
     toggleProductModal();
   };

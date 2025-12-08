@@ -2,12 +2,13 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Drawer, Form, message } from "antd";
 import { Button } from "@/shared/ui";
 import {
-  TransactionForm,
   getTransactionValidationPaths,
   getUnfilledRequiredFields,
+  TransactionForm,
 } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
 import {
   ApplicationLocalForm,
+  GeneralFormType,
   TransactionFormType as Transaction,
 } from "@/features/dashboard/bids/model";
 import { ApiService } from "@/shared/lib/services";
@@ -29,43 +30,51 @@ export const TransactionDrawer: FC<Props> = ({
   mode,
   transaction,
 }) => {
-  const form = Form.useFormInstance<ApplicationLocalForm>();
+  const parentForm = Form.useFormInstance<ApplicationLocalForm>();
+  const [drawerForm] = Form.useForm<ApplicationLocalForm>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const originalTransactionsRef = useRef<Record<string, any>[]>([]);
 
+  // Initialize drawer form when opened
   useEffect(() => {
     if (!open) {
       return;
     }
 
+    // Save original transactions from parent form
     const currentTransactions =
-      (form.getFieldValue("transactions") as Record<string, any>[]) || [];
+      (parentForm.getFieldValue("transactions") as Record<string, any>[]) || [];
 
     originalTransactionsRef.current = Array.isArray(currentTransactions)
       ? currentTransactions.map((item) =>
-        item && typeof item === "object" ? { ...item } : item,
-      )
+          item && typeof item === "object" ? { ...item } : item,
+        )
       : [];
 
+    // Get general form values from parent to maintain consistency
+    const generalValues = parentForm.getFieldValue(
+      "general",
+    ) as GeneralFormType;
+
+    // Set up drawer form with transaction data only
     if (mode === "edit" && transaction) {
-      form.setFieldsValue({
+      drawerForm.setFieldsValue({
+        general: generalValues,
         transactions: [{ ...transaction }],
       });
     } else {
-      form.setFieldsValue({
+      drawerForm.setFieldsValue({
+        general: generalValues,
         transactions: [{}],
       });
     }
-  }, [form, mode, open, transaction]);
+  }, [parentForm, drawerForm, mode, open, transaction]);
 
   const handleCancel = useCallback(() => {
-    form.setFieldsValue({
-      transactions: originalTransactionsRef.current.map((item) =>
-        item && typeof item === "object" ? { ...item } : item,
-      ),
-    });
+    // Simply close without saving - parent form is never modified
+    drawerForm.resetFields();
     onClose(false);
-  }, [form, onClose]);
+  }, [drawerForm, onClose]);
 
   const handleDrawerClose = useCallback(() => {
     handleCancel();
@@ -76,9 +85,8 @@ export const TransactionDrawer: FC<Props> = ({
       return;
     }
 
-    const transactions = form.getFieldValue("transactions") || [];
-    const currentTransaction =
-      (transactions?.[0] as Record<string, any>) || {};
+    const transactions = drawerForm.getFieldValue("transactions") || [];
+    const currentTransaction = (transactions?.[0] as Record<string, any>) || {};
 
     // Check for unfilled required fields
     const unfilledFields = getUnfilledRequiredFields(currentTransaction);
@@ -88,7 +96,7 @@ export const TransactionDrawer: FC<Props> = ({
         name: ["transactions", 0, field.name] as (string | number)[],
         errors: [`Заполните поле «${field.label}»`],
       }));
-      form.setFields(fieldsWithErrors as any);
+      drawerForm.setFields(fieldsWithErrors as any);
 
       const fieldNames = unfilledFields.map((f) => f.label).join(", ");
       message.warning(`Заполните обязательные поля: ${fieldNames}`, 5);
@@ -98,7 +106,7 @@ export const TransactionDrawer: FC<Props> = ({
     const validationPaths = getTransactionValidationPaths(currentTransaction);
 
     try {
-      await form.validateFields(validationPaths as any);
+      await drawerForm.validateFields(validationPaths as any);
     } catch (error) {
       message.error("Заполните обязательные поля");
       return;
@@ -220,9 +228,7 @@ export const TransactionDrawer: FC<Props> = ({
               ...item,
               ...transactionToStore,
               _uid:
-                item._uid ??
-                transaction._uid ??
-                getRandomId("transaction_"),
+                item._uid ?? transaction._uid ?? getRandomId("transaction_"),
             };
           }
           return item;
@@ -233,8 +239,7 @@ export const TransactionDrawer: FC<Props> = ({
             ...updatedTransactions,
             {
               ...transactionToStore,
-              _uid:
-                transaction._uid ?? getRandomId("transaction_"),
+              _uid: transaction._uid ?? getRandomId("transaction_"),
             },
           ];
         }
@@ -248,8 +253,9 @@ export const TransactionDrawer: FC<Props> = ({
         ];
       }
 
-      form.setFieldsValue({ transactions: updatedTransactions });
-      originalTransactionsRef.current = updatedTransactions;
+      // Now commit to parent form only on successful confirmation
+      parentForm.setFieldsValue({ transactions: updatedTransactions });
+      drawerForm.resetFields();
       message.success("Транзакция успешно подтверждена");
       onClose(true);
     } catch (error: any) {
@@ -284,7 +290,7 @@ export const TransactionDrawer: FC<Props> = ({
     } finally {
       setIsSubmitting(false);
     }
-  }, [form, isSubmitting, mode, onClose, transaction]);
+  }, [drawerForm, parentForm, isSubmitting, mode, onClose, transaction]);
 
   return (
     <Drawer
@@ -317,7 +323,9 @@ export const TransactionDrawer: FC<Props> = ({
         </div>
       }
     >
-      <TransactionForm mode={mode} drawerOpen={open} />
+      <Form layout={"vertical"} form={drawerForm}>
+        <TransactionForm mode={mode} drawerOpen={open} />
+      </Form>
     </Drawer>
   );
 };
