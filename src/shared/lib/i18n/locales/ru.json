@@ -261,6 +261,8 @@
       "measurementNumber": "№ замерочной заявки",
       "category": "Категория",
       "color": "Цвет",
+      "discount_type": "Тип скидки",
+      "deliveryDate": "Дата доставки",
       "doorLock": "Замок двери",
       "doorHinge": "Навес двери",
       "applicationAuthor": "Автор заявки",

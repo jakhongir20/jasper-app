@@ -45,6 +45,7 @@
       "location": "Joylashuv",
       "doorType": "Eshik turi",
       "type": "Turi",
+      "deliveryDate": "Yetkazish vaqti",
       "veenerType": "Shpon turi",
       "lining_number": "O'ralish",
       "frame_front": "Old to'plam",
@@ -493,7 +494,6 @@
     "buttons": {
       "calculate": "Hisoblash"
     },
-
     "product": {
       "id": "Mahsulot ID",
       "type": "Mahsulot turi",

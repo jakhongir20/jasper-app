@@ -48,6 +48,7 @@
       "location": "Location",
       "doorType": "Door Type",
       "type": "Type",
+      "deliveryDate": "Delivery Date",
       "veenerType": "Veneer Type",
       "product_id": "Product",
       "veneer_type": "Veneer Type",
@@ -574,7 +575,6 @@
     "buttons": {
       "calculate": "Calculate"
     },
-
     "product": {
       "id": "Product ID",
       "type": "Product Type",

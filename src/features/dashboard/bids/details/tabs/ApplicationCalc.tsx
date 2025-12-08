@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { useState, useEffect } from "react";
-import { ContentInner, Input, NumberInput, Button, Select } from "@/shared/ui";
+import { useEffect, useState } from "react";
+import { Button, ContentInner, Input, NumberInput, Select } from "@/shared/ui";
 import { ApplicationDetail } from "@/features/dashboard/bids/details";
 import { Form, message } from "antd";
 import { useTranslation } from "react-i18next";
@@ -194,13 +194,16 @@ export const ApplicationCalc: FC<Props> = ({
         </div>
 
         <div className="flex flex-col gap-2 rounded-lg border border-gray-500/30 p-4 sm:grid lg:col-span-1 lg:grid-cols-1">
-          <Form.Item name={["forecaster", "company", "display_name"]} label={t("calculated_by")}>
+          <Form.Item
+            name={["forecaster", "company", "display_name"]}
+            label={t("calculated_by")}
+          >
             <Input placeholder={t("common.placeholder.address")} />
           </Form.Item>
 
           <Form.Item
             name="discount_type"
-            label={t("discount_type")}
+            label={t("common.labels.discount_type")}
             rules={[{ required: true, message: "Выберите тип скидки" }]}
           >
             <Select
