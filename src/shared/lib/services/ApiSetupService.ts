@@ -78,7 +78,7 @@ export class ApiSetupService {
           return Promise.reject(error);
         }
 
-        if ([401].includes(statusCode!)) {
+        if ([401, 403].includes(statusCode!)) {
           // Check if this is a login request - don't auto-refresh for login endpoints
           const isLoginRequest = error.config?.url?.includes("/auth/login");
 

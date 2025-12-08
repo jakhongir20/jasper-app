@@ -9,6 +9,7 @@ import {
   UpdateProductPayload,
   Product,
 } from "./model.types";
+import { useAdminProductImageDeleteAdminProductImageDelete } from "@/shared/lib/api/generated/gateway/product-images/product-images";
 
 export function useCreateProduct(
   options?: UseMutationOptions<Product, unknown, CreateProductPayload>,
@@ -60,3 +61,5 @@ export function useDeleteProduct(
     ...options,
   });
 }
+
+export { useAdminProductImageDeleteAdminProductImageDelete as useDeleteProductImage };

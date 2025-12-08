@@ -8,9 +8,14 @@ import { useCategoriesList } from "@/features/admin/categories/model/category.qu
 interface ProductFormProps {
   product?: Product;
   mode: "create" | "edit";
+  onImageDelete?: (productImageId: number) => Promise<void>;
 }
 
-export const ProductForm = ({ product, mode }: ProductFormProps) => {
+export const ProductForm = ({
+  product,
+  mode,
+  onImageDelete,
+}: ProductFormProps) => {
   const { t } = useTranslation();
   const { data: categories, isLoading: isCategoriesLoading } =
     useCategoriesList();
@@ -108,6 +113,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
             maxSize={5}
             allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
             productId={product?.product_id}
+            onImageDelete={onImageDelete}
           />
         </Form.Item>
       </div>

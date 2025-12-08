@@ -1,10 +1,9 @@
-import React, { FC, useState, useEffect, useMemo } from "react";
+import React, { FC, useState, useMemo } from "react";
 import type { UploadFile, UploadProps } from "antd";
-import { Upload, message as antdMessage } from "antd";
+import { Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/shared/hooks";
-import { ApiService } from "@/shared/lib/services";
 import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 
 interface MultipleImageUploadProps {
@@ -14,7 +13,7 @@ interface MultipleImageUploadProps {
   maxSize?: number; // in MB
   allowedFormats?: string[];
   productId?: number;
-  onImageDelete?: (imageId: string) => Promise<void>;
+  onImageDelete?: (productImageId: number) => Promise<void>;
 }
 
 type FileType = Parameters<NonNullable<UploadProps["beforeUpload"]>>[0];
@@ -49,7 +48,11 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
     if (!url) return undefined;
 
     // If it's a base64 string or full URL, use as is
-    if (url.startsWith("data:image/") || url.startsWith("http://") || url.startsWith("https://")) {
+    if (
+      url.startsWith("data:image/") ||
+      url.startsWith("http://") ||
+      url.startsWith("https://")
+    ) {
       return url;
     }
 
@@ -60,7 +63,11 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   // Process fileList to add full URLs for display
   const displayFileList = useMemo(() => {
     return fileList.map((file) => {
-      if (file.url && !file.url.startsWith("data:image/") && !file.url.startsWith("http")) {
+      if (
+        file.url &&
+        !file.url.startsWith("data:image/") &&
+        !file.url.startsWith("http")
+      ) {
         return {
           ...file,
           url: getDisplayUrl(file.url),
@@ -84,7 +91,9 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
     return false; // Prevent auto-upload, we'll handle it manually
   };
 
-  const handleChange: UploadProps["onChange"] = async ({ fileList: newFileList }) => {
+  const handleChange: UploadProps["onChange"] = async ({
+    fileList: newFileList,
+  }) => {
     // Process each new file to convert to base64
     const processedFileList = await Promise.all(
       newFileList.map(async (file) => {
@@ -92,7 +101,7 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
           file.preview = await getBase64(file.originFileObj as FileType);
         }
         return file;
-      })
+      }),
     );
 
     setFileList(processedFileList);
@@ -100,19 +109,11 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   };
 
   const handleRemove = async (file: UploadFile) => {
-    // If file has a real ID (existing/saved image), send DELETE request immediately
-    if (file.uid && file.url && productId) {
+    // If file has product_image_id (existing/saved image), send DELETE request
+    const productImageId = (file as any).product_image_id;
+    if (productImageId && onImageDelete) {
       try {
-        // CRITICAL: Send DELETE request IMMEDIATELY before other edits
-        if (onImageDelete) {
-          await onImageDelete(file.uid);
-        } else {
-          await ApiService.$delete("/product/image", {
-            image_id: file.uid,
-            product_id: productId,
-          });
-        }
-
+        await onImageDelete(productImageId);
         toast(t("toast.delete.success"), "success");
       } catch (error) {
         toast(t("toast.delete.error"), "error");
@@ -182,9 +183,7 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
           </p>
         )}
         <p className="w-fit rounded-md bg-gray-600 px-2 py-1 text-xs text-black">
-          <span className="font-normal">
-            {t("common.labels.maxImages")}:
-          </span>
+          <span className="font-normal">{t("common.labels.maxImages")}:</span>
           <span className="font-medium">{maxCount}</span>
         </p>
       </div>

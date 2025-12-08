@@ -3,7 +3,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { ProductForm } from "@/features/admin/products";
-import { useProductDetail, useUpdateProduct } from "@/features/admin/products";
+import {
+  useProductDetail,
+  useUpdateProduct,
+  useDeleteProductImage,
+} from "@/features/admin/products";
 import { CAddHeader, LoadingState, ErrorState } from "@/shared/ui";
 import { useToast } from "@/shared/hooks";
 
@@ -21,10 +25,27 @@ export default function Page() {
       toast(t("toast.successUpdate"), "success");
       navigate("/admin/products");
     },
-    onError: (error) => {
+    onError: () => {
       toast(t("toast.errorUpdate"), "error");
     },
   });
+
+  const deleteImageMutation = useDeleteProductImage({
+    mutation: {
+      onSuccess: () => {
+        toast(t("toast.delete.success"), "success");
+      },
+      onError: () => {
+        toast(t("toast.delete.error"), "error");
+      },
+    },
+  });
+
+  const handleDeleteImage = async (productImageId: number) => {
+    return deleteImageMutation.mutateAsync({
+      params: { product_image_id: productImageId },
+    });
+  };
 
   const handleSave = () => {
     form.validateFields().then((values) => {
@@ -101,11 +122,12 @@ export default function Page() {
     measurement_unit: product.measure, // Old API uses 'measure'
     product_images:
       product.product_images?.map((img: any, index: number) => ({
-        uid: img.product_image_id || `-${index}`,
+        uid: String(img.product_image_id || `-${index}`),
         name: `image-${index}.png`,
         status: "done",
         url: img.image_url,
         assignment: img.assignment, // Preserve assignment for existing images
+        product_image_id: img.product_image_id, // Preserve for deletion
       })) || [],
     price_uzs: product.price_uzs,
     price_usd: product.price_usd,
@@ -132,7 +154,11 @@ export default function Page() {
       />
 
       <Form form={form} layout="vertical" initialValues={formInitialValues}>
-        <ProductForm mode="edit" product={product} />
+        <ProductForm
+          mode="edit"
+          product={product}
+          onImageDelete={handleDeleteImage}
+        />
       </Form>
     </div>
   );
