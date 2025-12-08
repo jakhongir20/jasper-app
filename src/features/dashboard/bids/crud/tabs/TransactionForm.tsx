@@ -1150,6 +1150,14 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     aliases: ["door_type"],
   },
   {
+    name: "entity_quantity",
+    label: "Количество элементов",
+    type: "number",
+    numberStep: 1,
+    placeholder: "Введите количество элементов",
+    aliases: ["quantity"],
+  },
+  {
     name: "opening_height",
     label: "Высота проёма",
     type: "number",
@@ -1172,14 +1180,6 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     numberStep: 0.01,
     placeholder: "Введите толщину проёма",
     aliases: ["doorway_thickness"],
-  },
-  {
-    name: "entity_quantity",
-    label: "Количество элементов",
-    type: "number",
-    numberStep: 1,
-    placeholder: "Введите количество элементов",
-    aliases: ["quantity"],
   },
   {
     name: "frame_front_id",
