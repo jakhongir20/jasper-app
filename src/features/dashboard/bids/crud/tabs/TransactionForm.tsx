@@ -1477,31 +1477,31 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                 > = {
                   trim_product_id: {
                     field: "percent_trim",
-                    sources: ["percent", "size"],
+                    sources: ["percent_trim", "percent", "size"],
                   },
                   molding_product_id: {
                     field: "percent_molding",
-                    sources: ["percent", "size"],
+                    sources: ["percent_molding", "percent", "size"],
                   },
                   covering_primary_product_id: {
                     field: "percent_covering_primary",
-                    sources: ["percent", "size"],
+                    sources: ["percent_covering_primary", "percent", "size"],
                   },
                   covering_secondary_product_id: {
                     field: "percent_covering_secondary",
-                    sources: ["percent", "size"],
+                    sources: ["percent_covering_secondary", "percent", "size"],
                   },
                   color_product_id: {
                     field: "percent_color",
-                    sources: ["percent", "size"],
+                    sources: ["percent_color", "percent", "size"],
                   },
                   extra_option_product_id: {
                     field: "percent_extra_option",
-                    sources: ["percent", "size"],
+                    sources: ["percent_extra_option", "percent", "size"],
                   },
                   under_frame_product_id: {
                     field: "under_frame_height",
-                    sources: ["percent", "height", "size"],
+                    sources: ["under_frame_height", "height", "percent", "size"],
                   },
                 };
 
