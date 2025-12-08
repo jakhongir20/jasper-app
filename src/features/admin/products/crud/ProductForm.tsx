@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Product } from "@/features/admin/products";
 import { ContentInner, Input, NumberInput, Select } from "@/shared/ui";
 import { MultipleImageUpload } from "@/shared/ui/imageUpload";
+import { useCategoriesList } from "@/features/admin/categories/model/category.queries";
 
 interface ProductFormProps {
   product?: Product;
@@ -11,12 +12,14 @@ interface ProductFormProps {
 
 export const ProductForm = ({ product, mode }: ProductFormProps) => {
   const { t } = useTranslation();
+  const { data: categories, isLoading: isCategoriesLoading } =
+    useCategoriesList();
 
   return (
     <ContentInner>
       {/* Read-only fields - shown only in edit mode */}
       {mode === "edit" && product && (
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+        <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
           <Form.Item name="product_id" label={t("common.input.productId")}>
             <Input disabled className="bg-gray-100" />
           </Form.Item>
@@ -33,14 +36,17 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
             />
           </Form.Item>
 
-          <Form.Item name={["category", "name"]} label={t("common.input.categoryName")}>
+          <Form.Item
+            name={["category", "name"]}
+            label={t("common.input.categoryName")}
+          >
             <Input disabled className="bg-gray-100" />
           </Form.Item>
         </div>
       )}
 
       {/* Basic Information - First Row */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         <Form.Item
           name="name"
           label={t("common.input.name")}
@@ -49,10 +55,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
           <Input placeholder={t("common.placeholder.productName")} />
         </Form.Item>
 
-        <Form.Item
-          name="product_type"
-          label={t("common.input.type")}
-        >
+        <Form.Item name="product_type" label={t("common.input.type")}>
           <Select
             placeholder={t("common.placeholder.productType")}
             options={[
@@ -87,10 +90,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="measurement_unit"
-          label={t("common.input.measure")}
-        >
+        <Form.Item name="measurement_unit" label={t("common.input.measure")}>
           <Input placeholder={t("common.placeholder.measure")} />
         </Form.Item>
       </div>
@@ -113,11 +113,8 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
       </div>
 
       {/* Pricing - Second Row */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
-        <Form.Item
-          name="price_uzs"
-          label={t("common.input.priceUZS")}
-        >
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <Form.Item name="price_uzs" label={t("common.input.priceUZS")}>
           <NumberInput min={0} placeholder={t("common.placeholder.priceUZS")} />
         </Form.Item>
 
@@ -134,12 +131,19 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
           label={t("common.input.category")}
           rules={[{ required: true, message: t("common.validation.required") }]}
         >
-          <NumberInput min={1} placeholder={t("common.placeholder.category")} />
+          <Select
+            placeholder={t("common.placeholder.category")}
+            loading={isCategoriesLoading}
+            options={categories?.results?.map((category) => ({
+              value: category.category_id,
+              label: category.name,
+            }))}
+          />
         </Form.Item>
       </div>
 
       {/* Frame Dimensions - Third Row */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         <Form.Item
           name="frame_thickness"
           label={t("common.labels.frameThickness")}
@@ -151,10 +155,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="frame_width"
-          label={t("common.labels.frameWidth")}
-        >
+        <Form.Item name="frame_width" label={t("common.labels.frameWidth")}>
           <NumberInput
             min={0}
             step={0.01}
@@ -175,11 +176,8 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
       </div>
 
       {/* Percentages - Fourth Row */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
-        <Form.Item
-          name="percent_trim"
-          label={t("common.labels.percentTrim")}
-        >
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <Form.Item name="percent_trim" label={t("common.labels.percentTrim")}>
           <NumberInput
             min={0}
             max={100}
@@ -214,7 +212,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
       </div>
 
       {/* More Percentages - Fifth Row */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         <Form.Item
           name="percent_covering_secondary"
           label={t("common.labels.percentCoveringSecondary")}
@@ -227,10 +225,7 @@ export const ProductForm = ({ product, mode }: ProductFormProps) => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="percent_color"
-          label={t("common.labels.percentColor")}
-        >
+        <Form.Item name="percent_color" label={t("common.labels.percentColor")}>
           <NumberInput
             min={0}
             max={100}
