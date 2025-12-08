@@ -2,7 +2,7 @@ import { Form } from "antd";
 import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/helpers";
-import { Input, NumberInput, CSwitch } from "@/shared/ui";
+import { CSwitch, Input, NumberInput } from "@/shared/ui";
 import { ImageUpload } from "@/shared/ui/imageUpload";
 import { Framework } from "@/features/admin/frameworks/model";
 
@@ -61,7 +61,7 @@ export const FrameworkForm: FC<Props> = ({
       <Form.Item
         name="image_url"
         label={t("common.labels.image")}
-        rules={[{ required: true, message: t("common.validation.required") }]}
+        rules={[{ required: false, message: t("common.validation.required") }]}
       >
         <ImageUpload
           label={t("common.labels.uploadImage")}
@@ -84,7 +84,9 @@ export const FrameworkForm: FC<Props> = ({
             name="is_frame"
             valuePropName="checked"
             label={t("common.labels.isFrame")}
-            rules={[{ required: true, message: t("common.validation.required") }]}
+            rules={[
+              { required: true, message: t("common.validation.required") },
+            ]}
           >
             <CSwitch />
           </Form.Item>
@@ -93,7 +95,9 @@ export const FrameworkForm: FC<Props> = ({
             name="is_filler"
             valuePropName="checked"
             label={t("common.labels.isFiller")}
-            rules={[{ required: true, message: t("common.validation.required") }]}
+            rules={[
+              { required: true, message: t("common.validation.required") },
+            ]}
           >
             <CSwitch />
           </Form.Item>

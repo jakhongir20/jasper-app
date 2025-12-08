@@ -9,9 +9,9 @@ import {
 } from "@/features/admin/frameworks/model";
 import { showGlobalToast } from "@/shared/hooks";
 import { Modal } from "@/shared/ui";
-import { useConfiguration } from "@/shared/contexts/ConfigurationContext";
 import { FrameworkForm } from "./FrameworkForm";
 import { useQueryClient } from "@tanstack/react-query";
+import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 
 interface Props {
   open: boolean;
@@ -30,7 +30,7 @@ export const FrameworkEditForm: FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
-  const { getStaticAssetsBaseUrl } = useConfiguration();
+  const { getAssetUrl, baseUrl } = useStaticAssetsUrl();
   const queryClient = useQueryClient();
 
   const { data: framework, isPending: isLoadingDetail } =
@@ -41,6 +41,7 @@ export const FrameworkEditForm: FC<Props> = ({
       showGlobalToast(t("common.messages.frameworkUpdated"), "success");
 
       queryClient.invalidateQueries({ queryKey: ["tableData"] });
+      queryClient.invalidateQueries({ queryKey: ["framework-detail", frameworkId] });
 
       onSuccess();
     },
@@ -63,7 +64,7 @@ export const FrameworkEditForm: FC<Props> = ({
   useEffect(() => {
     if (open && !isLoadingDetail && framework) {
       const fullImageUrl = framework.image_url
-        ? `${getStaticAssetsBaseUrl()}/${framework.image_url}`
+        ? getAssetUrl(framework.image_url)
         : null;
 
       const transformedData = {
@@ -77,7 +78,7 @@ export const FrameworkEditForm: FC<Props> = ({
 
       form.setFieldsValue(transformedData);
     }
-  }, [open, framework, isLoadingDetail, form, getStaticAssetsBaseUrl]);
+  }, [open, framework, isLoadingDetail, form, getAssetUrl]);
 
   const handleSave = () => {
     form.validateFields().then((values) => {
@@ -90,9 +91,9 @@ export const FrameworkEditForm: FC<Props> = ({
         if (imageUrl.startsWith("data:image/")) {
           // Keep base64 as is - it will be handled by the backend
           imageUrl = imageUrl;
-        } else if (imageUrl.startsWith(getStaticAssetsBaseUrl())) {
+        } else if (imageUrl.startsWith(baseUrl)) {
           // Extract relative path from full URL
-          imageUrl = imageUrl.replace(`${getStaticAssetsBaseUrl()}/`, "");
+          imageUrl = imageUrl.replace(`${baseUrl}/`, "");
         }
         // If it's already a relative path, use it as is
       }

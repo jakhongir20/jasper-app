@@ -110,8 +110,13 @@ export const ImageUpload: FC<ImageUploadProps> = ({
     e.stopPropagation();
 
     setImageUrl(undefined);
+
+    if (onChange) {
+      onChange(null); // Update form field value
+    }
+
     if (onImageUpload) {
-      onImageUpload(null); // Pass empty string back to parent
+      onImageUpload(null); // Pass null back to parent
     }
   };
 
