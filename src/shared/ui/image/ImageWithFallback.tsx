@@ -68,8 +68,6 @@ export const ImageWithFallback: FC<ImageWithFallbackProps> = ({
     );
   }
 
-  console.log(src);
-
   return (
     <div className={cn("relative", className)}>
       {loading && (
