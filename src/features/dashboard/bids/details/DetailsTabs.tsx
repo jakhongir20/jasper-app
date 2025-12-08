@@ -17,7 +17,9 @@ interface Props {
 export const ApplicationDetailsTabs: FC<Props> = ({ application, id }) => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const [forecastData, setForecastData] = useState<ApplicationDetail | null>(null);
+  const [forecastData, setForecastData] = useState<ApplicationDetail | null>(
+    null,
+  );
 
   // Get initial active tab from URL or default to "1"
   const initialTab = searchParams.get("tab") || "1";
@@ -43,13 +45,15 @@ export const ApplicationDetailsTabs: FC<Props> = ({ application, id }) => {
     {
       key: "3",
       label: t("tabs.calculationResults"),
-      children: forecastData ? (
-        <CalculationResults application={forecastData} />
-      ) : (
-        <div className="p-8 text-center text-gray-500">
-          {t("common.messages.calculate_first")}
-        </div>
+      children: (
+        // forecastData ?
+        <CalculationResults application={application} />
       ),
+      //   : (
+      //   <div className="p-8 text-center text-gray-500">
+      //     {t("common.messages.calculate_first")}
+      //   </div>
+      // ),
     },
   ];
 

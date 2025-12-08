@@ -90,7 +90,9 @@ export const AddForm: FC<Props> = ({ className }) => {
               (disc) => (disc as Option)?.value ?? disc,
             ),
             uom: (product.uom as Option)?.value ?? product.uom,
-            location: product.location?.[product.location?.length - 1],
+            location:
+              (product.location?.[product.location?.length - 1] as Option)
+                ?.value ?? product.location?.[product.location?.length - 1],
             seria: (product.seria as Option).value ?? product.seria,
             warehouse: general?.warehouse?.value ?? general?.warehouse,
             expiredDate:
