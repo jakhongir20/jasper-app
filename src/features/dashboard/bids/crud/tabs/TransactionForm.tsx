@@ -63,7 +63,7 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
-  options?: { value: string | number; label: string }[];
+  options?: { value: string | number; label: string; }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -74,11 +74,11 @@ type FieldConfig = {
   aliases?: string[];
   disabled?: boolean; // Field is disabled and cannot be edited by user
   params?:
-    | Record<string, string | number | boolean>
-    | ((
-        values: TransactionValues,
-        productType: string,
-      ) => Record<string, string | number | boolean>);
+  | Record<string, string | number | boolean>
+  | ((
+    values: TransactionValues,
+    productType: string,
+  ) => Record<string, string | number | boolean>);
   visible?: (values: TransactionValues, productType: string) => boolean;
 };
 
@@ -1291,11 +1291,11 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   const getRules = (fieldName: string, label: string) =>
     isFieldRequired(fieldName)
       ? [
-          {
-            required: true,
-            message: `Заполните поле «${label}»`,
-          },
-        ]
+        {
+          required: true,
+          message: `Заполните поле «${label}»`,
+        },
+      ]
       : undefined;
 
   useEffect(() => {
@@ -1484,30 +1484,53 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                   ? (search: string) => setLocationSearch(search)
                   : undefined
               }
-              onSelect={(value: string, selectedOption?: any) => {
-                // Per 2.6.9: Auto-fill percent attributes from selected product
-                if (selectedOption) {
-                  // Map product selection fields to their corresponding transaction fields
-                  const autoFillMappings: Record<string, { field: string; sourceKey?: string }> = {
-                    trim_product_id: { field: "percent_trim", sourceKey: "percent" },
-                    molding_product_id: { field: "percent_molding", sourceKey: "percent" },
-                    covering_primary_product_id: { field: "percent_covering_primary", sourceKey: "percent" },
-                    covering_secondary_product_id: { field: "percent_covering_secondary", sourceKey: "percent" },
-                    color_product_id: { field: "percent_color", sourceKey: "percent" },
-                    extra_option_product_id: { field: "percent_extra_option", sourceKey: "percent" },
-                    under_frame_product_id: { field: "under_frame_height", sourceKey: "height" },
-                  };
+              onSelect={(_: string, selectedOption?: any) => {
+                // Auto-fill percent/size attributes directly from the selected product
+                if (!selectedOption) return;
 
-                  const mapping = autoFillMappings[field.name];
-                  if (mapping) {
-                    const sourceKey = mapping.sourceKey || "percent";
-                    const sourceValue = selectedOption[sourceKey];
+                const autoFillMappings: Record<
+                  string,
+                  { field: string; sources: string[]; }
+                > = {
+                  trim_product_id: {
+                    field: "percent_trim",
+                    sources: ["percent", "size"],
+                  },
+                  molding_product_id: {
+                    field: "percent_molding",
+                    sources: ["percent", "size"],
+                  },
+                  covering_primary_product_id: {
+                    field: "percent_covering_primary",
+                    sources: ["percent", "size"],
+                  },
+                  covering_secondary_product_id: {
+                    field: "percent_covering_secondary",
+                    sources: ["percent", "size"],
+                  },
+                  color_product_id: {
+                    field: "percent_color",
+                    sources: ["percent", "size"],
+                  },
+                  extra_option_product_id: {
+                    field: "percent_extra_option",
+                    sources: ["percent", "size"],
+                  },
+                  under_frame_product_id: {
+                    field: "under_frame_height",
+                    sources: ["percent", "height", "size"],
+                  },
+                };
 
-                    // Auto-fill if source value exists
-                    if (sourceValue !== undefined && sourceValue !== null) {
-                      setTransactionField(mapping.field, sourceValue);
-                    }
-                  }
+                const mapping = autoFillMappings[field.name];
+                if (!mapping) return;
+
+                const valueFromSelected = mapping.sources
+                  .map((key) => selectedOption?.[key])
+                  .find((val) => val !== undefined && val !== null);
+
+                if (valueFromSelected !== undefined) {
+                  setTransactionField(mapping.field, valueFromSelected);
                 }
               }}
               onChange={(value) => {
@@ -1618,51 +1641,51 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
           </span>
         </div>
         {combinedSections.map((section) => {
-            const isActive = activeSectionKeys.includes(section.key);
-            return (
-              <Collapse
+          const isActive = activeSectionKeys.includes(section.key);
+          return (
+            <Collapse
+              key={section.key}
+              activeKey={isActive ? [section.key] : []}
+              onChange={(key) => {
+                const open = Array.isArray(key)
+                  ? key.includes(section.key)
+                  : key === section.key;
+                setActiveSectionKeys((prev) => {
+                  const newKeys = open
+                    ? Array.from(new Set([...prev, section.key]))
+                    : prev.filter((value) => value !== section.key);
+
+                  // Update expandAll state based on whether all sections are open
+                  setExpandAll(newKeys.length === combinedSections.length);
+
+                  return newKeys;
+                });
+              }}
+              expandIconPosition="end"
+            >
+              <Collapse.Panel
+                header={
+                  <p className={"!text-medium !text-[#218395]"}>
+                    {section.title ?? "Параметры"}
+                  </p>
+                }
                 key={section.key}
-                activeKey={isActive ? [section.key] : []}
-                onChange={(key) => {
-                  const open = Array.isArray(key)
-                    ? key.includes(section.key)
-                    : key === section.key;
-                  setActiveSectionKeys((prev) => {
-                    const newKeys = open
-                      ? Array.from(new Set([...prev, section.key]))
-                      : prev.filter((value) => value !== section.key);
-
-                    // Update expandAll state based on whether all sections are open
-                    setExpandAll(newKeys.length === combinedSections.length);
-
-                    return newKeys;
-                  });
-                }}
-                expandIconPosition="end"
               >
-                <Collapse.Panel
-                  header={
-                    <p className={"!text-medium !text-[#218395]"}>
-                      {section.title ?? "Параметры"}
-                    </p>
-                  }
-                  key={section.key}
-                >
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {section.fields.map((field) => {
-                      const node = renderField(field);
-                      if (!node) return null;
-                      return (
-                        <Fragment key={`${section.key}-${field.name}`}>
-                          {node}
-                        </Fragment>
-                      );
-                    })}
-                  </div>
-                </Collapse.Panel>
-              </Collapse>
-            );
-          })}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {section.fields.map((field) => {
+                    const node = renderField(field);
+                    if (!node) return null;
+                    return (
+                      <Fragment key={`${section.key}-${field.name}`}>
+                        {node}
+                      </Fragment>
+                    );
+                  })}
+                </div>
+              </Collapse.Panel>
+            </Collapse>
+          );
+        })}
 
         {combinedSections.length === 0 && (
           <div className="text-sm text-gray-500">
@@ -1729,7 +1752,7 @@ const getFieldLabel = (fieldName: string): string => {
 
 export const getUnfilledRequiredFields = (
   values: TransactionValues,
-): Array<{ name: string; label: string }> => {
+): Array<{ name: string; label: string; }> => {
   const productType = resolveProductType(values);
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
 
@@ -1737,7 +1760,7 @@ export const getUnfilledRequiredFields = (
     return [];
   }
 
-  const unfilledFields: Array<{ name: string; label: string }> = [];
+  const unfilledFields: Array<{ name: string; label: string; }> = [];
 
   const checkField = (fieldName: string) => {
     const value = values[fieldName];
