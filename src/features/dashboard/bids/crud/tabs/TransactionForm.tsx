@@ -63,7 +63,7 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
-  options?: { value: string | number; label: string; }[];
+  options?: { value: string | number; label: string }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -74,11 +74,11 @@ type FieldConfig = {
   aliases?: string[];
   disabled?: boolean; // Field is disabled and cannot be edited by user
   params?:
-  | Record<string, string | number | boolean>
-  | ((
-    values: TransactionValues,
-    productType: string,
-  ) => Record<string, string | number | boolean>);
+    | Record<string, string | number | boolean>
+    | ((
+        values: TransactionValues,
+        productType: string,
+      ) => Record<string, string | number | boolean>);
   visible?: (values: TransactionValues, productType: string) => boolean;
 };
 
@@ -1278,11 +1278,11 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   const getRules = (fieldName: string, label: string) =>
     isFieldRequired(fieldName)
       ? [
-        {
-          required: true,
-          message: `Заполните поле «${label}»`,
-        },
-      ]
+          {
+            required: true,
+            message: `Заполните поле «${label}»`,
+          },
+        ]
       : undefined;
 
   useEffect(() => {
@@ -1406,7 +1406,8 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
       "hinge_quantity",
       "door_bolt_quantity",
     ];
-    const isDisabledInEdit = mode === "edit" && disabledInEditFields.includes(field.name);
+    const isDisabledInEdit =
+      mode === "edit" && disabledInEditFields.includes(field.name);
     const isFieldDisabled = field.disabled || isDisabledInEdit;
 
     switch (field.type) {
@@ -1467,7 +1468,18 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
         );
       case "selectInfinitive":
         return (
-          <Form.Item name={namePath} label={field.label} rules={rules}>
+          <Form.Item
+            name={namePath}
+            label={field.label}
+            rules={rules}
+            getValueFromEvent={(value) => {
+              // Extract just the ID value for location field
+              if (field.name === "location" && typeof value === "object") {
+                return value?.[field.valueKey ?? "location_id"];
+              }
+              return value;
+            }}
+          >
             <SelectInfinitive
               placeholder={field.placeholder}
               queryKey={field.queryKey}
@@ -1497,7 +1509,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
 
                 const autoFillMappings: Record<
                   string,
-                  { field: string; sources: string[]; }
+                  { field: string; sources: string[] }
                 > = {
                   trim_product_id: {
                     field: "percent_trim",
@@ -1525,7 +1537,12 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                   },
                   under_frame_product_id: {
                     field: "under_frame_height",
-                    sources: ["under_frame_height", "height", "percent", "size"],
+                    sources: [
+                      "under_frame_height",
+                      "height",
+                      "percent",
+                      "size",
+                    ],
                   },
                 };
 
@@ -1760,7 +1777,7 @@ const getFieldLabel = (fieldName: string): string => {
 
 export const getUnfilledRequiredFields = (
   values: TransactionValues,
-): Array<{ name: string; label: string; }> => {
+): Array<{ name: string; label: string }> => {
   const productType = resolveProductType(values);
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
 
@@ -1768,7 +1785,7 @@ export const getUnfilledRequiredFields = (
     return [];
   }
 
-  const unfilledFields: Array<{ name: string; label: string; }> = [];
+  const unfilledFields: Array<{ name: string; label: string }> = [];
 
   const checkField = (fieldName: string) => {
     const value = values[fieldName];
