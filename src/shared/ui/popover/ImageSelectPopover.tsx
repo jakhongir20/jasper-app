@@ -34,6 +34,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
   onChange,
   placeholder = "",
   params,
+  disabled = false,
 }: {
   fetchUrl: string;
   labelKey: string;
@@ -44,6 +45,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
   onChange: (item: T) => void;
   params?: Record<string, unknown>;
   placeholder?: string;
+  disabled?: boolean;
 }) => {
   const { t } = useTranslation();
   const { getAssetUrl } = useStaticAssetsUrl();
@@ -260,10 +262,11 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
     <>
       <div
         className={cn(
-          "flex h-24 cursor-pointer items-center justify-center overflow-hidden rounded border border-gray-700 p-2",
+          "flex h-24 items-center justify-center overflow-hidden rounded border border-gray-700 p-2",
           selectedItem?.[valueKey] ? "w-36" : "w-full",
+          disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
         )}
-        onClick={() => handleOpenChange(true)}
+        onClick={() => !disabled && handleOpenChange(true)}
       >
         {selectedItem ? (
           <ImageWithFallback

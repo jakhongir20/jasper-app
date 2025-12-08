@@ -1392,12 +1392,30 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
     const namePath = ["transactions", 0, field.name] as (string | number)[];
     const rules = getRules(field.name, field.label);
 
+    // Fields that should be disabled in edit mode
+    const disabledInEditFields = [
+      "under_frame_product_id",
+      "under_frame_quantity",
+      "under_frame_height",
+      "up_frame_product_id",
+      "up_frame_quantity",
+      "door_lock_product_id",
+      "glass_product_id",
+      "glass_quantity",
+      "door_lock_quantity",
+      "hinge_quantity",
+      "door_bolt_quantity",
+    ];
+    const isDisabledInEdit = mode === "edit" && disabledInEditFields.includes(field.name);
+    const isFieldDisabled = field.disabled || isDisabledInEdit;
+
     switch (field.type) {
       case "text":
         return (
           <Form.Item name={namePath} label={field.label} rules={rules}>
             <Input
               placeholder={field.placeholder}
+              disabled={isFieldDisabled}
               onChange={(event) => {
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
@@ -1415,7 +1433,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               type="number"
               step={field.numberStep ?? 0.01}
               placeholder={field.placeholder}
-              disabled={field.disabled}
+              disabled={isFieldDisabled}
               onChange={(event) => {
                 const rawValue = event.target.value;
                 const normalized =
@@ -1436,6 +1454,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               placeholder={field.placeholder}
               options={field.options}
               allowClear={field.allowClear}
+              disabled={isFieldDisabled}
               onChange={(value) => {
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
@@ -1453,6 +1472,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               placeholder={field.placeholder}
               queryKey={field.queryKey}
               fetchUrl={field.fetchUrl}
+              disabled={isFieldDisabled}
               params={
                 // Per 2.6.4: For location field, add query param for search
                 field.name === "location"
@@ -1551,6 +1571,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               labelKey={(field.labelKey ?? "name") as string}
               imageKey={field.imageKey}
               valueKey={(field.valueKey ?? "framework_id") as string}
+              disabled={isFieldDisabled}
               onChange={(item) => {
                 const value = item?.[field.valueKey ?? "framework_id"];
                 if (field.aliases) {
