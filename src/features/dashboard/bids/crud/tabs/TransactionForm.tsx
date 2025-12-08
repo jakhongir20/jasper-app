@@ -101,17 +101,6 @@ const ALWAYS_REQUIRED_FIELDS: string[] = ["product_type"];
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
 
-// Door-window visibility/requirement rules
-const DOOR_WINDOW_REQUIRED_FIELDS = new Set<string>([
-  "box_width",
-  "door_product_id",
-  "sheathing_product_id",
-  "glass_product_id",
-  "door_lock_product_id",
-  "hinge_product_id",
-  "door_bolt_product_id",
-]);
-
 const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "transom",
@@ -863,43 +852,6 @@ const ALL_SECTIONS: SectionConfig[] = [
   },
 ];
 
-const DOOR_WINDOW_OPTIONAL_SECTION_KEYS = new Set<string>([
-  "transom",
-  "crown",
-  "up-frame",
-  "under-frame",
-  "trim",
-  "molding",
-  "covering-primary",
-  "covering-secondary",
-  "color",
-  "floor-skirting",
-  "heated-floor",
-  "door-stopper",
-  "anti-threshold",
-  "extra-options",
-]);
-
-const DOOR_WINDOW_REQUIRED_SECTION_KEYS = new Set(
-  ALL_SECTIONS.filter((section) =>
-    section.fields.some((field) => DOOR_WINDOW_REQUIRED_FIELDS.has(field.name)),
-  ).map((section) => section.key),
-);
-
-const DOOR_WINDOW_OPTIONAL_FIELDS = new Set(
-  ALL_SECTIONS.flatMap((section) =>
-    DOOR_WINDOW_OPTIONAL_SECTION_KEYS.has(section.key)
-      ? section.fields.map((f) => f.name)
-      : [],
-  ),
-);
-
-const DOOR_WINDOW_ALLOWED_FIELDS = new Set<string>([
-  "product_type",
-  ...DOOR_WINDOW_REQUIRED_FIELDS,
-  ...DOOR_WINDOW_OPTIONAL_FIELDS,
-]);
-
 const getSectionsForProductType = (productType: string) =>
   ALL_SECTIONS.filter((section) => {
     if (
@@ -911,19 +863,26 @@ const getSectionsForProductType = (productType: string) =>
     return section.allowedProductTypes.includes(productType);
   });
 
+const DEFAULT_PRODUCT_SECTIONS: SectionConfig[] = ALL_SECTIONS;
+
 const resolveProductType = (values: TransactionValues) =>
   ((values.product_type ?? values.door_type) as string | undefined) ?? "";
 
 const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   "door-window": [
-    // Only required fields per business rule
-    "box_width",
-    "door_product_id",
-    "sheathing_product_id",
-    "glass_product_id",
-    "door_lock_product_id",
-    "hinge_product_id",
-    "door_bolt_product_id",
+    // Measurement fields (required for all)
+    "opening_height",
+    "opening_width",
+    "opening_thickness",
+    "entity_quantity",
+    // Required modelling fields per 2.4.1
+    "box_width", // Ширина коробки
+    "door_product_id", // Модель двери
+    "glass_product_id", // Модель стекла
+    "door_lock_product_id", // Модель замка
+    "hinge_product_id", // Модель петель
+    "door_bolt_product_id", // Модель шпингалета
+    "sheathing_product_id", // Модель обшивки
   ],
   "door-deaf": [
     // Measurement fields (required for all)
@@ -1294,19 +1253,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   const productType = resolveProductType(transactionValues);
 
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
-  const sections = useMemo(() => {
-    const base = config?.sections ?? [];
-
-    if (productType === "door-window") {
-      const allowedSectionKeys = new Set<string>([
-        ...DOOR_WINDOW_OPTIONAL_SECTION_KEYS,
-        ...DOOR_WINDOW_REQUIRED_SECTION_KEYS,
-      ]);
-      return base.filter((section) => allowedSectionKeys.has(section.key));
-    }
-
-    return base;
-  }, [config, productType]);
+  const sections = useMemo(() => config?.sections ?? [], [config]);
   const [activeSectionKeys, setActiveSectionKeys] = useState<string[]>([]);
   const [locationSearch, setLocationSearch] = useState<string>(""); // Per 2.6.4: Track location search term
   const [expandAll, setExpandAll] = useState<boolean>(false);
@@ -1451,13 +1398,6 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   }, [drawerOpen, mode]);
 
   const renderField = (field: FieldConfig) => {
-    if (
-      productType === "door-window" &&
-      !DOOR_WINDOW_ALLOWED_FIELDS.has(field.name)
-    ) {
-      return null;
-    }
-
     if (field.visible && !field.visible(transactionValues, productType)) {
       return null;
     }
