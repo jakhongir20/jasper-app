@@ -2,19 +2,19 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Descriptions, Space, Button } from "antd";
 import { cn } from "@/shared/helpers";
-import { Molding } from "@/features/admin/moldings/model";
+import { Framework } from "@/features/admin/frameworks/model";
 import { ImageWithFallback } from "@/shared/ui/image/ImageWithFallback";
 import { useConfiguration } from "@/shared/contexts/ConfigurationContext";
 
 interface Props {
-  molding: Molding;
+  framework: Framework;
   className?: string;
   onEdit?: () => void;
   onClose?: () => void;
 }
 
-export const MoldingDetails: FC<Props> = ({
-  molding,
+export const FrameworkDetails: FC<Props> = ({
+  framework,
   className,
   onEdit,
   onClose,
@@ -26,7 +26,7 @@ export const MoldingDetails: FC<Props> = ({
     <div className={cn("px-4", className)}>
       <div className="mb-6 flex items-center justify-between">
         <h4 className="text-xl font-semibold text-gray-900">
-          {t("common.labels.moldingDetails")}
+          {t("common.labels.frameworkDetails")}
         </h4>
         <Space>
           {onClose && (
@@ -42,28 +42,28 @@ export const MoldingDetails: FC<Props> = ({
 
       <div className="rounded-lg bg-white p-6 shadow">
         <Descriptions
-          title={t("common.labels.moldingInformation")}
+          title={t("common.labels.frameworkInformation")}
           bordered
           column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
         >
           <Descriptions.Item label={t("common.labels.id")}>
-            {molding.framework_id}
+            {framework.framework_id}
           </Descriptions.Item>
           <Descriptions.Item label={t("common.labels.name")}>
-            {molding.name}
+            {framework.name}
           </Descriptions.Item>
           <Descriptions.Item label={t("common.labels.order")}>
-            {molding.order_number}
+            {framework.order_number}
           </Descriptions.Item>
           <Descriptions.Item label={t("common.labels.image")}>
             <div className="flex items-center gap-4">
               <ImageWithFallback
                 src={
-                  molding.image_url
-                    ? `${getStaticAssetsBaseUrl()}/${molding.image_url}`
+                  framework.image_url
+                    ? `${getStaticAssetsBaseUrl()}/${framework.image_url}`
                     : null
                 }
-                alt={molding.name}
+                alt={framework.name}
                 className="h-20 w-20 rounded-lg border border-gray-200"
                 fallbackText={t("common.labels.noImage")}
                 fallbackClassName="h-20 w-20 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-sm text-gray-500"
@@ -71,11 +71,11 @@ export const MoldingDetails: FC<Props> = ({
               />
               <div className="flex flex-col">
                 <span className="text-sm font-medium text-gray-700">
-                  {molding.image_url
+                  {framework.image_url
                     ? t("common.messages.imageUploaded")
                     : t("common.messages.noImageAvailable")}
                 </span>
-                {molding.image_url && (
+                {framework.image_url && (
                   <span className="text-xs text-gray-500">
                     {t("common.messages.clickToViewFullSize")}
                   </span>
@@ -83,9 +83,9 @@ export const MoldingDetails: FC<Props> = ({
               </div>
             </div>
           </Descriptions.Item>
-          {molding.created_at && (
+          {framework.created_at && (
             <Descriptions.Item label={t("common.labels.createdAt")}>
-              {new Date(molding.created_at * 1000).toLocaleDateString()}
+              {new Date(framework.created_at * 1000).toLocaleDateString()}
             </Descriptions.Item>
           )}
         </Descriptions>
@@ -94,4 +94,4 @@ export const MoldingDetails: FC<Props> = ({
   );
 };
 
-export default MoldingDetails;
+export default FrameworkDetails;

@@ -5,27 +5,27 @@ import { useMemo, useCallback } from "react";
 import { CDate } from "@/shared/ui";
 import { ImageWithFallback } from "@/shared/ui/image/ImageWithFallback";
 import { TableAction } from "@/shared/ui/table/action/TableAction";
-import { Molding } from "@/features/admin/moldings";
+import { Framework } from "@/features/admin/frameworks";
 
 export const columns = (
   t: TFunction<"translation", undefined>,
   options: {
-    onOpenDelete: (data: Molding) => void;
-    onOpenEdit: (data: Molding) => void;
+    onOpenDelete: (data: Framework) => void;
+    onOpenEdit: (data: Framework) => void;
     canEdit: boolean;
     canDelete: boolean;
     baseUrl: string;
   },
-): ColumnType<Molding>[] => {
+): ColumnType<Framework>[] => {
   // Render functions
-  const renderImage = (imageUrl: string | undefined, record: Molding) => {
+  const renderImage = (imageUrl: string | undefined, record: Framework) => {
     const fullImageUrl = imageUrl ? `${options.baseUrl}/${imageUrl}` : null;
 
     return (
       <div className="flex h-12 w-12 items-center justify-center">
         <ImageWithFallback
           src={fullImageUrl}
-          alt={record?.name || "Molding"}
+          alt={record?.name || "Framework"}
           className="h-12 w-12 rounded object-cover"
           fallbackText="No Image"
           fallbackClassName="h-12 w-12 rounded bg-gray-50 border border-gray-800 flex items-center justify-center text-xs text-gray-500"
@@ -76,7 +76,7 @@ export const columns = (
             dataIndex: "action",
             fixed: "right" as const,
             width: 120,
-            render: (_: unknown, record: Molding) => {
+            render: (_: unknown, record: Framework) => {
               return (
                 <TableAction
                   showDelete={options.canDelete}

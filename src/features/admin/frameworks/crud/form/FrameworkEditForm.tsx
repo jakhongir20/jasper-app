@@ -3,29 +3,29 @@ import { type FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/helpers";
 import {
-  useUpdateMolding,
-  useMoldingDetail,
-  UpdateMoldingPayload,
-} from "@/features/admin/moldings/model";
+  useUpdateFramework,
+  useFrameworkDetail,
+  UpdateFrameworkPayload,
+} from "@/features/admin/frameworks/model";
 import { showGlobalToast } from "@/shared/hooks";
 import { Modal } from "@/shared/ui";
 import { useConfiguration } from "@/shared/contexts/ConfigurationContext";
-import { MoldingForm } from "./MoldingForm";
+import { FrameworkForm } from "./FrameworkForm";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   open: boolean;
   onCancel: () => void;
   onSuccess: () => void;
-  moldingId: number;
+  frameworkId: number;
   className?: string;
 }
 
-export const MoldingEditForm: FC<Props> = ({
+export const FrameworkEditForm: FC<Props> = ({
   open,
   onCancel,
   onSuccess,
-  moldingId,
+  frameworkId,
   className,
 }) => {
   const [form] = Form.useForm();
@@ -33,12 +33,12 @@ export const MoldingEditForm: FC<Props> = ({
   const { getStaticAssetsBaseUrl } = useConfiguration();
   const queryClient = useQueryClient();
 
-  const { data: molding, isPending: isLoadingDetail } =
-    useMoldingDetail(moldingId);
+  const { data: framework, isPending: isLoadingDetail } =
+    useFrameworkDetail(frameworkId);
 
-  const { mutate, isPending: isLoading } = useUpdateMolding({
+  const { mutate, isPending: isLoading } = useUpdateFramework({
     onSuccess: () => {
-      showGlobalToast(t("common.messages.moldingUpdated"), "success");
+      showGlobalToast(t("common.messages.frameworkUpdated"), "success");
 
       queryClient.invalidateQueries({ queryKey: ["tableData"] });
 
@@ -46,7 +46,7 @@ export const MoldingEditForm: FC<Props> = ({
     },
     onError: (error: any) => {
       showGlobalToast(
-        error?.message || t("common.messages.moldingUpdateFailed"),
+        error?.message || t("common.messages.frameworkUpdateFailed"),
         "error",
       );
     },
@@ -61,23 +61,23 @@ export const MoldingEditForm: FC<Props> = ({
 
   // Set form values when detail data is loaded
   useEffect(() => {
-    if (open && !isLoadingDetail && molding) {
-      const fullImageUrl = molding.image_url
-        ? `${getStaticAssetsBaseUrl()}/${molding.image_url}`
+    if (open && !isLoadingDetail && framework) {
+      const fullImageUrl = framework.image_url
+        ? `${getStaticAssetsBaseUrl()}/${framework.image_url}`
         : null;
 
       const transformedData = {
-        name: molding.name,
+        name: framework.name,
         image_url: fullImageUrl,
-        order_number: molding.order_number,
-        doorway_type: molding.doorway_type,
-        is_frame: molding.is_frame,
-        is_filler: molding.is_filler,
+        order_number: framework.order_number,
+        doorway_type: framework.doorway_type,
+        is_frame: framework.is_frame,
+        is_filler: framework.is_filler,
       };
 
       form.setFieldsValue(transformedData);
     }
-  }, [open, molding, isLoadingDetail, form, getStaticAssetsBaseUrl]);
+  }, [open, framework, isLoadingDetail, form, getStaticAssetsBaseUrl]);
 
   const handleSave = () => {
     form.validateFields().then((values) => {
@@ -97,7 +97,7 @@ export const MoldingEditForm: FC<Props> = ({
         // If it's already a relative path, use it as is
       }
 
-      const payload: UpdateMoldingPayload = {
+      const payload: UpdateFrameworkPayload = {
         name: values.name,
         image_url: imageUrl,
         order_number: values.order_number,
@@ -106,7 +106,7 @@ export const MoldingEditForm: FC<Props> = ({
         is_filler: values.is_filler,
       };
 
-      mutate({ moldingId, payload });
+      mutate({ frameworkId, payload });
     });
   };
 
@@ -118,7 +118,7 @@ export const MoldingEditForm: FC<Props> = ({
   if (isLoadingDetail) {
     return (
       <Modal
-        title={t("common.labels.editMolding")}
+        title={t("common.labels.editFramework")}
         open={open}
         onCancel={handleCancel}
         width={600}
@@ -130,17 +130,17 @@ export const MoldingEditForm: FC<Props> = ({
     );
   }
 
-  if (!molding) {
+  if (!framework) {
     return (
       <Modal
-        title={t("common.labels.editMolding")}
+        title={t("common.labels.editFramework")}
         open={open}
         onCancel={handleCancel}
         width={600}
       >
         <div className="flex h-32 items-center justify-center">
           <div className="text-lg text-red-500">
-            {t("common.messages.moldingNotFound")}
+            {t("common.messages.frameworkNotFound")}
           </div>
         </div>
       </Modal>
@@ -149,7 +149,7 @@ export const MoldingEditForm: FC<Props> = ({
 
   return (
     <Modal
-      title={t("common.labels.editMolding")}
+      title={t("common.labels.editFramework")}
       open={open}
       onCancel={handleCancel}
       onSave={handleSave}
@@ -164,7 +164,7 @@ export const MoldingEditForm: FC<Props> = ({
         className={cn(className)}
         scrollToFirstError
       >
-        <MoldingForm isEdit={true} />
+        <FrameworkForm isEdit={true} />
       </Form>
     </Modal>
   );

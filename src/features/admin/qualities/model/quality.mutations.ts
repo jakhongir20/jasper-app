@@ -1,49 +1,51 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ColorService } from "./color.service";
-import { CreateColorPayload, UpdateColorPayload } from "./model.types";
+import { QualityService } from "./quality.service";
+import { CreateQualityPayload, UpdateQualityPayload } from "./model.types";
 
-export const useCreateColor = (options?: {
+export const useCreateQuality = (options?: {
   onSuccess?: () => void;
   onError?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateColorPayload) => ColorService.create(payload),
+    mutationFn: (payload: CreateQualityPayload) => QualityService.create(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      queryClient.invalidateQueries({ queryKey: ["qualities"] });
+      queryClient.invalidateQueries({ queryKey: ["tableData"] });
       options?.onSuccess?.();
     },
     onError: options?.onError,
   });
 };
 
-export const useUpdateColor = (options?: {
+export const useUpdateQuality = (options?: {
   onSuccess?: () => void;
   onError?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: UpdateColorPayload) => ColorService.update(payload),
+    mutationFn: (payload: UpdateQualityPayload) => QualityService.update(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      queryClient.invalidateQueries({ queryKey: ["qualities"] });
+      queryClient.invalidateQueries({ queryKey: ["tableData"] });
       options?.onSuccess?.();
     },
     onError: options?.onError,
   });
 };
 
-export const useDeleteColor = (options?: {
+export const useDeleteQuality = (options?: {
   onSuccess?: () => void;
   onError?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (colorId: number) => ColorService.delete(colorId),
+    mutationFn: (qualityId: number) => QualityService.delete(qualityId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      queryClient.invalidateQueries({ queryKey: ["qualities"] });
       queryClient.invalidateQueries({ queryKey: ["tableData"] });
       options?.onSuccess?.();
     },

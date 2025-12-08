@@ -3,26 +3,26 @@ import { useTranslation } from "react-i18next";
 import type { FC } from "react";
 import { useToast } from "@/shared/hooks";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteMolding } from "@/features/admin/moldings/model/molding.mutations";
+import { useDeleteFramework } from "@/features/admin/frameworks/model/framework.mutations";
 
 interface Props {
   open: boolean;
   closeModal: () => void;
-  moldingId: number;
+  frameworkId: number;
   submit?: () => void;
 }
 
 export const DeleteAction: FC<Props> = ({
   open,
   closeModal,
-  moldingId,
+  frameworkId,
   submit,
 }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { mutate, isPending: isLoading } = useDeleteMolding({
+  const { mutate, isPending: isLoading } = useDeleteFramework({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["tableData"],
@@ -34,15 +34,15 @@ export const DeleteAction: FC<Props> = ({
     },
     onError: (error: any) => {
       toast(
-        error?.message || t("common.messages.moldingDeleteFailed"),
+        error?.message || t("common.messages.frameworkDeleteFailed"),
         "error",
       );
     },
   });
 
   const handleDelete = async () => {
-    if (moldingId) {
-      mutate(moldingId);
+    if (frameworkId) {
+      mutate(frameworkId);
     }
   };
 

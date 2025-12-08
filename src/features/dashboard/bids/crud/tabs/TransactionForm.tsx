@@ -1594,21 +1594,14 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
 
       <Divider />
 
-      {!productType && (
-        <div className="py-8 text-center text-gray-500">
-          Выберите тип продукта для активации этапа моделирования
+      <div className="space-y-4">
+        <div className="mb-4 flex items-center gap-2">
+          <CSwitch checked={expandAll} onChange={handleExpandAllToggle} />
+          <span className="text-sm text-gray-400">
+            {expandAll ? "Свернуть все секции" : "Развернуть все секции"}
+          </span>
         </div>
-      )}
-
-      {productType && (
-        <div className="space-y-4">
-          <div className="mb-4 flex items-center gap-2">
-            <CSwitch checked={expandAll} onChange={handleExpandAllToggle} />
-            <span className="text-sm text-gray-400">
-              {expandAll ? "Свернуть все секции" : "Развернуть все секции"}
-            </span>
-          </div>
-          {combinedSections.map((section) => {
+        {combinedSections.map((section) => {
             const isActive = activeSectionKeys.includes(section.key);
             return (
               <Collapse
@@ -1655,15 +1648,14 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
             );
           })}
 
-          {combinedSections.length === 0 && productType && (
-            <div className="text-sm text-gray-500">
-              {
-                "Для выбранного типа продукта дополнительных полей пока не настроено."
-              }
-            </div>
-          )}
-        </div>
-      )}
+        {combinedSections.length === 0 && (
+          <div className="text-sm text-gray-500">
+            {productType
+              ? "Для выбранного типа продукта дополнительных полей пока не настроено."
+              : "Выберите тип продукта для активации этапа моделирования"}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-// Moldings pages - using modal-based approach
-export { default as MoldingsListPage } from "./list/Page";
-export { default as MoldingsAddPage } from "./add/Page";
-export { default as MoldingsEditPage } from "./edit/Page";
-export { default as MoldingsDetailsPage } from "./details/Page";
+// Frameworks pages - using modal-based approach
+export { default as FrameworksListPage } from "./list/Page";
+export { default as FrameworksAddPage } from "./add/Page";
+export { default as FrameworksEditPage } from "./edit/Page";
+export { default as FrameworksDetailsPage } from "./details/Page";

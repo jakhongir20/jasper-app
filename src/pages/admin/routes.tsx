@@ -40,6 +40,15 @@ const moduleImports = {
     add: () => import("@/pages/admin/frameworks/add/Page"),
     edit: () => import("@/pages/admin/frameworks/edit/Page"),
   },
+  services: {
+    list: () => import("@/pages/admin/services/list/Page"),
+  },
+  factoryStatuses: {
+    list: () => import("@/pages/admin/factory-statuses/list/Page"),
+  },
+  qualities: {
+    list: () => import("@/pages/admin/qualities/list/Page"),
+  },
 };
 
 function createModuleRoutes(module: {
@@ -106,6 +115,9 @@ const modules = (
     // { name: "colors", title: "navigation.colors", icon: "badge-percent" },
     { name: "categories", title: "navigation.categories", icon: "layer-group" },
     { name: "frameworks", title: "navigation.frameworks", icon: "manufacture" },
+    { name: "services", title: "navigation.services", icon: "wrench" },
+    { name: "qualities", title: "navigation.qualities", icon: "star" },
+    { name: "factoryStatuses", title: "navigation.factoryStatuses", icon: "factory" },
   ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
 

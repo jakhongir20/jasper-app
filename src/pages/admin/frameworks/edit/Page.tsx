@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function MoldingEditPage() {
+export default function FrameworkEditPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to main moldings page since we use modals now
-    navigate("/admin/moldings");
+    // Redirect to main frameworks page since we use modals now
+    navigate("/admin/frameworks");
   }, [navigate]);
 
   return null;

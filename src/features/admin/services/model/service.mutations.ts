@@ -1,49 +1,51 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ColorService } from "./color.service";
-import { CreateColorPayload, UpdateColorPayload } from "./model.types";
+import { ServiceService } from "./service.service";
+import { CreateServicePayload, UpdateServicePayload } from "./model.types";
 
-export const useCreateColor = (options?: {
+export const useCreateService = (options?: {
   onSuccess?: () => void;
   onError?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateColorPayload) => ColorService.create(payload),
+    mutationFn: (payload: CreateServicePayload) => ServiceService.create(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
+      queryClient.invalidateQueries({ queryKey: ["tableData"] });
       options?.onSuccess?.();
     },
     onError: options?.onError,
   });
 };
 
-export const useUpdateColor = (options?: {
+export const useUpdateService = (options?: {
   onSuccess?: () => void;
   onError?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: UpdateColorPayload) => ColorService.update(payload),
+    mutationFn: (payload: UpdateServicePayload) => ServiceService.update(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
+      queryClient.invalidateQueries({ queryKey: ["tableData"] });
       options?.onSuccess?.();
     },
     onError: options?.onError,
   });
 };
 
-export const useDeleteColor = (options?: {
+export const useDeleteService = (options?: {
   onSuccess?: () => void;
   onError?: (error: any) => void;
 }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (colorId: number) => ColorService.delete(colorId),
+    mutationFn: (serviceId: number) => ServiceService.delete(serviceId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
       queryClient.invalidateQueries({ queryKey: ["tableData"] });
       options?.onSuccess?.();
     },
