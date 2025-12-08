@@ -171,11 +171,11 @@ export const buildTransactionPayload = (
   opening_thickness: toNullableNumber(transaction.opening_thickness),
   entity_quantity: toNullableNumber(transaction.entity_quantity),
   front_framework_id: extractId(
-    transaction.front_framework_id ?? transaction.framework_front_id,
+    transaction.front_framework_id ?? transaction.framework_front_id ?? transaction.frame_front_id,
     ["framework_id", "product_id", "id", "value"]
   ),
   back_framework_id: extractId(
-    transaction.back_framework_id ?? transaction.framework_back_id,
+    transaction.back_framework_id ?? transaction.framework_back_id ?? transaction.frame_back_id,
     ["framework_id", "product_id", "id", "value"]
   ),
   threshold: normalizeString(transaction.threshold),
