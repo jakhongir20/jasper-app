@@ -1,10 +1,11 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect, useMemo } from "react";
 import type { UploadFile, UploadProps } from "antd";
 import { Upload, message as antdMessage } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/shared/hooks";
 import { ApiService } from "@/shared/lib/services";
+import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 
 interface MultipleImageUploadProps {
   value?: UploadFile[];
@@ -38,9 +39,36 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
 }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { getAssetUrl } = useStaticAssetsUrl();
   const [fileList, setFileList] = useState<UploadFile[]>(value);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
+
+  // Helper to get full URL with base URL
+  const getDisplayUrl = (url?: string): string | undefined => {
+    if (!url) return undefined;
+
+    // If it's a base64 string or full URL, use as is
+    if (url.startsWith("data:image/") || url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+
+    // Otherwise, prepend base URL
+    return getAssetUrl(url);
+  };
+
+  // Process fileList to add full URLs for display
+  const displayFileList = useMemo(() => {
+    return fileList.map((file) => {
+      if (file.url && !file.url.startsWith("data:image/") && !file.url.startsWith("http")) {
+        return {
+          ...file,
+          url: getDisplayUrl(file.url),
+        };
+      }
+      return file;
+    });
+  }, [fileList, getAssetUrl]);
 
   const beforeUpload = (file: FileType) => {
     const isAllowedFormat = allowedFormats.includes(file.type);
@@ -104,7 +132,8 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
       file.preview = await getBase64(file.originFileObj as FileType);
     }
 
-    setPreviewImage(file.url || (file.preview as string));
+    const previewUrl = getDisplayUrl(file.url) || (file.preview as string);
+    setPreviewImage(previewUrl);
     setPreviewOpen(true);
   };
 
@@ -119,7 +148,7 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
     <>
       <Upload
         listType="picture-card"
-        fileList={fileList}
+        fileList={displayFileList}
         beforeUpload={beforeUpload}
         onChange={handleChange}
         onPreview={handlePreview}

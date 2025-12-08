@@ -1,11 +1,12 @@
 import type { ColumnType } from "antd/es/table";
 import { TFunction } from "i18next";
-import { useMemo, useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { CDate } from "@/shared/ui";
 import { ImageWithFallback } from "@/shared/ui/image/ImageWithFallback";
 import { TableAction } from "@/shared/ui/table/action/TableAction";
 import { Framework } from "@/features/admin/frameworks";
+import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 
 export const columns = (
   t: TFunction<"translation", undefined>,
@@ -14,12 +15,13 @@ export const columns = (
     onOpenEdit: (data: Framework) => void;
     canEdit: boolean;
     canDelete: boolean;
-    baseUrl: string;
   },
 ): ColumnType<Framework>[] => {
+  const { getAssetUrl } = useStaticAssetsUrl();
+
   // Render functions
   const renderImage = (imageUrl: string | undefined, record: Framework) => {
-    const fullImageUrl = imageUrl ? `${options.baseUrl}/${imageUrl}` : null;
+    const fullImageUrl = imageUrl ? getAssetUrl(imageUrl) : null;
 
     return (
       <div className="flex h-12 w-12 items-center justify-center">
@@ -71,23 +73,23 @@ export const columns = (
       },
       ...(options.canDelete || options.canEdit
         ? [
-          {
-            title: null,
-            dataIndex: "action",
-            fixed: "right" as const,
-            width: 120,
-            render: (_: unknown, record: Framework) => {
-              return (
-                <TableAction
-                  showDelete={options.canDelete}
-                  showEdit={options.canEdit}
-                  onDelete={() => options.onOpenDelete(record)}
-                  onEdit={() => options.onOpenEdit(record)}
-                />
-              );
+            {
+              title: null,
+              dataIndex: "action",
+              fixed: "right" as const,
+              width: 120,
+              render: (_: unknown, record: Framework) => {
+                return (
+                  <TableAction
+                    showDelete={options.canDelete}
+                    showEdit={options.canEdit}
+                    onDelete={() => options.onOpenDelete(record)}
+                    onEdit={() => options.onOpenEdit(record)}
+                  />
+                );
+              },
             },
-          },
-        ]
+          ]
         : []),
     ],
     [t, options],

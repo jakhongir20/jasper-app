@@ -9,7 +9,6 @@ import {
 } from "@/features/admin/frameworks";
 import { TableWrapper, ContentInner, Modal } from "@/shared/ui";
 import { useTableFetch } from "@/shared/hooks";
-import { useConfiguration } from "@/shared/contexts/ConfigurationContext";
 import { columns } from "./TableColumn";
 
 export default function Page() {
@@ -17,7 +16,6 @@ export default function Page() {
     useTableFetch<Framework>("/framework/all");
 
   const { t } = useTranslation();
-  const { getStaticAssetsBaseUrl } = useConfiguration();
 
   // Modal states
   const [openAdd, setOpenAdd] = useState(false);
@@ -62,7 +60,6 @@ export default function Page() {
           onOpenEdit: handleEdit,
           canEdit: true,
           canDelete: true,
-          baseUrl: getStaticAssetsBaseUrl(),
         })}
         noFilter
         pagination={false}

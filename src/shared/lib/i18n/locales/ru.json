@@ -246,6 +246,8 @@
       "editMolding": "Редактировать молдинг",
       "uploadImage": "Загрузить изображение",
       "doorType": "Тип двери",
+      "addFramework": "Добавить каркас",
+      "editFramework": "Изменить каркас",
       "product_id": "Продукт",
       "veneer_type": "Тип шпона",
       "customerName": "Имя клиента",
@@ -318,7 +320,6 @@
       "glass": "Стекло",
       "services": "Услуги",
       "baseboards": "Плинтусы",
-
       "lining_number": "Обклад",
       "frame_front": "Каркас лицо",
       "frame_back": "Каркас зад",
@@ -982,7 +983,6 @@
       "newArrivals": "Новые поступления"
     }
   },
-
   "production_amount": "Сумма производства",
   "total_to_pay": "Всего к оплате",
   "remaining_to_pay": "Остаток к оплате",

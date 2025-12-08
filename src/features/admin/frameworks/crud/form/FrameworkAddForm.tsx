@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/helpers";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  useCreateFramework,
   CreateFrameworkPayload,
+  useCreateFramework,
 } from "@/features/admin/frameworks/model";
 import { showGlobalToast } from "@/shared/hooks";
 import { Modal } from "@/shared/ui";
@@ -27,6 +27,8 @@ export const FrameworkAddForm: FC<Props> = ({
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+
+  const title = t("common.labels.addFramework");
 
   const { mutate, isPending: isLoading } = useCreateFramework({
     onSuccess: () => {
@@ -58,7 +60,7 @@ export const FrameworkAddForm: FC<Props> = ({
 
         mutate(payload);
       })
-      .catch((errorInfo) => { });
+      .catch((errorInfo) => {});
   };
 
   const handleCancel = () => {
@@ -68,7 +70,7 @@ export const FrameworkAddForm: FC<Props> = ({
 
   return (
     <Modal
-      title={t("common.labels.addFramework")}
+      title={title}
       open={open}
       onCancel={handleCancel}
       onSave={handleSave}

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import type { UploadProps } from "antd";
 import { Upload } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -6,6 +6,7 @@ import { Icon } from "@/shared/ui";
 import { useTranslation } from "react-i18next";
 import "./index.css";
 import { useToast } from "@/shared/hooks";
+import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 
 interface ImageUploadProps {
   onImageUpload?: (base64Image: string | null) => void; // Callback to pass the Base64 image back to the parent
@@ -58,12 +59,31 @@ export const ImageUpload: FC<ImageUploadProps> = ({
 }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { getAssetUrl } = useStaticAssetsUrl();
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | undefined>(value);
 
   useEffect(() => {
     setImageUrl(value);
   }, [value]);
+
+  // Get the display URL with base URL prepended if needed
+  const displayImageUrl = useMemo(() => {
+    if (!imageUrl) return undefined;
+
+    // If it's a base64 string, use as is
+    if (imageUrl.startsWith("data:image/")) {
+      return imageUrl;
+    }
+
+    // If it's already a full URL (http/https), use as is
+    if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+      return imageUrl;
+    }
+
+    // Otherwise, it's a relative path - prepend base URL
+    return getAssetUrl(imageUrl);
+  }, [imageUrl, getAssetUrl]);
 
   const handleChange: UploadProps["onChange"] = (info) => {
     if (info.file.status === "uploading") {
@@ -144,8 +164,8 @@ export const ImageUpload: FC<ImageUploadProps> = ({
             }
           >
             <img
-              key={imageUrl}
-              src={imageUrl}
+              key={displayImageUrl}
+              src={displayImageUrl}
               className={
                 "h-full w-full overflow-hidden rounded-xl object-cover"
               }
