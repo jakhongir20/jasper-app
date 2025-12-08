@@ -138,7 +138,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         </Form.Item>
 
         <Form.Item
-          name={["general", "default_hinge"]}
+          name={["general", "default_hinge_id"]}
           label={"Петля по умолчанию"}
         >
           <SelectInfinitive
@@ -151,7 +151,7 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           />
         </Form.Item>
         <Form.Item
-          name={["general", "default_door_lock"]}
+          name={["general", "default_door_lock_id"]}
           label={"Замок по умолчанию"}
         >
           <SelectInfinitive
