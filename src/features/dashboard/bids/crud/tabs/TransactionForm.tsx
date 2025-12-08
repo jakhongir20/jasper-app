@@ -150,7 +150,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "sheathing",
     title: "Обшивка",
-    allowedProductTypes: ["doorway"],
+    allowedProductTypes: ["door-window", "doorway"],
     fields: [
       {
         name: "sheathing_product_id",
@@ -629,7 +629,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door-lock",
     title: "Замок двери",
-    allowedProductTypes: ["door_lock"],
+    allowedProductTypes: ["door-window", "door-deaf", "door_lock"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -664,7 +664,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "hinge",
     title: "Петля",
-    allowedProductTypes: ["hinge"],
+    allowedProductTypes: ["door-window", "door-deaf", "hinge"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -699,7 +699,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door-bolt",
     title: "Шпингалет",
-    allowedProductTypes: ["door_bolt"],
+    allowedProductTypes: ["door-window", "door-deaf", "door_bolt"],
     fields: [
       // Per 2.6.8: Model selector first
       {
