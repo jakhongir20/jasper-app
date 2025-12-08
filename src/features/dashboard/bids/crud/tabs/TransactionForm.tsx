@@ -105,7 +105,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "transom",
     title: "Фрамуга",
-    allowedProductTypes: ["door-window", "door-deaf", "transom", "doorway"], // Added doorway per 2.4.3
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       {
         name: "transom_type",
@@ -150,7 +150,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "sheathing",
     title: "Обшивка",
-    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
+    allowedProductTypes: ["doorway"],
     fields: [
       {
         name: "sheathing_product_id",
@@ -169,7 +169,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door",
     title: "Полотно (дверь)",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: [],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -218,7 +218,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "frame",
     title: "Наличник",
-    allowedProductTypes: ["door-window", "door-deaf", "frame"],
+    allowedProductTypes: ["frame"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -239,7 +239,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "filler",
     title: "Нашельник",
-    allowedProductTypes: ["door-window", "door-deaf", "filler"],
+    allowedProductTypes: ["filler"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -260,7 +260,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "crown",
     title: "Корона",
-    allowedProductTypes: ["door-window", "door-deaf", "crown", "doorway"], // Added doorway per 2.4.3
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -281,7 +281,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "up-frame",
     title: "Кубик (Надналичник)",
-    allowedProductTypes: ["door-window", "door-deaf", "up_frame", "doorway"], // Added doorway per 2.4.3
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       {
         name: "up_frame_quantity",
@@ -307,7 +307,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "under-frame",
     title: "Сапожок (Подналичник)",
-    allowedProductTypes: ["door-window", "door-deaf", "under_frame", "doorway"], // Added doorway per 2.4.3
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -341,7 +341,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "trim",
     title: "Обклад",
-    allowedProductTypes: ["door-window", "door-deaf", "trim"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -368,7 +368,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "molding",
     title: "Молдинг",
-    allowedProductTypes: ["door-window", "door-deaf", "molding"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -395,7 +395,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "covering-primary",
     title: "Покрытие I",
-    allowedProductTypes: ["door-window", "door-deaf", "covering_primary"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -424,7 +424,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "covering-secondary",
     title: "Покрытие II",
-    allowedProductTypes: ["door-window", "door-deaf", "covering_secondary"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -453,14 +453,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "color",
     title: "Цвет",
-    allowedProductTypes: [
-      "door-window",
-      "door-deaf",
-      "color",
-      "doorway",
-      "window",
-      "windowsill",
-    ], // Added doorway per 2.4.3, window per 2.4.4, windowsill per 2.4.5
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -493,12 +486,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "floor-skirting",
     title: "Плинтус",
-    allowedProductTypes: [
-      "door-window",
-      "door-deaf",
-      "floor_skirting",
-      "doorway",
-    ], // Added doorway per 2.4.3
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -527,7 +515,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "heated-floor",
     title: "Тёплый пол",
-    allowedProductTypes: ["door-window", "heated-floor"], // Removed door-deaf per 2.4.2
+    allowedProductTypes: ["door-window"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -550,7 +538,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "latting",
     title: "Обрешётка",
-    allowedProductTypes: ["door-window", "door-deaf", "latting"],
+    allowedProductTypes: ["latting"],
     fields: [
       // Per 2.6.7: volume_latting removed
       // Per 2.6.8: Model selector first
@@ -571,7 +559,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "window",
     title: "Окно",
-    allowedProductTypes: ["door-window", "window"],
+    allowedProductTypes: ["window"],
     fields: [
       // Per 2.6.7: volume_window removed
       // Per 2.6.8: Model selector first
@@ -592,7 +580,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "windowsill",
     title: "Подоконник",
-    allowedProductTypes: ["door-window", "windowsill"],
+    allowedProductTypes: ["windowsill"],
     fields: [
       // Per 2.6.7: volume_windowsill removed
       // Per 2.6.8: Model selector first
@@ -613,7 +601,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "glass",
     title: "Стекло",
-    allowedProductTypes: ["door-window", "glass"],
+    allowedProductTypes: ["glass"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -641,7 +629,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door-lock",
     title: "Замок двери",
-    allowedProductTypes: ["door-window", "door-deaf", "door_lock"],
+    allowedProductTypes: ["door_lock"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -676,7 +664,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "hinge",
     title: "Петля",
-    allowedProductTypes: ["door-window", "door-deaf", "hinge"],
+    allowedProductTypes: ["hinge"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -711,7 +699,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door-bolt",
     title: "Шпингалет",
-    allowedProductTypes: ["door-window", "door-deaf", "door_bolt"],
+    allowedProductTypes: ["door_bolt"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -738,7 +726,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door-stopper",
     title: "Стоппер",
-    allowedProductTypes: ["door-window", "door-deaf", "door_stopper"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -767,7 +755,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "anti-threshold",
     title: "Анти-порог",
-    allowedProductTypes: ["door-window", "door-deaf", "anti_threshold"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -796,7 +784,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "box-width",
     title: "Ширина коробки",
-    allowedProductTypes: ["door-window", "door-deaf", "box_width"],
+    allowedProductTypes: ["box_width"],
     fields: [
       {
         name: "box_width",
@@ -819,12 +807,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "extra-options",
     title: "Доп. опция",
-    allowedProductTypes: [
-      "door-window",
-      "door-deaf",
-      "extra_options",
-      "doorway",
-    ], // Added doorway per 2.4.3
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
