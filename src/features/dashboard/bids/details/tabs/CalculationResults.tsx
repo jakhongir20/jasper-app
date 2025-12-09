@@ -77,7 +77,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       titleKey: "main_products",
       productField: "door_product",
       quantityField: "entity_quantity",
-      volumeField: "volume",
+      volumeField: "volume_door",
       forecastField: "forecast_door_product",
       useQuantity: false,
     },
