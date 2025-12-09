@@ -24,8 +24,8 @@ export type ApplicationDetail = {
   transom_height_back: number;
   forecaster: string;
   forecast_rate: number;
-  forecast_discount: number;
-  forecast_discount_percent: number;
+  forecast_discount_type: number;
+  forecast_discount_amount: number;
   forecast_prepayment: number;
   forecast_production: number;
   forecast_additional: number;

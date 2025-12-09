@@ -14,16 +14,12 @@ interface Props {
 }
 
 interface ForecastRequest {
-  forecaster?: string;
-  forecast_rate: number;
-  forecast_discount?: number;
-  forecast_discount_percent?: number;
-  forecast_prepayment: number;
-  status: number;
-  discount_type?: number;
+  status?: number;
+  forecast_rate?: number;
   forecast_active_currency?: number;
   forecast_discount_type?: number;
   forecast_discount_amount?: number;
+  forecast_prepayment?: number;
 }
 
 export const ApplicationCalc: FC<Props> = ({
@@ -51,24 +47,26 @@ export const ApplicationCalc: FC<Props> = ({
   // Pre-populate form with existing forecast data from API response
   useEffect(() => {
     if (application) {
+      const discountType = application.forecast_discount_type || 1;
+      const discountAmount = application.forecast_discount_amount || 0;
+
       form.setFieldsValue({
-        forecaster: application.forecaster || "",
         forecast_rate: application.forecast_rate || 0,
-        forecast_discount: application.forecast_discount || 0,
-        forecast_discount_percent: application.forecast_discount_percent || 0,
         forecast_prepayment: application.forecast_prepayment || 0,
-        discount_type: 1, // Default to "Точная сумма" (Exact amount)
+        discount_type: discountType,
+        // Populate the correct field based on discount type
+        forecast_discount: discountType === 1 ? discountAmount : 0,
+        forecast_discount_percent: discountType === 2 ? discountAmount : 0,
       });
 
       // Automatically send calculation request if we have existing forecast data
       if (application.forecast_rate && application.forecast_rate > 0) {
         const requestBody: ForecastRequest = {
-          forecaster: application.forecaster || "",
-          forecast_rate: application.forecast_rate,
-          forecast_discount: application.forecast_discount || 0,
-          forecast_discount_percent: application.forecast_discount_percent || 0,
-          forecast_prepayment: application.forecast_prepayment || 0,
           status: 2,
+          forecast_rate: application.forecast_rate,
+          forecast_discount_type: application.forecast_discount_type || 1,
+          forecast_discount_amount: application.forecast_discount_amount || 0,
+          forecast_prepayment: application.forecast_prepayment || 0,
         };
 
         forecastApplication({ id: id.toString(), formData: requestBody });
@@ -117,17 +115,18 @@ export const ApplicationCalc: FC<Props> = ({
     try {
       const values = await form.validateFields();
 
-      const requestBody: any = {
-        forecaster: values.forecaster || "",
-        forecast_rate: values.forecast_rate || 0,
-        forecast_discount: values.forecast_discount || 0,
-        forecast_discount_percent: values.forecast_discount_percent || 0,
-        forecast_prepayment: values.forecast_prepayment || 0,
+      // Determine the discount amount based on discount type
+      const discountAmount =
+        values.discount_type === 1
+          ? values.forecast_discount || 0
+          : values.forecast_discount_percent || 0;
+
+      const requestBody: ForecastRequest = {
         status: 2,
-        // Include transactions if they exist in the application
-        ...(application.application_transactions && {
-          application_transactions: application.application_transactions,
-        }),
+        forecast_rate: values.forecast_rate || 0,
+        forecast_discount_type: values.discount_type,
+        forecast_discount_amount: discountAmount,
+        forecast_prepayment: values.forecast_prepayment || 0,
       };
 
       forecastApplication({ id: id.toString(), formData: requestBody });
@@ -194,13 +193,6 @@ export const ApplicationCalc: FC<Props> = ({
         </div>
 
         <div className="flex flex-col gap-2 rounded-lg border border-gray-500/30 p-4 sm:grid lg:col-span-1 lg:grid-cols-1">
-          <Form.Item
-            name={["forecaster", "company", "display_name"]}
-            label={t("calculated_by")}
-          >
-            <Input placeholder={t("common.placeholder.address")} />
-          </Form.Item>
-
           <Form.Item
             name="discount_type"
             label={t("common.labels.discount_type")}
