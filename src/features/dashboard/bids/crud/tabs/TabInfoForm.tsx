@@ -145,9 +145,29 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           />
         </Form.Item>
 
+        <Form.Item name={["general", "production_date"]} label={"Дата производства"}>
+          <DatePicker
+            size="small"
+            className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
+            valueName="date"
+            placeholder={"Выберите дату производства"}
+            disabledDate={(current: Dayjs) => {
+              // Disable dates before today (start of day)
+              return current && current.isBefore(dayjs().startOf("day"));
+            }}
+          />
+        </Form.Item>
+
         <Form.Item
           name={["general", "default_hinge_id"]}
           label={"Петля по умолчанию"}
+          getValueFromEvent={(value) => {
+            // Extract just the product_id if value is an object
+            if (typeof value === "object" && value !== null) {
+              return value?.product_id;
+            }
+            return value;
+          }}
         >
           <SelectInfinitive
             placeholder={"Выберите петлю"}
@@ -162,6 +182,13 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         <Form.Item
           name={["general", "default_door_lock_id"]}
           label={"Замок по умолчанию"}
+          getValueFromEvent={(value) => {
+            // Extract just the product_id if value is an object
+            if (typeof value === "object" && value !== null) {
+              return value?.product_id;
+            }
+            return value;
+          }}
         >
           <SelectInfinitive
             placeholder={"Выберите замок"}

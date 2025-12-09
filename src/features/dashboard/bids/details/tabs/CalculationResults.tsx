@@ -34,16 +34,19 @@ export const CalculationResults: FC<Props> = ({ application }) => {
     transactions: TransactionRow[],
     forecastKey: string,
   ) => {
-    const total = transactions.reduce((sum: number, transaction: TransactionRow) => {
-      const value =
-        Number(
-          (transaction as Record<string, unknown>)[forecastKey] as
-            | number
-            | string
-            | undefined,
-        ) || 0;
-      return sum + value;
-    }, 0);
+    const total = transactions.reduce(
+      (sum: number, transaction: TransactionRow) => {
+        const value =
+          Number(
+            (transaction as Record<string, unknown>)[forecastKey] as
+              | number
+              | string
+              | undefined,
+          ) || 0;
+        return sum + value;
+      },
+      0,
+    );
     return Math.round(total * 100) / 100;
   };
 
@@ -314,8 +317,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
         dataIndex: config.volumeField,
         key: "volume",
         width: 100,
-        render: (value: number) =>
-          typeof value === "number" ? value.toFixed(2) : "0.00",
+        render: (value: number) => value ?? "0.00",
       });
     }
 

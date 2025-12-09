@@ -231,6 +231,9 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
         application_date: generalValues?.application_date
           ? getDateTime(generalValues.application_date)
           : null,
+        production_date: generalValues?.production_date
+          ? getDateTime(generalValues.production_date)
+          : null,
         delivery_date: generalValues?.delivery_date
           ? getDateTime(generalValues.delivery_date)
           : null,
