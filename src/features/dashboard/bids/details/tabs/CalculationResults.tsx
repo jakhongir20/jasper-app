@@ -77,8 +77,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       titleKey: "main_products",
       productField: "door_product",
       quantityField: "entity_quantity",
+      volumeField: "volume",
       forecastField: "forecast_door_product",
-      useQuantity: true,
+      useQuantity: false,
     },
     {
       key: "transom",

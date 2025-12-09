@@ -141,12 +141,13 @@ export const ApplicationCalc: FC<Props> = ({
         <div
           className={"flex flex-row gap-4 sm:grid lg:col-span-2 lg:grid-cols-2"}
         >
+          {/* 1. Сумма производства */}
           <div
             className={
               "flex h-full w-full flex-col gap-2 rounded-lg border border-gray-500/30 bg-primary/10 p-4"
             }
           >
-            <h2 className="text-sm">{t("production_amount")}</h2>
+            <h2 className="text-sm">Сумма производства</h2>
             <span className="text-3xl font-bold">
               {formatMoneyDecimal(displayData?.forecast_production)} USD
             </span>
@@ -154,33 +155,62 @@ export const ApplicationCalc: FC<Props> = ({
               <Input hidden />
             </Form.Item>
           </div>
+
+          {/* 2. Сумма аксессуаров */}
           <div
             className={
               "flex h-full w-full flex-col gap-2 rounded-lg border border-gray-500/30 bg-primary/10 p-4"
             }
           >
-            <h2 className="text-sm">{t("total_to_pay")}</h2>
+            <h2 className="text-sm">Сумма аксессуаров</h2>
             <span className="text-3xl font-bold">
-              {formatMoneyDecimal(displayData?.forecast_sum)} USD
+              {formatMoneyDecimal(displayData?.forecast_accessories)} USD
             </span>
           </div>
+
+          {/* 3. Сумма услуг */}
           <div
             className={
               "flex h-full w-full flex-col gap-2 rounded-lg border border-gray-500/30 bg-primary/10 p-4"
             }
           >
-            <h2 className="text-sm">{t("remaining_to_pay")}</h2>
+            <h2 className="text-sm">Сумма услуг</h2>
+            <span className="text-3xl font-bold">
+              {formatMoneyDecimal(displayData?.forecast_services)} USD
+            </span>
+          </div>
+
+          {/* 4. Всего к оплате */}
+          <div
+            className={
+              "flex h-full w-full flex-col gap-2 rounded-lg border border-gray-500/30 bg-primary/10 p-4"
+            }
+          >
+            <h2 className="text-sm">Всего к оплате</h2>
+            <span className="text-3xl font-bold">
+              {formatMoneyDecimal(displayData?.forecast_initial)} USD
+            </span>
+          </div>
+
+          {/* 5. Остаток к оплате */}
+          <div
+            className={
+              "flex h-full w-full flex-col gap-2 rounded-lg border border-gray-500/30 bg-primary/10 p-4"
+            }
+          >
+            <h2 className="text-sm">Остаток к оплате</h2>
             <span className="text-3xl font-bold">
               {formatMoneyDecimal(displayData?.forecast_final)} USD
             </span>
           </div>
 
+          {/* 6. Курс валюты */}
           <div
             className={
               "flex h-full w-full flex-col gap-2 rounded-lg border border-gray-500/30 bg-gray-500/10 p-4"
             }
           >
-            <h2 className="text-sm">{t("currency_rate")}</h2>
+            <h2 className="text-sm">Курс валюты</h2>
 
             <Form.Item name="forecast_rate" noStyle>
               <NumberInput

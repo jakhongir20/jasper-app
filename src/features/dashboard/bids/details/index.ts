@@ -28,9 +28,12 @@ export type ApplicationDetail = {
   forecast_discount_amount: number;
   forecast_prepayment: number;
   forecast_production: number;
+  forecast_accessories: number;
+  forecast_services: number;
+  forecast_initial: number;
+  forecast_final: number;
   forecast_additional: number;
   forecast_sum: number;
-  forecast_final: number;
   transactions: ApplicationTransaction[];
   sheathings: ApplicationSheathing[];
   baseboards: Baseboard[];
