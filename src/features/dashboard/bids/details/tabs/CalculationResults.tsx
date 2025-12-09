@@ -11,219 +11,368 @@ interface Props {
 }
 
 export const CalculationResults: FC<Props> = ({ application }) => {
-
   const { t } = useTranslation();
 
-  type TxProduct = { name?: string; price_usd?: number; } | null | undefined;
+  type TxProduct = { name?: string; price_usd?: number } | null | undefined;
   type TransactionRow = Record<string, unknown>;
 
-  const txs: TransactionRow[] = (application as unknown as { application_transactions?: TransactionRow[]; })
-    .application_transactions || [];
-  const appServices: Record<string, unknown>[] = (application as unknown as { application_services?: Record<string, unknown>[]; })
-    .application_services || [];
+  const txs: TransactionRow[] =
+    (
+      application as unknown as {
+        application_transactions?: TransactionRow[];
+      }
+    ).application_transactions || [];
+  const appServices: Record<string, unknown>[] =
+    (
+      application as unknown as {
+        application_services?: Record<string, unknown>[];
+      }
+    ).application_services || [];
 
   // Helper function to calculate total forecast for a specific category
-  const calculateTotalForecast = (transactions: TransactionRow[], forecastKey: string) => {
+  const calculateTotalForecast = (
+    transactions: TransactionRow[],
+    forecastKey: string,
+  ) => {
     const total = transactions.reduce((sum: number, transaction: TransactionRow) => {
-      const value = Number((transaction as Record<string, unknown>)[forecastKey] as number | string | undefined) || 0;
+      const value =
+        Number(
+          (transaction as Record<string, unknown>)[forecastKey] as
+            | number
+            | string
+            | undefined,
+        ) || 0;
       return sum + value;
     }, 0);
     return Math.round(total * 100) / 100;
   };
 
-  // Main Products Table
-  const mainProductsColumns = [
+  // Fields that should display "Quantity" instead of "Volume"
+  const quantityFields = [
+    "under_frame",
+    "up_frame",
+    "door_lock",
+    "glass",
+    "hinge",
+    "door_bolt",
+  ];
+
+  // Product configuration for dynamic table generation
+  type ProductConfig = {
+    key: string;
+    titleKey: string;
+    productField: string;
+    quantityField?: string;
+    volumeField?: string;
+    forecastField: string;
+    useQuantity: boolean; // true = show Quantity column, false = show Volume column
+  };
+
+  const productConfigs: ProductConfig[] = [
     {
-      title: t("common.labels.name"),
-      dataIndex: "door_product",
-      key: "name",
-      render: (product: any) => product?.name || "",
+      key: "door",
+      titleKey: "main_products",
+      productField: "door_product",
+      quantityField: "entity_quantity",
+      forecastField: "forecast_door_product",
+      useQuantity: true,
     },
     {
-      title: t("common.labels.quantity"),
-      dataIndex: "entity_quantity",
-      key: "quantity",
-      width: 100,
+      key: "transom",
+      titleKey: "transoms",
+      productField: "transom_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_transom",
+      forecastField: "forecast_transom_product",
+      useQuantity: false,
     },
     {
-      title: t("common.labels.unit_price"),
-      dataIndex: "door_product",
-      key: "unit_price",
-      width: 150,
-      render: (product: any) => product?.price_usd ?? 0,
+      key: "sheathing",
+      titleKey: "sheathing",
+      productField: "sheathing_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_sheathing",
+      forecastField: "forecast_sheathing_product",
+      useQuantity: false,
     },
     {
-      title: "Итого",
-      dataIndex: "forecast_door_product",
-      key: "forecast_door_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
+      key: "frame",
+      titleKey: "frames",
+      productField: "frame_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_frame",
+      forecastField: "forecast_frame_product",
+      useQuantity: false,
+    },
+    {
+      key: "filler",
+      titleKey: "fillers",
+      productField: "filler_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_filler",
+      forecastField: "forecast_filler_product",
+      useQuantity: false,
+    },
+    {
+      key: "crown",
+      titleKey: "crowns",
+      productField: "crown_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_crown",
+      forecastField: "forecast_crown_product",
+      useQuantity: false,
+    },
+    {
+      key: "up_frame",
+      titleKey: "up_frames",
+      productField: "up_frame_product",
+      quantityField: "up_frame_quantity",
+      forecastField: "forecast_up_frame_product",
+      useQuantity: true,
+    },
+    {
+      key: "under_frame",
+      titleKey: "under_frames",
+      productField: "under_frame_product",
+      quantityField: "under_frame_quantity",
+      volumeField: "under_frame_height",
+      forecastField: "forecast_under_frame_product",
+      useQuantity: true,
+    },
+    {
+      key: "trim",
+      titleKey: "trims",
+      productField: "trim_product",
+      quantityField: "entity_quantity",
+      volumeField: "percent_trim",
+      forecastField: "forecast_trim_product",
+      useQuantity: false,
+    },
+    {
+      key: "molding",
+      titleKey: "moldings",
+      productField: "molding_product",
+      quantityField: "entity_quantity",
+      volumeField: "percent_molding",
+      forecastField: "forecast_molding_product",
+      useQuantity: false,
+    },
+    {
+      key: "covering_primary",
+      titleKey: "covering_primary",
+      productField: "covering_primary_product",
+      quantityField: "entity_quantity",
+      volumeField: "percent_covering_primary",
+      forecastField: "forecast_covering_primary_product",
+      useQuantity: false,
+    },
+    {
+      key: "covering_secondary",
+      titleKey: "covering_secondary",
+      productField: "covering_secondary_product",
+      quantityField: "entity_quantity",
+      volumeField: "percent_covering_secondary",
+      forecastField: "forecast_covering_secondary_product",
+      useQuantity: false,
+    },
+    {
+      key: "color",
+      titleKey: "colors",
+      productField: "color_product",
+      quantityField: "entity_quantity",
+      volumeField: "percent_color",
+      forecastField: "forecast_color_product",
+      useQuantity: false,
+    },
+    {
+      key: "floor_skirting",
+      titleKey: "floor_skirtings",
+      productField: "floor_skirting_product",
+      quantityField: "entity_quantity",
+      volumeField: "floor_skirting_length",
+      forecastField: "forecast_floor_skirting_product",
+      useQuantity: false,
+    },
+    {
+      key: "heated_floor",
+      titleKey: "heated_floors",
+      productField: "heated_floor_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_heated_floor",
+      forecastField: "forecast_heated_floor_product",
+      useQuantity: false,
+    },
+    {
+      key: "latting",
+      titleKey: "lattings",
+      productField: "latting_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_latting",
+      forecastField: "forecast_latting_product",
+      useQuantity: false,
+    },
+    {
+      key: "window",
+      titleKey: "windows",
+      productField: "window_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_window",
+      forecastField: "forecast_window_product",
+      useQuantity: false,
+    },
+    {
+      key: "windowsill",
+      titleKey: "windowsills",
+      productField: "windowsill_product",
+      quantityField: "entity_quantity",
+      volumeField: "volume_windowsill",
+      forecastField: "forecast_windowsill_product",
+      useQuantity: false,
+    },
+    {
+      key: "glass",
+      titleKey: "glass",
+      productField: "glass_product",
+      quantityField: "glass_quantity",
+      forecastField: "forecast_glass_product",
+      useQuantity: true,
+    },
+    {
+      key: "door_lock",
+      titleKey: "door_locks",
+      productField: "door_lock_product",
+      quantityField: "door_lock_quantity",
+      forecastField: "forecast_door_lock_product",
+      useQuantity: true,
+    },
+    {
+      key: "hinge",
+      titleKey: "hinges",
+      productField: "hinge_product",
+      quantityField: "hinge_quantity",
+      forecastField: "forecast_hinge_product",
+      useQuantity: true,
+    },
+    {
+      key: "door_bolt",
+      titleKey: "door_bolts",
+      productField: "door_bolt_product",
+      quantityField: "door_bolt_quantity",
+      forecastField: "forecast_door_bolt_product",
+      useQuantity: true,
+    },
+    {
+      key: "door_stopper",
+      titleKey: "door_stoppers",
+      productField: "door_stopper_product",
+      quantityField: "door_stopper_quantity",
+      volumeField: "volume_door_stopper",
+      forecastField: "forecast_door_stopper_product",
+      useQuantity: false,
+    },
+    {
+      key: "anti_threshold",
+      titleKey: "anti_thresholds",
+      productField: "anti_threshold_product",
+      quantityField: "anti_threshold_quantity",
+      volumeField: "volume_anti_threshold",
+      forecastField: "forecast_anti_threshold_product",
+      useQuantity: false,
+    },
+    {
+      key: "extra_option",
+      titleKey: "extra_options",
+      productField: "extra_option_product",
+      quantityField: "entity_quantity",
+      volumeField: "percent_extra_option",
+      forecastField: "forecast_extra_option_product",
+      useQuantity: false,
     },
   ];
 
-  // Trim Table
-  const trimColumns = [
-    {
-      title: t("common.labels.name"),
-      dataIndex: "trim_product",
-      key: "name",
-      render: (trim: any) => trim?.name || "",
-    },
-    {
-      title: t("common.labels.quantity"),
-      dataIndex: "entity_quantity",
-      key: "quantity",
-      width: 100,
-    },
-    {
-      title: t("common.labels.volume"),
-      dataIndex: "percent_trim",
-      key: "volume",
-      width: 100,
-      render: (value: number) => (typeof value === "number" ? value.toFixed(2) : "0.00"),
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "trim_product",
-      key: "unit_price",
-      width: 150,
-      render: (trim: any) => trim?.price_usd ?? 0,
-    },
-    {
-      title: "Итого",
-      dataIndex: "forecast_trim_product",
-      key: "forecast_trim_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
-    },
-  ];
+  // Generate columns dynamically based on configuration
+  const generateColumns = (config: ProductConfig) => {
+    const columns: any[] = [
+      {
+        title: t("common.labels.name"),
+        dataIndex: config.productField,
+        key: "name",
+        render: (product: any) => product?.name || "",
+      },
+      {
+        title: t("common.labels.quantity"),
+        dataIndex: config.quantityField,
+        key: "quantity",
+        width: 100,
+      },
+    ];
 
-  // Filler Table
-  const fillerColumns = [
-    {
-      title: t("common.labels.name"),
-      dataIndex: "filler_product",
-      key: "name",
-      render: (filler: any) => filler?.name || "",
-    },
-    {
-      title: t("common.labels.quantity"),
-      dataIndex: "entity_quantity",
-      key: "quantity",
-      width: 100,
-    },
-    {
-      title: t("common.labels.volume"),
-      dataIndex: "volume_filler",
-      key: "volume",
-      width: 100,
-      render: (volume: number) => (typeof volume === "number" ? volume.toFixed(2) : "0.00"),
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "filler_product",
-      key: "unit_price",
-      width: 150,
-      render: (filler: any) => filler?.price_usd ?? 0,
-    },
-    {
-      title: "Итого",
-      dataIndex: "forecast_filler_product",
-      key: "forecast_filler_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
-    },
-  ];
+    // Add Volume column only if useQuantity is false
+    if (!config.useQuantity && config.volumeField) {
+      columns.push({
+        title: t("common.labels.volume"),
+        dataIndex: config.volumeField,
+        key: "volume",
+        width: 100,
+        render: (value: number) =>
+          typeof value === "number" ? value.toFixed(2) : "0.00",
+      });
+    }
 
-  // Door Lock Table
-  const doorLockColumns = [
-    {
-      title: t("common.labels.name"),
-      dataIndex: "door_lock_product",
-      key: "name",
-      render: (doorLock: any) => doorLock?.name || "",
-    },
-    {
-      title: t("common.labels.quantity"),
-      dataIndex: "door_lock_quantity",
-      key: "quantity",
-      width: 100,
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "door_lock_product",
-      key: "unit_price",
-      width: 150,
-      render: (doorLock: any) => doorLock?.price_usd ?? 0,
-    },
-    {
-      title: "Итого",
-      dataIndex: "forecast_door_lock_product",
-      key: "forecast_door_lock_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
-    },
-  ];
+    columns.push(
+      {
+        title: t("common.labels.unit_price"),
+        dataIndex: config.productField,
+        key: "unit_price",
+        width: 150,
+        render: (product: any) => product?.price_usd ?? 0,
+      },
+      {
+        title: "Итого",
+        dataIndex: config.forecastField,
+        key: config.forecastField,
+        width: 150,
+        render: (value: number) => value ?? 0,
+      },
+    );
 
-  // Hinge Table
-  const hingeColumns = [
-    {
-      title: t("common.labels.name"),
-      dataIndex: "hinge_product",
-      key: "name",
-      render: (hinge: any) => hinge?.name || "",
-    },
-    {
-      title: t("common.labels.quantity"),
-      dataIndex: "hinge_quantity",
-      key: "quantity",
-      width: 100,
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "hinge_product",
-      key: "unit_price",
-      width: 150,
-      render: (hinge: any) => hinge?.price_usd ?? 0,
-    },
-    {
-      title: "Итого",
-      dataIndex: "forecast_hinge_product",
-      key: "forecast_hinge_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
-    },
-  ];
+    return columns;
+  };
 
-  // Glass Table
-  const glassColumns = [
-    {
-      title: t("common.labels.name"),
-      dataIndex: "glass_product",
-      key: "name",
-      render: (glass: any) => glass?.name || "",
-    },
-    {
-      title: t("common.labels.quantity"),
-      dataIndex: "glass_quantity",
-      key: "quantity",
-      width: 100,
-    },
-    {
-      title: t("common.labels.unit_price"),
-      dataIndex: "glass_product",
-      key: "unit_price",
-      width: 150,
-      render: (glass: any) => glass?.price_usd ?? 0,
-    },
-    {
-      title: "Итого",
-      dataIndex: "forecast_glass_product",
-      key: "forecast_glass_product",
-      width: 150,
-      render: (value: number) => value ?? 0,
-    },
-  ];
+  // Render product table card
+  const renderProductCard = (config: ProductConfig) => {
+    const hasData = txs.some((t: TransactionRow) =>
+      Boolean((t as any)[config.productField]),
+    );
+
+    if (!hasData) return null;
+
+    return (
+      <Card key={config.key}>
+        <Title level={4}>{t(`common.labels.${config.titleKey}`)}</Title>
+        <TableWrapper
+          columns={generateColumns(config)}
+          data={txs.filter((t: TransactionRow) =>
+            Boolean((t as any)[config.productField]),
+          )}
+          loading={false}
+          showSearch={false}
+          showAddButton={false}
+          showFilter={false}
+          pagination={false}
+          emptyTableClassName="min-h-0"
+          title={() => (
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-500">
+                {t("common.labels.total")}:{" "}
+                {calculateTotalForecast(txs, config.forecastField)}
+              </span>
+            </div>
+          )}
+        />
+      </Card>
+    );
+  };
 
   // Services Table
   const servicesColumns = [
@@ -286,8 +435,7 @@ export const CalculationResults: FC<Props> = ({ application }) => {
       dataIndex: "baseboard",
       key: "unit_price",
       width: 150,
-      render: (baseboard: TxProduct) =>
-        baseboard?.price_usd ?? 0,
+      render: (baseboard: TxProduct) => baseboard?.price_usd ?? 0,
     },
     {
       title: "Итого",
@@ -309,171 +457,8 @@ export const CalculationResults: FC<Props> = ({ application }) => {
 
   return (
     <div className="space-y-6">
-      {/* Main Products */}
-      <Card>
-        <Title level={4}>{t("common.labels.main_products")}</Title>
-        <TableWrapper
-          columns={mainProductsColumns}
-          data={txs.filter((t: TransactionRow) => Boolean((t as any).door_product))}
-          loading={false}
-          showSearch={false}
-          showAddButton={false}
-          showFilter={false}
-          pagination={false}
-          emptyTableClassName="min-h-0"
-          title={() => (
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-500">
-                {t("common.labels.total")}: {" "}
-                {calculateTotalForecast(
-                  txs,
-                  "forecast_door_product",
-                )}
-              </span>
-            </div>
-          )}
-        />
-      </Card>
-
-      {/* Trims */}
-      {txs.some((t: TransactionRow) => Boolean((t as any).trim_product)) && (
-        <Card>
-          <Title level={4}>{t("common.labels.trims")}</Title>
-          <TableWrapper
-            columns={trimColumns}
-            data={txs.filter((t: TransactionRow) => Boolean((t as any).trim_product))}
-            loading={false}
-            showSearch={false}
-            showAddButton={false}
-            showFilter={false}
-            pagination={false}
-            emptyTableClassName="min-h-0"
-            title={() => (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
-                  {calculateTotalForecast(
-                    txs,
-                    "forecast_trim_product",
-                  )}
-                </span>
-              </div>
-            )}
-          />
-        </Card>
-      )}
-
-      {/* Fillers */}
-      {txs.some((t: TransactionRow) => Boolean((t as any).filler_product)) && (
-        <Card>
-          <Title level={4}>{t("common.labels.fillers")}</Title>
-          <TableWrapper
-            columns={fillerColumns}
-            data={txs.filter((t: TransactionRow) => Boolean((t as any).filler_product))}
-            loading={false}
-            showSearch={false}
-            showAddButton={false}
-            showFilter={false}
-            pagination={false}
-            emptyTableClassName="min-h-0"
-            title={() => (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
-                  {calculateTotalForecast(
-                    txs,
-                    "forecast_filler_product",
-                  )}
-                </span>
-              </div>
-            )}
-          />
-        </Card>
-      )}
-
-      {/* Door Locks */}
-      {txs.some((t: TransactionRow) => Boolean((t as any).door_lock_product)) && (
-        <Card>
-          <Title level={4}>{t("common.labels.door_locks")}</Title>
-          <TableWrapper
-            columns={doorLockColumns}
-            data={txs.filter((t: TransactionRow) => Boolean((t as any).door_lock_product))}
-            loading={false}
-            showSearch={false}
-            showAddButton={false}
-            showFilter={false}
-            pagination={false}
-            emptyTableClassName="min-h-0"
-            title={() => (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
-                  {calculateTotalForecast(
-                    txs,
-                    "forecast_door_lock_product",
-                  )}
-                </span>
-              </div>
-            )}
-          />
-        </Card>
-      )}
-
-      {/* Hinges */}
-      {txs.some((t: TransactionRow) => Boolean((t as any).hinge_product)) && (
-        <Card>
-          <Title level={4}>{t("common.labels.hinges")}</Title>
-          <TableWrapper
-            columns={hingeColumns}
-            data={txs.filter((t: TransactionRow) => Boolean((t as any).hinge_product))}
-            loading={false}
-            showSearch={false}
-            showAddButton={false}
-            showFilter={false}
-            pagination={false}
-            emptyTableClassName="min-h-0"
-            title={() => (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
-                  {calculateTotalForecast(
-                    txs,
-                    "forecast_hinge_product",
-                  )}
-                </span>
-              </div>
-            )}
-          />
-        </Card>
-      )}
-
-      {/* Glass */}
-      {txs.some((t: TransactionRow) => Boolean((t as any).glass_product)) && (
-        <Card>
-          <Title level={4}>{t("common.labels.glass")}</Title>
-          <TableWrapper
-            columns={glassColumns}
-            data={txs.filter((t: TransactionRow) => Boolean((t as any).glass_product))}
-            loading={false}
-            showSearch={false}
-            showAddButton={false}
-            showFilter={false}
-            pagination={false}
-            emptyTableClassName="min-h-0"
-            title={() => (
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
-                  {calculateTotalForecast(
-                    txs,
-                    "forecast_glass_product",
-                  )}
-                </span>
-              </div>
-            )}
-          />
-        </Card>
-      )}
+      {/* Render all product cards */}
+      {productConfigs.map((config) => renderProductCard(config))}
 
       {/* Services */}
       {appServices && appServices.length > 0 && (
@@ -491,10 +476,11 @@ export const CalculationResults: FC<Props> = ({ application }) => {
             title={() => (
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-500">
-                  {t("common.labels.total")}: {" "}
+                  {t("common.labels.total")}:{" "}
                   {Math.round(
                     (appServices || []).reduce(
-                      (sum: number, item: Record<string, unknown>) => sum + (Number((item as any).forecast) || 0),
+                      (sum: number, item: Record<string, unknown>) =>
+                        sum + (Number((item as any).forecast) || 0),
                       0,
                     ) * 100,
                   ) / 100}
@@ -530,9 +516,9 @@ export const CalculationResults: FC<Props> = ({ application }) => {
                       return (
                         sum +
                         unitPrice *
-                        quantity *
-                        length *
-                        (application.forecast_rate || 1)
+                          quantity *
+                          length *
+                          (application.forecast_rate || 1)
                       );
                     }, 0) * 100,
                   ) / 100}
