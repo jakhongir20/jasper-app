@@ -28,17 +28,17 @@ export default function Page() {
       const product_images =
         values.product_images
           ?.map((file: any) => {
-            // For new uploads, use base64 with default assignment
+            // For new uploads, use base64 with assignment from select (or default)
             if (file.preview) {
               return {
-                assignment: "one-sash-door", // Default assignment
+                assignment: file.assignment || "one-sash-door",
                 image_file: file.preview,
               };
             }
             // For existing images (shouldn't happen in create mode)
             if (file.url) {
               return {
-                assignment: "one-sash-door",
+                assignment: file.assignment || "one-sash-door",
                 image_file: file.url,
               };
             }

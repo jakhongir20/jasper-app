@@ -1,10 +1,22 @@
 import React, { FC, useState, useMemo } from "react";
 import type { UploadFile, UploadProps } from "antd";
-import { Upload } from "antd";
+import { Upload, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/shared/hooks";
 import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
+import { ProductImageAssignmentEnumEntity } from "@/shared/lib/api/generated/gateway/model/productImageAssignmentEnumEntity";
+
+// Assignment options for product images
+const assignmentOptions = Object.entries(ProductImageAssignmentEnumEntity).map(
+  ([key, value]) => ({
+    label: key
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "),
+    value: value,
+  })
+);
 
 interface MultipleImageUploadProps {
   value?: UploadFile[];
@@ -14,6 +26,7 @@ interface MultipleImageUploadProps {
   allowedFormats?: string[];
   productId?: number;
   onImageDelete?: (productImageId: number) => Promise<void>;
+  showAssignment?: boolean; // Whether to show assignment select for each image
 }
 
 type FileType = Parameters<NonNullable<UploadProps["beforeUpload"]>>[0];
@@ -35,6 +48,7 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   allowedFormats = ["image/png", "image/jpeg", "image/jpg"],
   productId,
   onImageDelete,
+  showAssignment = false,
 }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -138,6 +152,17 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
     setPreviewOpen(true);
   };
 
+  const handleAssignmentChange = (uid: string, assignment: string) => {
+    const updatedFileList = fileList.map((file) => {
+      if (file.uid === uid) {
+        return { ...file, assignment };
+      }
+      return file;
+    });
+    setFileList(updatedFileList);
+    onChange?.(updatedFileList);
+  };
+
   const uploadButton = (
     <button type="button" style={{ border: 0, background: "none" }}>
       <PlusOutlined />
@@ -156,6 +181,30 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
         onRemove={handleRemove}
         multiple
         maxCount={maxCount}
+        itemRender={
+          showAssignment
+            ? (originNode, file) => (
+                <div className="flex flex-col">
+                  {originNode}
+                  <Select
+                    size="small"
+                    placeholder={t("common.labels.assignment")}
+                    value={(file as any).assignment}
+                    onChange={(value) => handleAssignmentChange(file.uid, value)}
+                    options={assignmentOptions}
+                    className="mt-1 w-full"
+                    style={{ width: "100%" }}
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                  />
+                </div>
+              )
+            : undefined
+        }
       >
         {fileList.length >= maxCount ? null : uploadButton}
       </Upload>

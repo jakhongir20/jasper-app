@@ -54,17 +54,17 @@ export default function Page() {
         const product_images =
           values.product_images
             ?.map((file: any) => {
-              // For new uploads (has preview), use base64 with default assignment
+              // For new uploads (has preview), use base64 with assignment from select (or default)
               if (file.preview) {
                 return {
-                  assignment: "one-sash-door", // Default assignment for new images
+                  assignment: file.assignment || "one-sash-door",
                   image_file: file.preview,
                 };
               }
               // For existing images (has url), preserve their assignment
-              if (file.url && file.assignment) {
+              if (file.url) {
                 return {
-                  assignment: file.assignment,
+                  assignment: file.assignment || "one-sash-door",
                   image_file: file.url,
                 };
               }

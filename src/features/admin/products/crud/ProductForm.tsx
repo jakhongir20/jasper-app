@@ -114,6 +114,7 @@ export const ProductForm = ({
             allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
             productId={product?.product_id}
             onImageDelete={onImageDelete}
+            showAssignment
           />
         </Form.Item>
       </div>
