@@ -59,10 +59,18 @@ export const useTableFetch = <T>(
     searchParams.forEach((value, key) => {
       if (!ignoredParams.includes(key)) {
         // Convert date parameters to timestamps in seconds
-        if (key.endsWith("_from") || key.endsWith("_to")) {
+        if (key.endsWith("_from")) {
+          // For "from" dates, use start of day (00:00:00)
           const timestamp = getDateTime(value);
           if (timestamp !== undefined) {
             allParams[key] = timestamp;
+          }
+        } else if (key.endsWith("_to")) {
+          // For "to" dates, use end of day (23:59:59) to include the entire day
+          const date = dayjs(value);
+          if (date.isValid()) {
+            const endOfDay = date.endOf("day");
+            allParams[key] = Math.floor(endOfDay.valueOf() / 1000);
           }
         } else {
           allParams[key] = value;

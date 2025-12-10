@@ -25,20 +25,55 @@ export const CustomerCreate: FC<Props> = ({ open, onCloseModal }) => {
       onCloseModal();
     },
     onError: (error: any) => {
-      showGlobalToast(
-        error?.response?.data || t("common.messages.error"),
-        "error",
-      );
+      // Extract error message from various possible response formats
+      let errorMessage = t("common.messages.error");
+
+      try {
+        const responseData = error?.response?.data;
+
+        if (typeof responseData === "string") {
+          errorMessage = responseData;
+        } else if (responseData?.detail) {
+          // FastAPI validation error format
+          if (typeof responseData.detail === "string") {
+            errorMessage = responseData.detail;
+          } else if (Array.isArray(responseData.detail)) {
+            // Validation errors array
+            errorMessage = responseData.detail
+              .map((err: any) => err?.msg || err?.message || JSON.stringify(err))
+              .join(", ");
+          }
+        } else if (responseData?.message) {
+          errorMessage = responseData.message;
+        }
+
+        // Check for duplicate/conflict error (409 or specific message)
+        const statusCode = error?.response?.status;
+        if (statusCode === 409 || errorMessage.toLowerCase().includes("exist") || errorMessage.toLowerCase().includes("duplicate")) {
+          errorMessage = "Клиент с таким телефоном уже существует";
+        }
+      } catch (e) {
+        // Fallback to default error message
+        console.error("Error parsing error response:", e);
+      }
+
+      showGlobalToast(errorMessage, "error");
     },
   });
 
   const handleSaveCustomer = () => {
-    form.validateFields().then((values) => {
-      const model = {
-        ...values,
-      };
-      mutate(model);
-    });
+    form
+      .validateFields()
+      .then((values) => {
+        const model = {
+          ...values,
+        };
+        mutate(model);
+      })
+      .catch((validationError) => {
+        // Form validation failed - fields will show errors automatically
+        console.log("Form validation failed:", validationError);
+      });
   };
 
   return (

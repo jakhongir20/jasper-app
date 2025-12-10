@@ -204,6 +204,12 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
       const applicationAspects =
         form.getFieldValue("application_aspects") || [];
 
+      // Validate that at least one transaction/product exists
+      if (transactions.length === 0) {
+        toast("Необходимо добавить хотя бы один продукт в перечень", "error");
+        return;
+      }
+
       const applicationTransactions = transactions.map(
         ({ _uid, ...transaction }: { _uid?: string;[key: string]: any; }) =>
           buildTransactionPayload(transaction),

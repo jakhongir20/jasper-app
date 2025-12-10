@@ -262,15 +262,17 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         customerFromDetail?.customer_id ??
         (applicationDetail as any)?.customer_id ??
         undefined;
-      const customerSelectValue = customerIdValue
+
+      // Build customer select value - use customer_name/customer_phone even without customer_id
+      const customerName = customerFromDetail?.name ?? applicationDetail.customer_name ?? "";
+      const customerPhone = customerFromDetail?.phone_number ?? applicationDetail.customer_phone ?? "";
+
+      // Create customerSelectValue if we have either customer_id OR customer_name
+      const customerSelectValue = (customerIdValue || customerName)
         ? {
-          customer_id: customerIdValue,
-          name:
-            customerFromDetail?.name ?? applicationDetail.customer_name ?? "",
-          phone_number:
-            customerFromDetail?.phone_number ??
-            applicationDetail.customer_phone ??
-            "",
+          customer_id: customerIdValue ?? 0, // Use 0 as placeholder if no ID available
+          name: customerName,
+          phone_number: customerPhone,
           is_active: customerFromDetail?.is_active ?? true,
         }
         : undefined;
@@ -279,13 +281,10 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         general: {
           number: applicationDetail.number || "",
           address: applicationDetail.address || "",
-          customer_name: applicationDetail.customer_name || "",
-          customer_phone: applicationDetail.customer_phone || "",
+          customer_name: customerName,
+          customer_phone: customerPhone,
           customer_id: customerSelectValue,
-          phone_number:
-            customerFromDetail?.phone_number ??
-            applicationDetail.customer_phone ??
-            "",
+          phone_number: customerPhone,
           remark: applicationDetail.remark || "",
           sizes: (applicationDetail.sizes as string) || "",
           color: applicationDetail.color
@@ -483,6 +482,12 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         form.getFieldValue("application_services") || [];
       const applicationQualities =
         form.getFieldValue("application_qualities") || [];
+
+      // Validate that at least one transaction/product exists
+      if (transactions.length === 0) {
+        toast("Необходимо добавить хотя бы один продукт в перечень", "error");
+        return;
+      }
 
       const customerId = getValue("customer_id", generalValues?.customer_id);
 
