@@ -7,13 +7,55 @@ import { useToast } from "@/shared/hooks";
 import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
 import { ProductImageAssignmentEnumEntity } from "@/shared/lib/api/generated/gateway/model/productImageAssignmentEnumEntity";
 
-// Assignment options for product images
-const assignmentOptions = Object.entries(ProductImageAssignmentEnumEntity).map(
-  ([key, value]) => ({
-    label: key
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" "),
+// Russian translations for assignment enum values
+const ASSIGNMENT_LABELS: Record<string, string> = {
+  "one-sash-door": "Одностворчатая дверь",
+  "one-half-sash-door": "Полуторастворчатая дверь",
+  "two-sash-door": "Двустворчатая дверь",
+  "three-sash-door": "Трёхстворчатая дверь",
+  "four-sash-door": "Четырёхстворчатая дверь",
+
+  "one-sash-frame": "Одностворчатый наличник",
+  "one-half-sash-frame": "Полуторастворчатый наличник",
+  "two-sash-frame": "Двустворчатый наличник",
+  "three-sash-frame": "Трёхстворчатый наличник",
+  "four-sash-frame": "Четырёхстворчатый наличник",
+
+  "one-sash-crown": "Одностворчатая корона",
+  "one-half-sash-crown": "Полуторастворчатая корона",
+  "two-sash-crown": "Двустворчатая корона",
+  "three-sash-crown": "Трёхстворчатая корона",
+  "four-sash-crown": "Четырёхстворчатая корона",
+
+  "one-sash-transom": "Одностворчатая фрамуга",
+  "one-half-sash-transom": "Полуторастворчатая фрамуга",
+  "two-sash-transom": "Двустворчатая фрамуга",
+  "three-sash-transom": "Трёхстворчатая фрамуга",
+  "four-sash-transom": "Четырёхстворчатая фрамуга",
+
+  "one-sash-up-frame": "Одностворчатый надналичник",
+  "one-half-sash-up-frame": "Полуторастворчатый надналичник",
+  "two-sash-up-frame": "Двустворчатый надналичник",
+  "three-sash-up-frame": "Трёхстворчатый надналичник",
+  "four-sash-up-frame": "Четырёхстворчатый надналичник",
+
+  "one-sash-under-frame": "Одностворчатый подналичник",
+  "one-half-sash-under-frame": "Полуторастворчатый подналичник",
+  "two-sash-under-frame": "Двустворчатый подналичник",
+  "three-sash-under-frame": "Трёхстворчатый подналичник",
+  "four-sash-under-frame": "Четырёхстворчатый подналичник",
+
+  "one-sash-trim": "Одностворчатый обклад",
+  "one-half-sash-trim": "Полуторастворчатый обклад",
+  "two-sash-trim": "Двустворчатый обклад",
+  "three-sash-trim": "Трёхстворчатый обклад",
+  "four-sash-trim": "Четырёхстворчатый обклад",
+};
+
+// Assignment options for product images with Russian labels
+const assignmentOptions = Object.values(ProductImageAssignmentEnumEntity).map(
+  (value) => ({
+    label: ASSIGNMENT_LABELS[value] || value,
     value: value,
   })
 );
