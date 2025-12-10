@@ -221,7 +221,10 @@
       "widthPlusCoefficient": "Kenglik plyus koeffitsienti",
       "isWidthCoefficientApplicable": "Kenglik koeffitsienti qo'llaniladimi",
       "widthCoefficientUseCase": "Kenglik koeffitsienti ishlatish holati",
-      "isWidthCoefficientDouble": "Kenglik koeffitsienti ikki barobar"
+      "isWidthCoefficientDouble": "Kenglik koeffitsienti ikki barobar",
+      "images": "Rasmlar",
+      "maxImages": "Maksimum {{count}} ta rasm. Formatlar: PNG, JPG. Hajmi: {{size}}MB gacha",
+      "assignment": "Belgilash"
     },
     "placeholder": {
       "section": "Bo'limni tanlang",

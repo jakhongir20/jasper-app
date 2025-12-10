@@ -244,7 +244,10 @@
       "percentCoveringPrimary": "Percent Covering Primary",
       "percentCoveringSecondary": "Percent Covering Secondary",
       "percentColor": "Percent Color",
-      "percentExtraOption": "Percent Extra Option"
+      "percentExtraOption": "Percent Extra Option",
+      "images": "Images",
+      "maxImages": "Maximum {{count}} images. Formats: PNG, JPG. Size: up to {{size}}MB",
+      "assignment": "Assignment"
     },
     "placeholder": {
       "customerName": "Enter customer name",

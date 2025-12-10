@@ -251,31 +251,9 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
         {fileList.length >= maxCount ? null : uploadButton}
       </Upload>
 
-      <div className="mt-2 flex items-center space-x-2 text-sm text-gray-500">
-        {maxSize && (
-          <p className="w-fit rounded-md bg-gray-600 px-2 py-1 text-xs text-black">
-            <span className="font-normal">
-              {t("common.fileUploader.maxSize")}:
-            </span>
-            <span className="font-medium">
-              {maxSize}
-              {t("common.fileUploader.mb")}
-            </span>
-          </p>
-        )}
-        {allowedFormats?.length > 0 && (
-          <p className="flex w-fit flex-nowrap space-x-2 rounded-md bg-gray-600 px-2 py-1 text-xs font-medium text-black">
-            <span className="font-normal">
-              {t("common.fileUploader.allowedFormats")}:
-            </span>
-            <span className="font-medium">
-              {allowedFormats.map((format) => format.split("/")[1]).join(", ")}
-            </span>
-          </p>
-        )}
+      <div className="mt-2 text-sm text-gray-500">
         <p className="w-fit rounded-md bg-gray-600 px-2 py-1 text-xs text-black">
-          <span className="font-normal">{t("common.labels.maxImages")}:</span>
-          <span className="font-medium">{maxCount}</span>
+          {t("common.labels.maxImages", { count: maxCount, size: maxSize })}
         </p>
       </div>
 

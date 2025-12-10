@@ -50,7 +50,37 @@ export const ProductForm = ({
         </div>
       )}
 
-      {/* Basic Information - First Row */}
+      {/* Pricing and Category - First Row (most important fields) */}
+      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <Form.Item
+          name="price_usd"
+          label={t("common.input.priceUSD")}
+          rules={[{ required: true, message: t("common.validation.required") }]}
+        >
+          <NumberInput min={0} placeholder={t("common.placeholder.priceUSD")} />
+        </Form.Item>
+
+        <Form.Item name="price_uzs" label={t("common.input.priceUZS")}>
+          <NumberInput min={0} placeholder={t("common.placeholder.priceUZS")} />
+        </Form.Item>
+
+        <Form.Item
+          name="category_id"
+          label={t("common.input.category")}
+          rules={[{ required: true, message: t("common.validation.required") }]}
+        >
+          <Select
+            placeholder={t("common.placeholder.category")}
+            loading={isCategoriesLoading}
+            options={categories?.results?.map((category) => ({
+              value: category.category_id,
+              label: category.name,
+            }))}
+          />
+        </Form.Item>
+      </div>
+
+      {/* Basic Information - Second Row */}
       <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         <Form.Item
           name="name"
@@ -115,36 +145,6 @@ export const ProductForm = ({
             productId={product?.product_id}
             onImageDelete={onImageDelete}
             showAssignment
-          />
-        </Form.Item>
-      </div>
-
-      {/* Pricing - Second Row */}
-      <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-        <Form.Item name="price_uzs" label={t("common.input.priceUZS")}>
-          <NumberInput min={0} placeholder={t("common.placeholder.priceUZS")} />
-        </Form.Item>
-
-        <Form.Item
-          name="price_usd"
-          label={t("common.input.priceUSD")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
-        >
-          <NumberInput min={0} placeholder={t("common.placeholder.priceUSD")} />
-        </Form.Item>
-
-        <Form.Item
-          name="category_id"
-          label={t("common.input.category")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
-        >
-          <Select
-            placeholder={t("common.placeholder.category")}
-            loading={isCategoriesLoading}
-            options={categories?.results?.map((category) => ({
-              value: category.category_id,
-              label: category.name,
-            }))}
           />
         </Form.Item>
       </div>

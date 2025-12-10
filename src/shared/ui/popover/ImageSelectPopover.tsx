@@ -274,7 +274,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
             alt=""
             fallbackText={getItemTextLabel(selectedItem)}
             className="h-full w-full"
-            imageClassName="h-full w-full object-cover"
+            imageClassName="h-full w-full object-contain"
             fallbackClassName="h-full w-full text-sm"
             spinnerSize="small"
             onError={() => setSelectedImageFailed(true)}
@@ -321,7 +321,7 @@ export const ImageSelectPopover = <T extends ItemType = ItemType>({
                       alt={getItemTextLabel(item)}
                       fallbackText={getItemTextLabel(item)}
                       className="h-32 w-full"
-                      imageClassName="h-32 w-full rounded object-cover"
+                      imageClassName="h-32 w-full rounded object-contain"
                       fallbackClassName="h-32 w-full rounded flex items-center justify-center text-xs text-gray-500"
                       spinnerSize="small"
                       onError={() =>

@@ -446,7 +446,10 @@
       "percentCoveringPrimary": "Процент покрытия I",
       "percentCoveringSecondary": "Процент покрытия II",
       "percentColor": "Процент цвета",
-      "percentExtraOption": "Процент доп. опции"
+      "percentExtraOption": "Процент доп. опции",
+      "images": "Изображения",
+      "maxImages": "Максимум {{count}} изображений. Форматы: PNG, JPG. Размер: до {{size}}МБ",
+      "assignment": "Назначение"
     },
     "placeholder": {
       "frame_front_id": "Выберите каркас лицо",
