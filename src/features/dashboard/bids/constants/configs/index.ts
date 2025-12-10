@@ -86,6 +86,13 @@ export const transactionFormFields: FormFieldConfig[] = [
     type: "select",
     options: "doorTypeOptions",
   },
+  // box_width is placed right after door_type so users see it when selecting ДО/ДГ
+  // It becomes required when door_type is ДО or ДГ (handled dynamically in TransactionsModal)
+  {
+    name: "box_width",
+    label: "common.input.box_width",
+    type: "number",
+  },
   {
     name: "veneer_type",
     label: "common.input.veenerType",
@@ -128,12 +135,6 @@ export const transactionFormFields: FormFieldConfig[] = [
       valueKey: "framework_id",
       labelKey: "image_url",
     },
-  },
-
-  {
-    name: "box_width",
-    label: "common.input.box_width",
-    type: "number",
   },
   {
     name: "threshold",

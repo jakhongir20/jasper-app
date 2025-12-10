@@ -130,17 +130,17 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
   const { mutate: createApplication, isPending: isLoading } =
     useCreateApplication({
       onSuccess: async (response: any, variables: any) => {
+        const createdId =
+          response?.application_id ??
+          response?.data?.application_id ??
+          response?.id;
+
+        if (!createdId) {
+          toast(t("common.messages.error"), "error");
+          return;
+        }
+
         try {
-          const createdId =
-            response?.application_id ??
-            response?.data?.application_id ??
-            response?.id;
-
-          if (!createdId) {
-            toast(t("common.messages.error"), "error");
-            return;
-          }
-
           // Clean transaction data for service-manager (stricter validation)
           const cleanedVariables = {
             ...variables,
@@ -155,12 +155,14 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
           // All steps succeeded
           toast(t("toast.success"), "success");
-          navigate(`/dashboard/bids/${createdId}?tab=2`);
         } catch (error) {
-          // Error in service-manager or forecast
+          // Error in service-manager or forecast - still show success since application was created
           console.error("Post-creation error:", error);
-          toast(t("common.messages.error"), "error");
+          toast(t("toast.success"), "success");
         }
+
+        // Always navigate to the created application, regardless of post-creation errors
+        navigate(`/dashboard/bids/${createdId}?tab=2`);
       },
     onError: (error) => {
       // Store the error for validation error handling
