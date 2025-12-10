@@ -1,4 +1,4 @@
-import { type FC, useCallback, useEffect, useRef } from "react";
+import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { Form } from "antd";
 import { Input, Modal } from "@/shared/ui";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,7 @@ import {
   ApplicationLocalForm,
   TransactionFormType as Transaction,
 } from "@/features/dashboard/bids/model";
-import { renderFormItem } from "@/features/dashboard/bids/utils";
+import { renderFormItemWithContext } from "@/features/dashboard/bids/utils";
 import { getRandomId } from "@/shared/utils";
 import { ApiService } from "@/shared/lib/services";
 
@@ -29,12 +29,15 @@ export const TransactionsModal: FC<Props> = ({
   const parentForm = Form.useFormInstance<ApplicationLocalForm>();
   const abortControllerRef = useRef<AbortController | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [doorType, setDoorType] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
       if (initialValues) {
         // If editing, use provided transaction values directly
         form.setFieldsValue(initialValues);
+        // Set door type for validation
+        setDoorType(initialValues.door_type || null);
       } else {
         // If adding new, reset form to empty state and populate with general form values
         form.resetFields();
@@ -117,6 +120,7 @@ export const TransactionsModal: FC<Props> = ({
 
   const handleCloseModal = () => {
     form.resetFields();
+    setDoorType(null);
     closeModal();
   };
 
@@ -261,14 +265,20 @@ export const TransactionsModal: FC<Props> = ({
         layout="vertical"
         form={form}
         className="grid gap-4 p-5 lg:grid-cols-2"
-        onValuesChange={(_, allValues) => debouncedCalculate(allValues)}
+        onValuesChange={(changedValues, allValues) => {
+          // Track door_type changes for box_width validation
+          if (changedValues.door_type !== undefined) {
+            setDoorType(changedValues.door_type);
+          }
+          debouncedCalculate(allValues);
+        }}
       >
         {/* Hidden field for _uid to maintain identity for editing */}
         <Form.Item name="_uid" hidden>
           <Input />
         </Form.Item>
 
-        {transactionFormFields.map(renderFormItem)}
+        {transactionFormFields.map(renderFormItemWithContext({ doorType }))}
       </Form>
     </Modal>
   );

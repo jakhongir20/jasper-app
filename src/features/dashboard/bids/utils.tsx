@@ -88,7 +88,12 @@ const FieldComponents = {
 
 type FieldType = FormFieldConfig["type"];
 
-export const renderFormItem = (field: FormFieldConfig) => {
+export interface RenderFormItemContext {
+  doorType?: string | null;
+}
+
+// Base function that renders a form item with optional context
+const renderFormItemInternal = (field: FormFieldConfig, context?: RenderFormItemContext) => {
   const { name, label, type, required, options, apiConfig } = field;
   const placeholder = t(`common.placeholder.${name}`);
   const Comp = FieldComponents[type as FieldType];
@@ -118,13 +123,19 @@ export const renderFormItem = (field: FormFieldConfig) => {
       JSON.stringify(apiConfig.params || { key: "something" });
   }
 
+  // Dynamic required validation for box_width when door_type is ДО or ДГ
+  let isRequired = required;
+  if (name === "box_width" && context?.doorType) {
+    isRequired = context.doorType === "ДО" || context.doorType === "ДГ";
+  }
+
   return (
     <Form.Item
       key={key}
       label={t(label)}
       name={name}
       rules={
-        required
+        isRequired
           ? [{ required: true, message: t("common.validation.required") }]
           : undefined
       }
@@ -133,3 +144,10 @@ export const renderFormItem = (field: FormFieldConfig) => {
     </Form.Item>
   );
 };
+
+// For use in .map() callbacks - compatible with Array.map signature
+export const renderFormItem = (field: FormFieldConfig) => renderFormItemInternal(field);
+
+// For use with context (e.g., doorType for box_width validation)
+export const renderFormItemWithContext = (context: RenderFormItemContext) =>
+  (field: FormFieldConfig) => renderFormItemInternal(field, context);
