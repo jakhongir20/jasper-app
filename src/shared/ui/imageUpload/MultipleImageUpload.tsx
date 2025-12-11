@@ -236,6 +236,7 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
                     options={assignmentOptions}
                     className="mt-1 w-full"
                     style={{ width: "100%" }}
+                    popupMatchSelectWidth={false}
                     showSearch
                     filterOption={(input, option) =>
                       (option?.label ?? "")

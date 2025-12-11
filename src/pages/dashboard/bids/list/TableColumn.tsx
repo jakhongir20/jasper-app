@@ -13,18 +13,12 @@ export const columns = (
   },
 ): ColumnType<ApplicationListItem>[] => [
   {
-    key: "number",
-    title: t("common.table.number"),
-    dataIndex: "number",
-  },
-  {
     key: "application_id",
     title: "ID",
     dataIndex: "application_id",
     width: 90,
     render: (data: number | string) => data ?? "-",
   },
-
   {
     key: "customer_name",
     title: t("common.table.customer"),
