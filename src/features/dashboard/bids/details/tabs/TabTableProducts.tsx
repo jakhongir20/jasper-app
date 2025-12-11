@@ -25,11 +25,11 @@ export const ApplicationGeneralInfo: FC<Props> = ({ application }) => {
         />
         <CInfo
           value={t("common.labels.clientName")}
-          subValue={application?.customer_name}
+          subValue={application?.customer?.name || application?.customer_name}
         />
         <CInfo
           value={t("common.labels.clientNumber")}
-          subValue={application?.customer_phone}
+          subValue={application?.customer?.phone_number || application?.customer_phone}
         />
         <CInfo
           value={t("common.labels.applicationDate")}
@@ -47,22 +47,13 @@ export const ApplicationGeneralInfo: FC<Props> = ({ application }) => {
           value={t("common.labels.category")}
           subValue={application?.category_name}
         /> */}
-        <CInfo value={t("common.labels.color")} subValue={application?.color} />
         <CInfo
           value={t("common.labels.doorLock")}
-          subValue={
-            typeof application?.door_lock === "string"
-              ? application.door_lock
-              : "-"
-          }
+          subValue={application?.default_door_lock?.name || application?.door_lock?.name}
         />
         <CInfo
           value={t("common.labels.doorHinge")}
-          subValue={
-            typeof application?.factory_designer === "string"
-              ? application.factory_designer
-              : "-"
-          }
+          subValue={application?.default_hinge?.name}
         />
 
         <CInfo
@@ -71,11 +62,7 @@ export const ApplicationGeneralInfo: FC<Props> = ({ application }) => {
         />
         <CInfo
           value={t("common.labels.dimensions")}
-          subValue={
-            typeof application?.factory_designer === "string"
-              ? application.factory_designer
-              : "-"
-          }
+          subValue={application?.sizes || "-"}
         />
       </div>
 

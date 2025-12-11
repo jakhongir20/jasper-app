@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import type { ApplicationOutputEntity } from "@/shared/lib/api";
+import type { ApplicationOutputEntity } from "@/shared/lib/api/generated/gateway/model";
 
 export type Option = Record<string, string | number | boolean | unknown>;
 

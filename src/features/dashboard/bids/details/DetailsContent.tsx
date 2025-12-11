@@ -20,7 +20,7 @@ export const DetailsContent: FC<Props> = ({ data, isLoading }) => {
   return (
     <>
       <CDetailsHeader
-        title={data?.customer_name}
+        title={data?.customer?.name || data?.customer_name}
         onEdit={() =>
           navigate(`/dashboard/bids/edit/${id}`, {
             state: { from: `/dashboard/bids/${id}` },

@@ -6,6 +6,7 @@ export type ApplicationDetail = {
   application_id: number;
   unique_id: string;
   date: string;
+  application_date: string;
   production_date: string;
   created_at: number;
   updated_at: number;
@@ -14,11 +15,21 @@ export type ApplicationDetail = {
   address: string;
   customer_name: string;
   customer_phone: string;
+  customer: {
+    customer_id: number;
+    created_at: number;
+    name: string;
+    phone_number: string;
+    is_active: boolean;
+  };
+  delivery_date: string;
   remark: string;
-  sizes: unknown;
+  sizes: string;
   color: string;
   category_name: string;
   door_lock: Product;
+  default_door_lock: Product;
+  default_hinge: Product;
   canopy: Product;
   transom_height_front: number;
   transom_height_back: number;
