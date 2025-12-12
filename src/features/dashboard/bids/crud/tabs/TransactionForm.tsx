@@ -63,6 +63,8 @@ type FieldConfig = {
   type: FieldType;
   placeholder?: string;
   numberStep?: number;
+  minValue?: number; // Minimum allowed value for number fields (default: 0)
+  integerOnly?: boolean; // Only allow integer values
   options?: { value: string | number; label: string }[];
   queryKey?: string;
   fetchUrl?: string;
@@ -169,7 +171,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "door",
     title: "Полотно (дверь)",
-    allowedProductTypes: [],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -1151,6 +1153,8 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     label: "Количество элементов",
     type: "number",
     numberStep: 1,
+    minValue: 1,
+    integerOnly: true,
     placeholder: "Введите количество элементов",
     aliases: ["quantity"],
   },
@@ -1175,6 +1179,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     label: "Толщина проёма",
     type: "number",
     numberStep: 0.01,
+    minValue: 0.01, // Thickness cannot be zero
     placeholder: "Введите толщину проёма",
     aliases: ["doorway_thickness"],
   },
@@ -1427,18 +1432,55 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
             />
           </Form.Item>
         );
-      case "number":
+      case "number": {
+        const minVal = field.minValue ?? 0;
+        const isInteger = field.integerOnly ?? false;
         return (
-          <Form.Item name={namePath} label={field.label} rules={rules}>
+          <Form.Item
+            name={namePath}
+            label={field.label}
+            rules={[
+              ...(rules ?? []),
+              {
+                validator: (_, value) => {
+                  if (value !== undefined && value !== null && value !== "") {
+                    const numValue = Number(value);
+                    if (isInteger && !Number.isInteger(numValue)) {
+                      return Promise.reject(
+                        new Error("Значение должно быть целым числом")
+                      );
+                    }
+                    if (numValue < minVal) {
+                      return Promise.reject(
+                        new Error(
+                          minVal > 0
+                            ? `Значение должно быть не менее ${minVal}`
+                            : "Значение не может быть отрицательным"
+                        )
+                      );
+                    }
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
+          >
             <Input
               type="number"
+              min={minVal}
               step={field.numberStep ?? 0.01}
               placeholder={field.placeholder}
               disabled={isFieldDisabled}
               onChange={(event) => {
                 const rawValue = event.target.value;
+                let numValue = Number(rawValue);
+                // Round to integer if integerOnly
+                if (isInteger && rawValue !== "") {
+                  numValue = Math.round(numValue);
+                }
+                // Prevent values below minimum
                 const normalized =
-                  rawValue === "" ? undefined : Number(rawValue);
+                  rawValue === "" ? undefined : (numValue < minVal ? minVal : numValue);
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
                     setTransactionField(alias, normalized),
@@ -1448,6 +1490,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
             />
           </Form.Item>
         );
+      }
       case "select":
         return (
           <Form.Item name={namePath} label={field.label} rules={rules}>

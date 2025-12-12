@@ -429,7 +429,8 @@
       "percentExtraOption": "Enter percent extra option"
     },
     "validation": {
-      "required": "This field is required"
+      "required": "This field is required",
+      "noNegative": "Value cannot be negative"
     },
     "messages": {
       "userCreated": "User created successfully",

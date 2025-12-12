@@ -446,6 +446,18 @@ export const transformTransactionDetailToForm = (
       transaction?.sheathing?.product_id,
   );
 
+  // Helper to get full product object or just ID
+  const getProductValue = (
+    productId: number | null,
+    productObject: any,
+    idKey: string = "product_id",
+  ) => {
+    if (productObject && typeof productObject === "object" && productObject[idKey]) {
+      return productObject;
+    }
+    return productId;
+  };
+
   return {
     // Keep location as-is if it's an object (from API), otherwise use empty string
     location:
@@ -473,65 +485,65 @@ export const transformTransactionDetailToForm = (
     transom_type: transaction.transom_type ?? null,
     transom_height_front: transaction.transom_height_front ?? null,
     transom_height_back: transaction.transom_height_back ?? null,
-    transom_product_id: transomProductId,
-    door_product_id: doorProductId,
+    transom_product_id: getProductValue(transomProductId, transaction.transom_product ?? transaction.transom),
+    door_product_id: getProductValue(doorProductId, transaction.door_product ?? transaction.product),
     product_id: doorProductId,
-    sheathing_product_id: sheathingProductId,
-    frame_product_id: frameProductId,
+    sheathing_product_id: getProductValue(sheathingProductId, transaction.sheathing_product ?? transaction.sheathing),
+    frame_product_id: getProductValue(frameProductId, transaction.frame_product ?? transaction.frame),
     volume_frame: transaction.volume_frame ?? null,
-    filler_product_id: fillerProductId,
+    filler_product_id: getProductValue(fillerProductId, transaction.filler_product ?? transaction.filler),
     volume_filler: transaction.volume_filler ?? null,
-    crown_product_id: crownProductId,
+    crown_product_id: getProductValue(crownProductId, transaction.crown_product ?? transaction.crown),
     volume_crown: transaction.volume_crown ?? null,
     up_frame_quantity:
       transaction.up_frame_quantity ?? transaction.up_trim_quantity ?? null,
-    up_frame_product_id: upFrameProductId,
+    up_frame_product_id: getProductValue(upFrameProductId, transaction.up_frame_product ?? transaction.up_frame ?? transaction.up_trim),
     under_frame_quantity:
       transaction.under_frame_quantity ??
       transaction.under_trim_quantity ??
       null,
     under_frame_height: transaction.under_frame_height ?? null,
-    under_frame_product_id: underFrameProductId,
+    under_frame_product_id: getProductValue(underFrameProductId, transaction.under_frame_product ?? transaction.under_frame ?? transaction.under_trim),
     percent_trim: transaction.percent_trim ?? transaction.trim_percent ?? null,
-    trim_product_id: trimProductId,
+    trim_product_id: getProductValue(trimProductId, transaction.trim_product ?? transaction.trim),
     percent_molding:
       transaction.percent_molding ?? transaction.molding_percent ?? null,
-    molding_product_id: moldingProductId,
+    molding_product_id: getProductValue(moldingProductId, transaction.molding_product ?? transaction.molding),
     percent_covering_primary:
       transaction.percent_covering_primary ??
       transaction.covering_primary_percent ??
       null,
-    covering_primary_product_id: coveringPrimaryProductId,
+    covering_primary_product_id: getProductValue(coveringPrimaryProductId, transaction.covering_primary_product ?? transaction.covering_primary),
     percent_covering_secondary:
       transaction.percent_covering_secondary ??
       transaction.covering_secondary_percent ??
       null,
-    covering_secondary_product_id: coveringSecondaryProductId,
+    covering_secondary_product_id: getProductValue(coveringSecondaryProductId, transaction.covering_secondary_product ?? transaction.covering_secondary),
     percent_color:
       transaction.percent_color ?? transaction.color_percent ?? null,
-    color_product_id: colorProductId,
+    color_product_id: getProductValue(colorProductId, transaction.color_product ?? transaction.color),
     color_custom_name: transaction.color_custom_name ?? null,
     floor_skirting_length: transaction.floor_skirting_length ?? null,
-    floor_skirting_product_id: floorSkirtingProductId,
-    heated_floor_product_id: heatedFloorProductId,
+    floor_skirting_product_id: getProductValue(floorSkirtingProductId, transaction.floor_skirting_product ?? transaction.floor_skirting),
+    heated_floor_product_id: getProductValue(heatedFloorProductId, transaction.heated_floor_product ?? transaction.heated_floor),
     volume_heated_floor: transaction.volume_heated_floor ?? null,
-    latting_product_id: lattingProductId,
+    latting_product_id: getProductValue(lattingProductId, transaction.latting_product ?? transaction.latting),
     volume_latting: transaction.volume_latting ?? null,
-    window_product_id: windowProductId,
+    window_product_id: getProductValue(windowProductId, transaction.window_product ?? transaction.window),
     volume_window: transaction.volume_window ?? null,
-    windowsill_product_id: windowsillProductId,
+    windowsill_product_id: getProductValue(windowsillProductId, transaction.windowsill_product ?? transaction.windowsill),
     volume_windowsill: transaction.volume_windowsill ?? null,
-    glass_product_id: glassProductId,
+    glass_product_id: getProductValue(glassProductId, transaction.glass_product ?? transaction.glass),
     glass_quantity: transaction.glass_quantity ?? null,
     volume_glass:
       transaction.volume_glass ?? transaction.glass_quantity ?? null,
     door_lock_mechanism: transaction.door_lock_mechanism ?? null,
-    door_lock_product_id: doorLockProductId,
+    door_lock_product_id: getProductValue(doorLockProductId, transaction.door_lock_product ?? transaction.door_lock),
     hinge_mechanism: transaction.hinge_mechanism ?? null,
-    hinge_product_id: hingeProductId,
-    door_bolt_product_id: doorBoltProductId,
-    door_stopper_product_id: doorStopperProductId,
-    anti_threshold_product_id: antiThresholdProductId,
+    hinge_product_id: getProductValue(hingeProductId, transaction.hinge_product ?? transaction.hinge ?? transaction.canopy),
+    door_bolt_product_id: getProductValue(doorBoltProductId, transaction.door_bolt_product ?? transaction.door_bolt ?? transaction.latch),
+    door_stopper_product_id: getProductValue(doorStopperProductId, transaction.door_stopper_product ?? transaction.door_stopper),
+    anti_threshold_product_id: getProductValue(antiThresholdProductId, transaction.anti_threshold_product ?? transaction.anti_threshold),
     door_lock_quantity: transaction.door_lock_quantity ?? null,
     hinge_quantity:
       transaction.hinge_quantity ?? transaction.canopy_quantity ?? null,
@@ -542,6 +554,6 @@ export const transformTransactionDetailToForm = (
     box_width: transaction.box_width ?? null,
     box_width_length: transaction.box_width_length ?? null,
     percent_extra_option: transaction.percent_extra_option ?? null,
-    extra_option_product_id: extraOptionProductId,
+    extra_option_product_id: getProductValue(extraOptionProductId, transaction.extra_option_product ?? transaction.extra_option),
   };
 };

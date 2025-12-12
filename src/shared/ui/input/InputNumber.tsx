@@ -125,6 +125,16 @@ export const NumberInput: FC<NumberInputProps> = ({
       numeric = Number(sanitized);
     }
 
+    // Enforce min/max constraints
+    if (numeric !== undefined) {
+      if (typeof min === "number" && numeric < min) {
+        numeric = min;
+      }
+      if (typeof max === "number" && numeric > max) {
+        numeric = max;
+      }
+    }
+
     onChange?.(numeric);
     const formatted = formatWithSpaces(sanitized);
     setDisplayValue(formatted);
@@ -161,8 +171,6 @@ export const NumberInput: FC<NumberInputProps> = ({
         onChange={handleInput}
         onFocus={onFocus}
         inputMode="decimal"
-        min={min}
-        max={max}
         style={{
           paddingLeft: prefix ? `${prefix.length + 1}ch` : undefined,
           paddingRight: suffix ? `${suffix.length + 1}ch` : undefined,

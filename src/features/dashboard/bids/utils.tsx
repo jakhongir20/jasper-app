@@ -129,16 +129,31 @@ const renderFormItemInternal = (field: FormFieldConfig, context?: RenderFormItem
     isRequired = context.doorType === "ДО" || context.doorType === "ДГ";
   }
 
+  // Build validation rules
+  const rules: Array<{ required?: boolean; message?: string; validator?: (_: unknown, value: unknown) => Promise<void> }> = [];
+
+  if (isRequired) {
+    rules.push({ required: true, message: t("common.validation.required") });
+  }
+
+  // Add non-negative validation for number fields
+  if (type === "number") {
+    rules.push({
+      validator: (_, value) => {
+        if (value !== undefined && value !== null && value !== "" && Number(value) < 0) {
+          return Promise.reject(new Error(t("common.validation.noNegative")));
+        }
+        return Promise.resolve();
+      },
+    });
+  }
+
   return (
     <Form.Item
       key={key}
       label={t(label)}
       name={name}
-      rules={
-        isRequired
-          ? [{ required: true, message: t("common.validation.required") }]
-          : undefined
-      }
+      rules={rules.length > 0 ? rules : undefined}
     >
       <Comp {...compProps} />
     </Form.Item>
