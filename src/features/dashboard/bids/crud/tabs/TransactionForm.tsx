@@ -1398,14 +1398,11 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
     const rules = getRules(field.name, field.label);
 
     // Fields that should be disabled in edit mode
+    // Note: Only quantity fields are disabled, model selectors remain enabled
     const disabledInEditFields = [
-      "under_frame_product_id",
       "under_frame_quantity",
       "under_frame_height",
-      "up_frame_product_id",
       "up_frame_quantity",
-      "door_lock_product_id",
-      "glass_product_id",
       "glass_quantity",
       "door_lock_quantity",
       "hinge_quantity",
