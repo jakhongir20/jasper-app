@@ -50,7 +50,7 @@ export const columns = (
   {
     key: "forecast_sum",
     title: t("common.table.forecastSum"),
-    dataIndex: "forecast_sum",
+    dataIndex: "forecast_final",
     render: (data: number) => {
       return formatMoneyDecimal(data, 0);
     },

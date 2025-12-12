@@ -247,7 +247,9 @@
       "percentExtraOption": "Percent Extra Option",
       "images": "Images",
       "maxImages": "Maximum {{count}} images. Formats: PNG, JPG. Size: up to {{size}}MB",
-      "assignment": "Assignment"
+      "assignment": "Assignment",
+      "covering_primary": "Covering I",
+      "door_bolts": "Door Bolts"
     },
     "placeholder": {
       "customerName": "Enter customer name",

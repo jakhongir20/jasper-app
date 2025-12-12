@@ -449,7 +449,9 @@
       "percentExtraOption": "Процент доп. опции",
       "images": "Изображения",
       "maxImages": "Максимум {{count}} изображений. Форматы: PNG, JPG. Размер: до {{size}}МБ",
-      "assignment": "Назначение"
+      "assignment": "Назначение",
+      "covering_primary": "Покрытие I",
+      "door_bolts": "Задвижки"
     },
     "placeholder": {
       "frame_front_id": "Выберите каркас лицо",
