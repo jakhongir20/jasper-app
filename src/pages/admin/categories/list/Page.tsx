@@ -91,7 +91,7 @@ export default function Page() {
       {/* Edit Category Modal */}
       <CategoryEditForm
         open={openEdit}
-        category={selectedCategory}
+        categoryId={selectedCategory?.category_id || null}
         onCancel={() => {
           setOpenEdit(false);
           setSelectedCategory(null);

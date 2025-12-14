@@ -26,7 +26,8 @@ export const ServiceEditForm: FC<Props> = ({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const { data: service, isLoading: isLoadingService } = useServiceDetail(serviceId);
+  const { data: service, isLoading: isLoadingService } =
+    useServiceDetail(serviceId);
 
   const { mutate, isPending: isUpdating } = useUpdateService({
     onSuccess: () => {
@@ -48,7 +49,6 @@ export const ServiceEditForm: FC<Props> = ({
     if (service) {
       form.setFieldsValue({
         name: service.name,
-        measure: service.measure,
         price_usd: service.price_usd,
         price_uzs: service.price_uzs,
       });
@@ -60,7 +60,6 @@ export const ServiceEditForm: FC<Props> = ({
       mutate({
         service_id: serviceId,
         name: values.name,
-        measure: values.measure,
         price_usd: values.price_usd,
         price_uzs: values.price_uzs,
       });
@@ -91,25 +90,12 @@ export const ServiceEditForm: FC<Props> = ({
       >
         <Input placeholder={t("common.placeholder.serviceName")} />
       </Form.Item>
-
-      <Form.Item
-        name="measure"
-        label={t("common.labels.measure")}
-      >
-        <Input placeholder={t("common.placeholder.measure")} />
-      </Form.Item>
-
-      <Form.Item
-        name="price_usd"
-        label={t("common.labels.priceUSD")}
-      >
+      <br />
+      <Form.Item name="price_usd" label={t("common.input.priceUSD")}>
         <NumberInput min={0} placeholder={t("common.placeholder.priceUSD")} />
       </Form.Item>
-
-      <Form.Item
-        name="price_uzs"
-        label={t("common.labels.priceUZS")}
-      >
+      <br />
+      <Form.Item name="price_uzs" label={t("common.input.priceUZS")}>
         <NumberInput min={0} placeholder={t("common.placeholder.priceUZS")} />
       </Form.Item>
     </Modal>

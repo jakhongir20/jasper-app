@@ -17,6 +17,7 @@ interface ImageUploadProps {
   label?: string;
   hasError?: boolean; // New prop to indicate validation error
   value?: string; // Default image URL
+  showDelete?: boolean; // Whether to show delete button
 }
 
 type FileType = Parameters<NonNullable<UploadProps["beforeUpload"]>>[0];
@@ -56,6 +57,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   allowedFormats = ["image/png", "image/jpeg", "image/jpg"],
   hasError = false,
   value,
+  showDelete = true,
 }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -196,17 +198,19 @@ export const ImageUpload: FC<ImageUploadProps> = ({
                   color={"text-white size-3.5 transition-opacity duration-300"}
                 />
               </div>
-              <div
-                className={
-                  "flex size-6 items-center justify-center rounded-md bg-gray-200/[64%]"
-                }
-                onClick={handleDelete}
-              >
-                <Icon
-                  icon={"trash"}
-                  color={"text-white size-3.5 transition-opacity duration-300"}
-                />
-              </div>
+              {showDelete && (
+                <div
+                  className={
+                    "flex size-6 items-center justify-center rounded-md bg-gray-200/[64%]"
+                  }
+                  onClick={handleDelete}
+                >
+                  <Icon
+                    icon={"trash"}
+                    color={"text-white size-3.5 transition-opacity duration-300"}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ) : (

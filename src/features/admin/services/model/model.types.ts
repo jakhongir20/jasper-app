@@ -13,7 +13,6 @@ export interface Service {
 
 export interface CreateServicePayload {
   name: string;
-  measure?: string;
   price_uzs?: number;
   price_usd?: number;
 }

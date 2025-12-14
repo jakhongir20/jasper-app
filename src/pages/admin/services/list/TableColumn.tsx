@@ -13,35 +13,40 @@ export const columns = (
     canDelete: boolean;
   },
 ): ColumnType<Service>[] => [
-    {
-      key: "name",
-      title: t("common.labels.name"),
-      dataIndex: "name",
-      render: (name) => name || "-",
-    },
-    {
-      key: "measure",
-      title: t("common.labels.measure"),
-      dataIndex: "measure",
-      width: 120,
-      render: (measure) => measure || "-",
-    },
-    {
-      key: "price_usd",
-      title: t("common.labels.priceUSD"),
-      dataIndex: "price_usd",
-      width: 150,
-      render: (price) => (price != null ? `${formatPrice(price)} $` : "-"),
-    },
-    {
-      key: "price_uzs",
-      title: t("common.labels.priceUZS"),
-      dataIndex: "price_uzs",
-      width: 150,
-      render: (price) => (price != null ? `${formatPrice(price)} сум` : "-"),
-    },
-    ...(options.canDelete || options.canEdit
-      ? [
+  {
+    key: "name",
+    title: t("common.labels.name"),
+    dataIndex: "name",
+    render: (name) => name || "-",
+  },
+  {
+    key: "price_usd",
+    title: t("common.input.priceUSD"),
+    dataIndex: "price_usd",
+    width: 150,
+    render: (price) => (price != null ? `$${formatPrice(price)}` : "-"),
+  },
+  {
+    key: "price_uzs",
+    title: t("common.input.priceUZS"),
+    dataIndex: "price_uzs",
+    width: 150,
+    render: (price) => (price != null ? `${formatPrice(price)} сум` : "-"),
+  },
+  {
+    key: "is_deleted",
+    title: "Статус",
+    dataIndex: "is_deleted",
+    width: 150,
+    render: (value) =>
+      value ? (
+        <span className={"text-red-200"}>Удалено</span>
+      ) : (
+        <span className={"text-green-400"}>Актив</span>
+      ),
+  },
+  ...(options.canDelete || options.canEdit
+    ? [
         {
           title: null,
           dataIndex: "action",
@@ -62,5 +67,5 @@ export const columns = (
           },
         },
       ]
-      : []),
-  ];
+    : []),
+];

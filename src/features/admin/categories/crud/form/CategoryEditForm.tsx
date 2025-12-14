@@ -1,25 +1,22 @@
-import { Form } from "antd";
+import { Form, Spin } from "antd";
 import { type FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { showGlobalToast } from "@/shared/hooks";
 import { Input, Modal, Select } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  type Category,
-  useCategoriesList,
-  useUpdateCategory,
-} from "../../model";
+import { useAdminCategoryReadOneAdminCategoryGet } from "@/shared/lib/api/generated/gateway/categories/categories";
+import { useCategoriesList, useUpdateCategory } from "../../model";
 
 interface Props {
   open: boolean;
-  category: Category | null;
+  categoryId: number | null;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
 export const CategoryEditForm: FC<Props> = ({
   open,
-  category,
+  categoryId,
   onCancel,
   onSuccess,
 }) => {
@@ -30,10 +27,24 @@ export const CategoryEditForm: FC<Props> = ({
   const { data: categoriesData } = useCategoriesList();
   const categories = categoriesData?.results || [];
 
+  // Fetch category details when modal opens
+  const { data: categoryData, isLoading: isCategoryLoading } =
+    useAdminCategoryReadOneAdminCategoryGet(
+      { category_id: categoryId! },
+      {
+        query: {
+          enabled: open && !!categoryId,
+        },
+      },
+    );
+
   const { mutate, isPending: isLoading } = useUpdateCategory({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["tableData"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["/admin/category"],
       });
       showGlobalToast(t("common.messages.categoryUpdated"), "success");
       form.resetFields();
@@ -48,19 +59,19 @@ export const CategoryEditForm: FC<Props> = ({
   });
 
   useEffect(() => {
-    if (category && open) {
+    if (categoryData && open) {
       form.setFieldsValue({
-        name: category.name,
-        section_index: category.section,
+        name: categoryData.name,
+        section_index: categoryData.section_index,
       });
     }
-  }, [category, open, form]);
+  }, [categoryData, open, form]);
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      if (category) {
+      if (categoryId) {
         mutate({
-          category_id: category.category_id,
+          category_id: categoryId,
           name: values.name,
           section_index: values.section_index || null,
         });
@@ -75,7 +86,7 @@ export const CategoryEditForm: FC<Props> = ({
 
   // Filter out current category and its descendants from parent options
   const availableParentCategories = categories.filter(
-    (cat) => cat.category_id !== category?.category_id,
+    (cat) => cat.category_id !== categoryId,
   );
 
   return (
@@ -90,25 +101,31 @@ export const CategoryEditForm: FC<Props> = ({
       size="middle"
       form={form}
     >
-      <div className="flex flex-col gap-4">
-        <Form.Item
-          name="name"
-          label={t("common.labels.name")}
-          rules={[{ required: true, message: t("common.validation.required") }]}
-        >
-          <Input placeholder={t("common.placeholder.categoryTitle")} />
-        </Form.Item>
+      {isCategoryLoading ? (
+        <div className="flex justify-center py-8">
+          <Spin size="large" />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4">
+          <Form.Item
+            name="name"
+            label={t("common.labels.name")}
+            rules={[{ required: true, message: t("common.validation.required") }]}
+          >
+            <Input placeholder={t("common.placeholder.categoryTitle")} />
+          </Form.Item>
 
-        <Form.Item name="section_index" label={t("common.labels.section")}>
-          <Select
-            placeholder={t("Выберите раздел")}
-            options={availableParentCategories.map((cat) => ({
-              value: cat.category_id,
-              label: cat.name,
-            }))}
-          />
-        </Form.Item>
-      </div>
+          <Form.Item name="section_index" label={t("common.labels.section")}>
+            <Select
+              placeholder={t("Выберите раздел")}
+              options={availableParentCategories.map((cat) => ({
+                value: cat.category_id,
+                label: cat.name,
+              }))}
+            />
+          </Form.Item>
+        </div>
+      )}
     </Modal>
   );
 };
