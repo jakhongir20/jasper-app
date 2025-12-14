@@ -861,6 +861,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     // Measurement fields (required for all)
     "opening_height",
     "opening_width",
+    "opening_thickness", // Толщина проёма - required for doors and doorway
     "entity_quantity",
     // Required modelling fields per 2.4.1
     "box_width", // Ширина коробки
@@ -876,6 +877,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     // Measurement fields (required for all)
     "opening_height",
     "opening_width",
+    "opening_thickness", // Толщина проёма - required for doors and doorway
     "entity_quantity",
     // Required modelling fields per 2.4.2
     // Same as door-window except NO glass_product_id
@@ -891,6 +893,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     // Measurement fields (required for all)
     "opening_height",
     "opening_width",
+    "opening_thickness", // Толщина проёма - required for doors and doorway
     "entity_quantity",
     // Required modelling fields per 2.4.3
     "sheathing_product_id", // Модель обшивки
@@ -1382,6 +1385,25 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
       setActiveSectionKeys([]);
     }
   }, [drawerOpen, mode]);
+
+  // Clear validation errors when product_type changes
+  // This prevents stale "required" errors from showing on fields
+  // that are no longer required for the new product type
+  useEffect(() => {
+    if (productType) {
+      // Clear errors for opening_thickness when switching to a product type that doesn't require it
+      const fieldsToRevalidate = ["opening_thickness"];
+      fieldsToRevalidate.forEach((fieldName) => {
+        // Reset field error by setting field status
+        form.setFields([
+          {
+            name: ["transactions", 0, fieldName] as any,
+            errors: [],
+          },
+        ]);
+      });
+    }
+  }, [productType, form]);
 
   const renderField = (field: FieldConfig) => {
     if (field.visible && !field.visible(transactionValues, productType)) {
