@@ -118,9 +118,13 @@ const modules = (
     // { name: "colors", title: "navigation.colors", icon: "badge-percent" },
     { name: "categories", title: "navigation.categories", icon: "layer-group" },
     { name: "frameworks", title: "navigation.frameworks", icon: "manufacture" },
-    { name: "services", title: "navigation.services", icon: "wrench" },
-    { name: "qualities", title: "navigation.qualities", icon: "star" },
-    { name: "factoryStatuses", title: "navigation.factoryStatuses", icon: "factory" },
+    { name: "services", title: "navigation.services", icon: "briefcase" },
+    { name: "qualities", title: "navigation.qualities", icon: "crown" },
+    {
+      name: "factoryStatuses",
+      title: "navigation.factoryStatuses",
+      icon: "diagram",
+    },
     { name: "settings", title: "navigation.settings", icon: "settings" },
   ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
