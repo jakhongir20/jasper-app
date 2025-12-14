@@ -7,13 +7,13 @@ export interface Category {
 
 export interface CreateCategoryPayload {
     name: string;
-    section?: number | null;
+    section_index?: number | null;
 }
 
 export interface UpdateCategoryPayload {
     category_id: number;
     name: string;
-    section?: number | null;
+    section_index?: number | null;
 }
 
 export interface CategoryFormData {

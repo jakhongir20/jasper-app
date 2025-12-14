@@ -2,7 +2,6 @@ import type { ColumnType } from "antd/es/table";
 import { TFunction } from "i18next";
 import { Category } from "@/features/admin/categories";
 import { TableAction } from "@/shared/ui/table/action/TableAction";
-import { Tag } from "antd";
 import { formatDate } from "@/shared/utils/timeFormat";
 
 export const columns = (
@@ -14,30 +13,23 @@ export const columns = (
     canDelete?: boolean;
   },
 ): ColumnType<Category>[] => [
-    {
-      key: "name",
-      title: t("common.labels.name"),
-      dataIndex: "name",
-      render: (name) => name || "-",
+  {
+    key: "name",
+    title: t("common.labels.name"),
+    dataIndex: "name",
+    render: (name) => name || "-",
+  },
+  {
+    key: "created_at",
+    title: t("common.labels.createdAt"),
+    dataIndex: "created_at",
+    render: (createdAt) => {
+      return createdAt ? formatDate(new Date(createdAt * 1000)) : "-";
     },
-    {
-      key: "section",
-      title: t("common.labels.section"),
-      dataIndex: "section",
-      render: (section) => `#${section}`,
-      width: 150,
-    },
-    {
-      key: "created_at",
-      title: t("common.labels.createdAt"),
-      dataIndex: "created_at",
-      render: (createdAt) => {
-        return createdAt ? formatDate(new Date(createdAt * 1000)) : "-";
-      },
-      width: 150,
-    },
-    ...(options.canDelete || options.canEdit
-      ? [
+    width: 150,
+  },
+  ...(options.canDelete || options.canEdit
+    ? [
         {
           title: null,
           dataIndex: "action",
@@ -63,5 +55,5 @@ export const columns = (
           },
         },
       ]
-      : []),
-  ];
+    : []),
+];

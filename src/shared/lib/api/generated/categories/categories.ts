@@ -6,7 +6,6 @@
  *  * 0.1.0
  *  *\/
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -21,6 +20,7 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type {
   CategoryDeleteAdminCategoryDeleteParams,
@@ -32,8 +32,8 @@ import type {
   HTTPValidationErrorEntity,
 } from ".././model";
 
-import { customInstance } from "../../mutator";
 import type { ErrorType } from "../../mutator";
+import { customInstance } from "../../mutator";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -141,7 +141,7 @@ export const categoryEditAdminCategoryPut = (
   return customInstance<CategoryOutputEntity>(
     {
       url: `/admin/category`,
-      method: "PUT",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       data: categoryInputEntity,
       params,

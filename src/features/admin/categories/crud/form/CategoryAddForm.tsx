@@ -41,7 +41,7 @@ export const CategoryAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
     form.validateFields().then((values) => {
       mutate({
         name: values.name,
-        section: values.section || null,
+        section_index: values.section_index || null,
       });
     });
   };
@@ -72,7 +72,7 @@ export const CategoryAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
           <Input placeholder={t("common.placeholder.category")} />
         </Form.Item>
 
-        <Form.Item name="section" label={t("common.labels.section")}>
+        <Form.Item name="section_index" label={t("common.labels.section")}>
           <Select
             placeholder={t("common.placeholder.section")}
             options={categories.map((cat) => ({

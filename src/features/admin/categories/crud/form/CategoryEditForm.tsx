@@ -5,9 +5,9 @@ import { showGlobalToast } from "@/shared/hooks";
 import { Input, Modal, Select } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  useUpdateCategory,
-  useCategoriesList,
   type Category,
+  useCategoriesList,
+  useUpdateCategory,
 } from "../../model";
 
 interface Props {
@@ -51,7 +51,7 @@ export const CategoryEditForm: FC<Props> = ({
     if (category && open) {
       form.setFieldsValue({
         name: category.name,
-        section: category.section,
+        section_index: category.section,
       });
     }
   }, [category, open, form]);
@@ -62,7 +62,7 @@ export const CategoryEditForm: FC<Props> = ({
         mutate({
           category_id: category.category_id,
           name: values.name,
-          section: values.section || null,
+          section_index: values.section_index || null,
         });
       }
     });
@@ -99,9 +99,9 @@ export const CategoryEditForm: FC<Props> = ({
           <Input placeholder={t("common.placeholder.categoryTitle")} />
         </Form.Item>
 
-        <Form.Item name="section" label={t("common.labels.section")}>
+        <Form.Item name="section_index" label={t("common.labels.section")}>
           <Select
-            placeholder={t("common.placeholder.selectParentCategory")}
+            placeholder={t("Выберите раздел")}
             options={availableParentCategories.map((cat) => ({
               value: cat.category_id,
               label: cat.name,

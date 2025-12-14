@@ -215,7 +215,7 @@ export const UserPermissionsModal: FC<UserPermissionsModalProps> = ({
                       disabled={isUpdating}
                     >
                       <span className="text-sm">
-                        {permission.action_name}
+                        {t(`permissions.${permission.action_name}`, permission.action_name)}
                       </span>
                     </Checkbox>
                   ))}

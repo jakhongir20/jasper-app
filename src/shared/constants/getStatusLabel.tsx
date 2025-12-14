@@ -55,7 +55,7 @@ export const getStatusLabel = (statusCode: number): string => {
     [Status.GreenConfirmed]: t("common.status.confirming"),
   };
 
-  return statusMap[statusCode as Status] || t("status.unknown");
+  return statusMap[statusCode as Status] || "unknown";
 };
 
 export const getLogisticsStatusLabel = (statusCode: number): string => {
@@ -69,7 +69,7 @@ export const getLogisticsStatusLabel = (statusCode: number): string => {
     [Status.InActive]: t("common.status.delivered"),
   };
 
-  return statusMap[statusCode as Status] || t("status.unknown");
+  return statusMap[statusCode as Status] || t("unknown");
 };
 
 export const getPurchaseTypeStatusLabel = (statusCode: number): string => {
@@ -89,7 +89,7 @@ export const getPurchaseTypeStatusLabel = (statusCode: number): string => {
     ),
   };
 
-  return statusMap[statusCode as PurchaseTypeSTATUS] || t("status.unknown");
+  return statusMap[statusCode as PurchaseTypeSTATUS] || t("unknown");
 };
 
 export const getSalaryStatusLabel = (statusCode: number): string => {
@@ -98,7 +98,7 @@ export const getSalaryStatusLabel = (statusCode: number): string => {
     [SalaryStatus.notAdded]: t("common.status.notAdded"),
   };
 
-  return statusMap[statusCode as SalaryStatus] || t("status.unknown");
+  return statusMap[statusCode as SalaryStatus] || t("unknown");
 };
 
 export const getAboutStatusLabel = (statusCode: number): string => {
@@ -108,7 +108,7 @@ export const getAboutStatusLabel = (statusCode: number): string => {
     [AboutSTATUS.inventory]: t("common.status.inventory"),
   };
 
-  return statusMap[statusCode as AboutSTATUS] || t("status.unknown");
+  return statusMap[statusCode as AboutSTATUS] || t("unknown");
 };
 
 export const getSalaryBillStatusLabel = (statusCode: number): string => {
@@ -118,7 +118,7 @@ export const getSalaryBillStatusLabel = (statusCode: number): string => {
     [SalaryBillSTATUS.canceled]: t("common.status.canceled"),
   };
 
-  return statusMap[statusCode as SalaryStatus] || t("status.unknown");
+  return statusMap[statusCode as SalaryStatus] || t("unknown");
 };
 export const getVehicleStatusLabel = (statusCode: number): string => {
   const statusMap: Record<VehicleSTATUS, string> = {
@@ -128,5 +128,5 @@ export const getVehicleStatusLabel = (statusCode: number): string => {
     [VehicleSTATUS.outOfUsage]: t("common.status.outOfUsage"),
   };
 
-  return statusMap[statusCode as SalaryStatus] || t("status.unknown");
+  return statusMap[statusCode as SalaryStatus] || t("unknown");
 };
