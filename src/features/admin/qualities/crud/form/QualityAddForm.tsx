@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateQuality } from "@/features/admin/qualities/model";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal } from "@/shared/ui";
+import { Input, Modal, NumberInput } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -66,17 +66,13 @@ export const QualityAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
       >
         <Input placeholder={t("common.placeholder.qualityName")} />
       </Form.Item>
-
+      <br />
       <Form.Item
         name="price_multiplier"
         label={t("common.labels.priceMultiplier")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <Input
-          type="number"
-          step={0.01}
-          placeholder="Введите множитель цены"
-        />
+        <NumberInput min={0} placeholder="Введите множитель цены" />
       </Form.Item>
     </Modal>
   );

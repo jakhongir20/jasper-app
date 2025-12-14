@@ -12,14 +12,44 @@ export const columns = (
     canDelete: boolean;
   },
 ): ColumnType<Quality>[] => [
-    {
-      key: "name",
-      title: t("common.labels.name"),
-      dataIndex: "name",
-      render: (name) => name || "-",
-    },
-    ...(options.canDelete || options.canEdit
-      ? [
+  {
+    key: "name",
+    title: t("common.labels.name"),
+    dataIndex: "name",
+    render: (name) => name || "-",
+  },
+  {
+    key: "price_multiplier",
+    title: t("common.labels.priceMultiplier"),
+    dataIndex: "price_multiplier",
+    render: (value) => value ?? "-",
+  },
+  {
+    key: "company_display_name",
+    title: t("common.labels.companyDisplayName"),
+    dataIndex: ["company", "display_name"],
+    render: (value) => value || "-",
+  },
+  {
+    key: "company_legal_name",
+    title: t("common.labels.companyLegalName"),
+    dataIndex: ["company", "legal_name"],
+    render: (value) => value || "-",
+  },
+  {
+    key: "is_deleted",
+    title: "Статус",
+    dataIndex: "is_deleted",
+    width: 100,
+    render: (value) =>
+      value ? (
+        <span className={"text-red-200"}>Удалено</span>
+      ) : (
+        <span className={"text-green-400"}>Актив</span>
+      ),
+  },
+  ...(options.canDelete || options.canEdit
+    ? [
         {
           title: null,
           dataIndex: "action",
@@ -40,5 +70,5 @@ export const columns = (
           },
         },
       ]
-      : []),
-  ];
+    : []),
+];
