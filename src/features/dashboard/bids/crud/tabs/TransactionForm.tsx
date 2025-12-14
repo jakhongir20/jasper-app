@@ -872,6 +872,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "hinge_product_id", // Модель петель
     "door_bolt_product_id", // Модель шпингалета
     "sheathing_product_id", // Модель обшивки
+    "frame_product_id", // Модель наличника
   ],
   "door-deaf": [
     // Measurement fields (required for all)
@@ -887,6 +888,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "hinge_product_id", // Модель петель
     "door_bolt_product_id", // Модель шпингалета
     "sheathing_product_id", // Модель обшивки
+    "frame_product_id", // Модель наличника
   ],
   doorway: [
     // Measurement fields (required for all)
