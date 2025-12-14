@@ -100,8 +100,13 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   const [previewImage, setPreviewImage] = useState("");
 
   // Sync internal state with external value prop
+  // Only update if value actually changed (compare by length and uids)
   useEffect(() => {
-    setFileList(value);
+    const valueIds = value.map((f) => f.uid).join(",");
+    const fileListIds = fileList.map((f) => f.uid).join(",");
+    if (valueIds !== fileListIds) {
+      setFileList(value);
+    }
   }, [value]);
 
   // Helper to get full URL with base URL

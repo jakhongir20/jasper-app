@@ -6,6 +6,7 @@ import { Product } from "@/features/admin/products";
 import { CAuthorCard } from "@/shared/ui";
 import { TableAction } from "@/shared/ui/table/action/TableAction";
 import { formatMoneyDecimal } from "@/shared/utils/utils";
+import { PRODUCT_TYPES } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
 
 export const columns = (
   t: TFunction<"translation", undefined>,
@@ -39,6 +40,8 @@ export const columns = (
     key: "product_type",
     title: t("common.table.type"),
     dataIndex: "product_type",
+    render: (data) =>
+      PRODUCT_TYPES.find((type) => type.value === data)?.label || "-",
   },
   {
     key: "price_uzs",
@@ -55,7 +58,7 @@ export const columns = (
   {
     key: "measure",
     title: t("common.table.measure"),
-    dataIndex: "measure",
+    dataIndex: "measurement_unit",
   },
   {
     key: "category",

@@ -1,14 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Form } from "antd";
-import { ProductForm } from "@/features/admin/products";
 import {
+  ProductForm,
+  useDeleteProductImage,
   useProductDetail,
   useUpdateProduct,
-  useDeleteProductImage,
 } from "@/features/admin/products";
-import { CAddHeader, LoadingState, ErrorState } from "@/shared/ui";
+import { CAddHeader, ErrorState, LoadingState } from "@/shared/ui";
 import { useToast } from "@/shared/hooks";
 
 export default function Page() {
@@ -124,7 +123,7 @@ export default function Page() {
     created_at: product.created_at,
     name: product.name,
     product_type: product.product_type,
-    measurement_unit: product.measure, // Old API uses 'measure'
+    measurement_unit: product.measurement_unit, // Old API uses 'measure'
     product_images:
       product.product_images?.map((img: any, index: number) => ({
         uid: String(img.product_image_id || `-${index}`),
@@ -140,7 +139,7 @@ export default function Page() {
     category: product.category,
     frame_thickness: product.frame_thickness || 0,
     frame_width: product.frame_width || 0,
-    under_frame_height: product.up_under_trim_height || 0,
+    under_frame_height: product.under_frame_height || 0,
     percent_trim: product.percent_trim || 0,
     percent_molding: product.percent_molding || 0,
     percent_covering_primary: product.percent_covering_primary || 0,
@@ -159,11 +158,7 @@ export default function Page() {
       />
 
       <Form form={form} layout="vertical" initialValues={formInitialValues}>
-        <ProductForm
-          mode="edit"
-          product={product}
-          onImageDelete={handleDeleteImage}
-        />
+        <ProductForm product={product} onImageDelete={handleDeleteImage} />
       </Form>
     </div>
   );

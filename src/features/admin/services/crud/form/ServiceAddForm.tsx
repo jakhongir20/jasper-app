@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateService } from "@/features/admin/services/model";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal } from "@/shared/ui";
+import { Input, Modal, NumberInput } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -37,6 +37,9 @@ export const ServiceAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
     form.validateFields().then((values) => {
       mutate({
         name: values.name,
+        measure: values.measure,
+        price_usd: values.price_usd,
+        price_uzs: values.price_uzs,
       });
     });
   };
@@ -64,6 +67,27 @@ export const ServiceAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
         <Input placeholder={t("common.placeholder.serviceName")} />
+      </Form.Item>
+
+      <Form.Item
+        name="measure"
+        label={t("common.labels.measure")}
+      >
+        <Input placeholder={t("common.placeholder.measure")} />
+      </Form.Item>
+
+      <Form.Item
+        name="price_usd"
+        label={t("common.labels.priceUSD")}
+      >
+        <NumberInput min={0} placeholder={t("common.placeholder.priceUSD")} />
+      </Form.Item>
+
+      <Form.Item
+        name="price_uzs"
+        label={t("common.labels.priceUZS")}
+      >
+        <NumberInput min={0} placeholder={t("common.placeholder.priceUZS")} />
       </Form.Item>
     </Modal>
   );

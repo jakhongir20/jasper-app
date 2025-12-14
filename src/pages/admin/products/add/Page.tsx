@@ -67,7 +67,7 @@ export default function Page() {
         onSave={handleSave}
       />
       <Form form={form} layout="vertical">
-        <ProductForm mode="create" />
+        <ProductForm />
       </Form>
     </div>
   );

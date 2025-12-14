@@ -13,7 +13,7 @@ interface Props {
 
 // Only include valid product types accepted by the API
 // Other items like transom, frame, filler, etc. are component sections, not product types
-const PRODUCT_TYPES = [
+export const PRODUCT_TYPES = [
   { value: "door-window", label: "ДО дверь" },
   { value: "door-deaf", label: "ДГ дверь" },
   { value: "doorway", label: "Обшивочный проём" },
@@ -1444,7 +1444,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                     const numValue = Number(value);
                     if (isInteger && !Number.isInteger(numValue)) {
                       return Promise.reject(
-                        new Error("Значение должно быть целым числом")
+                        new Error("Значение должно быть целым числом"),
                       );
                     }
                     if (numValue < minVal) {
@@ -1452,8 +1452,8 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                         new Error(
                           minVal > 0
                             ? `Значение должно быть не менее ${minVal}`
-                            : "Значение не может быть отрицательным"
-                        )
+                            : "Значение не может быть отрицательным",
+                        ),
                       );
                     }
                   }
@@ -1477,7 +1477,11 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
                 }
                 // Prevent values below minimum
                 const normalized =
-                  rawValue === "" ? undefined : (numValue < minVal ? minVal : numValue);
+                  rawValue === ""
+                    ? undefined
+                    : numValue < minVal
+                      ? minVal
+                      : numValue;
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
                     setTransactionField(alias, normalized),

@@ -4,52 +4,20 @@ import { Product } from "@/features/admin/products";
 import { ContentInner, Input, NumberInput, Select } from "@/shared/ui";
 import { MultipleImageUpload } from "@/shared/ui/imageUpload";
 import { useCategoriesList } from "@/features/admin/categories/model/category.queries";
+import { PRODUCT_TYPES } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
 
 interface ProductFormProps {
   product?: Product;
-  mode: "create" | "edit";
   onImageDelete?: (productImageId: number) => Promise<void>;
 }
 
-export const ProductForm = ({
-  product,
-  mode,
-  onImageDelete,
-}: ProductFormProps) => {
+export const ProductForm = ({ product, onImageDelete }: ProductFormProps) => {
   const { t } = useTranslation();
   const { data: categories, isLoading: isCategoriesLoading } =
     useCategoriesList();
 
   return (
     <ContentInner>
-      {/* Read-only fields - shown only in edit mode */}
-      {mode === "edit" && product && (
-        <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-          <Form.Item name="product_id" label={t("common.input.productId")}>
-            <Input disabled className="bg-gray-100" />
-          </Form.Item>
-
-          <Form.Item name="created_at" label={t("common.input.createdAt")}>
-            <Input
-              disabled
-              className="bg-gray-100"
-              value={
-                product.created_at
-                  ? new Date(product.created_at * 1000).toLocaleString()
-                  : ""
-              }
-            />
-          </Form.Item>
-
-          <Form.Item
-            name={["category", "name"]}
-            label={t("common.input.categoryName")}
-          >
-            <Input disabled className="bg-gray-100" />
-          </Form.Item>
-        </div>
-      )}
-
       {/* Pricing and Category - First Row (most important fields) */}
       <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
         <Form.Item
@@ -94,15 +62,7 @@ export const ProductForm = ({
           <Select
             placeholder={t("common.placeholder.productType")}
             allowClear
-            options={[
-              { value: "door-window", label: "ДО дверь" },
-              { value: "door-deaf", label: "ДГ дверь" },
-              { value: "doorway", label: "Обшивочный проём" },
-              { value: "window", label: "Окно" },
-              { value: "windowsill", label: "Подоконник" },
-              { value: "heated-floor", label: "Тёплый пол" },
-              { value: "latting", label: "Обрешётка" },
-            ]}
+            options={PRODUCT_TYPES}
           />
         </Form.Item>
 

@@ -20,7 +20,7 @@ export const columns = (
   },
   {
     title: t("common.table.measurement"),
-    dataIndex: ["uom", "shortName"],
+    dataIndex: "measurement_unit",
     render: (data) => {
       return <span>{data ?? "-"}</span>;
     },
