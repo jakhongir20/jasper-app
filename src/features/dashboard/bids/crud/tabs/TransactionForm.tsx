@@ -1314,15 +1314,17 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
 
   // 2.6.1: Auto-fill box_width from company_configuration (application general form)
   // Only auto-fill once when transaction is first created, then allow manual override
+  const [boxWidthInitialized, setBoxWidthInitialized] = useState(false);
   useEffect(() => {
     const generalBoxWidth = form.getFieldValue(["general", "box_width"]);
     const transactionBoxWidth = transactionValues.box_width;
 
-    // Auto-fill box_width only if it's not set yet and general box_width exists
-    if (generalBoxWidth && !transactionBoxWidth) {
+    // Auto-fill box_width only once on initial load, then never override user changes
+    if (!boxWidthInitialized && generalBoxWidth !== undefined && transactionBoxWidth === undefined) {
       setTransactionField("box_width", generalBoxWidth);
+      setBoxWidthInitialized(true);
     }
-  }, [form, transactionValues.box_width]);
+  }, [form, transactionValues.box_width, boxWidthInitialized]);
 
   // 2.6.2: Auto-fill default door lock and hinge from application defaults
   useEffect(() => {
