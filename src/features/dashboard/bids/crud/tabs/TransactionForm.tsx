@@ -862,7 +862,6 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     // Measurement fields (required for all)
     "opening_height",
     "opening_width",
-    "opening_thickness",
     "entity_quantity",
     // Required modelling fields per 2.4.1
     "box_width", // Ширина коробки
@@ -878,7 +877,6 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     // Measurement fields (required for all)
     "opening_height",
     "opening_width",
-    "opening_thickness",
     "entity_quantity",
     // Required modelling fields per 2.4.2
     // Same as door-window except NO glass_product_id
@@ -894,7 +892,6 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     // Measurement fields (required for all)
     "opening_height",
     "opening_width",
-    "opening_thickness",
     "entity_quantity",
     // Required modelling fields per 2.4.3
     "sheathing_product_id", // Модель обшивки
