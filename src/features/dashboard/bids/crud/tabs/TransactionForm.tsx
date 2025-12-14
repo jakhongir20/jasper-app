@@ -790,15 +790,14 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "box-width",
     title: "Ширина коробки",
-    allowedProductTypes: ["box_width"],
+    allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       {
         name: "box_width",
         label: "Ширина коробки",
         type: "number",
         numberStep: 0.01,
-        placeholder: "Введите ширина коробки",
-        disabled: false, // Changed: box_width is now editable, auto-filled from company_configuration but can be manually overridden
+        placeholder: "Введите ширину коробки",
       },
       {
         name: "box_width_length",
@@ -871,7 +870,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "hinge_product_id", // Модель петель
     "door_bolt_product_id", // Модель шпингалета
     "sheathing_product_id", // Модель обшивки
-    "frame_product_id", // Модель наличника
+    // frame_product_id is conditionally required (only when frame section is visible)
   ],
   "door-deaf": [
     // Measurement fields (required for all)
@@ -886,7 +885,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
     "hinge_product_id", // Модель петель
     "door_bolt_product_id", // Модель шпингалета
     "sheathing_product_id", // Модель обшивки
-    "frame_product_id", // Модель наличника
+    // frame_product_id is conditionally required (only when frame section is visible)
   ],
   doorway: [
     // Measurement fields (required for all)
@@ -993,8 +992,7 @@ const CONDITIONAL_REQUIREMENTS: Record<
       lattingFrontFlag(values, "has_transom") ||
       lattingBackFlag(values, "has_transom"),
     frame_product_id: (values) =>
-      lattingFrontFlag(values, "is_frame") ||
-      lattingBackFlag(values, "is_frame"),
+      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
     filler_product_id: (values) =>
       lattingFrontFlag(values, "is_filler") ||
       lattingBackFlag(values, "is_filler"),
@@ -1025,8 +1023,7 @@ const CONDITIONAL_REQUIREMENTS: Record<
       lattingFrontFlag(values, "has_transom") ||
       lattingBackFlag(values, "has_transom"),
     frame_product_id: (values) =>
-      lattingFrontFlag(values, "is_frame") ||
-      lattingBackFlag(values, "is_frame"),
+      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
     filler_product_id: (values) =>
       lattingFrontFlag(values, "is_filler") ||
       lattingBackFlag(values, "is_filler"),
