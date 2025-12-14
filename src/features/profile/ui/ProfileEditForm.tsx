@@ -1,4 +1,5 @@
-import { Form, Input, Switch, Button, Card, message } from "antd";
+import { Form, Switch, Button, Card, message } from "antd";
+import { Input, NumberInput } from "@/shared/ui";
 import { SaveOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -130,8 +131,8 @@ export const ProfileEditForm: React.FC = () => {
                             { type: "number", message: t("profile.validation.telegramIdNumber") },
                         ]}
                     >
-                        <Input
-                            type="number"
+                        <NumberInput
+                            min={0}
                             placeholder={t("profile.placeholders.telegramId")}
                         />
                     </Form.Item>
@@ -143,8 +144,8 @@ export const ProfileEditForm: React.FC = () => {
                             { type: "number", message: t("profile.validation.telegramGroupIdNumber") },
                         ]}
                     >
-                        <Input
-                            type="number"
+                        <NumberInput
+                            min={0}
                             placeholder={t("profile.placeholders.telegramGroupId")}
                         />
                     </Form.Item>

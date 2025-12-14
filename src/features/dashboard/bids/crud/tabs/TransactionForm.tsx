@@ -2,7 +2,7 @@ import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
-import { CSwitch, Input, Select, SelectInfinitive } from "@/shared/ui";
+import { CSwitch, Input, NumberInput, Select, SelectInfinitive } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 
 interface Props {
@@ -1461,22 +1461,16 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               },
             ]}
           >
-            <Input
-              type="number"
+            <NumberInput
               min={minVal}
               step={field.numberStep ?? 0.01}
               placeholder={field.placeholder}
               disabled={isFieldDisabled}
-              onChange={(event) => {
-                const rawValue = event.target.value;
-                let numValue = Number(rawValue);
-                // Round to integer if integerOnly
-                if (isInteger && rawValue !== "") {
-                  numValue = Math.round(numValue);
-                }
+              floatValue={!isInteger}
+              onChange={(numValue) => {
                 // Prevent values below minimum
                 const normalized =
-                  rawValue === ""
+                  numValue === undefined
                     ? undefined
                     : numValue < minVal
                       ? minVal

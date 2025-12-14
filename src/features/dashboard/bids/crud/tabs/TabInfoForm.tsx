@@ -9,6 +9,7 @@ import {
   Icon,
   Input,
   InputPhone,
+  NumberInput,
   SelectInfinitive,
   TextAreaInput,
 } from "@/shared/ui";
@@ -240,9 +241,9 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           name={["general", "box_width"]}
           label={"Ширина коробки (по умолчанию)"}
         >
-          <Input
-            type="number"
-            step="0.01"
+          <NumberInput
+            min={0}
+            step={0.01}
             placeholder="Введите ширину коробки"
           />
         </Form.Item>
