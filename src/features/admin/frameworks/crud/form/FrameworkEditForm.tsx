@@ -81,6 +81,10 @@ export const FrameworkEditForm: FC<Props> = ({
         doorway_type: framework.doorway_type,
         is_frame: framework.is_frame,
         is_filler: framework.is_filler,
+        has_crown: (framework as any).has_crown ?? false,
+        has_transom: (framework as any).has_transom ?? false,
+        has_under_frame: (framework as any).has_under_frame ?? false,
+        has_up_frame: (framework as any).has_up_frame ?? false,
       };
 
       form.setFieldsValue(transformedData);
@@ -105,6 +109,10 @@ export const FrameworkEditForm: FC<Props> = ({
         doorway_type,
         is_frame: values.is_frame,
         is_filler: values.is_filler,
+        has_crown: values.has_crown ?? false,
+        has_transom: values.has_transom ?? false,
+        has_under_frame: values.has_under_frame ?? false,
+        has_up_frame: values.has_up_frame ?? false,
       };
 
       // Only include framework_image in payload if it was changed

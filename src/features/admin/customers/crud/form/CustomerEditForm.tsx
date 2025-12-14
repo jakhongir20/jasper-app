@@ -2,11 +2,11 @@ import { Form } from "antd";
 import { type FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  useCustomerEditAdminCustomerPut,
   type CustomerOutputEntity,
+  useCustomerEditAdminCustomerPut,
 } from "@/shared/lib/api";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal, CSwitch, InputPhone } from "@/shared/ui";
+import { CSwitch, Input, InputPhone, Modal } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { validatePhone } from "@/shared/utils/validations";
 
@@ -50,7 +50,7 @@ export const CustomerEditForm: FC<Props> = ({
     if (customer && open) {
       form.setFieldsValue({
         name: customer.name,
-        phone: customer.phone,
+        phone: customer.phone_number,
         is_active: customer.is_active,
       });
     }
@@ -62,7 +62,7 @@ export const CustomerEditForm: FC<Props> = ({
         mutate({
           data: {
             name: values.name,
-            phone: values.phone || null,
+            phone_number: values.phone || null,
             is_active: values.is_active,
           },
           params: {

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 import { type CustomerOutputEntity } from "@/shared/lib/api";
 import { useTableFetch } from "@/shared/hooks";
-import { TableWrapper, ContentInner } from "@/shared/ui";
+import { ContentInner, TableWrapper } from "@/shared/ui";
 import { columns } from "./TableColumn";
 import { CustomerDeleteAction } from "@/features/admin/customers/ui/CustomerDeleteAction";
 import { CustomerAddForm } from "@/features/admin/customers/crud/form/CustomerAddForm";
@@ -15,14 +14,9 @@ export default function Page() {
     tableData: customers,
     isLoading,
     pagination,
-  } = useTableFetch<CustomerOutputEntity>("/customer/all");
+  } = useTableFetch<CustomerOutputEntity>("/admin/customer/all");
 
-  const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const handleAdd = () => {
-    navigate(`/admin/clients/add`);
-  };
 
   // Removed handleOpen since we don't need single page for clients
 

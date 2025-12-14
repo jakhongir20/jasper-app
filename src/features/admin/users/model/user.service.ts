@@ -15,7 +15,7 @@ export class UserService {
   }
 
   static async update(userId: number, payload: UpdateUserPayload): Promise<User> {
-    return await authApiService.$put<User>(`/admin/?user_id=${userId}`, payload);
+    return await authApiService.$patch<User>(`/admin?user_id=${userId}`, payload);
   }
 
   static async delete(userId: number): Promise<void> {

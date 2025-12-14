@@ -34,7 +34,7 @@ export const UserForm: FC<Props> = ({
           label={t("common.labels.username")}
           rules={[{ required: true, message: t("common.validation.required") }]}
         >
-          <Input placeholder={t("common.placeholder.username")} />
+          <Input placeholder={t("common.placeholder.username")} disabled={isEdit} />
         </Form.Item>
 
         <Form.Item
@@ -100,6 +100,7 @@ export const UserForm: FC<Props> = ({
         >
           <Select
             placeholder={t("common.placeholder.selectStatus")}
+            disabled={isEdit}
             options={[
               { value: 1, label: t("common.labels.yes") },
               { value: 0, label: t("common.labels.no") },
@@ -114,6 +115,7 @@ export const UserForm: FC<Props> = ({
         >
           <Select
             placeholder={t("common.placeholder.selectRole")}
+            disabled={isEdit}
             options={[
               { value: 1, label: t("common.labels.yes") },
               { value: 0, label: t("common.labels.no") },
@@ -128,6 +130,7 @@ export const UserForm: FC<Props> = ({
         >
           <Select
             placeholder={t("common.placeholder.selectRole")}
+            disabled={isEdit}
             options={[
               { value: 1, label: t("common.labels.yes") },
               { value: 0, label: t("common.labels.no") },

@@ -26,6 +26,10 @@ export type CreateFrameworkPayload = {
   doorway_type: number;
   is_frame: boolean;
   is_filler: boolean;
+  has_crown?: boolean;
+  has_transom?: boolean;
+  has_under_frame?: boolean;
+  has_up_frame?: boolean;
 };
 
 export type UpdateFrameworkPayload = {
@@ -35,6 +39,10 @@ export type UpdateFrameworkPayload = {
   doorway_type?: number;
   is_frame?: boolean;
   is_filler?: boolean;
+  has_crown?: boolean;
+  has_transom?: boolean;
+  has_under_frame?: boolean;
+  has_up_frame?: boolean;
 };
 
 export type FrameworkFormData = {

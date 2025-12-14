@@ -82,7 +82,7 @@ export const FrameworkForm: FC<Props> = ({
         <h3 className="text-lg font-medium text-gray-200">
           {t("common.labels.frameFillerOptions")}
         </h3>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-4">
           <Form.Item
             name="is_frame"
             valuePropName="checked"
@@ -96,6 +96,42 @@ export const FrameworkForm: FC<Props> = ({
             name="is_filler"
             valuePropName="checked"
             label={t("common.labels.isFiller")}
+            initialValue={false}
+          >
+            <CSwitch />
+          </Form.Item>
+
+          <Form.Item
+            name="has_crown"
+            valuePropName="checked"
+            label={t("common.labels.hasCrown")}
+            initialValue={false}
+          >
+            <CSwitch />
+          </Form.Item>
+
+          <Form.Item
+            name="has_transom"
+            valuePropName="checked"
+            label={t("common.labels.hasTransom")}
+            initialValue={false}
+          >
+            <CSwitch />
+          </Form.Item>
+
+          <Form.Item
+            name="has_under_frame"
+            valuePropName="checked"
+            label={t("common.labels.hasUnderFrame")}
+            initialValue={false}
+          >
+            <CSwitch />
+          </Form.Item>
+
+          <Form.Item
+            name="has_up_frame"
+            valuePropName="checked"
+            label={t("common.labels.hasUpFrame")}
             initialValue={false}
           >
             <CSwitch />

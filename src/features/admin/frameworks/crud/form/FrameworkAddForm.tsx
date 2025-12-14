@@ -57,6 +57,10 @@ export const FrameworkAddForm: FC<Props> = ({
           doorway_type: values.doorway_type,
           is_frame: values.is_frame ?? false,
           is_filler: values.is_filler ?? false,
+          has_crown: values.has_crown ?? false,
+          has_transom: values.has_transom ?? false,
+          has_under_frame: values.has_under_frame ?? false,
+          has_up_frame: values.has_up_frame ?? false,
         };
 
         console.log("Creating framework with payload:", payload);

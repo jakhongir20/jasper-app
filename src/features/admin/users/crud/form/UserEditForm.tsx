@@ -52,13 +52,10 @@ export const UserEditForm: FC<Props> = ({ className }) => {
         return;
       }
 
+      // Only send editable fields: name, password, telegram_user_id
       const payload: UpdateUserPayload = {
         user_id: userId,
         name: values.name,
-        username: values.username,
-        is_active: Boolean(values.is_active),
-        is_admin: Boolean(values.is_admin),
-        is_factory: Boolean(values.is_factory),
         telegram_user_id: values.telegram_user_id || 0,
       };
 

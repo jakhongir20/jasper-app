@@ -104,3 +104,35 @@ Valid product types for the API: `door-window`, `door-deaf`, `doorway`, `window`
 ### Image Upload
 
 Use `MultipleImageUpload` component. Images are converted to base64 with `preview` property for new uploads. Existing images have `product_image_id` for deletion tracking.
+
+### Localization
+
+Translations are in `src/shared/lib/i18n/locales/`:
+- `ru.json` - Russian (primary)
+- `en.json` - English
+- `uz.json` - Uzbek
+
+Common translation keys:
+- `common.labels.*` - Form labels
+- `common.placeholder.*` - Input placeholders
+- `common.validation.*` - Validation messages
+- `common.button.*` - Button text
+- `common.messages.*` - Toast/notification messages
+- `navigation.*` - Navigation items
+
+### Icons
+
+Available icons are defined in `src/shared/types/icons.ts` (type `IconType`). Use `<Icon icon="icon-name" />` component from `@/shared/ui`. SVG files are in `src/shared/assets/icons/`.
+
+### Admin Routes
+
+Admin module routes are defined in `src/pages/admin/routes.tsx`. Each module needs:
+- Entry in `moduleImports` object
+- Entry in `modules` array with `name`, `title`, `icon`
+
+### TransactionForm Configuration
+
+Product-specific required fields and sections are configured in `src/features/dashboard/bids/crud/tabs/TransactionForm.tsx`:
+- `REQUIRED_FIELDS_BY_PRODUCT_TYPE` - Required fields per product type
+- `CONDITIONAL_REQUIREMENTS` - Fields required based on form values
+- `ALL_SECTIONS` - Form sections with `allowedProductTypes` filtering

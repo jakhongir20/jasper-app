@@ -141,7 +141,7 @@ export const customerEditAdminCustomerPut = (
   return customInstance<CustomerOutputEntity>(
     {
       url: `/admin/customer`,
-      method: "PUT",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       data: customerInputEntity,
       params,
