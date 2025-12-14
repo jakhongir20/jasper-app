@@ -61,7 +61,7 @@ export const ProductForm = ({ product, onImageDelete }: ProductFormProps) => {
         <Form.Item name="product_type" label={t("common.input.type")}>
           <Select
             placeholder={t("common.placeholder.productType")}
-            allowClear
+            allowClear={false}
             options={PRODUCT_TYPES}
           />
         </Form.Item>

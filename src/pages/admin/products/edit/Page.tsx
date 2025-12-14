@@ -52,7 +52,7 @@ export default function Page() {
       if (product) {
         // Format images - only send NEW images (with preview/base64)
         // Existing images are already on server, no need to re-upload
-        const product_images =
+        const newImages =
           values.product_images
             ?.filter((file: any) => file.preview) // Only new uploads
             .map((file: any) => ({
@@ -83,7 +83,7 @@ export default function Page() {
             name: values.name,
             product_type,
             measurement_unit: values.measurement_unit,
-            product_images,
+            product_images: newImages,
             price_uzs: values.price_uzs,
             price_usd: values.price_usd,
             category_id: values.category_id,

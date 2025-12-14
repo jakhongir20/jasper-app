@@ -243,27 +243,32 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
         maxCount={maxCount}
         itemRender={
           showAssignment
-            ? (originNode, file) => (
-                <div className="flex flex-col">
-                  {originNode}
-                  <Select
-                    size="small"
-                    placeholder={t("common.labels.assignment")}
-                    value={(file as any).assignment}
-                    onChange={(value) => handleAssignmentChange(file.uid, value)}
-                    options={assignmentOptions}
-                    className="mt-1 w-full"
-                    style={{ width: "100%" }}
-                    popupMatchSelectWidth={false}
-                    showSearch
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                  />
-                </div>
-              )
+            ? (originNode, file) => {
+                // Existing images (with product_image_id) cannot change assignment
+                const isExistingImage = !!(file as any).product_image_id;
+                return (
+                  <div className="flex flex-col">
+                    {originNode}
+                    <Select
+                      size="small"
+                      placeholder={t("common.labels.assignment")}
+                      value={(file as any).assignment}
+                      onChange={(value) => handleAssignmentChange(file.uid, value)}
+                      options={assignmentOptions}
+                      className="mt-1 w-full"
+                      style={{ width: "100%" }}
+                      popupMatchSelectWidth={false}
+                      showSearch
+                      disabled={isExistingImage}
+                      filterOption={(input, option) =>
+                        (option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                    />
+                  </div>
+                );
+              }
             : undefined
         }
       >
