@@ -1827,10 +1827,6 @@ export const getUnfilledRequiredFields = (
   const productType = resolveProductType(values);
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
 
-  if (!config) {
-    return [];
-  }
-
   const unfilledFields: Array<{ name: string; label: string }> = [];
 
   const checkField = (fieldName: string) => {
@@ -1842,6 +1838,14 @@ export const getUnfilledRequiredFields = (
       });
     }
   };
+
+  // Always check ALWAYS_REQUIRED_FIELDS (like product_type)
+  ALWAYS_REQUIRED_FIELDS.forEach(checkField);
+
+  // If no product type selected, return early with just the always-required fields
+  if (!config) {
+    return unfilledFields;
+  }
 
   config.requiredFields.forEach(checkField);
 
