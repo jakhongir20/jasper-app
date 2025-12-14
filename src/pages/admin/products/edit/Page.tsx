@@ -25,7 +25,8 @@ export default function Page() {
       toast(t("toast.successUpdate"), "success");
       navigate("/admin/products");
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("Update product error:", error?.response?.data || error);
       toast(t("toast.errorUpdate"), "error");
     },
   });
@@ -41,8 +42,8 @@ export default function Page() {
     },
   });
 
-  const handleDeleteImage = async (productImageId: number) => {
-    return deleteImageMutation.mutateAsync({
+  const handleDeleteImage = async (productImageId: number): Promise<void> => {
+    await deleteImageMutation.mutateAsync({
       params: { product_image_id: productImageId },
     });
   };
@@ -50,34 +51,38 @@ export default function Page() {
   const handleSave = () => {
     form.validateFields().then((values) => {
       if (product) {
-        // Format images according to ProductImageInputEntity
+        // Format images - only send NEW images (with preview/base64)
+        // Existing images are already on server, no need to re-upload
         const product_images =
           values.product_images
-            ?.map((file: any) => {
-              // For new uploads (has preview), use base64 with assignment from select (or default)
-              if (file.preview) {
-                return {
-                  assignment: file.assignment || "one-sash-door",
-                  image_file: file.preview,
-                };
-              }
-              // For existing images (has url), preserve their assignment
-              if (file.url) {
-                return {
-                  assignment: file.assignment || "one-sash-door",
-                  image_file: file.url,
-                };
-              }
-              return null;
-            })
-            .filter(Boolean) || [];
+            ?.filter((file: any) => file.preview) // Only new uploads
+            .map((file: any) => ({
+              assignment: file.assignment || "one-sash-door",
+              image_file: file.preview,
+            })) || [];
+
+        // Valid product types according to API
+        const validProductTypes = [
+          "door-window",
+          "door-deaf",
+          "doorway",
+          "window",
+          "windowsill",
+          "heated-floor",
+          "latting",
+        ];
+
+        // Only send product_type if it's valid, otherwise send null
+        const product_type = validProductTypes.includes(values.product_type)
+          ? values.product_type
+          : null;
 
         // Only send fields that the API accepts
         updateProductMutation.mutate({
           productId: product.product_id,
           payload: {
             name: values.name,
-            product_type: values.product_type,
+            product_type,
             measurement_unit: values.measurement_unit,
             product_images,
             price_uzs: values.price_uzs,

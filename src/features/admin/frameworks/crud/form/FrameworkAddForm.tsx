@@ -38,6 +38,7 @@ export const FrameworkAddForm: FC<Props> = ({
       onSuccess();
     },
     onError: (error: any) => {
+      console.error("Create framework error:", error?.response?.data || error);
       showGlobalToast(
         error?.message || t("common.messages.frameworkCreateFailed"),
         "error",
@@ -51,16 +52,19 @@ export const FrameworkAddForm: FC<Props> = ({
       .then((values) => {
         const payload: CreateFrameworkPayload = {
           name: values.name,
-          framework_image: values.image_url,
+          framework_image: values.image_url || "",
           order_number: values.order_number,
           doorway_type: values.doorway_type,
-          is_frame: values.is_frame,
-          is_filler: values.is_filler,
+          is_frame: values.is_frame ?? false,
+          is_filler: values.is_filler ?? false,
         };
 
+        console.log("Creating framework with payload:", payload);
         mutate(payload);
       })
-      .catch((errorInfo) => {});
+      .catch((errorInfo) => {
+        console.log("Validation failed:", errorInfo);
+      });
   };
 
   const handleCancel = () => {

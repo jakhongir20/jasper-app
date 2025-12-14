@@ -52,7 +52,6 @@ export default function Page() {
         })}
         pagination={false}
         onAdd={handleAdd}
-        noFilter
         unhideableColumns={["name"]}
       />
 
@@ -77,11 +76,16 @@ export default function Page() {
       )}
 
       {/* Delete Quality Modal */}
-      <QualityDeleteAction
-        open={openDelete}
-        closeModal={() => setOpenDelete(false)}
-        qualityId={selectedQuality?.quality_id || 0}
-      />
+      {selectedQuality && (
+        <QualityDeleteAction
+          open={openDelete}
+          closeModal={() => {
+            setOpenDelete(false);
+            setSelectedQuality(null);
+          }}
+          qualityId={selectedQuality.quality_id}
+        />
+      )}
     </ContentInner>
   );
 }

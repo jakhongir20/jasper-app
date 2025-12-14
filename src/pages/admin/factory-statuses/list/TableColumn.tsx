@@ -2,6 +2,7 @@ import type { ColumnType } from "antd/es/table";
 import { TFunction } from "i18next";
 import { TableAction } from "@/shared/ui/table/action/TableAction";
 import { FactoryStatus } from "@/features/admin/factory-statuses";
+import { Tag } from "antd";
 
 export const columns = (
   t: TFunction<"translation", undefined>,
@@ -17,6 +18,42 @@ export const columns = (
       title: t("common.labels.name"),
       dataIndex: "name",
       render: (name) => name || "-",
+    },
+    {
+      key: "status_index",
+      title: t("common.labels.statusIndex"),
+      dataIndex: "status_index",
+      width: 120,
+      render: (value) => value ?? "-",
+    },
+    {
+      key: "status_order",
+      title: t("common.labels.statusOrder"),
+      dataIndex: "status_order",
+      width: 120,
+      render: (value) => value ?? "-",
+    },
+    {
+      key: "is_initial_status",
+      title: t("common.labels.isInitialStatus"),
+      dataIndex: "is_initial_status",
+      width: 150,
+      render: (value) => (
+        <Tag color={value ? "green" : "default"}>
+          {value ? t("common.labels.yes") : t("common.labels.no")}
+        </Tag>
+      ),
+    },
+    {
+      key: "is_final_status",
+      title: t("common.labels.isFinalStatus"),
+      dataIndex: "is_final_status",
+      width: 150,
+      render: (value) => (
+        <Tag color={value ? "blue" : "default"}>
+          {value ? t("common.labels.yes") : t("common.labels.no")}
+        </Tag>
+      ),
     },
     ...(options.canDelete || options.canEdit
       ? [

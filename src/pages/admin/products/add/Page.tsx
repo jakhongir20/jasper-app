@@ -17,7 +17,8 @@ export default function Page() {
       toast(t("toast.successCreate"), "success");
       navigate("/admin/products");
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      console.error("Create product error:", error?.response?.data || error);
       toast(t("toast.errorCreate"), "error");
     },
   });
@@ -27,27 +28,31 @@ export default function Page() {
       // Format images according to ProductImageInputEntity
       const product_images =
         values.product_images
-          ?.map((file: any) => {
-            // For new uploads, use base64 with assignment from select (or default)
-            if (file.preview) {
-              return {
-                assignment: file.assignment || "one-sash-door",
-                image_file: file.preview,
-              };
-            }
-            // For existing images (shouldn't happen in create mode)
-            if (file.url) {
-              return {
-                assignment: file.assignment || "one-sash-door",
-                image_file: file.url,
-              };
-            }
-            return null;
-          })
-          .filter(Boolean) || [];
+          ?.filter((file: any) => file.preview) // Only new uploads with base64
+          .map((file: any) => ({
+            assignment: file.assignment || "one-sash-door",
+            image_file: file.preview,
+          })) || [];
+
+      // Valid product types according to API
+      const validProductTypes = [
+        "door-window",
+        "door-deaf",
+        "doorway",
+        "window",
+        "windowsill",
+        "heated-floor",
+        "latting",
+      ];
+
+      // Only send product_type if it's valid, otherwise send null
+      const product_type = validProductTypes.includes(values.product_type)
+        ? values.product_type
+        : null;
 
       createProductMutation.mutate({
         ...values,
+        product_type,
         product_images,
       });
     });

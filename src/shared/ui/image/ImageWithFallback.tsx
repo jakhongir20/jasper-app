@@ -1,5 +1,5 @@
 import { Spin } from "antd";
-import { FC, useState } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import { cn } from "@/shared/helpers";
 
 interface ImageWithFallbackProps {
@@ -27,6 +27,23 @@ export const ImageWithFallback: FC<ImageWithFallbackProps> = ({
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  // Reset loading/error state when src changes
+  useEffect(() => {
+    if (src) {
+      setLoading(true);
+      setError(false);
+    }
+  }, [src]);
+
+  // Add cache-busting parameter to prevent browser caching issues
+  const imageUrl = useMemo(() => {
+    if (!src) return null;
+    // Don't add cache-busting to base64 images
+    if (src.startsWith("data:")) return src;
+    const cacheBuster = `t=${Date.now()}`;
+    return src.includes("?") ? `${src}&${cacheBuster}` : `${src}?${cacheBuster}`;
+  }, [src]);
 
   const handleLoad = () => {
     setLoading(false);
@@ -76,7 +93,7 @@ export const ImageWithFallback: FC<ImageWithFallbackProps> = ({
         </div>
       )}
       <img
-        src={src}
+        src={imageUrl || ""}
         alt={alt}
         className={cn(
           imageClassName,

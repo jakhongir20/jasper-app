@@ -93,39 +93,24 @@ export const ProductForm = ({
         <Form.Item name="product_type" label={t("common.input.type")}>
           <Select
             placeholder={t("common.placeholder.productType")}
+            allowClear
             options={[
               { value: "door-window", label: "ДО дверь" },
               { value: "door-deaf", label: "ДГ дверь" },
-              { value: "transom", label: "Фрамуга" },
               { value: "doorway", label: "Обшивочный проём" },
-              { value: "frame", label: "Наличник" },
-              { value: "filler", label: "Нашельник" },
-              { value: "crown", label: "Корона" },
-              { value: "up_frame", label: "Надналичник" },
-              { value: "under_frame", label: "Подналичник" },
-              { value: "trim", label: "Обклад" },
-              { value: "molding", label: "Молдинг" },
-              { value: "covering_primary", label: "Покрытие I" },
-              { value: "covering_secondary", label: "Покрытие II" },
-              { value: "color", label: "Цвет" },
-              { value: "floor_skirting", label: "Плинтус" },
-              { value: "heated-floor", label: "Тёплый пол" },
-              { value: "latting", label: "Обрешётка" },
               { value: "window", label: "Окно" },
               { value: "windowsill", label: "Подоконник" },
-              { value: "glass", label: "Стекло" },
-              { value: "door_lock", label: "Замок двери" },
-              { value: "hinge", label: "Петля" },
-              { value: "door_bolt", label: "Шпингалет" },
-              { value: "door_stopper", label: "Стоппер" },
-              { value: "anti_threshold", label: "Анти-порог" },
-              { value: "box_width", label: "Ширина коробки" },
-              { value: "extra_options", label: "Доп. опции" },
+              { value: "heated-floor", label: "Тёплый пол" },
+              { value: "latting", label: "Обрешётка" },
             ]}
           />
         </Form.Item>
 
-        <Form.Item name="measurement_unit" label={t("common.input.measure")}>
+        <Form.Item
+          name="measurement_unit"
+          label={t("common.input.measure")}
+          rules={[{ required: true, message: t("common.validation.required") }]}
+        >
           <Input placeholder={t("common.placeholder.measure")} />
         </Form.Item>
       </div>

@@ -25,11 +25,6 @@ dist-ssr
 *.lockb
 *-lock.json
 
-*.jpg
-*.png
-
-.png
-.jpg
 
 # Generated API files - commented out to include in build
 # src/shared/lib/api/generated/

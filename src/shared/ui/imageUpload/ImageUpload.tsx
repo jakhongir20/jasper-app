@@ -68,6 +68,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   }, [value]);
 
   // Get the display URL with base URL prepended if needed
+  // Add cache-busting parameter to prevent browser caching issues
   const displayImageUrl = useMemo(() => {
     if (!imageUrl) return undefined;
 
@@ -76,13 +77,18 @@ export const ImageUpload: FC<ImageUploadProps> = ({
       return imageUrl;
     }
 
+    let url: string;
     // If it's already a full URL (http/https), use as is
     if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
-      return imageUrl;
+      url = imageUrl;
+    } else {
+      // Otherwise, it's a relative path - prepend base URL
+      url = getAssetUrl(imageUrl);
     }
 
-    // Otherwise, it's a relative path - prepend base URL
-    return getAssetUrl(imageUrl);
+    // Add cache-busting parameter for non-base64 URLs
+    const cacheBuster = `t=${Date.now()}`;
+    return url.includes("?") ? `${url}&${cacheBuster}` : `${url}?${cacheBuster}`;
   }, [imageUrl, getAssetUrl]);
 
   const handleChange: UploadProps["onChange"] = (info) => {

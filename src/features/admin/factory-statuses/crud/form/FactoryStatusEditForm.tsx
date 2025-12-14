@@ -6,7 +6,7 @@ import {
   useUpdateFactoryStatus,
 } from "@/features/admin/factory-statuses/model";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal, CSwitch } from "@/shared/ui";
+import { Input, Modal, CSwitch, NumberInput } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -100,8 +100,8 @@ export const FactoryStatusEditForm: FC<Props> = ({
         label={t("common.labels.statusIndex")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <Input
-          type="number"
+        <NumberInput
+          min={0}
           step={1}
           placeholder="Введите индекс"
         />
@@ -112,8 +112,8 @@ export const FactoryStatusEditForm: FC<Props> = ({
         label={t("common.labels.statusOrder")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <Input
-          type="number"
+        <NumberInput
+          min={0}
           step={1}
           placeholder="Введите порядок"
         />

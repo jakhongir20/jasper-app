@@ -43,40 +43,42 @@ export type ProductImageInput = {
 
 export type CreateProductPayload = {
   name: string;
-  product_type: string;
+  product_type?: string;
   product_images: ProductImageInput[];
-  price_uzs: number;
+  price_uzs?: number;
   price_usd: number;
   measurement_unit: string;
   category_id: number;
-  frame_thickness: number;
-  frame_width: number;
-  under_frame_height: number;
-  percent_trim: number;
-  percent_molding: number;
-  percent_covering_primary: number;
-  percent_covering_secondary: number;
-  percent_color: number;
-  percent_extra_option: number;
+  frame_thickness?: number;
+  frame_width?: number;
+  under_frame_height?: number;
+  percent_trim?: number;
+  percent_molding?: number;
+  percent_covering_primary?: number;
+  percent_covering_secondary?: number;
+  percent_color?: number;
+  percent_extra_option?: number;
 };
 
-export type UpdateProductPayload = Partial<CreateProductPayload>;
+export type UpdateProductPayload = Partial<Omit<CreateProductPayload, 'product_images'>> & {
+  product_images: ProductImageInput[];
+};
 
 export type ProductFormData = {
   name: string;
-  product_type: string;
+  product_type?: string;
   product_images: ProductImageInput[];
-  price_uzs: number;
+  price_uzs?: number;
   price_usd: number;
   measurement_unit: string;
   category_id: number;
-  frame_thickness: number;
-  frame_width: number;
-  under_frame_height: number;
-  percent_trim: number;
-  percent_molding: number;
-  percent_covering_primary: number;
-  percent_covering_secondary: number;
-  percent_color: number;
-  percent_extra_option: number;
+  frame_thickness?: number;
+  frame_width?: number;
+  under_frame_height?: number;
+  percent_trim?: number;
+  percent_molding?: number;
+  percent_covering_primary?: number;
+  percent_covering_secondary?: number;
+  percent_color?: number;
+  percent_extra_option?: number;
 };

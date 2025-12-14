@@ -21,7 +21,7 @@ export type MoldingWithLegacyId = Framework & { molding_id: number };
 
 export type CreateFrameworkPayload = {
   name: string;
-  image_url: string;
+  framework_image: string;
   order_number: number;
   doorway_type: number;
   is_frame: boolean;
@@ -29,12 +29,12 @@ export type CreateFrameworkPayload = {
 };
 
 export type UpdateFrameworkPayload = {
-  name: string;
-  image_url: string;
-  order_number: number;
-  doorway_type: number;
-  is_frame: boolean;
-  is_filler: boolean;
+  name?: string;
+  framework_image?: string;
+  order_number?: number;
+  doorway_type?: number;
+  is_frame?: boolean;
+  is_filler?: boolean;
 };
 
 export type FrameworkFormData = {

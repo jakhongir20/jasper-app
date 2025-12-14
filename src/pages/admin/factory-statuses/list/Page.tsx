@@ -64,22 +64,29 @@ export default function Page() {
       />
 
       {/* Edit FactoryStatus Modal */}
-      <FactoryStatusEditForm
-        open={openEdit}
-        factoryStatusId={selectedFactoryStatus?.factory_status_id || 0}
-        onCancel={() => {
-          setOpenEdit(false);
-          setSelectedFactoryStatus(null);
-        }}
-        onSuccess={handleEditSuccess}
-      />
+      {selectedFactoryStatus && (
+        <FactoryStatusEditForm
+          open={openEdit}
+          factoryStatusId={selectedFactoryStatus.factory_status_id}
+          onCancel={() => {
+            setOpenEdit(false);
+            setSelectedFactoryStatus(null);
+          }}
+          onSuccess={handleEditSuccess}
+        />
+      )}
 
       {/* Delete FactoryStatus Modal */}
-      <FactoryStatusDeleteAction
-        open={openDelete}
-        closeModal={() => setOpenDelete(false)}
-        factoryStatusId={selectedFactoryStatus?.factory_status_id || 0}
-      />
+      {selectedFactoryStatus && (
+        <FactoryStatusDeleteAction
+          open={openDelete}
+          closeModal={() => {
+            setOpenDelete(false);
+            setSelectedFactoryStatus(null);
+          }}
+          factoryStatusId={selectedFactoryStatus.factory_status_id}
+        />
+      )}
     </ContentInner>
   );
 }

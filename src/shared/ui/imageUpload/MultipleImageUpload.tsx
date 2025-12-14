@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo } from "react";
+import React, { FC, useState, useMemo, useEffect } from "react";
 import type { UploadFile, UploadProps } from "antd";
 import { Upload, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -99,6 +99,11 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
 
+  // Sync internal state with external value prop
+  useEffect(() => {
+    setFileList(value);
+  }, [value]);
+
   // Helper to get full URL with base URL
   const getDisplayUrl = (url?: string): string | undefined => {
     if (!url) return undefined;
@@ -134,15 +139,20 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   }, [fileList, getAssetUrl]);
 
   const beforeUpload = (file: FileType) => {
+    // Check max count limit
+    if (fileList.length >= maxCount) {
+      toast(t("common.fileUploader.maxCountReached", { count: maxCount }), "error");
+      return Upload.LIST_IGNORE;
+    }
     const isAllowedFormat = allowedFormats.includes(file.type);
     if (!isAllowedFormat) {
       toast(t("common.fileUploader.formatFotAllowed"), "error");
-      return false;
+      return Upload.LIST_IGNORE;
     }
     const isLtMaxSize = file.size / 1024 / 1024 < maxSize;
     if (!isLtMaxSize) {
       toast(t("common.fileUploader.fileSizeNotAllowed"), "error");
-      return false;
+      return Upload.LIST_IGNORE;
     }
     return false; // Prevent auto-upload, we'll handle it manually
   };
@@ -150,9 +160,12 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   const handleChange: UploadProps["onChange"] = async ({
     fileList: newFileList,
   }) => {
+    // Limit to maxCount
+    const limitedFileList = newFileList.slice(0, maxCount);
+
     // Process each new file to convert to base64
     const processedFileList = await Promise.all(
-      newFileList.map(async (file) => {
+      limitedFileList.map(async (file) => {
         if (file.originFileObj && !file.url && !file.preview) {
           file.preview = await getBase64(file.originFileObj as FileType);
         }

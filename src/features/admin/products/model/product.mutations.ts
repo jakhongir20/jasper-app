@@ -1,64 +1,64 @@
-import {
-  MutationFunction,
-  useMutation,
-  UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ProductService } from "./product.service";
 import {
   CreateProductPayload,
   UpdateProductPayload,
-  Product,
 } from "./model.types";
 import { useAdminProductImageDeleteAdminProductImageDelete } from "@/shared/lib/api/generated/gateway/product-images/product-images";
 
-export function useCreateProduct(
-  options?: UseMutationOptions<Product, unknown, CreateProductPayload>,
-) {
-  const mutationFn: MutationFunction<Product, CreateProductPayload> = async (
-    payload,
-  ) => await ProductService.create(payload);
+export function useCreateProduct(options?: {
+  onSuccess?: () => void;
+  onError?: (error: any) => void;
+}) {
+  const queryClient = useQueryClient();
 
-  return useMutation<Product, unknown, CreateProductPayload>({
+  return useMutation({
     mutationKey: ["createProduct"],
-    mutationFn,
-    ...options,
+    mutationFn: (payload: CreateProductPayload) => ProductService.create(payload),
+    onSuccess: () => {
+      // Invalidate products list cache
+      queryClient.invalidateQueries({ queryKey: ["products-list"] });
+      options?.onSuccess?.();
+    },
+    onError: options?.onError,
   });
 }
 
-export function useUpdateProduct(
-  options?: UseMutationOptions<
-    Product,
-    unknown,
-    { productId: number; payload: UpdateProductPayload }
-  >,
-) {
-  const mutationFn: MutationFunction<
-    Product,
-    { productId: number; payload: UpdateProductPayload }
-  > = async ({ productId, payload }) =>
-    await ProductService.update(productId, payload);
+export function useUpdateProduct(options?: {
+  onSuccess?: () => void;
+  onError?: (error: any) => void;
+}) {
+  const queryClient = useQueryClient();
 
-  return useMutation<
-    Product,
-    unknown,
-    { productId: number; payload: UpdateProductPayload }
-  >({
+  return useMutation({
     mutationKey: ["updateProduct"],
-    mutationFn,
-    ...options,
+    mutationFn: ({ productId, payload }: { productId: number; payload: UpdateProductPayload }) =>
+      ProductService.update(productId, payload),
+    onSuccess: (_data, variables) => {
+      // Invalidate both list and detail caches
+      queryClient.invalidateQueries({ queryKey: ["products-list"] });
+      queryClient.invalidateQueries({ queryKey: ["product-detail", variables.productId] });
+      options?.onSuccess?.();
+    },
+    onError: options?.onError,
   });
 }
 
-export function useDeleteProduct(
-  options?: UseMutationOptions<void, unknown, number>,
-) {
-  const mutationFn: MutationFunction<void, number> = async (productId) =>
-    await ProductService.delete(productId);
+export function useDeleteProduct(options?: {
+  onSuccess?: () => void;
+  onError?: (error: any) => void;
+}) {
+  const queryClient = useQueryClient();
 
-  return useMutation<void, unknown, number>({
+  return useMutation({
     mutationKey: ["deleteProduct"],
-    mutationFn,
-    ...options,
+    mutationFn: (productId: number) => ProductService.delete(productId),
+    onSuccess: () => {
+      // Invalidate products list cache
+      queryClient.invalidateQueries({ queryKey: ["products-list"] });
+      options?.onSuccess?.();
+    },
+    onError: options?.onError,
   });
 }
 

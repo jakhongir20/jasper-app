@@ -46,6 +46,7 @@ export const FrameworkEditForm: FC<Props> = ({
       onSuccess();
     },
     onError: (error: any) => {
+      console.error("Update framework error:", error?.response?.data || error);
       showGlobalToast(
         error?.message || t("common.messages.frameworkUpdateFailed"),
         "error",
@@ -93,18 +94,29 @@ export const FrameworkEditForm: FC<Props> = ({
         if (imageUrl.startsWith("data:image/")) {
           // Keep base64 as is - it will be handled by the backend
           imageUrl = imageUrl;
-        } else if (imageUrl.startsWith(baseUrl)) {
-          // Extract relative path from full URL
-          imageUrl = imageUrl.replace(`${baseUrl}/`, "");
+        } else {
+          // Remove cache-busting parameters (e.g., ?t=123456)
+          imageUrl = imageUrl.split("?")[0];
+
+          if (imageUrl.startsWith(baseUrl)) {
+            // Extract relative path from full URL
+            imageUrl = imageUrl.replace(`${baseUrl}/`, "");
+          }
         }
         // If it's already a relative path, use it as is
       }
+
+      // Valid doorway types according to API enum: 1 or 2
+      const validDoorwayTypes = [1, 2];
+      const doorway_type = validDoorwayTypes.includes(values.doorway_type)
+        ? values.doorway_type
+        : null;
 
       const payload: UpdateFrameworkPayload = {
         name: values.name,
         framework_image: imageUrl,
         order_number: values.order_number,
-        doorway_type: values.doorway_type,
+        doorway_type,
         is_frame: values.is_frame,
         is_filler: values.is_filler,
       };

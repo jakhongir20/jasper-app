@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateFactoryStatus } from "@/features/admin/factory-statuses/model";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal, CSwitch } from "@/shared/ui";
+import { Input, Modal, CSwitch, NumberInput } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -80,8 +80,8 @@ export const FactoryStatusAddForm: FC<Props> = ({
         rules={[{ required: true, message: t("common.validation.required") }]}
         initialValue={0}
       >
-        <Input
-          type="number"
+        <NumberInput
+          min={0}
           step={1}
           placeholder="Введите индекс"
         />
@@ -93,8 +93,8 @@ export const FactoryStatusAddForm: FC<Props> = ({
         rules={[{ required: true, message: t("common.validation.required") }]}
         initialValue={0}
       >
-        <Input
-          type="number"
+        <NumberInput
+          min={0}
           step={1}
           placeholder="Введите порядок"
         />

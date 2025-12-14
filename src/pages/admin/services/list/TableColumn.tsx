@@ -2,6 +2,7 @@ import type { ColumnType } from "antd/es/table";
 import { TFunction } from "i18next";
 import { TableAction } from "@/shared/ui/table/action/TableAction";
 import { Service } from "@/features/admin/services";
+import { formatPrice } from "@/shared/helpers";
 
 export const columns = (
   t: TFunction<"translation", undefined>,
@@ -17,6 +18,27 @@ export const columns = (
       title: t("common.labels.name"),
       dataIndex: "name",
       render: (name) => name || "-",
+    },
+    {
+      key: "measure",
+      title: t("common.labels.measure"),
+      dataIndex: "measure",
+      width: 120,
+      render: (measure) => measure || "-",
+    },
+    {
+      key: "price_usd",
+      title: t("common.labels.priceUSD"),
+      dataIndex: "price_usd",
+      width: 150,
+      render: (price) => (price != null ? `${formatPrice(price)} $` : "-"),
+    },
+    {
+      key: "price_uzs",
+      title: t("common.labels.priceUZS"),
+      dataIndex: "price_uzs",
+      width: 150,
+      render: (price) => (price != null ? `${formatPrice(price)} сум` : "-"),
     },
     ...(options.canDelete || options.canEdit
       ? [

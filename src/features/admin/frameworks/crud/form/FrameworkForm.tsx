@@ -2,7 +2,7 @@ import { Form } from "antd";
 import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/helpers";
-import { CSwitch, Input, NumberInput } from "@/shared/ui";
+import { CSwitch, Input, NumberInput, Select } from "@/shared/ui";
 import { ImageUpload } from "@/shared/ui/imageUpload";
 import { Framework } from "@/features/admin/frameworks/model";
 
@@ -50,10 +50,12 @@ export const FrameworkForm: FC<Props> = ({
         label={t("common.labels.doorwayType")}
         rules={[{ required: true, message: t("common.validation.required") }]}
       >
-        <NumberInput
+        <Select
           placeholder={t("common.labels.doorwayType")}
-          min={0}
-          max={999}
+          options={[
+            { value: 1, label: "П-образная" },
+            { value: 2, label: "Г-образная" },
+          ]}
         />
       </Form.Item>
 
@@ -84,9 +86,7 @@ export const FrameworkForm: FC<Props> = ({
             name="is_frame"
             valuePropName="checked"
             label={t("common.labels.isFrame")}
-            rules={[
-              { required: true, message: t("common.validation.required") },
-            ]}
+            initialValue={false}
           >
             <CSwitch />
           </Form.Item>
@@ -95,9 +95,7 @@ export const FrameworkForm: FC<Props> = ({
             name="is_filler"
             valuePropName="checked"
             label={t("common.labels.isFiller")}
-            rules={[
-              { required: true, message: t("common.validation.required") },
-            ]}
+            initialValue={false}
           >
             <CSwitch />
           </Form.Item>
