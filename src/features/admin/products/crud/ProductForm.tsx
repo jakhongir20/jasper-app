@@ -34,7 +34,7 @@ export const ProductForm = ({ product, onImageDelete }: ProductFormProps) => {
 
         <Form.Item
           name="category_id"
-          label={t("common.input.category")}
+          label={"Категория"}
           rules={[{ required: true, message: t("common.validation.required") }]}
         >
           <Select

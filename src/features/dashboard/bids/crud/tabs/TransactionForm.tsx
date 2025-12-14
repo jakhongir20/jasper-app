@@ -1313,20 +1313,16 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   }, [form, transactionValues]);
 
   // 2.6.1: Auto-fill box_width from company_configuration (application general form)
+  // Only auto-fill once when transaction is first created, then allow manual override
   useEffect(() => {
     const generalBoxWidth = form.getFieldValue(["general", "box_width"]);
     const transactionBoxWidth = transactionValues.box_width;
 
-    // Auto-fill box_width if it's not set and general box_width exists
+    // Auto-fill box_width only if it's not set yet and general box_width exists
     if (generalBoxWidth && !transactionBoxWidth) {
       setTransactionField("box_width", generalBoxWidth);
     }
-
-    // Keep transaction box_width in sync with general box_width
-    if (generalBoxWidth && generalBoxWidth !== transactionBoxWidth) {
-      setTransactionField("box_width", generalBoxWidth);
-    }
-  }, [form, transactionValues]);
+  }, [form, transactionValues.box_width]);
 
   // 2.6.2: Auto-fill default door lock and hinge from application defaults
   useEffect(() => {

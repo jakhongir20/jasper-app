@@ -24,18 +24,18 @@ export const columns = (
     dataIndex: "price_multiplier",
     render: (value) => value ?? "-",
   },
-  {
-    key: "company_display_name",
-    title: t("common.labels.companyDisplayName"),
-    dataIndex: ["company", "display_name"],
-    render: (value) => value || "-",
-  },
-  {
-    key: "company_legal_name",
-    title: t("common.labels.companyLegalName"),
-    dataIndex: ["company", "legal_name"],
-    render: (value) => value || "-",
-  },
+  // {
+  //   key: "company_display_name",
+  //   title: t("common.labels.companyDisplayName"),
+  //   dataIndex: ["company", "display_name"],
+  //   render: (value) => value || "-",
+  // },
+  // {
+  //   key: "company_legal_name",
+  //   title: t("common.labels.companyLegalName"),
+  //   dataIndex: ["company", "legal_name"],
+  //   render: (value) => value || "-",
+  // },
   {
     key: "is_deleted",
     title: "Статус",

@@ -1040,6 +1040,8 @@
     "read-companies": "Просмотр компаний",
     "write-permissions": "Редактирование прав доступа",
     "read-permissions": "Просмотр прав доступа",
+    "write-resources": "Редактирование прав ресурса",
+    "read-resources": "Просмотр прав ресурса",
     "write-users": "Редактирование пользователей",
     "read-users": "Просмотр пользователей",
     "sew-factory-applications": "Обработка заявок фабрики",
