@@ -28,7 +28,8 @@ interface Props<T extends object> extends ReusableTableProps<T> {
   showDropdown?: boolean;
   showRowIndex?: boolean;
   cvsOptions?: CVSOptions;
-  emptyTableClassName: string;
+  emptyTableClassName?: string;
+  addButtonTestId?: string;
 }
 
 export const TableWrapper = <T extends object>({
@@ -54,6 +55,7 @@ export const TableWrapper = <T extends object>({
   title = undefined,
   cvsOptions,
   emptyTableClassName = "",
+  addButtonTestId,
   ...rest
 }: Props<T>) => {
   const { t } = useTranslation();
@@ -202,7 +204,7 @@ export const TableWrapper = <T extends object>({
         )}
       </Table>
       {!loading && safeData.length === 0 && (
-        <EmptyTable showAddButton={showAddButton as boolean} className={emptyTableClassName} onClick={onAdd} />
+        <EmptyTable showAddButton={showAddButton as boolean} className={emptyTableClassName} onClick={onAdd} addButtonTestId={addButtonTestId} />
       )}
     </>
   );

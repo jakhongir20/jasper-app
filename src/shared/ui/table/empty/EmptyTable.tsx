@@ -9,6 +9,7 @@ interface Props {
   showAddButton?: boolean;
   link?: string;
   onClick?: () => void;
+  addButtonTestId?: string;
 }
 
 export const EmptyTable: FC<Props> = function ({
@@ -16,6 +17,7 @@ export const EmptyTable: FC<Props> = function ({
   showAddButton = true,
   link,
   onClick,
+  addButtonTestId,
 }) {
   const { t } = useTranslation();
 
@@ -64,6 +66,7 @@ export const EmptyTable: FC<Props> = function ({
                 className={"text-sm font-medium text-white"}
                 color={"primary"}
                 onClick={() => onClick?.()}
+                data-testid={addButtonTestId}
               >
                 {t("common.button.add")}
               </Button>

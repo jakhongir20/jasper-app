@@ -194,6 +194,7 @@ export const TabTransactionsForm: FC<Props> = ({
         showSearch={false}
         showDropdown={false}
         onAdd={handleAddTransaction}
+        addButtonTestId="add-transaction-btn"
       />
 
       <TransactionDrawer

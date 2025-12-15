@@ -134,65 +134,103 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
           />
         </Form.Item>
         <Form.Item
-          name={["general", "delivery_date"]}
-          label={"Дата доставки"}
-          dependencies={[["general", "production_date"]]}
-          rules={[
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                const productionDate = getFieldValue(["general", "production_date"]);
-                if (!value || !productionDate) {
-                  return Promise.resolve();
-                }
-                if (dayjs(value).isAfter(dayjs(productionDate))) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("Дата доставки должна быть позже даты производства"));
-              },
-            }),
-          ]}
+          noStyle
+          shouldUpdate={(prev, curr) =>
+            prev?.general?.production_date !== curr?.general?.production_date
+          }
         >
-          <DatePicker
-            size="small"
-            className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
-            valueName="date"
-            placeholder={"Выберите дату доставки"}
-            disabledDate={(current: Dayjs) => {
-              // Disable dates before today (start of day)
-              return current && current.isBefore(dayjs().startOf("day"));
-            }}
-          />
+          {({ getFieldValue }) => {
+            const productionDate = getFieldValue(["general", "production_date"]);
+            return (
+              <Form.Item
+                name={["general", "delivery_date"]}
+                label={"Дата доставки"}
+                dependencies={[["general", "production_date"]]}
+                rules={[
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      const prodDate = getFieldValue(["general", "production_date"]);
+                      if (!value || !prodDate) {
+                        return Promise.resolve();
+                      }
+                      if (dayjs(value).isAfter(dayjs(prodDate))) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("Дата доставки должна быть позже даты производства"));
+                    },
+                  }),
+                ]}
+              >
+                <DatePicker
+                  size="small"
+                  className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
+                  valueName="date"
+                  placeholder={"Выберите дату доставки"}
+                  disabledDate={(current: Dayjs) => {
+                    // Disable dates before today
+                    if (current && current.isBefore(dayjs().startOf("day"))) {
+                      return true;
+                    }
+                    // Disable dates before or equal to production date
+                    if (productionDate && current && (current.isBefore(dayjs(productionDate), "day") || current.isSame(dayjs(productionDate), "day"))) {
+                      return true;
+                    }
+                    return false;
+                  }}
+                />
+              </Form.Item>
+            );
+          }}
         </Form.Item>
 
         <Form.Item
-          name={["general", "production_date"]}
-          label={"Дата производства"}
-          dependencies={[["general", "delivery_date"]]}
-          rules={[
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                const deliveryDate = getFieldValue(["general", "delivery_date"]);
-                if (!value || !deliveryDate) {
-                  return Promise.resolve();
-                }
-                if (dayjs(value).isBefore(dayjs(deliveryDate))) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("Дата производства должна быть раньше даты доставки"));
-              },
-            }),
-          ]}
+          noStyle
+          shouldUpdate={(prev, curr) =>
+            prev?.general?.delivery_date !== curr?.general?.delivery_date
+          }
         >
-          <DatePicker
-            size="small"
-            className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
-            valueName="date"
-            placeholder={"Выберите дату производства"}
-            disabledDate={(current: Dayjs) => {
-              // Disable dates before today (start of day)
-              return current && current.isBefore(dayjs().startOf("day"));
-            }}
-          />
+          {({ getFieldValue }) => {
+            const deliveryDate = getFieldValue(["general", "delivery_date"]);
+            return (
+              <Form.Item
+                name={["general", "production_date"]}
+                label={"Дата производства"}
+                dependencies={[["general", "delivery_date"]]}
+                rules={[
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      const delDate = getFieldValue(["general", "delivery_date"]);
+                      if (!value || !delDate) {
+                        return Promise.resolve();
+                      }
+                      if (dayjs(value).isBefore(dayjs(delDate))) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("Дата производства должна быть раньше даты доставки"));
+                    },
+                  }),
+                ]}
+              >
+                <DatePicker
+                  size="small"
+                  className="flex-y-center !h-10 rounded-lg border border-gray-50 bg-gray-100 px-3"
+                  valueName="date"
+                  placeholder={"Выберите дату производства"}
+                  disabledDate={(current: Dayjs) => {
+                    // Disable dates before today
+                    if (current && current.isBefore(dayjs().startOf("day"))) {
+                      return true;
+                    }
+                    // Disable dates after or equal to delivery date
+                    if (deliveryDate && current && (current.isAfter(dayjs(deliveryDate), "day") || current.isSame(dayjs(deliveryDate), "day"))) {
+                      return true;
+                    }
+                    return false;
+                  }}
+                />
+              </Form.Item>
+            );
+          }}
         </Form.Item>
 
         <Form.Item

@@ -2,7 +2,7 @@ import { Form } from "antd";
 import type { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { type FC, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import {
   ApplicationLocalForm,
@@ -60,6 +60,7 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const { formFinishFailed } = useTabErrorHandler(tabConfigs);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
@@ -193,6 +194,12 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
     },
   });
 
+  const navigateToTab = useCallback((tabKey: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("tab", tabKey);
+    setSearchParams(params);
+  }, [searchParams, setSearchParams]);
+
   const handleSave = () => {
     form.validateFields().then(({ general }) => {
       const generalValues = (general ?? {}) as Record<string, any>;
@@ -206,7 +213,17 @@ export const BidsAddForm: FC<Props> = ({ className }) => {
 
       // Validate that at least one transaction/product exists
       if (transactions.length === 0) {
-        toast("Необходимо добавить хотя бы один продукт в перечень", "error");
+        // Navigate to transactions tab (key "2") and show error
+        navigateToTab("2");
+        setTimeout(() => {
+          toast("Необходимо добавить хотя бы один продукт в перечень", "error");
+          // Scroll to the add button area
+          const addButton = document.querySelector('[data-testid="add-transaction-btn"]') ||
+            document.querySelector('.ant-btn-dashed');
+          if (addButton) {
+            addButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 300);
         return;
       }
 
