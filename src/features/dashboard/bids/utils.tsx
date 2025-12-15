@@ -94,13 +94,18 @@ export interface RenderFormItemContext {
 
 // Base function that renders a form item with optional context
 const renderFormItemInternal = (field: FormFieldConfig, context?: RenderFormItemContext) => {
-  const { name, label, type, required, options, apiConfig } = field;
+  const { name, label, type, required, options, apiConfig, integerOnly } = field;
   const placeholder = t(`common.placeholder.${name}`);
   const Comp = FieldComponents[type as FieldType];
   const key = name || getRandomId("form_item_");
 
   // Build props for component
   const compProps: Record<string, unknown> = { placeholder };
+
+  // For number fields, set floatValue based on integerOnly
+  if (type === "number" && integerOnly) {
+    compProps.floatValue = false;
+  }
 
   if (type === "select" && options) {
     compProps.options = getOptions(options);

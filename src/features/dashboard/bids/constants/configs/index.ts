@@ -12,6 +12,7 @@ export interface FormFieldConfig {
     | "image";
   required?: boolean;
   options?: string;
+  integerOnly?: boolean; // For number fields - disallow decimals
   apiConfig?: {
     fetchUrl: string;
     valueKey: string;
@@ -711,6 +712,7 @@ export const decorationFormFields: FormFieldConfig[] = [
     label: "common.labels.quantity",
     type: "number",
     required: true,
+    integerOnly: true,
   },
 ];
 
@@ -732,6 +734,7 @@ export const serviceFormFields: FormFieldConfig[] = [
     label: "common.labels.quantity",
     type: "number",
     required: true,
+    integerOnly: true,
   },
 ];
 
