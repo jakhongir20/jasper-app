@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useCustomerCreateAdminCustomerPost } from "@/shared/lib/api";
 import { showGlobalToast } from "@/shared/hooks";
-import { Input, Modal, CSwitch, InputPhone } from "@/shared/ui";
+import { CSwitch, Input, InputPhone, Modal } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { validatePhone } from "@/shared/utils/validations";
 
@@ -42,7 +42,7 @@ export const CustomerAddForm: FC<Props> = ({ open, onCancel, onSuccess }) => {
       mutate({
         data: {
           name: values.name,
-          phone: values.phone || null,
+          phone_number: values.phone || null,
           is_active: values.is_active ?? false,
         },
       });

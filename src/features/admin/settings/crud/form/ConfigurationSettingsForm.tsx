@@ -23,13 +23,6 @@ export const ConfigurationSettingsForm: FC<Props> = ({ className }) => {
         </Form.Item>
 
         <Form.Item
-          name="company_name"
-          label={t("common.labels.companyName")}
-        >
-          <Input placeholder={t("common.placeholder.companyName")} />
-        </Form.Item>
-
-        <Form.Item
           name="hosting_domain"
           label={t("common.labels.hostingDomain")}
         >

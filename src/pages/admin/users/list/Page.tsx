@@ -2,18 +2,19 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { User } from "@/features/admin/users";
+import { User, UserDeleteAction } from "@/features/admin/users";
 
-import { TableWrapper, ContentInner } from "@/shared/ui";
-import { UserDeleteAction } from "@/features/admin/users";
-
-import Filter from "@/shared/ui/filter/Filter";
+import { ContentInner, TableWrapper } from "@/shared/ui";
 import { columns } from "./TableColumn";
 import { useTableFetch } from "@/shared/hooks";
 import { authApiService } from "@/shared/lib/services/ApiService";
 
 export default function Page() {
-  const { tableData: users, isLoading, pagination } = useTableFetch<User>(
+  const {
+    tableData: users,
+    isLoading,
+    pagination,
+  } = useTableFetch<User>(
     "/admin/all",
     {},
     ["tab", "page"],
@@ -51,6 +52,7 @@ export default function Page() {
           canEdit: true,
           canDelete: true,
         })}
+        noFilter
         unhideableColumns={["ID"]}
         clickableColumns={["Имя", "ID"]}
         pagination={pagination}
