@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { ApplicationListItem } from "@/features/dashboard/bids";
+import { useProfile } from "@/features/auth/login/model/auth.queries";
 import { columns } from "./TableColumn";
 import { useTableFetch, useToggle } from "@/shared/hooks";
 import { TableWrapper } from "@/shared/ui";
@@ -11,8 +12,11 @@ import { DeleteAction } from "@/shared/ui/common/DeleteAction";
 import Filter from "@/shared/ui/filter/Filter";
 
 export default function Page() {
+  const { data: user } = useProfile();
+  const endpoint = user?.is_admin ? "/admin/application/all" : "/application/all";
+
   const { tableData, isLoading, pagination } =
-    useTableFetch<ApplicationListItem>("/application/all");
+    useTableFetch<ApplicationListItem>(endpoint);
 
   const navigate = useNavigate();
   const { t } = useTranslation();

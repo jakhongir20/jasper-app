@@ -290,13 +290,6 @@ const ALL_SECTIONS: SectionConfig[] = [
     allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       {
-        name: "up_frame_quantity",
-        label: "Количество надналичников",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество надналичников",
-      },
-      {
         name: "up_frame_product_id",
         label: "Модель надналичника",
         type: "selectInfinitive",
@@ -327,13 +320,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
-      },
-      {
-        name: "under_frame_quantity",
-        label: "Количество подналичников",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество подналичников",
       },
       {
         name: "under_frame_height",
@@ -622,14 +608,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      {
-        name: "glass_quantity",
-        label: "Количество стекол",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество стекол",
-      },
-      // Per 2.6.7: volume_glass removed
     ],
   },
   {
@@ -649,13 +627,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
-      },
-      {
-        name: "door_lock_quantity",
-        label: "Количество замков",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество замков",
       },
       {
         name: "door_lock_mechanism",
@@ -686,13 +657,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         useValueAsLabel: true,
       },
       {
-        name: "hinge_quantity",
-        label: "Количество петель",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество петель",
-      },
-      {
         name: "hinge_mechanism",
         label: "Механизм петли",
         type: "select",
@@ -720,13 +684,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      {
-        name: "door_bolt_quantity",
-        label: "Количество шпингалетов",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество шпингалетов",
-      },
     ],
   },
   {
@@ -749,13 +706,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      {
-        name: "door_stopper_quantity",
-        label: "Количество стопперов",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество стопперов",
-      },
     ],
   },
   {
@@ -777,13 +727,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
-      },
-      {
-        name: "anti_threshold_quantity",
-        label: "Количество анти-порогов",
-        type: "number",
-        numberStep: 1,
-        placeholder: "Введите количество анти-порогов",
       },
     ],
   },
@@ -1241,6 +1184,9 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
     (form.getFieldValue(["transactions", 0]) as TransactionValues) ??
     {};
 
+  // Watch general.box_width for auto-fill functionality
+  const generalBoxWidth = Form.useWatch(["general", "box_width"], form);
+
   const productType = resolveProductType(transactionValues);
 
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
@@ -1316,15 +1262,26 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
   // Only auto-fill once when transaction is first created, then allow manual override
   const [boxWidthInitialized, setBoxWidthInitialized] = useState(false);
   useEffect(() => {
-    const generalBoxWidth = form.getFieldValue(["general", "box_width"]);
     const transactionBoxWidth = transactionValues.box_width;
 
     // Auto-fill box_width only once on initial load, then never override user changes
-    if (!boxWidthInitialized && generalBoxWidth !== undefined && transactionBoxWidth === undefined) {
+    // Check for undefined, null, empty string, or 0 - all considered "not set"
+    const isTransactionBoxWidthEmpty =
+      transactionBoxWidth === undefined ||
+      transactionBoxWidth === null ||
+      transactionBoxWidth === "" ||
+      transactionBoxWidth === 0;
+
+    const hasGeneralBoxWidth =
+      generalBoxWidth !== undefined &&
+      generalBoxWidth !== null &&
+      generalBoxWidth !== 0;
+
+    if (!boxWidthInitialized && hasGeneralBoxWidth && isTransactionBoxWidthEmpty) {
       setTransactionField("box_width", generalBoxWidth);
       setBoxWidthInitialized(true);
     }
-  }, [form, transactionValues.box_width, boxWidthInitialized]);
+  }, [generalBoxWidth, transactionValues.box_width, boxWidthInitialized]);
 
   // 2.6.2: Auto-fill default door lock and hinge from application defaults
   useEffect(() => {
@@ -1412,21 +1369,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
 
     const namePath = ["transactions", 0, field.name] as (string | number)[];
     const rules = getRules(field.name, field.label);
-
-    // Fields that should be disabled in edit mode
-    // Note: Only quantity fields are disabled, model selectors remain enabled
-    const disabledInEditFields = [
-      "under_frame_quantity",
-      "under_frame_height",
-      "up_frame_quantity",
-      "glass_quantity",
-      "door_lock_quantity",
-      "hinge_quantity",
-      "door_bolt_quantity",
-    ];
-    const isDisabledInEdit =
-      mode === "edit" && disabledInEditFields.includes(field.name);
-    const isFieldDisabled = field.disabled || isDisabledInEdit;
+    const isFieldDisabled = field.disabled;
 
     switch (field.type) {
       case "text":

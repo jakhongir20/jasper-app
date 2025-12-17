@@ -23,7 +23,7 @@ interface NumberInputProps
 
 // Format number with spaces as thousand separators, keep decimals if present
 function formatWithSpaces(value: string) {
-  if (!value || value === "0") return "";
+  if (!value) return "";
   const [intPart, decPart] = value.split(".");
   const intFormatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return decPart !== undefined ? `${intFormatted}.${decPart}` : intFormatted;

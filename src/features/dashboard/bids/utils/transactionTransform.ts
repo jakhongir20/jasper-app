@@ -277,6 +277,7 @@ const resolveFrameworkFrontId = (transaction: PrimitiveRecord) =>
       transaction?.frame_front?.framework_id ??
       transaction?.framework_front?.product_id ??
       transaction?.frame_front?.product_id,
+    ["framework_id", "product_id", "id", "value"],
   );
 
 const resolveFrameworkBackId = (transaction: PrimitiveRecord) =>
@@ -288,6 +289,7 @@ const resolveFrameworkBackId = (transaction: PrimitiveRecord) =>
       transaction?.frame_back?.framework_id ??
       transaction?.framework_back?.product_id ??
       transaction?.frame_back?.product_id,
+    ["framework_id", "product_id", "id", "value"],
   );
 
 export const transformTransactionDetailToForm = (
@@ -478,6 +480,8 @@ export const transformTransactionDetailToForm = (
     back_framework_id: resolveFrameworkBackId(transaction),
     framework_front_id: resolveFrameworkFrontId(transaction),
     framework_back_id: resolveFrameworkBackId(transaction),
+    frame_front_id: resolveFrameworkFrontId(transaction),
+    frame_back_id: resolveFrameworkBackId(transaction),
     threshold: transaction.threshold ?? null,
     opening_logic: resolveOpeningLogic(transaction),
     sash: transaction.sash ?? null,

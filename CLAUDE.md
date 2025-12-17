@@ -139,6 +139,35 @@ Product-specific required fields and sections are configured in `src/features/da
 - `CONDITIONAL_REQUIREMENTS` - Fields required based on form values
 - `ALL_SECTIONS` - Form sections with `allowedProductTypes` filtering
 
+### Service Pattern
+
+Feature services follow a consistent static class pattern:
+```typescript
+// src/features/admin/colors/model/color.service.ts
+export class ColorService {
+  static async getAll(): Promise<Color[]> {
+    return await apiService.$get<Color[]>("/color/all");
+  }
+
+  static async getById(colorId: number): Promise<Color> {
+    return await apiService.$get<Color>(`/admin/color?color_id=${colorId}`);
+  }
+
+  static async create(payload: CreateColorPayload): Promise<Color> {
+    return await apiService.$post<Color>("/admin/color", payload);
+  }
+
+  static async update(payload: UpdateColorPayload): Promise<Color> {
+    const { color_id, ...data } = payload;
+    return await apiService.$put<Color>(`/admin/color?color_id=${color_id}`, data);
+  }
+
+  static async delete(colorId: number): Promise<void> {
+    return await apiService.$delete(`/admin/color?color_id=${colorId}`);
+  }
+}
+```
+
 ### API Methods
 
 When editing entities, prefer PATCH over PUT for partial updates:
@@ -184,3 +213,31 @@ HOCs from `@/shared/hocs`:
 import { withLazyLoad } from "@/shared/hocs";
 element: withLazyLoad(() => import("@/pages/module/Page"))
 ```
+
+### useTableFetch Hook
+
+Standard hook for paginated table data with URL-synced search params:
+```typescript
+const { tableData, pagination, isLoading, onPageChange, refetch } = useTableFetch<EntityType>(
+  "/admin/entities", // API endpoint
+  { status: "active" }, // Initial params (optional)
+  ["tab"], // Ignored URL params (optional)
+  false, // noResults: true for non-paginated endpoints
+  20 // Default page size
+);
+```
+
+Date params ending with `_from` and `_to` are automatically converted to timestamps.
+
+### Toast Notifications
+
+Use `showGlobalToast` from `@/shared/hooks/toastService`:
+```typescript
+import { showGlobalToast } from "@/shared/hooks/toastService";
+showGlobalToast(t("common.messages.success"), "success");
+showGlobalToast(t("common.messages.error"), "error");
+```
+
+### Authentication
+
+Auth token is stored in both cookies (`__token`) and localStorage. Use `useAuth()` hook to check authentication state. The `eventBus` emits `"unauthorized"` on logout for cross-component synchronization.
