@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { ColumnType } from "antd/es/table";
 import { cn } from "@/shared/helpers";
 import { useToggle } from "@/shared/hooks/useToggle";
-import { ActionModal, TableAction, TableWrapper } from "@/shared/ui";
+import { ActionModal, Icon, TableWrapper } from "@/shared/ui";
 import { Form, message } from "antd";
 import {
   ApplicationLocalForm,
@@ -149,15 +149,18 @@ export const TabTransactionsForm: FC<Props> = ({
         title: null,
         dataIndex: "action",
         fixed: "right",
+        width: 50,
         render: (_: unknown, record: Transaction) => (
-          <div className="flex flex-col gap-1">
-            <TableAction
-              showEdit
-              showDelete
-              onEdit={() => onEditTransaction(record)}
-              onDelete={() => onOpenDelete(record)}
-            />
-          </div>
+          <button
+            type="button"
+            className="flex items-center justify-center rounded p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenDelete(record);
+            }}
+          >
+            <Icon icon="trash" className="h-4 w-4" />
+          </button>
         ),
       },
     ],
@@ -195,6 +198,10 @@ export const TabTransactionsForm: FC<Props> = ({
         showDropdown={false}
         onAdd={handleAddTransaction}
         addButtonTestId="add-transaction-btn"
+        onRow={(record) => ({
+          onClick: () => onEditTransaction(record),
+          className: "cursor-pointer hover:bg-gray-50",
+        })}
       />
 
       <TransactionDrawer

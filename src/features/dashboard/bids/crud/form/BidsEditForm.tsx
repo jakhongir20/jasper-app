@@ -1,33 +1,30 @@
 import { Form } from "antd";
 import type { ValidateErrorEntity } from "rc-field-form/lib/interface";
-import { type FC, useEffect, useState, useCallback } from "react";
+import { type FC, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 
 import {
+  ApplicationAdditionalQuality,
   ApplicationLocalForm,
   ApplicationService,
-  ApplicationAdditionalQuality,
-  Option,
   TransactionFormType,
   useUpdateApplication,
 } from "@/features/dashboard/bids/model";
 import { useApplicationDetail } from "@/features/dashboard/bids/model/bids.queries";
 import { cn } from "@/shared/helpers";
-import { getRandomId } from "@/shared/utils";
+import { getDateTime, getRandomId } from "@/shared/utils";
 import { useTabErrorHandler, useToast } from "@/shared/hooks";
 import { CAddHeader } from "@/shared/ui";
 import { BidsTab } from "@/features/dashboard/bids/crud";
-import { getDateTime } from "@/shared/utils";
 import { useStaticAssetsUrl } from "@/shared/hooks/useStaticAssetsUrl";
-import { ApiService } from "@/shared/lib/services";
 import { BidsService } from "@/features/dashboard/bids/model/bids.service";
 import {
   buildTransactionPayload,
-  transformTransactionDetailToForm,
-  extractId,
   cleanTransactionForServiceManager,
+  extractId,
+  transformTransactionDetailToForm,
 } from "@/features/dashboard/bids/utils/transactionTransform";
 
 interface Props {
@@ -91,7 +88,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
   const { toast } = useToast();
   const { formFinishFailed } = useTabErrorHandler(tabConfigs);
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string; }>();
+  const { id } = useParams<{ id: string }>();
   const { getAssetUrl } = useStaticAssetsUrl();
 
   const [formFinishErrors] = useState<ValidateErrorEntity["errorFields"]>([]);
@@ -105,12 +102,14 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         // Clean transaction data for service-manager (stricter validation)
         const cleanedFormData = {
           ...variables.formData,
-          application_transactions: variables.formData.application_transactions?.map(
-            cleanTransactionForServiceManager
-          ) || [],
-          transactions: variables.formData.transactions?.map(
-            cleanTransactionForServiceManager
-          ) || [],
+          application_transactions:
+            variables.formData.application_transactions?.map(
+              cleanTransactionForServiceManager,
+            ) || [],
+          transactions:
+            variables.formData.transactions?.map(
+              cleanTransactionForServiceManager,
+            ) || [],
         };
 
         // Sequential execution: service-manager → forecast
@@ -190,69 +189,74 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
 
         return {
           _uid: getRandomId("transaction_"),
-          id:
-            transaction.application_transaction_id ?? transaction.id ?? 0,
+          id: transaction.application_transaction_id ?? transaction.id ?? 0,
           ...merged,
           volume_product: merged.volume_product ?? basicVolume,
         } as TransactionFormType;
       });
 
       const applicationAspects =
-        ((applicationDetail as any).application_aspects ??
+        (
+          (applicationDetail as any).application_aspects ??
           applicationDetail.aspects ??
-          [])?.map((aspect: any) => {
-            const payload =
-              aspect.aspect_file_payload ??
-              (aspect.aspect_file_url
-                ? getAssetUrl(aspect.aspect_file_url)
-                : aspect.aspect ?? "");
+          []
+        )?.map((aspect: any) => {
+          const payload =
+            aspect.aspect_file_payload ??
+            (aspect.aspect_file_url
+              ? getAssetUrl(aspect.aspect_file_url)
+              : (aspect.aspect ?? ""));
 
-            return {
-              _uid: getRandomId("aspect_"),
-              id: aspect.application_aspect_id ?? aspect.id ?? 0,
-              comment: aspect.comment ?? "",
-              aspect_file_payload: payload ?? "",
-            };
-          }) ?? [];
+          return {
+            _uid: getRandomId("aspect_"),
+            id: aspect.application_aspect_id ?? aspect.id ?? 0,
+            comment: aspect.comment ?? "",
+            aspect_file_payload: payload ?? "",
+          };
+        }) ?? [];
 
       const applicationServices =
-        ((applicationDetail as any).application_services ??
+        (
+          (applicationDetail as any).application_services ??
           applicationDetail.services ??
-          [])?.map((service: any) => {
-            const serviceId =
-              service.service_id ??
-              service?.service?.service_id ??
-              service?.service?.id ??
-              null;
+          []
+        )?.map((service: any) => {
+          const serviceId =
+            service.service_id ??
+            service?.service?.service_id ??
+            service?.service?.id ??
+            null;
 
-            return {
-              _uid: getRandomId("service_"),
-              id: service.application_service_id ?? service.id ?? 0,
-              service_id: serviceId,
-              service: service.service ?? undefined,
-              name: service?.service?.name ?? service.name ?? "",
-              quantity: service.quantity ?? 0,
-              source: service.source ?? "api",
-            } as ApplicationService & { source?: string; };
-          }) ?? [];
+          return {
+            _uid: getRandomId("service_"),
+            id: service.application_service_id ?? service.id ?? 0,
+            service_id: serviceId,
+            service: service.service ?? undefined,
+            name: service?.service?.name ?? service.name ?? "",
+            quantity: service.quantity ?? 0,
+            source: service.source ?? "api",
+          } as ApplicationService & { source?: string };
+        }) ?? [];
 
       const applicationQualities =
-        ((applicationDetail as any).application_qualities ??
+        (
+          (applicationDetail as any).application_qualities ??
           applicationDetail.qualities ??
-          [])?.map((quality: any) => {
-            const qualityId =
-              quality.quality_id ??
-              quality?.quality?.quality_id ??
-              quality?.quality?.id ??
-              null;
+          []
+        )?.map((quality: any) => {
+          const qualityId =
+            quality.quality_id ??
+            quality?.quality?.quality_id ??
+            quality?.quality?.id ??
+            null;
 
-            return {
-              _uid: getRandomId("quality_"),
-              id: quality.application_quality_id ?? quality.id ?? 0,
-              quality_id: qualityId,
-              quality: quality.quality ?? undefined,
-            } as ApplicationAdditionalQuality;
-          }) ?? [];
+          return {
+            _uid: getRandomId("quality_"),
+            id: quality.application_quality_id ?? quality.id ?? 0,
+            quality_id: qualityId,
+            quality: quality.quality ?? undefined,
+          } as ApplicationAdditionalQuality;
+        }) ?? [];
 
       const applicationDate = (applicationDetail as any)?.application_date;
       const deliveryDate = (applicationDetail as any)?.delivery_date;
@@ -264,18 +268,23 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         undefined;
 
       // Build customer select value - use customer_name/customer_phone even without customer_id
-      const customerName = customerFromDetail?.name ?? applicationDetail.customer_name ?? "";
-      const customerPhone = customerFromDetail?.phone_number ?? applicationDetail.customer_phone ?? "";
+      const customerName =
+        customerFromDetail?.name ?? applicationDetail.customer_name ?? "";
+      const customerPhone =
+        customerFromDetail?.phone_number ??
+        applicationDetail.customer_phone ??
+        "";
 
       // Create customerSelectValue if we have either customer_id OR customer_name
-      const customerSelectValue = (customerIdValue || customerName)
-        ? {
-          customer_id: customerIdValue ?? 0, // Use 0 as placeholder if no ID available
-          name: customerName,
-          phone_number: customerPhone,
-          is_active: customerFromDetail?.is_active ?? true,
-        }
-        : undefined;
+      const customerSelectValue =
+        customerIdValue || customerName
+          ? {
+              customer_id: customerIdValue ?? 0, // Use 0 as placeholder if no ID available
+              name: customerName,
+              phone_number: customerPhone,
+              is_active: customerFromDetail?.is_active ?? true,
+            }
+          : undefined;
 
       const transformedData: ApplicationLocalForm = {
         general: {
@@ -295,9 +304,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             : applicationDetail.date
               ? dayjs(applicationDetail.date)
               : undefined,
-          delivery_date: deliveryDate
-            ? dayjs(deliveryDate)
-            : undefined,
+          delivery_date: deliveryDate ? dayjs(deliveryDate) : undefined,
           category_name: applicationDetail.category_name || "",
           date: applicationDetail.date
             ? dayjs(applicationDetail.date)
@@ -313,8 +320,10 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             (applicationDetail.door_lock as any)?.product_id?.toString() || "",
           canopy:
             (applicationDetail.canopy as any)?.product_id?.toString() || "",
-          default_hinge_id: (applicationDetail as any)?.default_hinge || undefined,
-          default_door_lock_id: (applicationDetail as any)?.default_door_lock || undefined,
+          default_hinge_id:
+            (applicationDetail as any)?.default_hinge || undefined,
+          default_door_lock_id:
+            (applicationDetail as any)?.default_door_lock || undefined,
           box_width: (applicationDetail as any)?.box_width || undefined,
           transom_height_front: applicationDetail.transom_height_front || 0,
           transom_height_back: applicationDetail.transom_height_back || 0,
@@ -492,15 +501,9 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       const customerId = getValue("customer_id", generalValues?.customer_id);
 
       const applicationTransactions = transactions.map(
-        ({
-          _uid,
-          id,
-          application_transaction_id,
-          ...transaction
-        }: any) => {
+        ({ _uid, id, application_transaction_id, ...transaction }: any) => {
           const normalized = buildTransactionPayload(transaction);
-          const identifier =
-            application_transaction_id ?? id ?? null;
+          const identifier = application_transaction_id ?? id ?? null;
 
           return {
             ...normalized,
@@ -537,8 +540,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
         transom_height_back: generalValues?.transom_height_back || 0,
         status: generalValues?.status || 1,
         application_transactions: applicationTransactions,
-        transactions:
-          applicationTransactions,
+        transactions: applicationTransactions,
         application_aspects:
           applicationAspects?.map(({ _uid, id, ...item }: any) => ({
             application_aspect_id: id || null,

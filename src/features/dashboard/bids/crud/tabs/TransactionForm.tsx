@@ -11,6 +11,60 @@ import {
 } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 
+// Wrapper component for ImageSelectPopover that properly handles Form.Item integration
+// Form.Item injects `value` and `onChange` as props to its child component
+// We need to: 1) Pass the value to ImageSelectPopover, 2) Call Form.Item's onChange with the extracted ID
+interface ImageSelectPopoverFieldProps {
+  value?: any; // Injected by Form.Item - can be ID (number) or full object
+  onChange?: (value: any) => void; // Injected by Form.Item - we call this with extracted ID
+  placeholder?: string;
+  fetchUrl: string;
+  params?: Record<string, unknown>;
+  labelKey: string;
+  imageKey?: string;
+  valueKey: string;
+  disabled?: boolean;
+  aliases?: string[];
+  setTransactionField: (fieldName: string, value: unknown) => void;
+}
+
+const ImageSelectPopoverField: FC<ImageSelectPopoverFieldProps> = ({
+  value,
+  onChange,
+  placeholder,
+  fetchUrl,
+  params,
+  labelKey,
+  imageKey,
+  valueKey,
+  disabled,
+  aliases,
+  setTransactionField,
+}) => {
+  return (
+    <ImageSelectPopover
+      placeholder={placeholder}
+      fetchUrl={fetchUrl}
+      params={params}
+      labelKey={labelKey}
+      imageKey={imageKey}
+      valueKey={valueKey}
+      disabled={disabled}
+      value={value}
+      onChange={(item) => {
+        // Extract the ID from the selected item
+        const extractedId = item?.[valueKey];
+        // Call Form.Item's onChange with the extracted ID (this updates form state)
+        onChange?.(extractedId);
+        // Also update any aliases
+        if (aliases) {
+          aliases.forEach((alias) => setTransactionField(alias, extractedId));
+        }
+      }}
+    />
+  );
+};
+
 interface Props {
   className?: string;
   mode: "add" | "edit";
@@ -1147,7 +1201,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     aliases: ["doorway_thickness"],
   },
   {
-    name: "frame_front_id",
+    name: "framework_front_id",
     label: "Каркас передний",
     type: "image",
     placeholder: "Выберите передний каркас",
@@ -1160,7 +1214,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     visible: (_, productType) => isDoorType(productType),
   },
   {
-    name: "frame_back_id",
+    name: "framework_back_id",
     label: "Каркас задний",
     type: "image",
     placeholder: "Выберите задний каркас",
@@ -1600,15 +1654,8 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
         );
       case "image":
         return (
-          <Form.Item
-            name={namePath}
-            label={field.label}
-            rules={rules}
-            getValueFromEvent={(item) => {
-              return item?.[field.valueKey ?? "framework_id"];
-            }}
-          >
-            <ImageSelectPopover
+          <Form.Item name={namePath} label={field.label} rules={rules}>
+            <ImageSelectPopoverField
               placeholder={field.placeholder}
               fetchUrl={field.fetchUrl ?? ""}
               params={
@@ -1620,14 +1667,8 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
               imageKey={field.imageKey}
               valueKey={(field.valueKey ?? "framework_id") as string}
               disabled={isFieldDisabled}
-              onChange={(item) => {
-                const value = item?.[field.valueKey ?? "framework_id"];
-                if (field.aliases) {
-                  field.aliases.forEach((alias) =>
-                    setTransactionField(alias, value),
-                  );
-                }
-              }}
+              aliases={field.aliases}
+              setTransactionField={setTransactionField}
             />
           </Form.Item>
         );
