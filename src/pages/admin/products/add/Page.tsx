@@ -1,9 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Form } from "antd";
-import { ProductForm } from "@/features/admin/products";
+import { ProductForm, useCreateProduct } from "@/features/admin/products";
 import { CAddHeader } from "@/shared/ui";
-import { useCreateProduct } from "@/features/admin/products";
 import { useToast } from "@/shared/hooks";
 
 export default function Page() {
@@ -54,6 +53,7 @@ export default function Page() {
         ...values,
         product_type,
         product_images,
+        product_resource_unions: [],
       });
     });
   };

@@ -96,6 +96,7 @@ export default function Page() {
             percent_covering_secondary: values.percent_covering_secondary,
             percent_color: values.percent_color,
             percent_extra_option: values.percent_extra_option,
+            product_resource_unions: [],
           },
         });
       }
