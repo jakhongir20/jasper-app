@@ -39,7 +39,7 @@ export const ApplicationCalc: FC<Props> = ({
         setForecastData(response);
         onForecastDataUpdate?.(response);
       },
-      onError: (error) => {
+      onError: () => {
         message.error(t("common.messages.calculation_error"));
       },
     });

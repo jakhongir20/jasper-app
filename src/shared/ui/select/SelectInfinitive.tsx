@@ -458,7 +458,7 @@ const Select = <T extends ItemType>({
       {fetchUrl
         ? fetchedOptions.flat().map((item) => {
             const label = Array.isArray(labelKey)
-              ? labelKey.map((k) => item[k]).join(` / `)
+              ? labelKey.map((k) => item[k]).filter(Boolean).join(" ")
               : item[labelKey];
 
             return (
@@ -472,7 +472,7 @@ const Select = <T extends ItemType>({
           })
         : options?.map((item) => {
             const label = Array.isArray(labelKey)
-              ? labelKey.map((k) => item[k]).join("-")
+              ? labelKey.map((k) => item[k]).filter(Boolean).join(" ")
               : item[labelKey];
 
             return (
