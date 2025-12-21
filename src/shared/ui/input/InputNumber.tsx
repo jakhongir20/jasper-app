@@ -126,17 +126,20 @@ export const NumberInput: FC<NumberInputProps> = ({
     }
 
     // Enforce min/max constraints
+    let constrainedSanitized = sanitized;
     if (numeric !== undefined) {
       if (typeof min === "number" && numeric < min) {
         numeric = min;
+        constrainedSanitized = String(min);
       }
       if (typeof max === "number" && numeric > max) {
         numeric = max;
+        constrainedSanitized = String(max);
       }
     }
 
     onChange?.(numeric);
-    const formatted = formatWithSpaces(sanitized);
+    const formatted = formatWithSpaces(constrainedSanitized);
     setDisplayValue(formatted);
 
     caretPos.current =
