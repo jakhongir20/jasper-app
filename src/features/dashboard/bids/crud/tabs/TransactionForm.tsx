@@ -2,7 +2,13 @@ import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
-import { CSwitch, Input, NumberInput, Select, SelectInfinitive } from "@/shared/ui";
+import {
+  CSwitch,
+  Input,
+  NumberInput,
+  Select,
+  SelectInfinitive,
+} from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 
 interface Props {
@@ -65,6 +71,7 @@ type FieldConfig = {
   numberStep?: number;
   minValue?: number; // Minimum allowed value for number fields (default: 0)
   integerOnly?: boolean; // Only allow integer values
+  defaultValue?: string | number; // Default value for the field when creating new transaction
   options?: { value: string | number; label: string }[];
   queryKey?: string;
   fetchUrl?: string;
@@ -98,7 +105,7 @@ type ProductTypeConfig = {
   sections: SectionConfig[];
 };
 
-const ALWAYS_REQUIRED_FIELDS: string[] = ["product_type"];
+const ALWAYS_REQUIRED_FIELDS: string[] = [];
 
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
@@ -741,10 +748,11 @@ const ALL_SECTIONS: SectionConfig[] = [
         type: "number",
         numberStep: 0.01,
         placeholder: "Введите ширину коробки",
+        defaultValue: 0.09,
       },
       {
         name: "box_width_length",
-        label: "Длина коробки",
+        label: "Дополнительная длина коробки",
         type: "number",
         numberStep: 0.01,
         placeholder: "Авто-расчет",
@@ -1085,7 +1093,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     name: "product_type",
     label: "Тип продукта",
     type: "select",
-    allowClear: false,
+    allowClear: true,
     placeholder: "Выберите тип продукта",
     options: PRODUCT_TYPES,
     aliases: ["door_type"],
@@ -1279,7 +1287,11 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
       generalBoxWidth !== null &&
       generalBoxWidth !== 0;
 
-    if (!boxWidthInitialized && hasGeneralBoxWidth && isTransactionBoxWidthEmpty) {
+    if (
+      !boxWidthInitialized &&
+      hasGeneralBoxWidth &&
+      isTransactionBoxWidthEmpty
+    ) {
       setTransactionField("box_width", generalBoxWidth);
       setBoxWidthInitialized(true);
     }
@@ -1312,6 +1324,13 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
       setTransactionField("quantity", 1);
     }
   }, [form, transactionValues]);
+
+  // Apply default box_width value (0.09) when creating new transaction
+  useEffect(() => {
+    if (mode === "add" && !transactionValues.box_width) {
+      setTransactionField("box_width", 0.09);
+    }
+  }, [mode, transactionValues.box_width]);
 
   // 2.6.6: Transom conditional fields - hide and clear if transom_type != "Скрытая" (Hidden = 2)
   useEffect(() => {

@@ -229,6 +229,30 @@ const { tableData, pagination, isLoading, onPageChange, refetch } = useTableFetc
 
 Date params ending with `_from` and `_to` are automatically converted to timestamps.
 
+### useValidationErrors Hook
+
+Handle API validation errors in forms:
+```typescript
+const { validationErrors, getFieldError, hasFieldError, hasErrors } = useValidationErrors(mutationError);
+// For nested fields: getFieldError("transactions.0.factory_mdf")
+// For array fields: getArrayFieldError("transactions", 0, "factory_mdf")
+```
+
+### SelectInfinitive Component
+
+For dropdowns with paginated API data and infinite scroll:
+```typescript
+<SelectInfinitive<EntityType>
+  fetchUrl="/admin/entities"
+  labelKey="name"           // or ["first_name", "last_name"] for composite labels
+  valueKey="id"
+  queryKey="entities"
+  params={{ status: "active" }}
+  onSelect={(value, option) => handleSelect(option)}
+  onChange={(value) => form.setFieldValue("entity_id", value)}
+/>
+```
+
 ### Toast Notifications
 
 Use `showGlobalToast` from `@/shared/hooks/toastService`:
