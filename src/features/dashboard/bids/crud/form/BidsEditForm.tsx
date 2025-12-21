@@ -313,8 +313,8 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             (applicationDetail.door_lock as any)?.product_id?.toString() || "",
           canopy:
             (applicationDetail.canopy as any)?.product_id?.toString() || "",
-          default_hinge_id: (applicationDetail as any)?.default_hinge_id || undefined,
-          default_door_lock_id: (applicationDetail as any)?.default_door_lock_id || undefined,
+          default_hinge_id: (applicationDetail as any)?.default_hinge || undefined,
+          default_door_lock_id: (applicationDetail as any)?.default_door_lock || undefined,
           box_width: (applicationDetail as any)?.box_width || undefined,
           transom_height_front: applicationDetail.transom_height_front || 0,
           transom_height_back: applicationDetail.transom_height_back || 0,
