@@ -164,6 +164,9 @@ const ALWAYS_REQUIRED_FIELDS: string[] = [];
 const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
 
+const isDoorOrDoorway = (productType: string) =>
+  isDoorType(productType) || productType === "doorway";
+
 const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "transom",
@@ -327,7 +330,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "crown",
     title: "Корона",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -348,7 +351,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "up-frame",
     title: "Кубик (Надналичник)",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       {
         name: "up_frame_product_id",
@@ -367,7 +370,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "under-frame",
     title: "Сапожок (Подналичник)",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -394,7 +397,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "trim",
     title: "Обклад",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -421,7 +424,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "molding",
     title: "Молдинг",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -448,7 +451,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "covering-primary",
     title: "Покрытие I",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -477,7 +480,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "covering-secondary",
     title: "Покрытие II",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -506,7 +509,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "color",
     title: "Цвет",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -830,7 +833,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "extra-options",
     title: "Доп. опция",
-    allowedProductTypes: ["door-window", "door-deaf"],
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       // Per 2.6.8: Model selector first
       {
@@ -1211,7 +1214,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     labelKey: "name",
     imageKey: "image_url",
     valueKey: "framework_id",
-    visible: (_, productType) => isDoorType(productType),
+    visible: (_, productType) => isDoorOrDoorway(productType),
   },
   {
     name: "framework_back_id",
@@ -1224,7 +1227,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     labelKey: "name",
     imageKey: "image_url",
     valueKey: "framework_id",
-    visible: (_, productType) => isDoorType(productType),
+    visible: (_, productType) => isDoorOrDoorway(productType),
   },
   {
     name: "threshold",
@@ -1558,9 +1561,23 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
             label={field.label}
             rules={rules}
             getValueFromEvent={(value) => {
-              // Extract just the ID value for location field
-              if (field.name === "location" && typeof value === "object") {
-                return value?.[field.valueKey ?? "location_id"];
+              // Extract label (name) for location field, not ID
+              if (field.name === "location") {
+                if (typeof value === "object" && value !== null) {
+                  const labelKey = field.labelKey;
+                  // Handle string or array labelKey
+                  if (Array.isArray(labelKey)) {
+                    return (
+                      labelKey
+                        .map((key) => value?.[key])
+                        .filter(Boolean)
+                        .join(" ") || ""
+                    );
+                  }
+                  return value?.[labelKey ?? "name"] ?? "";
+                }
+                // Return empty string if value is not found
+                return value ?? "";
               }
               return value;
             }}

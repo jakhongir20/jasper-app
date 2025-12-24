@@ -587,19 +587,21 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
             decoration_id: getValue("decoration_id", item?.decoration_id),
           })) || [],
         application_services:
-          applicationServices?.map(({ _uid, id, ...item }: any) => ({
-            application_service_id: id || null,
-            service_id: getValue("service_id", item?.service_id),
-            quantity: item?.quantity,
-            source: item?.source,
-          })) || [],
+          applicationServices
+            ?.filter(({ id }: any) => !id) // Only send new services (without existing id)
+            ?.map(({ _uid, id, ...item }: any) => ({
+              application_service_id: null,
+              service_id: getValue("service_id", item?.service_id),
+              quantity: item?.quantity,
+            })) || [],
         services:
-          applicationServices?.map(({ _uid, id, ...item }: any) => ({
-            application_service_id: id || null,
-            service_id: getValue("service_id", item?.service_id),
-            quantity: item?.quantity,
-            source: item?.source,
-          })) || [],
+          applicationServices
+            ?.filter(({ id }: any) => !id) // Only send new services (without existing id)
+            ?.map(({ _uid, id, ...item }: any) => ({
+              application_service_id: null,
+              service_id: getValue("service_id", item?.service_id),
+              quantity: item?.quantity,
+            })) || [],
         application_qualities:
           applicationQualities?.map(({ _uid, id, ...item }: any) => ({
             application_quality_id: id || null,
