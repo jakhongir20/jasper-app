@@ -1,11 +1,12 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
-import { Drawer, Form, message } from "antd";
+import { Drawer, Form, message, Tabs } from "antd";
 import { Button } from "@/shared/ui";
 import {
   getTransactionValidationPaths,
   getUnfilledRequiredFields,
   TransactionForm,
 } from "@/features/dashboard/bids/crud/tabs/TransactionForm";
+import { DoorBoxes2DForm } from "@/features/dashboard/bids/crud/tabs/DoorBoxes2DForm";
 import {
   ApplicationLocalForm,
   GeneralFormType,
@@ -33,6 +34,7 @@ export const TransactionDrawer: FC<Props> = ({
   const parentForm = Form.useFormInstance<ApplicationLocalForm>();
   const [drawerForm] = Form.useForm<ApplicationLocalForm>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState("perechen");
   const originalTransactionsRef = useRef<Record<string, any>[]>([]);
 
   // Initialize drawer form when opened
@@ -324,7 +326,22 @@ export const TransactionDrawer: FC<Props> = ({
       }
     >
       <Form layout={"vertical"} form={drawerForm}>
-        <TransactionForm mode={mode} drawerOpen={open} />
+        <Tabs
+          activeKey={activeTab}
+          onChange={setActiveTab}
+          items={[
+            {
+              key: "perechen",
+              label: "Перечень",
+              children: <TransactionForm mode={mode} drawerOpen={open} />,
+            },
+            {
+              key: "door-boxes-2d",
+              label: "Дверные коробки (2D)",
+              children: <DoorBoxes2DForm mode={mode} drawerOpen={open} />,
+            },
+          ]}
+        />
       </Form>
     </Drawer>
   );

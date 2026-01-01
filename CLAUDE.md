@@ -5,16 +5,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Development Commands
 
 ```bash
-npm run dev              # Start dev server on port 3000 with --host (auto-opens browser)
-npm run build            # Production build
+npm run dev              # Start dev server on port 3000 (auto-opens browser)
+npm run build            # Production build (vite build)
 npm run typecheck        # TypeScript type checking (tsc --noEmit)
 npm run lint             # ESLint check
 npm run lint:fix         # ESLint auto-fix
-npm run prettier         # Format all files
+npm run prettier         # Format all files with Prettier
 npm run generate:api     # Regenerate API types from OpenAPI specs (orval)
 npm run generate:icon-type  # Regenerate icon type definitions
 npm run test             # Run tests (vitest)
-npm run test -- --watch  # Run tests in watch mode
+npm run test -- --run    # Run tests once without watch mode
 ```
 
 ## Architecture Overview
