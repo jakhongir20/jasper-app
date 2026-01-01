@@ -158,10 +158,8 @@ export const TransactionsModal: FC<Props> = ({
             crown_quantity: number;
             up_trim_quantity: number;
             under_trim_quantity: number;
-            glass_quantity: number;
-            door_lock_quantity: number;
-            canopy_quantity: number;
-            latch_quantity: number;
+            door_stopper_quantity: number;
+            anti_threshold_quantity: number;
             box_service_quantity: number;
             box_service_length: number;
           };
@@ -217,13 +215,9 @@ export const TransactionsModal: FC<Props> = ({
             crown_quantity: response.results.crown_quantity,
             up_trim_quantity: response.results.up_trim_quantity,
             under_trim_quantity: response.results.under_trim_quantity,
-            glass_quantity: response.results.glass_quantity,
-            door_lock_quantity: response.results.door_lock_quantity,
-            canopy_quantity: response.results.canopy_quantity,
-            latch_quantity: response.results.latch_quantity,
             box_service_quantity: response.results.box_service_quantity,
             box_service_length: response.results.box_service_length,
-          });
+          } as any);
         }
       } catch (error) {
         // Ignore abort errors

@@ -142,7 +142,9 @@ export const ApplicationCalc: FC<Props> = ({
         <div className="flex flex-col gap-4 sm:grid lg:col-span-2 lg:grid-cols-2">
           {/* Сумма производства */}
           <div className="flex h-full w-full flex-col gap-2 rounded-xl border border-primary/30 bg-primary/5 p-4">
-            <h2 className="text-sm text-primary">Сумма производства</h2>
+            <h2 className="text-sm text-primary">
+              {t("common.labels.production_amount")}
+            </h2>
             <span className="text-2xl font-bold text-primary">
               {formatMoneyDecimal(displayData?.forecast_production)} USD
             </span>
@@ -150,7 +152,7 @@ export const ApplicationCalc: FC<Props> = ({
 
           {/* Сумма аксессуаров */}
           <div className="flex h-full w-full flex-col gap-2 rounded-xl border border-primary/30 bg-primary/5 p-4">
-            <h2 className="text-sm text-primary">Сумма аксессуаров</h2>
+            <h2 className="text-sm text-primary">{t("common.labels.accessories_amount")}</h2>
             <span className="text-2xl font-bold text-primary">
               {formatMoneyDecimal(displayData?.forecast_accessories)} USD
             </span>
@@ -158,7 +160,7 @@ export const ApplicationCalc: FC<Props> = ({
 
           {/* Сумма услуг */}
           <div className="flex h-full w-full flex-col gap-2 rounded-xl border border-primary/30 bg-primary/5 p-4">
-            <h2 className="text-sm text-primary">Сумма услуг</h2>
+            <h2 className="text-sm text-primary">{t("common.labels.services_amount")}</h2>
             <span className="text-2xl font-bold text-primary">
               {formatMoneyDecimal(displayData?.forecast_services)} USD
             </span>
@@ -166,7 +168,9 @@ export const ApplicationCalc: FC<Props> = ({
 
           {/* Всего к оплате - выделенный */}
           <div className="flex h-full w-full flex-col gap-2 rounded-xl border-2 border-primary bg-primary/10 p-4">
-            <h2 className="text-sm font-medium text-primary">Всего к оплате</h2>
+            <h2 className="text-sm font-medium text-primary">
+              {t("common.labels.total_to_pay")}
+            </h2>
             <span className="text-2xl font-bold text-primary">
               {formatMoneyDecimal(displayData?.forecast_initial)} USD
             </span>
@@ -175,7 +179,7 @@ export const ApplicationCalc: FC<Props> = ({
           {/* Остаток к оплате - крупный выделенный блок на всю ширину */}
           <div className="flex h-full w-full flex-col gap-2 rounded-xl border-2 border-primary bg-primary/10 p-5 lg:col-span-2">
             <h2 className="text-sm font-medium text-primary">
-              Остаток к оплате
+              {t("common.labels.remaining_to_pay")}
             </h2>
             <span className="text-3xl font-bold text-primary">
               {formatMoneyDecimal(displayData?.forecast_final)} USD
@@ -186,7 +190,7 @@ export const ApplicationCalc: FC<Props> = ({
         {/* Правая часть - форма расчёта */}
         <div className="flex flex-col gap-4 rounded-xl border border-gray-500/30 p-4 lg:col-span-1">
           {/* Курс валюты */}
-          <Form.Item name="forecast_rate" label="Курс валюты">
+          <Form.Item name="forecast_rate" label={t("common.labels.curse")}>
             <NumberInput prefix="$" placeholder="0" />
           </Form.Item>
 
@@ -194,13 +198,13 @@ export const ApplicationCalc: FC<Props> = ({
           <Form.Item
             name="discount_type"
             label={t("common.labels.discount_type")}
-            rules={[{ required: true, message: "Выберите тип скидки" }]}
+            rules={[{ required: true, message: t("common.labels.select_discount_type") }]}
           >
             <Select
-              placeholder="Выберите тип скидки"
+              placeholder={t("common.labels.select_discount_type")}
               options={[
-                { value: 1, label: "Точная сумма" },
-                { value: 2, label: "В процентах" },
+                { value: 1, label: t("common.labels.exact_amount") },
+                { value: 2, label: t("common.labels.in_percentage") },
               ]}
               onChange={(value) => {
                 // Reset discount values when type changes
@@ -227,7 +231,7 @@ export const ApplicationCalc: FC<Props> = ({
                 return (
                   <Form.Item
                     name="forecast_discount"
-                    label={`${t("discount")} (${t("common.labels.amount")})`}
+                    label={`${t("common.labels.discount")} (${t("common.labels.amount")})`}
                     rules={[{ type: "number", min: 0, message: "" }]}
                   >
                     <NumberInput
@@ -240,10 +244,10 @@ export const ApplicationCalc: FC<Props> = ({
                 return (
                   <Form.Item
                     name="forecast_discount_percent"
-                    label={`${t("discount")} (%)`}
+                    label={`${t("common.labels.discount")} (%)`}
                   >
                     <NumberInput
-                      placeholder={t("percentage")}
+                      placeholder={t("common.labels.percentage")}
                       min={0}
                       max={100}
                       onChange={handleDiscountPercentChange}
@@ -256,8 +260,8 @@ export const ApplicationCalc: FC<Props> = ({
           </Form.Item>
 
           {/* Предоплата */}
-          <Form.Item name="forecast_prepayment" label={t("prepayment")}>
-            <NumberInput placeholder={t("percentage")} />
+          <Form.Item name="forecast_prepayment" label={t("common.labels.prepayment")}>
+            <NumberInput placeholder={t("common.labels.percentage")} />
           </Form.Item>
 
           {/* Кнопка расчёта */}

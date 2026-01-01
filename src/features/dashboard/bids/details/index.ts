@@ -113,10 +113,8 @@ type ApplicationTransaction = {
   filler_width: number;
   filler_quantity: number;
   crown_height: number;
-  glass_quantity: number;
-  door_lock_quantity: number;
-  canopy_quantity: number;
-  latch_quantity: number;
+  door_stopper_quantity: number;
+  anti_threshold_quantity: number;
   crown_width: number;
   box_service_quantity: number;
   box_service_length: number;

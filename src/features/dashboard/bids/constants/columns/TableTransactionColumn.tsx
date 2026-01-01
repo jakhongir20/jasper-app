@@ -446,11 +446,6 @@ export const useTableTransactionColumns = (options: {
       },
     },
     {
-      title: t("common.labels.glass_quantity"),
-      dataIndex: "glass_quantity",
-      render: (quantity) => quantity || "-",
-    },
-    {
       title: t("common.labels.door_lock_id"),
       dataIndex: "door_lock_id",
       key: "door_lock_id",
@@ -473,11 +468,6 @@ export const useTableTransactionColumns = (options: {
         if (!doorLockId) return "-";
         return String(doorLockId);
       },
-    },
-    {
-      title: t("common.labels.door_lock_quantity"),
-      dataIndex: "door_lock_quantity",
-      render: (quantity) => quantity || "-",
     },
     {
       title: t("common.labels.canopy_id"),
@@ -503,11 +493,6 @@ export const useTableTransactionColumns = (options: {
       },
     },
     {
-      title: t("common.labels.canopy_quantity"),
-      dataIndex: "canopy_quantity",
-      render: (quantity) => quantity || "-",
-    },
-    {
       title: t("common.labels.latch_id"),
       dataIndex: "latch_id",
       key: "latch_id",
@@ -529,11 +514,6 @@ export const useTableTransactionColumns = (options: {
         if (!latchId) return "-";
         return String(latchId);
       },
-    },
-    {
-      title: t("common.labels.latch_quantity"),
-      dataIndex: "latch_quantity",
-      render: (quantity) => quantity || "-",
     },
     {
       title: t("common.labels.box_service_id"),

@@ -283,11 +283,6 @@ export const transactionFormFields: FormFieldConfig[] = [
     },
   },
   {
-    name: "glass_quantity",
-    label: "common.input.glass_quantity",
-    type: "number",
-  },
-  {
     name: "door_lock_id",
     label: "common.input.door_lock_id",
     type: "selectInfinitive",
@@ -297,11 +292,6 @@ export const transactionFormFields: FormFieldConfig[] = [
       labelKey: ["name", "measure"],
       params: { category_id: 2 },
     },
-  },
-  {
-    name: "door_lock_quantity",
-    label: "common.input.door_lock_quantity",
-    type: "number",
   },
   {
     name: "canopy_id",
@@ -315,11 +305,6 @@ export const transactionFormFields: FormFieldConfig[] = [
     },
   },
   {
-    name: "canopy_quantity",
-    label: "common.input.canopy_quantity",
-    type: "number",
-  },
-  {
     name: "latch_id",
     label: "common.input.latch_id",
     type: "selectInfinitive",
@@ -329,11 +314,6 @@ export const transactionFormFields: FormFieldConfig[] = [
       labelKey: ["name", "measure"],
       params: { category_id: 12 },
     },
-  },
-  {
-    name: "latch_quantity",
-    label: "common.input.latch_quantity",
-    type: "number",
   },
   {
     name: "box_service_id",

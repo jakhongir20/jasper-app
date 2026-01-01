@@ -216,16 +216,12 @@ export type TransactionFormType = {
   crown_style: string;
   glass_id: number | null;
   glass?: any; // Glass object
-  glass_quantity: number;
   door_lock_id: number | null;
   door_lock?: any; // Door lock object
-  door_lock_quantity: number;
   canopy_id: number | null;
   canopy?: any; // Canopy object
-  canopy_quantity: number;
   latch_id: number | null;
   latch?: any; // Latch object
-  latch_quantity: number;
   box_service_id: number | null;
   box_service?: any; // Box service object
   // Additional fields from API specification

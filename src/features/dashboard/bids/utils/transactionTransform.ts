@@ -234,15 +234,11 @@ export const buildTransactionPayload = (
     window_product_id: extractId(transaction.window_product_id),
     volume_window: toNullableNumber(transaction.volume_window),
     glass_product_id: extractId(transaction.glass_product_id),
-    glass_quantity: toNullableNumber(transaction.glass_quantity),
     volume_glass: toNullableNumber(transaction.volume_glass),
-    door_lock_quantity: toNullableNumber(transaction.door_lock_quantity),
     door_lock_mechanism: normalizeString(transaction.door_lock_mechanism),
     door_lock_product_id: extractId(transaction.door_lock_product_id),
-    hinge_quantity: toNullableNumber(transaction.hinge_quantity),
     hinge_mechanism: normalizeString(transaction.hinge_mechanism),
     hinge_product_id: extractId(transaction.hinge_product_id),
-    door_bolt_quantity: toNullableNumber(transaction.door_bolt_quantity),
     door_bolt_product_id: extractId(transaction.door_bolt_product_id),
     door_stopper_quantity: toNullableNumber(transaction.door_stopper_quantity),
     door_stopper_product_id: extractId(transaction.door_stopper_product_id),
@@ -612,9 +608,7 @@ export const transformTransactionDetailToForm = (
       glassProductId,
       transaction.glass_product ?? transaction.glass,
     ),
-    glass_quantity: transaction.glass_quantity ?? null,
-    volume_glass:
-      transaction.volume_glass ?? transaction.glass_quantity ?? null,
+    volume_glass: transaction.volume_glass ?? null,
     door_lock_mechanism: transaction.door_lock_mechanism ?? null,
     door_lock_product_id: getProductValue(
       doorLockProductId,
@@ -639,11 +633,6 @@ export const transformTransactionDetailToForm = (
       antiThresholdProductId,
       transaction.anti_threshold_product ?? transaction.anti_threshold,
     ),
-    door_lock_quantity: transaction.door_lock_quantity ?? null,
-    hinge_quantity:
-      transaction.hinge_quantity ?? transaction.canopy_quantity ?? null,
-    door_bolt_quantity:
-      transaction.door_bolt_quantity ?? transaction.latch_quantity ?? null,
     door_stopper_quantity: transaction.door_stopper_quantity ?? null,
     anti_threshold_quantity: transaction.anti_threshold_quantity ?? null,
     box_width: transaction.box_width ?? null,
