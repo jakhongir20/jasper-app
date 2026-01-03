@@ -6,6 +6,7 @@ import { defaultDoorConfig, DoorConfig } from "./data/data2D";
 import { useDoor2DImages } from "./model/useDoor2DImages";
 import { useCategoryProducts, getSashType, SashType } from "./model/useCategoryProducts";
 import { useStaticAssetsUrl } from "@/shared/hooks";
+import { getAssignmentFromSash } from "./data/sashOptions";
 
 interface Door2DEditorProps {
   /** Initial configuration (for edit mode) */
@@ -44,9 +45,6 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     ...initialConfig,
   });
 
-  // Track selected sash type for filtering parts
-  const [selectedSashType, setSelectedSashType] = useState<SashType | null>(null);
-
   // Fetch door products to determine sash type when door is selected
   const { data: doorProducts } = useCategoryProducts("doors");
 
@@ -59,26 +57,17 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   const { data: crownProducts } = useCategoryProducts("crowns");
   const { data: lockProducts } = useCategoryProducts("locks");
 
-  // Determine sash type from selected door product
+  // Determine sash type from form sash value (primary source)
+  // Maps: sash=1 → one-sash, sash=2 → one-half-sash, sash=3 → two-sash, etc.
   const currentSashType = useMemo((): SashType | null => {
-    if (selectedSashType) return selectedSashType;
-
-    // Try to get from selected door in PartSelector
-    if (config.doorId && doorProducts) {
-      const doorProduct = doorProducts.find((p) => p.product_id === config.doorId);
-      if (doorProduct?.product_images?.length) {
-        // Get sash type from first door image
-        const firstImage = doorProduct.product_images.find((img) =>
-          img.assignment.includes("-door"),
-        );
-        if (firstImage) {
-          return getSashType(firstImage.assignment);
-        }
-      }
+    // Primary: use sash value from form
+    const assignmentFromSash = getAssignmentFromSash(sashValue);
+    if (assignmentFromSash) {
+      return assignmentFromSash as SashType;
     }
 
     return null;
-  }, [selectedSashType, config.doorId, doorProducts]);
+  }, [sashValue]);
 
   // Get image URL from selected product in PartSelector
   const getSelectedProductImageUrl = (
@@ -147,21 +136,8 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   const handleDoorSelect = useCallback(
     (id: number) => {
       updateConfig({ doorId: id });
-
-      // Update sash type based on selected door
-      if (doorProducts) {
-        const doorProduct = doorProducts.find((p) => p.product_id === id);
-        if (doorProduct?.product_images?.length) {
-          const firstImage = doorProduct.product_images.find((img) =>
-            img.assignment.includes("-door"),
-          );
-          if (firstImage) {
-            setSelectedSashType(getSashType(firstImage.assignment));
-          }
-        }
-      }
     },
-    [updateConfig, doorProducts],
+    [updateConfig],
   );
 
   const handleLockSelect = useCallback(

@@ -11,3 +11,27 @@ export const SASH_OPTIONS: { value: string; label: string }[] = [
 ];
 
 export type SashOptionValue = "1" | "2" | "3" | "4" | "5";
+
+/**
+ * Map sash form value to assignment prefix
+ * sash = 1 → one-sash
+ * sash = 2 → one-half-sash
+ * sash = 3 → two-sash
+ * sash = 4 → three-sash
+ * sash = 5 → four-sash
+ */
+export const SASH_TO_ASSIGNMENT: Record<string, string> = {
+  "1": "one-sash",
+  "2": "one-half-sash",
+  "3": "two-sash",
+  "4": "three-sash",
+  "5": "four-sash",
+};
+
+/**
+ * Get assignment prefix from sash form value
+ */
+export function getAssignmentFromSash(sashValue: string | null | undefined): string | null {
+  if (!sashValue) return null;
+  return SASH_TO_ASSIGNMENT[sashValue] || null;
+}
