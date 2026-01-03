@@ -8,6 +8,7 @@ export interface DoorPartVariant {
   id: number;
   name: string;
   thumbnail?: string; // URL or base64 for thumbnail preview
+  svgUrl?: string; // URL to SVG file for rendering
 }
 
 export interface FrameVariant extends DoorPartVariant {
@@ -63,30 +64,33 @@ export interface Door2DData {
 }
 
 // Mock data
+// SVG files should be placed in: public/assets/doors/
+// Example: public/assets/doors/frame1.svg -> svgUrl: "/assets/doors/frame1.svg"
 export const mockData2D: Door2DData = {
   frames: [
-    { id: 1, name: "Стандартная", type: "standard", thickness: 70 },
-    { id: 2, name: "Узкая", type: "minimal", thickness: 50 },
-    { id: 3, name: "Декоративная", type: "decorative", thickness: 90 },
-    { id: 4, name: "Двойная", type: "standard", thickness: 100 },
+    { id: 1, name: "Стандартная", type: "standard", thickness: 70, svgUrl: "/assets/doors/frames/frame1.svg" },
+    { id: 2, name: "Узкая", type: "minimal", thickness: 50, svgUrl: "/assets/doors/frames/frame2.svg" },
+    { id: 3, name: "Декоративная", type: "decorative", thickness: 90, svgUrl: "/assets/doors/frames/frame3.svg" },
+    { id: 4, name: "Двойная", type: "standard", thickness: 100, svgUrl: "/assets/doors/frames/frame4.svg" },
     { id: 5, name: "Премиум", type: "decorative", thickness: 80 },
   ],
   crowns: [
-    { id: 1, name: "Классика", type: "classic", height: 120 },
-    { id: 2, name: "Модерн", type: "modern", height: 80 },
-    { id: 3, name: "Орнамент", type: "ornate", height: 150 },
-    { id: 4, name: "Минимал", type: "modern", height: 60 },
+    { id: 1, name: "Классика", type: "classic", height: 120, svgUrl: "/assets/doors/crowns/crown1.svg" },
+    { id: 2, name: "Модерн", type: "modern", height: 80, svgUrl: "/assets/doors/crowns/crown2.svg" },
+    { id: 3, name: "Орнамент", type: "ornate", height: 150, svgUrl: "/assets/doors/crowns/crown3.svg" },
+    { id: 4, name: "Минимал", type: "modern", height: 60, svgUrl: "/assets/doors/crowns/crown4.svg" },
   ],
   doors: [
-    { id: 1, name: "Глухая", type: "solid", panelCount: 4, hasGlass: false },
-    { id: 2, name: "Со стеклом", type: "glass", panelCount: 4, hasGlass: true },
-    { id: 3, name: "Филёнка", type: "panel", panelCount: 6, hasGlass: false },
+    { id: 1, name: "Глухая", type: "solid", panelCount: 4, hasGlass: false, svgUrl: "/assets/doors/leaves/door1.svg" },
+    { id: 2, name: "Со стеклом", type: "glass", panelCount: 4, hasGlass: true, svgUrl: "/assets/doors/leaves/door2.svg" },
+    { id: 3, name: "Филёнка", type: "panel", panelCount: 6, hasGlass: false, svgUrl: "/assets/doors/leaves/door3.svg" },
     {
       id: 4,
       name: "Модерн",
       type: "solid",
       panelCount: 2,
       hasGlass: false,
+      svgUrl: "/assets/doors/leaves/door4.svg",
     },
     {
       id: 5,

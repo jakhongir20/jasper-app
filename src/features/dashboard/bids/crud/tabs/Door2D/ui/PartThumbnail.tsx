@@ -9,6 +9,7 @@ interface PartThumbnailProps {
     id: number;
     name: string;
     type?: string;
+    svgUrl?: string;
   };
   /** Whether this thumbnail is selected */
   selected?: boolean;
@@ -32,7 +33,22 @@ export const PartThumbnail: FC<PartThumbnailProps> = ({
   color = "#D4A574",
   className,
 }) => {
+  // If variant has svgUrl, use it as thumbnail
+  const hasSvgUrl = variant.svgUrl && variant.id !== 0;
+
   const renderThumbnail = () => {
+    // Use SVG file if available
+    if (hasSvgUrl) {
+      return (
+        <img
+          src={variant.svgUrl}
+          alt={variant.name}
+          className="h-full w-full object-contain"
+        />
+      );
+    }
+
+    // Fallback to programmatic thumbnails
     switch (type) {
       case "frame":
         return <FrameThumbnail variant={variant} color={color} />;

@@ -1,12 +1,12 @@
-import { FC, useMemo } from "react";
-import { Frame, DoorLeaf, Crown, Handle, Wall } from "./parts";
-import { mmToPx, DEFAULT_SCALE } from "./utils/scale";
+import { FC, useCallback, useMemo, useState } from "react";
+import { SvgPart, Wall } from "./parts";
+import { DEFAULT_SCALE, mmToPx } from "./utils/scale";
 import { calculateDoorSizes, formatDimensions } from "./utils/calcSizes";
 import {
   DoorConfig,
-  getFrameById,
   getCrownById,
   getDoorById,
+  getFrameById,
   getLockById,
 } from "./data/data2D";
 
@@ -103,13 +103,25 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
   const leafDimLabel = formatDimensions(sizes.leafWidth, sizes.leafHeight);
   const frameDimLabel = `${Math.round(sizes.frameOuterWidth / 10)}×${Math.round(sizes.frameOuterHeight / 10)}×2 (${Math.round(sizes.frameArea * 100)}m)`;
 
+  // Track fallback state for indicator
+  const [usingFallback, setUsingFallback] = useState(false);
+  const handleFallback = useCallback((isFallback: boolean) => {
+    if (isFallback) setUsingFallback(false); // TODO: replace true
+  }, []);
+
   return (
     <div className={className}>
+      {/* Fallback indicator */}
+      {usingFallback && (
+        <div className="mb-2 rounded border border-amber-200 bg-amber-50 px-2 py-1 text-center text-xs text-amber-600">
+          ⚠️ Fallback изображения (SVG файлы не найдены)
+        </div>
+      )}
       <svg
         viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         width={containerWidth}
         height={containerHeight}
-        className="w-full h-auto"
+        className="h-auto w-full"
         style={{ maxWidth: containerWidth }}
       >
         {/* Wall background with door opening */}
@@ -126,50 +138,55 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
           />
         )}
 
-        {/* Crown (if selected) */}
-        <Crown
-          width={frameWidth}
-          height={crownHeight}
-          x={crownX}
-          y={crownY}
-          color={config.crownColor || config.frameColor}
-          visible={!!crownVariant}
-          variant={crownVariant?.type}
-        />
+        {/* Crown - only show if has SVG */}
+        {crownVariant?.svgUrl && (
+          <SvgPart
+            svgUrl={crownVariant.svgUrl}
+            x={crownX}
+            y={crownY}
+            width={frameWidth}
+            height={crownHeight}
+            visible={true}
+            onFallback={handleFallback}
+          />
+        )}
 
-        {/* Door frame */}
-        <Frame
-          width={frameWidth}
-          height={frameHeight}
-          thickness={frameThickness}
-          x={doorX}
-          y={doorY}
-          color={config.frameColor}
-          variant={frameVariant?.type}
-        />
+        {/* Door frame - only show if has SVG */}
+        {frameVariant?.svgUrl && (
+          <SvgPart
+            svgUrl={frameVariant.svgUrl}
+            x={doorX}
+            y={doorY}
+            width={frameWidth}
+            height={frameHeight}
+            visible={true}
+            onFallback={handleFallback}
+          />
+        )}
 
-        {/* Door leaf */}
-        <DoorLeaf
-          width={leafWidth}
-          height={leafHeight}
-          x={leafX}
-          y={leafY}
-          color={config.leafColor}
-          variant={doorVariant?.type}
-          panelCount={doorVariant?.panelCount}
-          hasGlass={doorVariant?.hasGlass}
-        />
+        {/* Door leaf - only show if has SVG */}
+        {doorVariant?.svgUrl && (
+          <SvgPart
+            svgUrl={doorVariant.svgUrl}
+            x={leafX}
+            y={leafY}
+            width={leafWidth}
+            height={leafHeight}
+            visible={true}
+            onFallback={handleFallback}
+          />
+        )}
 
-        {/* Door handle */}
-        <Handle
-          x={handleX}
-          y={handleY}
-          variant={lockVariant?.type}
-          color={config.handleColor}
-          visible={!!lockVariant}
-          position={lockVariant?.position}
-          scale={scale * 8}
-        />
+        {/* Door handle - only show if has SVG */}
+        {lockVariant?.svgUrl && (
+          <SvgPart
+            svgUrl={lockVariant.svgUrl}
+            x={handleX}
+            y={handleY}
+            visible={true}
+            onFallback={handleFallback}
+          />
+        )}
 
         {/* Dimension labels */}
         {showDimensions && (

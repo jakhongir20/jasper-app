@@ -17,7 +17,6 @@ const CATEGORY_TABS: { key: PartCategory; label: string }[] = [
   { key: "crowns", label: "Короны" },
   { key: "doors", label: "Двери" },
   { key: "locks", label: "Замок" },
-  { key: "fullHeight", label: "На весь" },
 ];
 
 interface PartSelectorProps {
@@ -69,27 +68,17 @@ export const PartSelector: FC<PartSelectorProps> = ({
 }) => {
   const [activeCategory, setActiveCategory] = useState<PartCategory>("frames");
 
-  // Get variants for current category
+  // Get variants for current category (only those with svgUrl)
   const currentVariants = useMemo(() => {
     switch (activeCategory) {
       case "frames":
-        return mockData2D.frames;
+        return mockData2D.frames.filter(f => f.svgUrl);
       case "crowns":
-        // Use 'classic' as placeholder type for "no crown" option
-        return [
-          { id: 0, name: "Без короны", type: "classic" as const, height: 0 },
-          ...mockData2D.crowns,
-        ];
+        return mockData2D.crowns.filter(c => c.svgUrl);
       case "doors":
-        return mockData2D.doors;
+        return mockData2D.doors.filter(d => d.svgUrl);
       case "locks":
-        // Use 'lever' as placeholder type for "no lock" option
-        return [
-          { id: 0, name: "Без замка", type: "lever" as const, position: "right" as const },
-          ...mockData2D.locks,
-        ];
-      case "fullHeight":
-        return mockData2D.fullHeightOptions;
+        return mockData2D.locks.filter(l => l.svgUrl);
       default:
         return [];
     }
@@ -106,12 +95,13 @@ export const PartSelector: FC<PartSelectorProps> = ({
         return selectedDoorId;
       case "locks":
         return selectedLockId;
-      case "fullHeight":
-        return fullHeight ? 2 : 1;
       default:
         return null;
     }
   };
+
+  // Check if category has items
+  const hasItems = currentVariants.length > 0;
 
   // Handle variant selection
   const handleSelect = (id: number) => {
@@ -127,9 +117,6 @@ export const PartSelector: FC<PartSelectorProps> = ({
         break;
       case "locks":
         onLockSelect(id === 0 ? null : id);
-        break;
-      case "fullHeight":
-        onFullHeightToggle(id === 2);
         break;
     }
   };
@@ -173,22 +160,28 @@ export const PartSelector: FC<PartSelectorProps> = ({
         ))}
       </div>
 
-      {/* Variant thumbnails */}
-      <div className={cn(
-        "flex gap-3 overflow-x-auto pb-2",
-        centered ? "justify-center" : "-mx-1 px-1"
-      )}>
-        {currentVariants.map((variant) => (
-          <PartThumbnail
-            key={variant.id}
-            type={getThumbnailType()}
-            variant={variant as FrameVariant | CrownVariant | DoorLeafVariant | LockVariant | FullHeightOption}
-            selected={getSelectedId() === variant.id}
-            onClick={() => handleSelect(variant.id)}
-            color={displayColor}
-          />
-        ))}
-      </div>
+      {/* Variant thumbnails or empty message */}
+      {hasItems ? (
+        <div className={cn(
+          "flex gap-3 overflow-x-auto pb-2",
+          centered ? "justify-center" : "-mx-1 px-1"
+        )}>
+          {currentVariants.map((variant) => (
+            <PartThumbnail
+              key={variant.id}
+              type={getThumbnailType()}
+              variant={variant as FrameVariant | CrownVariant | DoorLeafVariant | LockVariant | FullHeightOption}
+              selected={getSelectedId() === variant.id}
+              onClick={() => handleSelect(variant.id)}
+              color={displayColor}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-400 text-sm py-4">
+          Нет изображений
+        </div>
+      )}
     </div>
   );
 };
