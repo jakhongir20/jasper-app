@@ -18,6 +18,8 @@ interface Door2DEditorProps {
     frameProductId?: number | null;
     crownProductId?: number | null;
   };
+  /** Callback when product is selected in 2D editor (to sync with form) */
+  onProductSelect?: (type: "door" | "frame" | "crown", productId: number) => void;
   /** Custom class name */
   className?: string;
 }
@@ -30,6 +32,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   initialConfig,
   onChange,
   productIds,
+  onProductSelect,
   className,
 }) => {
   // Door configuration state
@@ -129,18 +132,25 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
 
   // Handle part selection
   const handleFrameSelect = useCallback(
-    (id: number) => updateConfig({ frameId: id }),
-    [updateConfig],
+    (id: number) => {
+      updateConfig({ frameId: id });
+      onProductSelect?.("frame", id);
+    },
+    [updateConfig, onProductSelect],
   );
 
   const handleCrownSelect = useCallback(
-    (id: number | null) => updateConfig({ crownId: id }),
-    [updateConfig],
+    (id: number | null) => {
+      updateConfig({ crownId: id });
+      if (id) onProductSelect?.("crown", id);
+    },
+    [updateConfig, onProductSelect],
   );
 
   const handleDoorSelect = useCallback(
     (id: number) => {
       updateConfig({ doorId: id });
+      onProductSelect?.("door", id);
 
       // Update sash type based on selected door
       if (doorProducts) {
@@ -155,7 +165,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
         }
       }
     },
-    [updateConfig, doorProducts],
+    [updateConfig, onProductSelect, doorProducts],
   );
 
   const handleLockSelect = useCallback(

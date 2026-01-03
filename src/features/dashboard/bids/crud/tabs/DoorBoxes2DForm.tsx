@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { Door2DEditor } from "./Door2D";
@@ -45,9 +45,37 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
     crownProductId: extractProductId(transaction.crown_product_id),
   };
 
+  // Handle product selection from 2D editor - update form fields
+  const handleProductSelect = useCallback(
+    (type: "door" | "frame" | "crown", productId: number) => {
+      const fieldMap = {
+        door: "door_product_id",
+        frame: "frame_product_id",
+        crown: "crown_product_id",
+      };
+
+      const fieldName = fieldMap[type];
+      const currentTransactions = form.getFieldValue("transactions") || [{}];
+
+      // Update the first transaction's product field
+      const updatedTransactions = [...currentTransactions];
+      updatedTransactions[0] = {
+        ...updatedTransactions[0],
+        [fieldName]: productId,
+      };
+
+      form.setFieldsValue({ transactions: updatedTransactions });
+    },
+    [form],
+  );
+
   return (
     <div className={cn("h-[calc(100vh-200px)] min-h-[500px]", className)}>
-      <Door2DEditor className="h-full" productIds={productIds} />
+      <Door2DEditor
+        className="h-full"
+        productIds={productIds}
+        onProductSelect={handleProductSelect}
+      />
     </div>
   );
 };
