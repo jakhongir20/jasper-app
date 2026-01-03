@@ -1,7 +1,7 @@
 import { FC, useCallback, useState, useMemo } from "react";
 import { cn } from "@/shared/helpers";
 import { DoorCanvas } from "./DoorCanvas";
-import { ColorPicker, PartSelector } from "./ui";
+import { ColorPicker, PartSelector, SashSelector } from "./ui";
 import { defaultDoorConfig, DoorConfig } from "./data/data2D";
 import { useDoor2DImages } from "./model/useDoor2DImages";
 import { useCategoryProducts, getSashType, SashType } from "./model/useCategoryProducts";
@@ -18,6 +18,10 @@ interface Door2DEditorProps {
     frameProductId?: number | null;
     crownProductId?: number | null;
   };
+  /** Current sash value from form */
+  sashValue?: string | null;
+  /** Callback when sash is changed in 2D editor */
+  onSashChange?: (value: string) => void;
   /** Custom class name */
   className?: string;
 }
@@ -30,6 +34,8 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   initialConfig,
   onChange,
   productIds,
+  sashValue,
+  onSashChange,
   className,
 }) => {
   // Door configuration state
@@ -178,8 +184,16 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
 
   return (
     <div className={cn("flex h-full flex-col", className)}>
-      {/* Main content: Canvas + Color picker */}
+      {/* Main content: Canvas + Color picker + Sash selector */}
       <div className="relative flex flex-1 items-center justify-center bg-gradient-to-b from-gray-50 to-white py-6">
+        {/* Sash selector - vertical on the left side */}
+        <div className="absolute left-6 top-1/2 -translate-y-1/2">
+          <SashSelector
+            value={sashValue}
+            onChange={onSashChange}
+          />
+        </div>
+
         {/* Door canvas visualization - larger size */}
         <DoorCanvas
           config={config}

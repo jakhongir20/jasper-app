@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { Door2DEditor } from "./Door2D";
@@ -45,9 +45,31 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
     crownProductId: extractProductId(transaction.crown_product_id),
   };
 
+  // Get sash value from form
+  const sashValue = transaction.sash as string | null | undefined;
+
+  // Handle sash change from 2D editor - update form field
+  const handleSashChange = useCallback(
+    (value: string) => {
+      const currentTransactions = form.getFieldValue("transactions") || [{}];
+      const updatedTransactions = [...currentTransactions];
+      updatedTransactions[0] = {
+        ...updatedTransactions[0],
+        sash: value,
+      };
+      form.setFieldsValue({ transactions: updatedTransactions });
+    },
+    [form],
+  );
+
   return (
     <div className={cn("h-[calc(100vh-200px)] min-h-[500px]", className)}>
-      <Door2DEditor className="h-full" productIds={productIds} />
+      <Door2DEditor
+        className="h-full"
+        productIds={productIds}
+        sashValue={sashValue}
+        onSashChange={handleSashChange}
+      />
     </div>
   );
 };
