@@ -1,4 +1,4 @@
-import { FC, useCallback, useState, useMemo } from "react";
+import { FC, useCallback, useState, useMemo, useEffect } from "react";
 import { cn } from "@/shared/helpers";
 import { DoorCanvas } from "./DoorCanvas";
 import { ColorPicker, PartSelector, SashSelector } from "./ui";
@@ -54,6 +54,38 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     ...defaultDoorConfig,
     ...initialConfig,
   });
+
+  // Sync config with productIds from form (bidirectional sync)
+  useEffect(() => {
+    const updates: Partial<DoorConfig> = {};
+
+    if (
+      productIds?.doorProductId &&
+      productIds.doorProductId !== config.doorId
+    ) {
+      updates.doorId = productIds.doorProductId;
+    }
+    if (
+      productIds?.frameProductId &&
+      productIds.frameProductId !== config.frameId
+    ) {
+      updates.frameId = productIds.frameProductId;
+    }
+    if (
+      productIds?.crownProductId !== undefined &&
+      productIds.crownProductId !== config.crownId
+    ) {
+      updates.crownId = productIds.crownProductId;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      setConfig((prev) => ({ ...prev, ...updates }));
+    }
+  }, [
+    productIds?.doorProductId,
+    productIds?.frameProductId,
+    productIds?.crownProductId,
+  ]);
 
   // Fetch door products to determine sash type when door is selected
   const { data: doorProducts } = useCategoryProducts("doors");
