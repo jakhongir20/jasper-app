@@ -10,6 +10,7 @@ import {
   SelectInfinitive,
 } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
+import { SASH_OPTIONS } from "./Door2D/data/sashOptions";
 
 // Wrapper component for ImageSelectPopover that properly handles Form.Item integration
 // Form.Item injects `value` and `onChange` as props to its child component
@@ -260,13 +261,7 @@ const ALL_SECTIONS: SectionConfig[] = [
         label: "Распашка",
         type: "select",
         placeholder: "Выберите распашку",
-        options: [
-          { value: "1", label: "1 - Ствочатая" },
-          { value: "2", label: "1.5 - Ствочатая" },
-          { value: "3", label: "2 - Ствочатая" },
-          { value: "4", label: "3 - Ствочатая" },
-          { value: "5", label: "4 - Ствочатая" },
-        ],
+        options: SASH_OPTIONS,
       },
       {
         name: "chamfer",

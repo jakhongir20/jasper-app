@@ -45,6 +45,9 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
     crownProductId: extractProductId(transaction.crown_product_id),
   };
 
+  // Get sash value from form
+  const sashValue = transaction.sash as string | null | undefined;
+
   // Handle product selection from 2D editor - update form fields
   const handleProductSelect = useCallback(
     (type: "door" | "frame" | "crown", productId: number) => {
@@ -69,12 +72,28 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
     [form],
   );
 
+  // Handle sash change from 2D editor - update form field
+  const handleSashChange = useCallback(
+    (value: string) => {
+      const currentTransactions = form.getFieldValue("transactions") || [{}];
+      const updatedTransactions = [...currentTransactions];
+      updatedTransactions[0] = {
+        ...updatedTransactions[0],
+        sash: value,
+      };
+      form.setFieldsValue({ transactions: updatedTransactions });
+    },
+    [form],
+  );
+
   return (
     <div className={cn("h-[calc(100vh-200px)] min-h-[500px]", className)}>
       <Door2DEditor
         className="h-full"
         productIds={productIds}
         onProductSelect={handleProductSelect}
+        sashValue={sashValue}
+        onSashChange={handleSashChange}
       />
     </div>
   );
