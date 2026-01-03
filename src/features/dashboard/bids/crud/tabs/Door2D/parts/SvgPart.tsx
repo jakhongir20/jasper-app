@@ -22,8 +22,44 @@ interface SvgPartProps {
 interface SvgData {
   content: string;
   viewBox: string;
-  originalWidth: number;
-  originalHeight: number;
+}
+
+/**
+ * Extract bounding box from SVG path data
+ */
+function extractBoundingBox(svg: string): { minX: number; minY: number; maxX: number; maxY: number } | null {
+  // Find all coordinate pairs in path d attributes
+  const pathMatches = svg.matchAll(/d="([^"]+)"/g);
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  let foundCoords = false;
+
+  for (const match of pathMatches) {
+    const pathData = match[1];
+    // Extract all numbers that look like coordinates (pairs of numbers)
+    const coordMatches = pathData.matchAll(/(\d+\.?\d*)\s*[,\s]\s*(\d+\.?\d*)/g);
+    for (const coord of coordMatches) {
+      const x = parseFloat(coord[1]);
+      const y = parseFloat(coord[2]);
+      if (!isNaN(x) && !isNaN(y) && x < 10000 && y < 10000) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+        foundCoords = true;
+      }
+    }
+  }
+
+  if (!foundCoords) return null;
+
+  // Add small padding
+  const padding = 10;
+  return {
+    minX: Math.max(0, minX - padding),
+    minY: Math.max(0, minY - padding),
+    maxX: maxX + padding,
+    maxY: maxY + padding,
+  };
 }
 
 /**
@@ -59,20 +95,26 @@ export const SvgPart: FC<SvgPartProps> = ({
         return res.text();
       })
       .then((svg) => {
-        // Extract viewBox and dimensions from SVG
-        const viewBoxMatch = svg.match(/viewBox=["']([^"']+)["']/i);
-        const widthMatch = svg.match(/width=["'](\d+)["']/i);
-        const heightMatch = svg.match(/height=["'](\d+)["']/i);
+        // Try to extract actual bounding box from path data
+        const bbox = extractBoundingBox(svg);
 
-        const viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 100 100";
-        const originalWidth = widthMatch ? parseInt(widthMatch[1]) : 100;
-        const originalHeight = heightMatch ? parseInt(heightMatch[1]) : 100;
+        let viewBox: string;
+        if (bbox) {
+          // Use calculated bounding box
+          const bboxWidth = bbox.maxX - bbox.minX;
+          const bboxHeight = bbox.maxY - bbox.minY;
+          viewBox = `${bbox.minX} ${bbox.minY} ${bboxWidth} ${bboxHeight}`;
+        } else {
+          // Fallback to original viewBox
+          const viewBoxMatch = svg.match(/viewBox=["']([^"']+)["']/i);
+          viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 100 100";
+        }
 
         // Extract inner content
         const innerMatch = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
         const content = innerMatch ? innerMatch[1] : svg;
 
-        setSvgData({ content, viewBox, originalWidth, originalHeight });
+        setSvgData({ content, viewBox });
         onFallback?.(false);
       })
       .catch(() => {
@@ -94,15 +136,14 @@ export const SvgPart: FC<SvgPartProps> = ({
   }
 
   // Use nested SVG to properly scale the content
-  // Use "none" to stretch SVG to fill the entire width/height
   return (
     <svg
       x={x}
       y={y}
-      width={width || svgData.originalWidth}
-      height={height || svgData.originalHeight}
+      width={width || 100}
+      height={height || 100}
       viewBox={svgData.viewBox}
-      preserveAspectRatio="none"
+      preserveAspectRatio="xMidYMid meet"
     >
       <g dangerouslySetInnerHTML={{ __html: svgData.content }} />
     </svg>
