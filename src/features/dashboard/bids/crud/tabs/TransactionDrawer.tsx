@@ -305,6 +305,9 @@ export const TransactionDrawer: FC<Props> = ({
       height={"100%"}
       maskClosable={false}
       className={className}
+      bodyStyle={{
+        paddingTop: 0,
+      }}
       title={
         <div className={"flex items-center justify-between"}>
           <h1>
@@ -337,7 +340,7 @@ export const TransactionDrawer: FC<Props> = ({
             },
             {
               key: "door-boxes-2d",
-              label: "Дверные коробки (2D)",
+              label: "2D / Визуализация",
               children: <DoorBoxes2DForm mode={mode} drawerOpen={open} />,
             },
           ]}

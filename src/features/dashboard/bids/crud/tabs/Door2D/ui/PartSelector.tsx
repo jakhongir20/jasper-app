@@ -43,6 +43,8 @@ interface PartSelectorProps {
   onFullHeightToggle: (enabled: boolean) => void;
   /** Display color for thumbnails */
   displayColor?: string;
+  /** Center the content */
+  centered?: boolean;
   /** Custom class name */
   className?: string;
 }
@@ -62,6 +64,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
   onLockSelect,
   onFullHeightToggle,
   displayColor = "#D4A574",
+  centered = false,
   className,
 }) => {
   const [activeCategory, setActiveCategory] = useState<PartCategory>("frames");
@@ -150,19 +153,19 @@ export const PartSelector: FC<PartSelectorProps> = ({
   };
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className={cn("flex flex-col", centered && "items-center", className)}>
       {/* Category tabs */}
-      <div className="flex gap-1 mb-4 flex-wrap">
+      <div className={cn("flex gap-1 mb-4 flex-wrap", centered && "justify-center")}>
         {CATEGORY_TABS.map((tab) => (
           <button
             key={tab.key}
             type="button"
             onClick={() => setActiveCategory(tab.key)}
             className={cn(
-              "px-3 py-1.5 text-sm rounded-full transition-colors duration-200",
+              "px-4 py-1.5 text-sm rounded-full transition-colors duration-200",
               activeCategory === tab.key
-                ? "bg-blue-500 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200",
+                ? "bg-primary text-white"
+                : "bg-gray-100 text-gray-400 hover:bg-gray-200",
             )}
           >
             {tab.label}
@@ -171,7 +174,10 @@ export const PartSelector: FC<PartSelectorProps> = ({
       </div>
 
       {/* Variant thumbnails */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+      <div className={cn(
+        "flex gap-3 overflow-x-auto pb-2",
+        centered ? "justify-center" : "-mx-1 px-1"
+      )}>
         {currentVariants.map((variant) => (
           <PartThumbnail
             key={variant.id}

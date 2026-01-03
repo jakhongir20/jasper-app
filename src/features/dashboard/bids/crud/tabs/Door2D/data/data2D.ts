@@ -163,6 +163,7 @@ export const defaultDoorConfig = {
   leafColor: "#1F2937",
   crownColor: "#D4A574",
   handleColor: "#D4AF37",
+  wallColor: "#F3F4F6",
 
   // Calculated dimensions (will be computed)
   leafWidth: 0,

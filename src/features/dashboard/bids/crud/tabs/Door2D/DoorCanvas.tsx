@@ -121,6 +121,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
             doorY={doorY - 5}
             doorWidth={frameWidth + 10}
             doorHeight={frameHeight + 10}
+            color={config.wallColor}
             pattern="subtle"
           />
         )}

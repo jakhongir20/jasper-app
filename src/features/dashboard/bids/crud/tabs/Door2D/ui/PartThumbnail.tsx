@@ -54,16 +54,16 @@ export const PartThumbnail: FC<PartThumbnailProps> = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-200",
-        "hover:border-blue-400 hover:shadow-md cursor-pointer",
-        "min-w-[70px] min-h-[80px]",
+        "flex flex-col items-center justify-center rounded-lg border-2 p-2 transition-all duration-200",
+        "cursor-pointer hover:border-blue-400 hover:shadow-md",
+        "min-h-[80px] min-w-[70px]",
         selected
-          ? "border-blue-500 bg-blue-50 shadow-sm"
-          : "border-gray-200 bg-white",
+          ? "border-[#1C7488] bg-blue-50 shadow-sm"
+          : "border-[rgba(5,5,5,0.06)] bg-white",
         className,
       )}
     >
-      <div className="w-12 h-14 flex items-center justify-center">
+      <div className="flex h-14 w-12 items-center justify-center">
         {renderThumbnail()}
       </div>
     </button>
@@ -80,10 +80,11 @@ function FrameThumbnail({
   variant: { type?: string };
   color: string;
 }) {
-  const thickness = variant.type === "minimal" ? 3 : variant.type === "decorative" ? 6 : 4;
+  const thickness =
+    variant.type === "minimal" ? 3 : variant.type === "decorative" ? 6 : 4;
 
   return (
-    <svg viewBox="0 0 40 60" className="w-full h-full">
+    <svg viewBox="0 0 40 60" className="h-full w-full">
       {/* Frame outline */}
       <path
         d={`
@@ -135,10 +136,7 @@ function CrownThumbnail({
         return (
           <>
             <rect x={0} y={10} width={40} height={5} fill={color} />
-            <path
-              d={`M 3 10 Q 20 2 37 10 L 37 5 Q 20 -2 3 5 Z`}
-              fill={color}
-            />
+            <path d={`M 3 10 Q 20 2 37 10 L 37 5 Q 20 -2 3 5 Z`} fill={color} />
             <ellipse cx={20} cy={4} rx={4} ry={2} fill="#FFFFFF30" />
           </>
         );
@@ -147,10 +145,7 @@ function CrownThumbnail({
         return (
           <>
             <rect x={0} y={10} width={40} height={5} fill={color} />
-            <path
-              d={`M 2 10 L 2 5 Q 20 3 38 5 L 38 10 Z`}
-              fill={color}
-            />
+            <path d={`M 2 10 L 2 5 Q 20 3 38 5 L 38 10 Z`} fill={color} />
             <rect x={5} y={2} width={30} height={3} fill={color} rx={1} />
           </>
         );
@@ -158,7 +153,7 @@ function CrownThumbnail({
   };
 
   return (
-    <svg viewBox="0 0 40 15" className="w-full h-6">
+    <svg viewBox="0 0 40 15" className="h-6 w-full">
       <g stroke="#00000020" strokeWidth={0.5}>
         {renderByType()}
       </g>
@@ -180,7 +175,7 @@ function DoorThumbnail({
   const isPaneled = variant.type === "panel";
 
   return (
-    <svg viewBox="0 0 30 50" className="w-full h-full">
+    <svg viewBox="0 0 30 50" className="h-full w-full">
       {/* Door body */}
       <rect
         x={0}
@@ -257,7 +252,14 @@ function LockThumbnail({
         // Lever
         return (
           <>
-            <ellipse cx={15} cy={20} rx={6} ry={10} fill={color} stroke="#00000020" />
+            <ellipse
+              cx={15}
+              cy={20}
+              rx={6}
+              ry={10}
+              fill={color}
+              stroke="#00000020"
+            />
             <rect x={13} y={16} width={18} height={5} rx={2} fill={color} />
             <circle cx={30} cy={18.5} r={3} fill={color} />
             <ellipse cx={15} cy={26} rx={2} ry={3} fill="#00000030" />
@@ -267,7 +269,7 @@ function LockThumbnail({
   };
 
   return (
-    <svg viewBox="0 0 40 40" className="w-full h-full">
+    <svg viewBox="0 0 40 40" className="h-full w-full">
       {renderByType()}
     </svg>
   );
@@ -286,7 +288,7 @@ function FullHeightThumbnail({
   const isFullHeight = variant.id === 2;
 
   return (
-    <svg viewBox="0 0 40 60" className="w-full h-full">
+    <svg viewBox="0 0 40 60" className="h-full w-full">
       {/* Wall indication */}
       <rect x={0} y={0} width={40} height={60} fill="#F3F4F6" />
 
