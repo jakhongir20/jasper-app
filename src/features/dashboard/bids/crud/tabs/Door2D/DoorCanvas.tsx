@@ -18,11 +18,11 @@ const SVG_BOUNDS = {
   viewBox: "0 0 2000 2000",
   width: 2000,
   height: 2000,
-  // Approximate content area (frame defines the main bounds)
-  contentX: 574, // leftmost content (crown extends slightly left)
-  contentY: 221, // topmost content (crown top)
-  contentWidth: 802, // ~1376-574
-  contentHeight: 1616, // ~1837-221
+  // Content area bounds (measured from actual SVG content)
+  contentX: 570, // leftmost content (crown extends slightly left)
+  contentY: 180, // topmost content (above crown for label)
+  contentWidth: 820, // ~1390-570
+  contentHeight: 1720, // ~1900-180 (includes space for bottom label)
 };
 
 interface DoorCanvasProps {
@@ -82,16 +82,16 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
   }, []);
 
   // Calculate padding for wall and labels
-  const padding = 40;
+  const padding = 20;
 
-  // Use viewBox that matches the SVG content area with some padding
+  // Use viewBox that matches the SVG content area
   // This ensures all parts render at their natural positions and align correctly
   const viewBoxX = SVG_BOUNDS.contentX - padding;
-  const viewBoxY = crownVariant ? SVG_BOUNDS.contentY - padding : 280; // Adjust if no crown
+  const viewBoxY = crownVariant ? SVG_BOUNDS.contentY : 300; // Start lower if no crown
   const viewBoxWidth = SVG_BOUNDS.contentWidth + padding * 2;
   const viewBoxHeight = crownVariant
-    ? SVG_BOUNDS.contentHeight + padding * 2
-    : SVG_BOUNDS.contentHeight - 60 + padding * 2;
+    ? SVG_BOUNDS.contentHeight
+    : SVG_BOUNDS.contentHeight - 120;
 
   // Wall cutout position (matches frame position in SVG coords)
   const wallDoorX = 620;
