@@ -1,14 +1,14 @@
-import { FC, useState, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { cn } from "@/shared/helpers";
 import { Spin } from "antd";
 import { useStaticAssetsUrl } from "@/shared/hooks";
 import {
-  useCategoryProducts,
+  CategoryProduct,
   getProductImageUrl,
   hasImageForSashType,
   PartCategory2D,
-  CategoryProduct,
   SashType,
+  useCategoryProducts,
 } from "../model/useCategoryProducts";
 
 // Category tab configuration
@@ -68,26 +68,26 @@ const ProductThumbnail: FC<{
       type="button"
       onClick={onClick}
       className={cn(
-        "flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200 min-w-[80px]",
+        "flex min-w-[80px] flex-col items-center gap-1 rounded-lg border border-transparent p-2 transition-all duration-200",
         selected
-          ? "bg-primary/10 ring-2 ring-primary"
+          ? "border-primary bg-primary/10"
           : "bg-gray-50 hover:bg-gray-100",
       )}
     >
-      <div className="w-16 h-16 flex items-center justify-center overflow-hidden rounded">
+      <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded">
         {fullUrl ? (
           <img
             src={fullUrl}
             alt={product.name}
-            className="max-w-full max-h-full object-contain"
+            className="max-h-full max-w-full object-contain"
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
+          <div className="flex h-full w-full items-center justify-center bg-gray-200 text-xs text-gray-400">
             Нет фото
           </div>
         )}
       </div>
-      <span className="text-xs text-center text-gray-600 line-clamp-2 max-w-[80px]">
+      <span className="line-clamp-2 max-w-[80px] text-center text-xs text-gray-600">
         {product.name}
       </span>
     </button>
@@ -113,7 +113,8 @@ export const PartSelector: FC<PartSelectorProps> = ({
   centered = false,
   className,
 }) => {
-  const [activeCategory, setActiveCategory] = useState<PartCategory2D>("frames");
+  const [activeCategory, setActiveCategory] =
+    useState<PartCategory2D>("frames");
 
   // Fetch products from API
   const { data: products, isLoading } = useCategoryProducts(activeCategory);
@@ -177,7 +178,12 @@ export const PartSelector: FC<PartSelectorProps> = ({
   return (
     <div className={cn("flex flex-col", centered && "items-center", className)}>
       {/* Category tabs */}
-      <div className={cn("mb-4 flex flex-wrap gap-1", centered && "justify-center")}>
+      <div
+        className={cn(
+          "mb-4 flex flex-wrap gap-1",
+          centered && "justify-center",
+        )}
+      >
         {CATEGORY_TABS.map((tab) => (
           <button
             key={tab.key}
