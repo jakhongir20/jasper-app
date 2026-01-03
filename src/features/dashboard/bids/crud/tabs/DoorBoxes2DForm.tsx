@@ -34,9 +34,11 @@ function extractProductId(value: unknown): number | null {
 export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
   const form = Form.useFormInstance();
 
-  // Get product IDs from transaction form
-  const transactions = Form.useWatch("transactions", form);
-  const transaction = transactions?.[0] || {};
+  // Get transaction data from form (same approach as TransactionForm)
+  const transaction =
+    (Form.useWatch(["transactions", 0], form) as Record<string, unknown>) ??
+    (form.getFieldValue(["transactions", 0]) as Record<string, unknown>) ??
+    {};
 
   // Extract actual product IDs (form values may be objects with product_id field)
   const productIds = {

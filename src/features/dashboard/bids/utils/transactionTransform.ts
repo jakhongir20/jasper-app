@@ -185,7 +185,7 @@ export const buildTransactionPayload = (
     ]),
     threshold: normalizeString(transaction.threshold),
     opening_logic: normalizeString(transaction.opening_logic),
-    sash: toNullableNumber(transaction.sash),
+    sash: transaction.sash != null ? String(transaction.sash) : null,
     chamfer: toNullableNumber(transaction.chamfer),
     transom_type: toNullableNumber(transaction.transom_type),
     transom_product_id: extractId(transaction.transom_product_id),
@@ -299,6 +299,7 @@ export const transformTransactionDetailToForm = (
   transaction: PrimitiveRecord,
 ): PrimitiveRecord => {
   const productType = resolveProductType(transaction);
+  debugger;
 
   const openingHeight =
     transaction.opening_height ??
@@ -493,7 +494,7 @@ export const transformTransactionDetailToForm = (
     frame_back_id: resolveFrameworkBackId(transaction),
     threshold: transaction.threshold ?? null,
     opening_logic: resolveOpeningLogic(transaction),
-    sash: transaction.sash ?? null,
+    sash: transaction.sash != null ? String(transaction.sash) : null,
     chamfer: transaction.chamfer ?? null,
     transom_type: transaction.transom_type ?? null,
     transom_height_front: transaction.transom_height_front ?? null,
