@@ -63,7 +63,7 @@ export const ConfigurationSettingsForm: FC<Props> = ({ className }) => {
           buttonText={t("common.button.uploadImage")}
           maxSize={5}
           showDelete
-          allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
+          allowedFormats={["image/png", "image/jpeg", "image/jpg", "image/svg+xml"]}
         />
       </Form.Item>
     </div>

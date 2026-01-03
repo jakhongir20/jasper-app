@@ -87,7 +87,7 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
   onChange,
   maxCount = 10,
   maxSize = 5,
-  allowedFormats = ["image/png", "image/jpeg", "image/jpg"],
+  allowedFormats = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"],
   productId,
   onImageDelete,
   showAssignment = false,
@@ -149,8 +149,11 @@ export const MultipleImageUpload: FC<MultipleImageUploadProps> = ({
       toast(t("common.fileUploader.maxCountReached", { count: maxCount }), "error");
       return Upload.LIST_IGNORE;
     }
-    const isAllowedFormat = allowedFormats.includes(file.type);
-    if (!isAllowedFormat) {
+    // Check format by MIME type or file extension (SVG files may have empty/wrong MIME type)
+    const fileExtension = file.name.toLowerCase().split('.').pop();
+    const isAllowedByMime = allowedFormats.includes(file.type);
+    const isAllowedByExtension = fileExtension === 'svg' && allowedFormats.includes('image/svg+xml');
+    if (!isAllowedByMime && !isAllowedByExtension) {
       toast(t("common.fileUploader.formatFotAllowed"), "error");
       return Upload.LIST_IGNORE;
     }

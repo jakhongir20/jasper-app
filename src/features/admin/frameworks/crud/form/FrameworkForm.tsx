@@ -70,7 +70,7 @@ export const FrameworkForm: FC<Props> = ({
           buttonText={t("common.button.uploadImage")}
           maxSize={5}
           showDelete={false}
-          allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
+          allowedFormats={["image/png", "image/jpeg", "image/jpg", "image/svg+xml"]}
           onChange={(value) => {
             // This will be handled by Form.Item automatically
           }}

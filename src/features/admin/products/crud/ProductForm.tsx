@@ -86,7 +86,7 @@ export const ProductForm = ({ product, onImageDelete }: ProductFormProps) => {
           <MultipleImageUpload
             maxCount={10}
             maxSize={5}
-            allowedFormats={["image/png", "image/jpeg", "image/jpg"]}
+            allowedFormats={["image/png", "image/jpeg", "image/jpg", "image/svg+xml"]}
             productId={product?.product_id}
             onImageDelete={onImageDelete}
             showAssignment

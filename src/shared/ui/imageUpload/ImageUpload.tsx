@@ -35,8 +35,11 @@ const beforeUpload = (
   toast: any,
   t: any,
 ) => {
-  const isAllowedFormat = allowedFormats.includes(file.type);
-  if (!isAllowedFormat) {
+  // Check format by MIME type or file extension (SVG files may have empty/wrong MIME type)
+  const fileExtension = file.name.toLowerCase().split('.').pop();
+  const isAllowedByMime = allowedFormats.includes(file.type);
+  const isAllowedByExtension = fileExtension === 'svg' && allowedFormats.includes('image/svg+xml');
+  if (!isAllowedByMime && !isAllowedByExtension) {
     toast(t("common.fileUploader.formatFotAllowed"), "error");
     return false;
   }
@@ -54,7 +57,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   buttonText,
   label,
   maxSize = 5,
-  allowedFormats = ["image/png", "image/jpeg", "image/jpg"],
+  allowedFormats = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"],
   hasError = false,
   value,
   showDelete = true,
