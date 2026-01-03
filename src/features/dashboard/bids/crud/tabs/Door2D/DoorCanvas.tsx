@@ -30,6 +30,7 @@ interface ImageUrls {
   doorUrl?: string;
   frameUrl?: string;
   crownUrl?: string;
+  lockUrl?: string;
 }
 
 interface DoorCanvasProps {
@@ -82,6 +83,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
   const doorUrl = imageUrls?.doorUrl || doorVariant?.svgUrl;
   const frameUrl = imageUrls?.frameUrl || frameVariant?.svgUrl;
   const crownUrl = imageUrls?.crownUrl || crownVariant?.svgUrl;
+  const lockUrl = imageUrls?.lockUrl || lockVariant?.svgUrl;
   const hasCrown = !!crownUrl;
 
   // Calculate all sizes for dimension labels
@@ -174,9 +176,9 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
         )}
 
         {/* Door handle - renders at its natural position */}
-        {lockVariant?.svgUrl && (
+        {lockUrl && (
           <SvgPart
-            svgUrl={lockVariant.svgUrl}
+            svgUrl={lockUrl}
             useNativeViewBox={true}
             visible={true}
             onFallback={handleFallback}

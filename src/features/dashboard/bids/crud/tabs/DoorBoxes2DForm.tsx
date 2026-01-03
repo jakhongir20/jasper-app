@@ -10,6 +10,23 @@ interface Props {
 }
 
 /**
+ * Extract product ID from form value
+ * The value can be a number, string, or object with product_id field
+ */
+function extractProductId(value: unknown): number | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "number") return value;
+  if (typeof value === "string") {
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? null : parsed;
+  }
+  if (typeof value === "object" && "product_id" in value) {
+    return (value as { product_id: number }).product_id;
+  }
+  return null;
+}
+
+/**
  * Door Boxes 2D Form component
  * Integrates the 2D door editor into the transaction drawer
  * Reads product IDs from form context to load matching SVG images
@@ -21,10 +38,11 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
   const transactions = Form.useWatch("transactions", form);
   const transaction = transactions?.[0] || {};
 
+  // Extract actual product IDs (form values may be objects with product_id field)
   const productIds = {
-    doorProductId: transaction.door_product_id as number | null | undefined,
-    frameProductId: transaction.frame_product_id as number | null | undefined,
-    crownProductId: transaction.crown_product_id as number | null | undefined,
+    doorProductId: extractProductId(transaction.door_product_id),
+    frameProductId: extractProductId(transaction.frame_product_id),
+    crownProductId: extractProductId(transaction.crown_product_id),
   };
 
   return (

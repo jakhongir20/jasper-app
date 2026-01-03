@@ -1,9 +1,10 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useState, useMemo } from "react";
 import { cn } from "@/shared/helpers";
 import { DoorCanvas } from "./DoorCanvas";
 import { ColorPicker, PartSelector } from "./ui";
 import { defaultDoorConfig, DoorConfig } from "./data/data2D";
 import { useDoor2DImages } from "./model/useDoor2DImages";
+import { useCategoryProducts, getSashType, SashType } from "./model/useCategoryProducts";
 import { useStaticAssetsUrl } from "@/shared/hooks";
 
 interface Door2DEditorProps {
@@ -37,18 +38,82 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     ...initialConfig,
   });
 
+  // Track selected sash type for filtering parts
+  const [selectedSashType, setSelectedSashType] = useState<SashType | null>(null);
+
+  // Fetch door products to determine sash type when door is selected
+  const { data: doorProducts } = useCategoryProducts("doors");
+
   // Fetch images from API based on product IDs
   const { data: apiImages } = useDoor2DImages(productIds || {});
   const { getAssetUrl } = useStaticAssetsUrl();
 
-  // Build image URLs from API data
-  const imageUrls = apiImages
-    ? {
-        doorUrl: apiImages.door ? getAssetUrl(apiImages.door.image_url) : undefined,
-        frameUrl: apiImages.frame ? getAssetUrl(apiImages.frame.image_url) : undefined,
-        crownUrl: apiImages.crown ? getAssetUrl(apiImages.crown.image_url) : undefined,
+  // Fetch products for other categories to get images when selected
+  const { data: frameProducts } = useCategoryProducts("frames");
+  const { data: crownProducts } = useCategoryProducts("crowns");
+  const { data: lockProducts } = useCategoryProducts("locks");
+
+  // Determine sash type from selected door product
+  const currentSashType = useMemo((): SashType | null => {
+    if (selectedSashType) return selectedSashType;
+
+    // Try to get from selected door in PartSelector
+    if (config.doorId && doorProducts) {
+      const doorProduct = doorProducts.find((p) => p.product_id === config.doorId);
+      if (doorProduct?.product_images?.length) {
+        // Get sash type from first door image
+        const firstImage = doorProduct.product_images.find((img) =>
+          img.assignment.includes("-door"),
+        );
+        if (firstImage) {
+          return getSashType(firstImage.assignment);
+        }
       }
-    : undefined;
+    }
+
+    return null;
+  }, [selectedSashType, config.doorId, doorProducts]);
+
+  // Get image URL from selected product in PartSelector
+  const getSelectedProductImageUrl = (
+    products: typeof doorProducts,
+    productId: number | null,
+    sashType?: SashType | null,
+  ): string | undefined => {
+    if (!products || !productId) return undefined;
+    const product = products.find((p) => p.product_id === productId);
+    if (!product?.product_images?.length) return undefined;
+
+    // Filter by sash type if provided
+    const filteredImages = sashType
+      ? product.product_images.filter((img) => getSashType(img.assignment) === sashType)
+      : product.product_images;
+
+    if (filteredImages.length === 0) return undefined;
+
+    // Prefer SVG
+    const svgImage = filteredImages.find((img) =>
+      img.image_url.toLowerCase().endsWith(".svg"),
+    );
+    return svgImage?.image_url || filteredImages[0]?.image_url;
+  };
+
+  // Build image URLs - prioritize PartSelector selection, then API images from form
+  const imageUrls = useMemo(() => {
+    // Get URLs from selected products in PartSelector
+    const doorUrl = getSelectedProductImageUrl(doorProducts, config.doorId, currentSashType);
+    const frameUrl = getSelectedProductImageUrl(frameProducts, config.frameId, currentSashType);
+    const crownUrl = getSelectedProductImageUrl(crownProducts, config.crownId, currentSashType);
+    const lockUrl = getSelectedProductImageUrl(lockProducts, config.lockId);
+
+    // Fall back to API images from form if no PartSelector selection
+    return {
+      doorUrl: doorUrl ? getAssetUrl(doorUrl) : (apiImages?.door ? getAssetUrl(apiImages.door.image_url) : undefined),
+      frameUrl: frameUrl ? getAssetUrl(frameUrl) : (apiImages?.frame ? getAssetUrl(apiImages.frame.image_url) : undefined),
+      crownUrl: crownUrl ? getAssetUrl(crownUrl) : (apiImages?.crown ? getAssetUrl(apiImages.crown.image_url) : undefined),
+      lockUrl: lockUrl ? getAssetUrl(lockUrl) : undefined,
+    };
+  }, [doorProducts, frameProducts, crownProducts, lockProducts, config.doorId, config.frameId, config.crownId, config.lockId, currentSashType, apiImages, getAssetUrl]);
 
   // Update config and notify parent
   const updateConfig = useCallback(
@@ -74,8 +139,23 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   );
 
   const handleDoorSelect = useCallback(
-    (id: number) => updateConfig({ doorId: id }),
-    [updateConfig],
+    (id: number) => {
+      updateConfig({ doorId: id });
+
+      // Update sash type based on selected door
+      if (doorProducts) {
+        const doorProduct = doorProducts.find((p) => p.product_id === id);
+        if (doorProduct?.product_images?.length) {
+          const firstImage = doorProduct.product_images.find((img) =>
+            img.assignment.includes("-door"),
+          );
+          if (firstImage) {
+            setSelectedSashType(getSashType(firstImage.assignment));
+          }
+        }
+      }
+    },
+    [updateConfig, doorProducts],
   );
 
   const handleLockSelect = useCallback(
@@ -127,6 +207,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
           selectedDoorId={config.doorId}
           selectedLockId={config.lockId}
           fullHeight={config.fullHeight}
+          sashType={currentSashType}
           onFrameSelect={handleFrameSelect}
           onCrownSelect={handleCrownSelect}
           onDoorSelect={handleDoorSelect}
