@@ -84,7 +84,6 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
           containerWidth={420}
           containerHeight={500}
           showDimensions={true}
-          showWall={true}
         />
 
         {/* Wall color picker - vertical on the right side */}

@@ -154,28 +154,6 @@ export const Wall: FC<WallProps> = ({
           fillRule="evenodd"
         />
       )}
-
-      {/* Opening edge shadow/depth */}
-      <rect
-        x={doorX}
-        y={doorY}
-        width={doorWidth}
-        height={doorHeight}
-        fill="none"
-        stroke="#00000020"
-        strokeWidth={3}
-      />
-
-      {/* Inner edge highlight */}
-      <rect
-        x={doorX + 1}
-        y={doorY + 1}
-        width={doorWidth - 2}
-        height={doorHeight - 2}
-        fill="none"
-        stroke="#FFFFFF30"
-        strokeWidth={1}
-      />
     </g>
   );
 };

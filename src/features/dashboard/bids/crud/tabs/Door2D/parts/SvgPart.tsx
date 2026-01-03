@@ -3,13 +3,13 @@ import { FC, useEffect, useState } from "react";
 interface SvgPartProps {
   /** URL to the SVG file */
   svgUrl?: string;
-  /** X position */
+  /** X position (only used when useNativeViewBox is false) */
   x?: number;
-  /** Y position */
+  /** Y position (only used when useNativeViewBox is false) */
   y?: number;
-  /** Width to scale SVG to */
+  /** Width to scale SVG to (only used when useNativeViewBox is false) */
   width?: number;
-  /** Height to scale SVG to */
+  /** Height to scale SVG to (only used when useNativeViewBox is false) */
   height?: number;
   /** Whether to show the part */
   visible?: boolean;
@@ -17,6 +17,12 @@ interface SvgPartProps {
   fallback?: React.ReactNode;
   /** Callback when using fallback */
   onFallback?: (isFallback: boolean) => void;
+  /**
+   * When true, renders SVG content directly using its native coordinates.
+   * All parts should share the same coordinate system (e.g., from Figma).
+   * When false (default), wraps content in nested SVG with position/size.
+   */
+  useNativeViewBox?: boolean;
 }
 
 interface SvgData {
@@ -64,7 +70,15 @@ function extractBoundingBox(svg: string): { minX: number; minY: number; maxX: nu
 
 /**
  * Component that loads and renders an external SVG file
- * Falls back to provided content if SVG is not available
+ *
+ * Two rendering modes:
+ * 1. useNativeViewBox=true: Renders SVG content directly with its original coordinates.
+ *    Use this when all parts share a common coordinate system (e.g., all exported from
+ *    the same Figma frame). Parts will naturally align based on their positions in the
+ *    original design.
+ *
+ * 2. useNativeViewBox=false (default): Wraps content in a nested SVG with x/y/width/height.
+ *    Use this for positioning parts independently.
  */
 export const SvgPart: FC<SvgPartProps> = ({
   svgUrl,
@@ -75,6 +89,7 @@ export const SvgPart: FC<SvgPartProps> = ({
   visible = true,
   fallback,
   onFallback,
+  useNativeViewBox = false,
 }) => {
   const [svgData, setSvgData] = useState<SvgData | null>(null);
   const [error, setError] = useState(false);
@@ -95,19 +110,24 @@ export const SvgPart: FC<SvgPartProps> = ({
         return res.text();
       })
       .then((svg) => {
-        // Try to extract actual bounding box from path data
-        const bbox = extractBoundingBox(svg);
+        // Get original viewBox for reference
+        const viewBoxMatch = svg.match(/viewBox=["']([^"']+)["']/i);
+        const originalViewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 2000 2000";
 
         let viewBox: string;
-        if (bbox) {
-          // Use calculated bounding box
-          const bboxWidth = bbox.maxX - bbox.minX;
-          const bboxHeight = bbox.maxY - bbox.minY;
-          viewBox = `${bbox.minX} ${bbox.minY} ${bboxWidth} ${bboxHeight}`;
+        if (useNativeViewBox) {
+          // Keep original viewBox for native rendering
+          viewBox = originalViewBox;
         } else {
-          // Fallback to original viewBox
-          const viewBoxMatch = svg.match(/viewBox=["']([^"']+)["']/i);
-          viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 100 100";
+          // Try to extract actual bounding box from path data for scaled rendering
+          const bbox = extractBoundingBox(svg);
+          if (bbox) {
+            const bboxWidth = bbox.maxX - bbox.minX;
+            const bboxHeight = bbox.maxY - bbox.minY;
+            viewBox = `${bbox.minX} ${bbox.minY} ${bboxWidth} ${bboxHeight}`;
+          } else {
+            viewBox = originalViewBox;
+          }
         }
 
         // Extract inner content
@@ -121,7 +141,7 @@ export const SvgPart: FC<SvgPartProps> = ({
         setError(true);
         onFallback?.(true);
       });
-  }, [svgUrl, onFallback]);
+  }, [svgUrl, onFallback, useNativeViewBox]);
 
   if (!visible) return null;
 
@@ -135,7 +155,13 @@ export const SvgPart: FC<SvgPartProps> = ({
     return null;
   }
 
-  // Use nested SVG to properly scale the content
+  // Native mode: render content directly with its original coordinates
+  // This allows multiple parts to align naturally in a shared coordinate space
+  if (useNativeViewBox) {
+    return <g dangerouslySetInnerHTML={{ __html: svgData.content }} />;
+  }
+
+  // Scaled mode: wrap in nested SVG with position and size
   return (
     <svg
       x={x}
