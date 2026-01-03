@@ -3,12 +3,20 @@ import { cn } from "@/shared/helpers";
 import { DoorCanvas } from "./DoorCanvas";
 import { ColorPicker, PartSelector } from "./ui";
 import { defaultDoorConfig, DoorConfig } from "./data/data2D";
+import { useDoor2DImages } from "./model/useDoor2DImages";
+import { useStaticAssetsUrl } from "@/shared/hooks";
 
 interface Door2DEditorProps {
   /** Initial configuration (for edit mode) */
   initialConfig?: Partial<DoorConfig>;
   /** Callback when configuration changes */
   onChange?: (config: DoorConfig) => void;
+  /** Product IDs for loading images from API */
+  productIds?: {
+    doorProductId?: number | null;
+    frameProductId?: number | null;
+    crownProductId?: number | null;
+  };
   /** Custom class name */
   className?: string;
 }
@@ -20,6 +28,7 @@ interface Door2DEditorProps {
 export const Door2DEditor: FC<Door2DEditorProps> = ({
   initialConfig,
   onChange,
+  productIds,
   className,
 }) => {
   // Door configuration state
@@ -27,6 +36,19 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     ...defaultDoorConfig,
     ...initialConfig,
   });
+
+  // Fetch images from API based on product IDs
+  const { data: apiImages } = useDoor2DImages(productIds || {});
+  const { getAssetUrl } = useStaticAssetsUrl();
+
+  // Build image URLs from API data
+  const imageUrls = apiImages
+    ? {
+        doorUrl: apiImages.door ? getAssetUrl(apiImages.door.image_url) : undefined,
+        frameUrl: apiImages.frame ? getAssetUrl(apiImages.frame.image_url) : undefined,
+        crownUrl: apiImages.crown ? getAssetUrl(apiImages.crown.image_url) : undefined,
+      }
+    : undefined;
 
   // Update config and notify parent
   const updateConfig = useCallback(
@@ -84,6 +106,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
           containerWidth={420}
           containerHeight={500}
           showDimensions={true}
+          imageUrls={imageUrls}
         />
 
         {/* Wall color picker - vertical on the right side */}

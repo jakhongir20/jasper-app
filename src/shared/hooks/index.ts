@@ -7,3 +7,4 @@ export { useToast } from "./useToast";
 export { useToggle } from "./useToggle";
 export { useValidationErrors } from "./useValidationErrors";
 export { useAuth } from "./useAuth";
+export { useStaticAssetsUrl } from "./useStaticAssetsUrl";

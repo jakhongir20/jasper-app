@@ -25,6 +25,13 @@ const SVG_BOUNDS = {
   contentHeight: 1720, // ~1900-180 (includes space for bottom label)
 };
 
+/** Image URLs from API */
+interface ImageUrls {
+  doorUrl?: string;
+  frameUrl?: string;
+  crownUrl?: string;
+}
+
 interface DoorCanvasProps {
   /** Door configuration */
   config: DoorConfig;
@@ -34,6 +41,8 @@ interface DoorCanvasProps {
   containerHeight?: number;
   /** Whether to show dimension labels */
   showDimensions?: boolean;
+  /** Image URLs from API (overrides static svgUrl from mockData) */
+  imageUrls?: ImageUrls;
   /** Custom class name */
   className?: string;
 }
@@ -48,9 +57,10 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
   containerWidth = 350,
   containerHeight = 450,
   showDimensions = true,
+  imageUrls,
   className,
 }) => {
-  // Get variant data
+  // Get variant data from mockData (fallback when no API images)
   const frameVariant = useMemo(
     () => getFrameById(config.frameId),
     [config.frameId],
@@ -67,6 +77,12 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
     () => (config.lockId ? getLockById(config.lockId) : null),
     [config.lockId],
   );
+
+  // Determine which URLs to use (API images take priority)
+  const doorUrl = imageUrls?.doorUrl || doorVariant?.svgUrl;
+  const frameUrl = imageUrls?.frameUrl || frameVariant?.svgUrl;
+  const crownUrl = imageUrls?.crownUrl || crownVariant?.svgUrl;
+  const hasCrown = !!crownUrl;
 
   // Calculate all sizes for dimension labels
   const sizes = useMemo(() => calculateDoorSizes(config), [config]);
@@ -87,9 +103,9 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
   // Use viewBox that matches the SVG content area
   // This ensures all parts render at their natural positions and align correctly
   const viewBoxX = SVG_BOUNDS.contentX - padding;
-  const viewBoxY = crownVariant ? SVG_BOUNDS.contentY : 300; // Start lower if no crown
+  const viewBoxY = hasCrown ? SVG_BOUNDS.contentY : 300; // Start lower if no crown
   const viewBoxWidth = SVG_BOUNDS.contentWidth + padding * 2;
-  const viewBoxHeight = crownVariant
+  const viewBoxHeight = hasCrown
     ? SVG_BOUNDS.contentHeight
     : SVG_BOUNDS.contentHeight - 120;
 
@@ -128,9 +144,9 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
         />
 
         {/* Crown - renders at its natural position in the shared coordinate space */}
-        {crownVariant?.svgUrl && (
+        {crownUrl && (
           <SvgPart
-            svgUrl={crownVariant.svgUrl}
+            svgUrl={crownUrl}
             useNativeViewBox={true}
             visible={true}
             onFallback={handleFallback}
@@ -138,9 +154,9 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
         )}
 
         {/* Door frame - renders at its natural position */}
-        {frameVariant?.svgUrl && (
+        {frameUrl && (
           <SvgPart
-            svgUrl={frameVariant.svgUrl}
+            svgUrl={frameUrl}
             useNativeViewBox={true}
             visible={true}
             onFallback={handleFallback}
@@ -148,9 +164,9 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
         )}
 
         {/* Door leaf - renders at its natural position */}
-        {doorVariant?.svgUrl && (
+        {doorUrl && (
           <SvgPart
-            svgUrl={doorVariant.svgUrl}
+            svgUrl={doorUrl}
             useNativeViewBox={true}
             visible={true}
             onFallback={handleFallback}
@@ -173,7 +189,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
             {/* Leaf dimensions - positioned above the door */}
             <text
               x={975}
-              y={crownVariant ? 200 : 300}
+              y={hasCrown ? 200 : 300}
               textAnchor="middle"
               fontSize={28}
               fill="#374151"
