@@ -87,7 +87,7 @@ const ProductThumbnail: FC<{
           </div>
         )}
       </div>
-      <span className="line-clamp-2 max-w-[80px] text-center text-xs text-gray-600">
+      <span className="line-clamp-2 max-w-[80px] text-center text-xs text-gray-400">
         {product.name}
       </span>
     </button>
