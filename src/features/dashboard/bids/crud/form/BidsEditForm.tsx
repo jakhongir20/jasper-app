@@ -273,6 +273,7 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       const customerPhone =
         customerFromDetail?.phone_number ??
         applicationDetail.customer_phone ??
+        (applicationDetail as any)?.phone_number ??
         "";
 
       // Create customerSelectValue if we have either customer_id OR customer_name
@@ -471,6 +472,15 @@ export const BidsEditForm: FC<Props> = ({ className }) => {
       };
 
       form.setFieldsValue(transformedData as any);
+
+      // Explicitly set phone_number after a delay to ensure it's populated
+      // (InputPhone component may not receive value from setFieldsValue immediately)
+      const phoneValue = (transformedData.general as any)?.phone_number;
+      if (phoneValue) {
+        setTimeout(() => {
+          form.setFieldValue(["general", "phone_number"] as any, phoneValue);
+        }, 100);
+      }
     }
   }, [applicationDetail, isLoadingDetail, form]);
 

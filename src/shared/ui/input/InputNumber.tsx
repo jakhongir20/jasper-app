@@ -125,21 +125,15 @@ export const NumberInput: FC<NumberInputProps> = ({
       numeric = Number(sanitized);
     }
 
-    // Enforce min/max constraints
-    let constrainedSanitized = sanitized;
-    if (numeric !== undefined) {
-      if (typeof min === "number" && numeric < min) {
-        numeric = min;
-        constrainedSanitized = String(min);
-      }
-      if (typeof max === "number" && numeric > max) {
-        numeric = max;
-        constrainedSanitized = String(max);
-      }
+    // Enforce max constraint only (min validation is handled by form rules)
+    let finalSanitized = sanitized;
+    if (numeric !== undefined && typeof max === "number" && numeric > max) {
+      numeric = max;
+      finalSanitized = String(max);
     }
 
     onChange?.(numeric);
-    const formatted = formatWithSpaces(constrainedSanitized);
+    const formatted = formatWithSpaces(finalSanitized);
     setDisplayValue(formatted);
 
     caretPos.current =

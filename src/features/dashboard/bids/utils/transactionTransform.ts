@@ -299,7 +299,6 @@ export const transformTransactionDetailToForm = (
   transaction: PrimitiveRecord,
 ): PrimitiveRecord => {
   const productType = resolveProductType(transaction);
-  debugger;
 
   const openingHeight =
     transaction.opening_height ??

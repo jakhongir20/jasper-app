@@ -1194,7 +1194,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     label: "Толщина проёма",
     type: "number",
     numberStep: 0.01,
-    minValue: 0.01, // Thickness cannot be zero
+    defaultValue: 1,
     placeholder: "Введите толщину проёма",
     aliases: ["doorway_thickness"],
   },
@@ -1397,6 +1397,14 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
     }
   }, [mode, transactionValues.box_width]);
 
+  // Apply default opening_thickness value (1) when creating new transaction
+  useEffect(() => {
+    if (mode === "add" && !transactionValues.opening_thickness) {
+      setTransactionField("opening_thickness", 1);
+      setTransactionField("doorway_thickness", 1);
+    }
+  }, [mode, transactionValues.opening_thickness]);
+
   // 2.6.6: Transom conditional fields - hide and clear if transom_type != "Скрытая" (Hidden = 2)
   useEffect(() => {
     const transomType = transactionValues.transom_type;
@@ -1508,22 +1516,16 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
             ]}
           >
             <NumberInput
-              min={minVal}
+              min={0}
               step={field.numberStep ?? 0.01}
               placeholder={field.placeholder}
               disabled={isFieldDisabled}
               floatValue={!isInteger}
               onChange={(numValue) => {
-                // Prevent values below minimum
-                const normalized =
-                  numValue === undefined
-                    ? undefined
-                    : numValue < minVal
-                      ? minVal
-                      : numValue;
+                // Sync value to aliases (e.g., opening_thickness -> doorway_thickness)
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
-                    setTransactionField(alias, normalized),
+                    setTransactionField(alias, numValue),
                   );
                 }
               }}
