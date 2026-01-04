@@ -32,6 +32,8 @@ interface Door2DEditorProps {
   sashValue?: string | null;
   /** Callback when sash is changed in 2D editor */
   onSashChange?: (value: string) => void;
+  /** Product type from form (door-window, door-deaf) */
+  productType?: string | null;
   /** Custom class name */
   className?: string;
 }
@@ -47,6 +49,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   onProductSelect,
   sashValue,
   onSashChange,
+  productType,
   className,
 }) => {
   // Door configuration state
@@ -281,6 +284,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
           selectedDoorId={config.doorId}
           selectedCasingId={config.casingId}
           sashType={currentSashType}
+          productType={productType}
           onFrameSelect={handleFrameSelect}
           onCrownSelect={handleCrownSelect}
           onDoorSelect={handleDoorSelect}

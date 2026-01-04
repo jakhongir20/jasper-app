@@ -34,6 +34,8 @@ interface PartSelectorProps {
   selectedCasingId: number | null;
   /** Current sash type filter (from selected door) */
   sashType?: SashType | null;
+  /** Product type from form (door-window, door-deaf) - controls which door tab is visible */
+  productType?: string | null;
   /** Frame selection handler */
   onFrameSelect: (id: number) => void;
   /** Crown selection handler */
@@ -101,6 +103,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
   selectedDoorId,
   selectedCasingId,
   sashType,
+  productType: formProductType,
   onFrameSelect,
   onCrownSelect,
   onDoorSelect,
@@ -110,12 +113,26 @@ export const PartSelector: FC<PartSelectorProps> = ({
 }) => {
   const [activeCategory, setActiveCategory] = useState<TabCategory>("frames");
 
-  // Map tab category to API category and product type
+  // Filter tabs based on product type from form
+  // Show only the matching door tab (ДО or ДГ), hide the other
+  const visibleTabs = useMemo(() => {
+    return CATEGORY_TABS.filter((tab) => {
+      if (tab.key === "door-window") {
+        return formProductType === "door-window";
+      }
+      if (tab.key === "door-deaf") {
+        return formProductType === "door-deaf";
+      }
+      return true;
+    });
+  }, [formProductType]);
+
+  // Map tab category to API category and product type for API call
   const apiCategory: PartCategory2D =
     activeCategory === "door-window" || activeCategory === "door-deaf"
       ? "doors"
       : activeCategory;
-  const productType =
+  const apiProductType =
     activeCategory === "door-window" || activeCategory === "door-deaf"
       ? activeCategory
       : undefined;
@@ -123,7 +140,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
   // Fetch products from API
   const { data: products, isLoading } = useCategoryProducts(
     apiCategory,
-    productType,
+    apiProductType,
   );
 
   // Filter products that have images matching sash type
@@ -190,7 +207,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
           centered && "justify-center",
         )}
       >
-        {CATEGORY_TABS.map((tab) => (
+        {visibleTabs.map((tab) => (
           <button
             key={tab.key}
             type="button"

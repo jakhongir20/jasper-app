@@ -50,6 +50,9 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
   // Get sash value from form
   const sashValue = transaction.sash as string | null | undefined;
 
+  // Get product type from form (door-window, door-deaf)
+  const productType = transaction.product_type as string | null | undefined;
+
   // Handle product selection from 2D editor - update form fields
   const handleProductSelect = useCallback(
     (type: "door" | "frame" | "crown", productId: number) => {
@@ -96,6 +99,7 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
         onProductSelect={handleProductSelect}
         sashValue={sashValue}
         onSashChange={handleSashChange}
+        productType={productType}
       />
     </div>
   );
