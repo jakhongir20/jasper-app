@@ -11,11 +11,15 @@ import {
   useCategoryProducts,
 } from "../model/useCategoryProducts";
 
+// Extended category type for UI tabs (includes door types)
+type TabCategory = PartCategory2D | "door-window" | "door-deaf";
+
 // Category tab configuration
-const CATEGORY_TABS: { key: PartCategory2D; label: string }[] = [
+const CATEGORY_TABS: { key: TabCategory; label: string }[] = [
   { key: "frames", label: "Рамки" },
   { key: "crowns", label: "Короны" },
-  { key: "doors", label: "Двери" },
+  { key: "door-window", label: "ДО дверь" },
+  { key: "door-deaf", label: "ДГ дверь" },
   { key: "casings", label: "Подналичник" },
 ];
 
@@ -28,8 +32,6 @@ interface PartSelectorProps {
   selectedDoorId: number | null;
   /** Currently selected casing ID */
   selectedCasingId: number | null;
-  /** Full height mode */
-  fullHeight: boolean;
   /** Current sash type filter (from selected door) */
   sashType?: SashType | null;
   /** Frame selection handler */
@@ -40,10 +42,6 @@ interface PartSelectorProps {
   onDoorSelect: (id: number) => void;
   /** Casing selection handler */
   onCasingSelect: (id: number | null) => void;
-  /** Full height toggle handler */
-  onFullHeightToggle: (enabled: boolean) => void;
-  /** Display color for thumbnails */
-  displayColor?: string;
   /** Center the content */
   centered?: boolean;
   /** Custom class name */
@@ -102,22 +100,31 @@ export const PartSelector: FC<PartSelectorProps> = ({
   selectedCrownId,
   selectedDoorId,
   selectedCasingId,
-  fullHeight,
   sashType,
   onFrameSelect,
   onCrownSelect,
   onDoorSelect,
   onCasingSelect,
-  onFullHeightToggle,
-  displayColor = "#D4A574",
   centered = false,
   className,
 }) => {
-  const [activeCategory, setActiveCategory] =
-    useState<PartCategory2D>("frames");
+  const [activeCategory, setActiveCategory] = useState<TabCategory>("frames");
+
+  // Map tab category to API category and product type
+  const apiCategory: PartCategory2D =
+    activeCategory === "door-window" || activeCategory === "door-deaf"
+      ? "doors"
+      : activeCategory;
+  const productType =
+    activeCategory === "door-window" || activeCategory === "door-deaf"
+      ? activeCategory
+      : undefined;
 
   // Fetch products from API
-  const { data: products, isLoading } = useCategoryProducts(activeCategory);
+  const { data: products, isLoading } = useCategoryProducts(
+    apiCategory,
+    productType,
+  );
 
   // Filter products that have images matching sash type
   // Products only shown when sashType is selected (user must choose sash first)
@@ -129,7 +136,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
 
     return products.filter((p) => {
       // For doors, show all products with any images
-      if (activeCategory === "doors") {
+      if (activeCategory === "door-window" || activeCategory === "door-deaf") {
         return getProductImageUrl(p) !== undefined;
       }
 
@@ -145,7 +152,8 @@ export const PartSelector: FC<PartSelectorProps> = ({
         return selectedFrameId;
       case "crowns":
         return selectedCrownId;
-      case "doors":
+      case "door-window":
+      case "door-deaf":
         return selectedDoorId;
       case "casings":
         return selectedCasingId;
@@ -163,7 +171,8 @@ export const PartSelector: FC<PartSelectorProps> = ({
       case "crowns":
         onCrownSelect(productId);
         break;
-      case "doors":
+      case "door-window":
+      case "door-deaf":
         onDoorSelect(productId);
         break;
       case "casings":

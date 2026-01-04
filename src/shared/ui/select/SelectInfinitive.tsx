@@ -281,7 +281,7 @@ const Select = <T extends ItemType>({
 
       const url = `${fetchUrl}?id=${id}`;
       const response = await ApiService.$get<TableDataResponse<T>>(url, {
-        params: { offset: 0, limit: 1, ...params },
+        params: { offset: 0, limit: 50, ...params },
       });
 
       const item = response?.results?.find((item) => item[valueKey] == id);

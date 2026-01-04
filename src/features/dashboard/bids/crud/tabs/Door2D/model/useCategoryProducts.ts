@@ -7,8 +7,17 @@ import { ApiService } from "@/shared/lib/services";
 export const CATEGORY_SECTION_INDEX_2D = {
   frames: 5,    // Рамки
   crowns: 7,    // Короны
-  doors: 3,     // Двери
+  doors: 3,     // Двери (default, will be overridden by product type)
   casings: 9,   // Подналичник
+} as const;
+
+/**
+ * Product type to section index mapping for doors
+ * Must match CATEGORY_SECTION_INDEX in TransactionForm.tsx
+ */
+export const DOOR_TYPE_SECTION_INDEX = {
+  "door-window": 2,  // ДО дверь
+  "door-deaf": 3,    // ДГ дверь
 } as const;
 
 export type PartCategory2D = keyof typeof CATEGORY_SECTION_INDEX_2D;
@@ -60,12 +69,21 @@ async function fetchCategoryProducts(
 
 /**
  * Hook to fetch products for a specific 2D part category
+ * For doors category, productType can override the section index
  */
-export function useCategoryProducts(category: PartCategory2D) {
-  const categorySectionIndex = CATEGORY_SECTION_INDEX_2D[category];
+export function useCategoryProducts(category: PartCategory2D, productType?: string) {
+  // For doors, use product type specific section index
+  let categorySectionIndex: number = CATEGORY_SECTION_INDEX_2D[category];
+
+  if (category === "doors" && productType) {
+    const doorTypeIndex = DOOR_TYPE_SECTION_INDEX[productType as keyof typeof DOOR_TYPE_SECTION_INDEX];
+    if (doorTypeIndex) {
+      categorySectionIndex = doorTypeIndex;
+    }
+  }
 
   return useQuery({
-    queryKey: ["category-products-2d", category, categorySectionIndex],
+    queryKey: ["category-products-2d", categorySectionIndex],
     queryFn: () => fetchCategoryProducts(categorySectionIndex),
     staleTime: 10 * 60 * 1000, // 10 minutes
   });

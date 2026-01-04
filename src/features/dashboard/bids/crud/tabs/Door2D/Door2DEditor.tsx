@@ -280,14 +280,11 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
           selectedCrownId={config.crownId}
           selectedDoorId={config.doorId}
           selectedCasingId={config.casingId}
-          fullHeight={config.fullHeight}
           sashType={currentSashType}
           onFrameSelect={handleFrameSelect}
           onCrownSelect={handleCrownSelect}
           onDoorSelect={handleDoorSelect}
           onCasingSelect={handleCasingSelect}
-          onFullHeightToggle={handleFullHeightToggle}
-          displayColor={config.frameColor}
           centered={true}
         />
       </div>
