@@ -53,7 +53,7 @@ export interface CalculatedSizes {
  * Calculate all door component sizes from opening dimensions
  */
 export function calculateDoorSizes(config: DoorConfig): CalculatedSizes {
-  const frame = getFrameById(config.frameId);
+  const frame = config.frameId ? getFrameById(config.frameId) : null;
   const crown = config.crownId ? getCrownById(config.crownId) : null;
 
   // Frame width (thickness of frame profile)

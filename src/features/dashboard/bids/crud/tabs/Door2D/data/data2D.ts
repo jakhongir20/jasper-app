@@ -155,11 +155,11 @@ export const defaultDoorConfig = {
   openingHeight: 2100,
   openingThickness: 100,
 
-  // Selected variants (IDs)
-  frameId: 1,
+  // Selected variants (IDs) - null by default, will be set when user selects from PartSelector
+  frameId: null as number | null,
   crownId: null as number | null,
-  doorId: 1,
-  lockId: 1 as number | null,
+  doorId: null as number | null,
+  casingId: null as number | null,
   fullHeight: false,
 
   // Colors

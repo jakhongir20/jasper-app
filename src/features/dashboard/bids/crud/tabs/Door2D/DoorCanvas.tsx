@@ -5,7 +5,6 @@ import {
   getCrownById,
   getDoorById,
   getFrameById,
-  getLockById,
 } from "./data/data2D";
 import { cn } from "@/shared/helpers";
 
@@ -14,7 +13,7 @@ interface ImageUrls {
   doorUrl?: string;
   frameUrl?: string;
   crownUrl?: string;
-  lockUrl?: string;
+  casingUrl?: string;
 }
 
 interface DoorCanvasProps {
@@ -47,7 +46,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
 }) => {
   // Get variant data from mockData (fallback when no API images)
   const frameVariant = useMemo(
-    () => getFrameById(config.frameId),
+    () => (config.frameId ? getFrameById(config.frameId) : null),
     [config.frameId],
   );
   const crownVariant = useMemo(
@@ -55,19 +54,15 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
     [config.crownId],
   );
   const doorVariant = useMemo(
-    () => getDoorById(config.doorId),
+    () => (config.doorId ? getDoorById(config.doorId) : null),
     [config.doorId],
-  );
-  const lockVariant = useMemo(
-    () => (config.lockId ? getLockById(config.lockId) : null),
-    [config.lockId],
   );
 
   // Determine which URLs to use (API images take priority)
   const doorUrl = imageUrls?.doorUrl || doorVariant?.svgUrl;
   const frameUrl = imageUrls?.frameUrl || frameVariant?.svgUrl;
   const crownUrl = imageUrls?.crownUrl || crownVariant?.svgUrl;
-  const lockUrl = imageUrls?.lockUrl || lockVariant?.svgUrl;
+  const casingUrl = imageUrls?.casingUrl;
 
   // Calculate all sizes for dimension labels
   const sizes = useMemo(() => calculateDoorSizes(config), [config]);
@@ -129,11 +124,11 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
           />
         )}
 
-        {/* Lock layer - on top */}
-        {lockUrl && (
+        {/* Casing layer - on top */}
+        {casingUrl && (
           <img
-            src={lockUrl}
-            alt="Lock"
+            src={casingUrl}
+            alt="Casing"
             className="absolute inset-0 h-full w-full object-contain"
             style={{ zIndex: 40 }}
           />

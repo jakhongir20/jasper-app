@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Development Commands
 
 ```bash
-npm run dev              # Start dev server on port 3000 (auto-opens browser)
+npm run dev              # Start dev server with --host flag (network accessible)
 npm run build            # Production build (vite build)
 npm run typecheck        # TypeScript type checking (tsc --noEmit)
 npm run lint             # ESLint check
@@ -262,6 +262,18 @@ import { showGlobalToast } from "@/shared/hooks/toastService";
 showGlobalToast(t("common.messages.success"), "success");
 showGlobalToast(t("common.messages.error"), "error");
 ```
+
+### Reactive Form Data in Tables
+
+When displaying form array data in tables (e.g., transactions list), use `Form.useWatch` for reactivity:
+```typescript
+const form = Form.useFormInstance<FormType>();
+const watchedData = Form.useWatch("fieldName", form) as DataType[] | undefined;
+const tableData = watchedData?.length ? watchedData : [];
+// Use tableData in TableWrapper instead of form.getFieldValue("fieldName")
+```
+
+`form.getFieldValue()` is not reactive and won't trigger re-renders when form data changes asynchronously (e.g., after API load).
 
 ### Authentication
 

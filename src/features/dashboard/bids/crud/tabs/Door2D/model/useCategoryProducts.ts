@@ -8,7 +8,7 @@ export const CATEGORY_SECTION_INDEX_2D = {
   frames: 5,    // Рамки
   crowns: 7,    // Короны
   doors: 3,     // Двери
-  locks: 21,    // Замок
+  casings: 9,   // Подналичник
 } as const;
 
 export type PartCategory2D = keyof typeof CATEGORY_SECTION_INDEX_2D;

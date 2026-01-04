@@ -97,7 +97,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   // Fetch products for other categories to get images when selected
   const { data: frameProducts } = useCategoryProducts("frames");
   const { data: crownProducts } = useCategoryProducts("crowns");
-  const { data: lockProducts } = useCategoryProducts("locks");
+  const { data: casingProducts } = useCategoryProducts("casings");
 
   // Determine sash type from form sash value (primary source)
   // Maps: sash=1 → one-sash, sash=2 → one-half-sash, sash=3 → two-sash, etc.
@@ -155,7 +155,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
       config.crownId,
       currentSashType,
     );
-    const lockUrl = getSelectedProductImageUrl(lockProducts, config.lockId);
+    const casingUrl = getSelectedProductImageUrl(casingProducts, config.casingId, currentSashType);
 
     // Fall back to API images from form if no PartSelector selection
     return {
@@ -174,17 +174,17 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
         : apiImages?.crown
           ? getAssetUrl(apiImages.crown.image_url)
           : undefined,
-      lockUrl: lockUrl ? getAssetUrl(lockUrl) : undefined,
+      casingUrl: casingUrl ? getAssetUrl(casingUrl) : undefined,
     };
   }, [
     doorProducts,
     frameProducts,
     crownProducts,
-    lockProducts,
+    casingProducts,
     config.doorId,
     config.frameId,
     config.crownId,
-    config.lockId,
+    config.casingId,
     currentSashType,
     apiImages,
     getAssetUrl,
@@ -227,8 +227,8 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     [updateConfig, onProductSelect],
   );
 
-  const handleLockSelect = useCallback(
-    (id: number | null) => updateConfig({ lockId: id }),
+  const handleCasingSelect = useCallback(
+    (id: number | null) => updateConfig({ casingId: id }),
     [updateConfig],
   );
 
@@ -279,13 +279,13 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
           selectedFrameId={config.frameId}
           selectedCrownId={config.crownId}
           selectedDoorId={config.doorId}
-          selectedLockId={config.lockId}
+          selectedCasingId={config.casingId}
           fullHeight={config.fullHeight}
           sashType={currentSashType}
           onFrameSelect={handleFrameSelect}
           onCrownSelect={handleCrownSelect}
           onDoorSelect={handleDoorSelect}
-          onLockSelect={handleLockSelect}
+          onCasingSelect={handleCasingSelect}
           onFullHeightToggle={handleFullHeightToggle}
           displayColor={config.frameColor}
           centered={true}

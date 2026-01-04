@@ -16,7 +16,7 @@ const CATEGORY_TABS: { key: PartCategory2D; label: string }[] = [
   { key: "frames", label: "Рамки" },
   { key: "crowns", label: "Короны" },
   { key: "doors", label: "Двери" },
-  { key: "locks", label: "Замок" },
+  { key: "casings", label: "Подналичник" },
 ];
 
 interface PartSelectorProps {
@@ -26,8 +26,8 @@ interface PartSelectorProps {
   selectedCrownId: number | null;
   /** Currently selected door ID */
   selectedDoorId: number | null;
-  /** Currently selected lock ID */
-  selectedLockId: number | null;
+  /** Currently selected casing ID */
+  selectedCasingId: number | null;
   /** Full height mode */
   fullHeight: boolean;
   /** Current sash type filter (from selected door) */
@@ -38,8 +38,8 @@ interface PartSelectorProps {
   onCrownSelect: (id: number | null) => void;
   /** Door selection handler */
   onDoorSelect: (id: number) => void;
-  /** Lock selection handler */
-  onLockSelect: (id: number | null) => void;
+  /** Casing selection handler */
+  onCasingSelect: (id: number | null) => void;
   /** Full height toggle handler */
   onFullHeightToggle: (enabled: boolean) => void;
   /** Display color for thumbnails */
@@ -101,13 +101,13 @@ export const PartSelector: FC<PartSelectorProps> = ({
   selectedFrameId,
   selectedCrownId,
   selectedDoorId,
-  selectedLockId,
+  selectedCasingId,
   fullHeight,
   sashType,
   onFrameSelect,
   onCrownSelect,
   onDoorSelect,
-  onLockSelect,
+  onCasingSelect,
   onFullHeightToggle,
   displayColor = "#D4A574",
   centered = false,
@@ -120,10 +120,12 @@ export const PartSelector: FC<PartSelectorProps> = ({
   const { data: products, isLoading } = useCategoryProducts(activeCategory);
 
   // Filter products that have images matching sash type
-  // For doors category, show all products with images (no sash filter)
-  // For other categories (frames, crowns), filter by sash type if set
+  // Products only shown when sashType is selected (user must choose sash first)
   const productsWithImages = useMemo(() => {
     if (!products) return [];
+
+    // Don't show products until sash type is selected
+    if (!sashType) return [];
 
     return products.filter((p) => {
       // For doors, show all products with any images
@@ -131,13 +133,8 @@ export const PartSelector: FC<PartSelectorProps> = ({
         return getProductImageUrl(p) !== undefined;
       }
 
-      // For other categories, filter by sash type if set
-      if (sashType) {
-        return hasImageForSashType(p, sashType);
-      }
-
-      // No sash type filter, show all with images
-      return getProductImageUrl(p) !== undefined;
+      // For other categories (frames, crowns), filter by sash type
+      return hasImageForSashType(p, sashType);
     });
   }, [products, activeCategory, sashType]);
 
@@ -150,8 +147,8 @@ export const PartSelector: FC<PartSelectorProps> = ({
         return selectedCrownId;
       case "doors":
         return selectedDoorId;
-      case "locks":
-        return selectedLockId;
+      case "casings":
+        return selectedCasingId;
       default:
         return null;
     }
@@ -169,8 +166,8 @@ export const PartSelector: FC<PartSelectorProps> = ({
       case "doors":
         onDoorSelect(productId);
         break;
-      case "locks":
-        onLockSelect(productId);
+      case "casings":
+        onCasingSelect(productId);
         break;
     }
   };
@@ -202,7 +199,11 @@ export const PartSelector: FC<PartSelectorProps> = ({
       </div>
 
       {/* Product thumbnails */}
-      {isLoading ? (
+      {!sashType ? (
+        <div className="py-4 text-center text-sm text-gray-400">
+          Выберите тип створки слева
+        </div>
+      ) : isLoading ? (
         <div className="flex justify-center py-4">
           <Spin size="small" />
         </div>
