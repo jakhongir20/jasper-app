@@ -229,7 +229,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
               product={product}
               selected={getSelectedId() === product.product_id}
               onClick={() => handleSelect(product.product_id)}
-              sashType={activeCategory !== "doors" ? sashType : undefined}
+              sashType={activeCategory === "door-window" || activeCategory === "door-deaf" ? undefined : sashType}
             />
           ))}
         </div>
