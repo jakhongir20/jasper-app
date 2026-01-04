@@ -1397,14 +1397,6 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
     }
   }, [mode, transactionValues.box_width]);
 
-  // Apply default opening_thickness value (1) when creating new transaction
-  useEffect(() => {
-    if (mode === "add" && !transactionValues.opening_thickness) {
-      setTransactionField("opening_thickness", 1);
-      setTransactionField("doorway_thickness", 1);
-    }
-  }, [mode, transactionValues.opening_thickness]);
-
   // 2.6.6: Transom conditional fields - hide and clear if transom_type != "Скрытая" (Hidden = 2)
   useEffect(() => {
     const transomType = transactionValues.transom_type;

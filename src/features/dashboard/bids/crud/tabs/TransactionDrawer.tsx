@@ -305,8 +305,10 @@ export const TransactionDrawer: FC<Props> = ({
       height={"100%"}
       maskClosable={false}
       className={className}
-      bodyStyle={{
-        paddingTop: 0,
+      styles={{
+        body: {
+          paddingTop: 0,
+        },
       }}
       title={
         <div className={"flex items-center justify-between"}>

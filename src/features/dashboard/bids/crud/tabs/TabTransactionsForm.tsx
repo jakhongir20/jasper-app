@@ -11,6 +11,15 @@ import {
 } from "@/features/dashboard/bids/model";
 import { TransactionDrawer } from "@/features/dashboard/bids/crud/tabs/TransactionDrawer";
 
+// Hidden Form.Item to subscribe to transactions field and trigger re-renders
+const TransactionsWatcher: FC = () => {
+  return (
+    <Form.Item name="transactions" noStyle>
+      <input type="hidden" />
+    </Form.Item>
+  );
+};
+
 interface Props {
   className?: string;
   mode: "add" | "edit";
@@ -181,16 +190,18 @@ export const TabTransactionsForm: FC<Props> = ({
     toggleProductModal();
   };
 
+  // Use Form.useWatch to reactively get transactions - this will trigger re-renders when form data changes
+  const watchedTransactions = Form.useWatch("transactions", form) as Transaction[] | undefined;
+  const tableData = watchedTransactions?.length ? watchedTransactions : [];
+
   return (
     <div className={cn("relative py-1", className)}>
+      {/* Hidden watcher to ensure form subscription */}
+      <TransactionsWatcher />
       <TableWrapper<Transaction>
         loading={isLoadingDetail && mode === "edit"}
         pagination={false}
-        data={
-          form.getFieldValue("transactions")?.length
-            ? form.getFieldValue("transactions")
-            : []
-        }
+        data={tableData}
         rowKey={(record) => record._uid as string}
         columns={columns}
         noFilter

@@ -1,13 +1,13 @@
-import { FC, useCallback, useState, useMemo, useEffect } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { cn } from "@/shared/helpers";
 import { DoorCanvas } from "./DoorCanvas";
 import { ColorPicker, PartSelector, SashSelector } from "./ui";
 import { defaultDoorConfig, DoorConfig } from "./data/data2D";
 import { useDoor2DImages } from "./model/useDoor2DImages";
 import {
-  useCategoryProducts,
   getSashType,
   SashType,
+  useCategoryProducts,
 } from "./model/useCategoryProducts";
 import { useStaticAssetsUrl } from "@/shared/hooks";
 import { getAssignmentFromSash } from "./data/sashOptions";
@@ -257,7 +257,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
         {/* Door canvas visualization - larger size */}
         <DoorCanvas
           config={config}
-          containerWidth={420}
+          containerWidth={1020}
           containerHeight={500}
           showDimensions={true}
           imageUrls={imageUrls}

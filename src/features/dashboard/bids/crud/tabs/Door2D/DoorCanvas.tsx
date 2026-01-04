@@ -81,13 +81,6 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
       className={cn("flex flex-col items-center", className)}
       style={{ width: containerWidth }}
     >
-      {/* Dimension label - top */}
-      {showDimensions && (
-        <div className="mb-1 text-center text-sm text-gray-700">
-          Полотно: {leafDimLabel}
-        </div>
-      )}
-
       {/* Door visualization container */}
       <div
         className="relative"
@@ -137,13 +130,6 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
           />
         )}
       </div>
-
-      {/* Dimension label - bottom */}
-      {showDimensions && (
-        <div className="mt-1 text-center text-sm text-gray-500">
-          Рамка: {frameDimLabel}
-        </div>
-      )}
     </div>
   );
 };
