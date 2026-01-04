@@ -266,3 +266,29 @@ showGlobalToast(t("common.messages.error"), "error");
 ### Authentication
 
 Auth token is stored in both cookies (`__token`) and localStorage. Use `useAuth()` hook to check authentication state. The `eventBus` emits `"unauthorized"` on logout for cross-component synchronization.
+
+### Transaction Data Transformation
+
+When loading/saving transaction data, use utilities from `src/features/dashboard/bids/utils/transactionTransform.ts`:
+- `transformTransactionDetailToForm` - API response → form values (for edit mode)
+- `buildTransactionPayload` - form values → API payload (for save)
+
+These handle field mapping, ID extraction, and type normalization (e.g., sash values must be strings for Radio.Group compatibility).
+
+### Door 2D Visualization
+
+The 2D door editor (`src/features/dashboard/bids/crud/tabs/Door2D/`) provides visual door configuration:
+- `Door2DEditor` - Main component with canvas, part selector, sash selector
+- `useCategoryProducts` - Fetches products by category section index (frames=5, crowns=7, doors=3, locks=21)
+- `sashOptions.ts` - Sash value mapping (form value "1"-"5" → assignment prefix "one-sash", "two-sash", etc.)
+
+Bidirectional sync between form and 2D editor uses `productIds` prop (form→2D) and `onProductSelect`/`onSashChange` callbacks (2D→form).
+
+### Image Assignment Convention
+
+Product images use assignment prefixes for sash-type filtering:
+- `one-sash-door`, `one-sash-frame`, `one-sash-crown`
+- `two-sash-door`, `two-sash-frame`, `two-sash-crown`
+- etc.
+
+Use `getSashType(assignment)` to extract sash type from assignment string.
