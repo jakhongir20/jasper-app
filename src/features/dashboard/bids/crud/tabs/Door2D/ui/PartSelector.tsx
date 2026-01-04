@@ -151,16 +151,9 @@ export const PartSelector: FC<PartSelectorProps> = ({
     // Don't show products until sash type is selected
     if (!sashType) return [];
 
-    return products.filter((p) => {
-      // For doors, show all products with any images
-      if (activeCategory === "door-window" || activeCategory === "door-deaf") {
-        return getProductImageUrl(p) !== undefined;
-      }
-
-      // For other categories (frames, crowns), filter by sash type
-      return hasImageForSashType(p, sashType);
-    });
-  }, [products, activeCategory, sashType]);
+    // Filter all categories (including doors) by sash type
+    return products.filter((p) => hasImageForSashType(p, sashType));
+  }, [products, sashType]);
 
   // Get selected ID for current category
   const getSelectedId = (): number | null => {
@@ -246,7 +239,7 @@ export const PartSelector: FC<PartSelectorProps> = ({
               product={product}
               selected={getSelectedId() === product.product_id}
               onClick={() => handleSelect(product.product_id)}
-              sashType={activeCategory === "door-window" || activeCategory === "door-deaf" ? undefined : sashType}
+              sashType={sashType}
             />
           ))}
         </div>

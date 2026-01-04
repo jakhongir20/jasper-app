@@ -161,7 +161,11 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
       config.crownId,
       currentSashType,
     );
-    const casingUrl = getSelectedProductImageUrl(casingProducts, config.casingId, currentSashType);
+    const casingUrl = getSelectedProductImageUrl(
+      casingProducts,
+      config.casingId,
+      currentSashType,
+    );
 
     // Fall back to API images from form if no PartSelector selection
     return {
@@ -256,11 +260,11 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
       {/* Main content: Canvas + Color picker + Sash selector */}
       <div className="relative flex flex-1 items-center justify-center bg-gradient-to-b from-gray-50 to-white py-6">
         {/* Sash selector - vertical on the left side (hidden when sections expanded) */}
-        {showSashSelector && (
-          <div className="absolute left-6 top-1/2 z-50 -translate-y-1/2">
-            <SashSelector value={sashValue} onChange={onSashChange} />
-          </div>
-        )}
+        <div className="absolute left-6 top-1/2 z-50 -translate-y-1/2">
+          <SashSelector value={sashValue} onChange={onSashChange} />
+        </div>
+        {/*{showSashSelector && (*/}
+        {/*)}*/}
 
         {/* Door canvas visualization - larger size */}
         <DoorCanvas

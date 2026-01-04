@@ -1253,7 +1253,12 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
   },
 ];
 
-export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen, onDoorSectionToggle }) => {
+export const TransactionForm: FC<Props> = ({
+  className,
+  mode,
+  drawerOpen,
+  onDoorSectionToggle,
+}) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
 
   const transactionValues =
@@ -1721,6 +1726,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen, onDoor
   return (
     <div className={cn(className)}>
       <Collapse
+        destroyOnHidden={false}
         ghost
         activeKey={measuringActive}
         onChange={(key) => setMeasuringActive(Array.isArray(key) ? key : [key])}
@@ -1756,6 +1762,7 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen, onDoor
             <Collapse
               key={section.key}
               activeKey={isActive ? [section.key] : []}
+              destroyOnHidden={false}
               onChange={(key) => {
                 const open = Array.isArray(key)
                   ? key.includes(section.key)

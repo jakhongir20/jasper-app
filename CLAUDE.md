@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Development Commands
 
 ```bash
-npm run dev              # Start dev server with --host flag (network accessible)
+npm run dev              # Start dev server on local network (vite --host)
 npm run build            # Production build (vite build)
 npm run typecheck        # TypeScript type checking (tsc --noEmit)
 npm run lint             # ESLint check
@@ -291,10 +291,14 @@ These handle field mapping, ID extraction, and type normalization (e.g., sash va
 
 The 2D door editor (`src/features/dashboard/bids/crud/tabs/Door2D/`) provides visual door configuration:
 - `Door2DEditor` - Main component with canvas, part selector, sash selector
-- `useCategoryProducts` - Fetches products by category section index (frames=5, crowns=7, doors=3, locks=21)
+- `useCategoryProducts` - Fetches products by category section index:
+  - `frames=5`, `crowns=7`, `casings=9`
+  - Door types: `door-window=2` (ДО дверь), `door-deaf=3` (ДГ дверь)
 - `sashOptions.ts` - Sash value mapping (form value "1"-"5" → assignment prefix "one-sash", "two-sash", etc.)
 
 Bidirectional sync between form and 2D editor uses `productIds` prop (form→2D) and `onProductSelect`/`onSashChange` callbacks (2D→form).
+
+The SashSelector is hidden when the "Полотно (дверь)" section is expanded in TransactionForm (controlled via `onDoorSectionToggle` callback).
 
 ### Image Assignment Convention
 
