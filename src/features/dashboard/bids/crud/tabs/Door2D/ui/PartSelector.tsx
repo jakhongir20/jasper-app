@@ -37,11 +37,11 @@ interface PartSelectorProps {
   /** Product type from form (door-window, door-deaf) - controls which door tab is visible */
   productType?: string | null;
   /** Frame selection handler */
-  onFrameSelect: (id: number) => void;
+  onFrameSelect: (id: number | null) => void;
   /** Crown selection handler */
   onCrownSelect: (id: number | null) => void;
   /** Door selection handler */
-  onDoorSelect: (id: number) => void;
+  onDoorSelect: (id: number | null) => void;
   /** Casing selection handler */
   onCasingSelect: (id: number | null) => void;
   /** Center the content */
@@ -172,21 +172,24 @@ export const PartSelector: FC<PartSelectorProps> = ({
     }
   };
 
-  // Handle product selection
+  // Handle product selection (toggle - click again to deselect)
   const handleSelect = (productId: number) => {
+    const currentSelected = getSelectedId();
+    const newValue = currentSelected === productId ? null : productId;
+
     switch (activeCategory) {
       case "frames":
-        onFrameSelect(productId);
+        onFrameSelect(newValue);
         break;
       case "crowns":
-        onCrownSelect(productId);
+        onCrownSelect(newValue);
         break;
       case "door-window":
       case "door-deaf":
-        onDoorSelect(productId);
+        onDoorSelect(newValue);
         break;
       case "casings":
-        onCasingSelect(productId);
+        onCasingSelect(newValue);
         break;
     }
   };

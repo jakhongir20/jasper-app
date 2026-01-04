@@ -60,7 +60,7 @@ export const DoorBoxes2DForm: FC<Props> = ({
 
   // Handle product selection from 2D editor - update form fields
   const handleProductSelect = useCallback(
-    (type: "door" | "frame" | "crown", productId: number) => {
+    (type: "door" | "frame" | "crown", productId: number | null) => {
       const fieldMap = {
         door: "door_product_id",
         frame: "frame_product_id",

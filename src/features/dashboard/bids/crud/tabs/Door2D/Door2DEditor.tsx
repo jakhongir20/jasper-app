@@ -23,10 +23,10 @@ interface Door2DEditorProps {
     frameProductId?: number | null;
     crownProductId?: number | null;
   };
-  /** Callback when product is selected in 2D editor (to sync with form) */
+  /** Callback when product is selected/deselected in 2D editor (to sync with form) */
   onProductSelect?: (
     type: "door" | "frame" | "crown",
-    productId: number,
+    productId: number | null,
   ) => void;
   /** Current sash value from form */
   sashValue?: string | null;
@@ -82,37 +82,28 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     [onSashChange],
   );
 
-  // Sync config with productIds from form (bidirectional sync)
+  // Sync config with productIds from form (one-way: form → 2D editor)
+  // Only sync when form has a value (don't overwrite local deselection)
   useEffect(() => {
-    const updates: Partial<DoorConfig> = {};
+    const doorId = productIds?.doorProductId;
+    if (doorId && doorId !== config.doorId) {
+      setConfig((prev) => ({ ...prev, doorId }));
+    }
+  }, [productIds?.doorProductId]);
 
-    if (
-      productIds?.doorProductId &&
-      productIds.doorProductId !== config.doorId
-    ) {
-      updates.doorId = productIds.doorProductId;
+  useEffect(() => {
+    const frameId = productIds?.frameProductId;
+    if (frameId && frameId !== config.frameId) {
+      setConfig((prev) => ({ ...prev, frameId }));
     }
-    if (
-      productIds?.frameProductId &&
-      productIds.frameProductId !== config.frameId
-    ) {
-      updates.frameId = productIds.frameProductId;
-    }
-    if (
-      productIds?.crownProductId !== undefined &&
-      productIds.crownProductId !== config.crownId
-    ) {
-      updates.crownId = productIds.crownProductId;
-    }
+  }, [productIds?.frameProductId]);
 
-    if (Object.keys(updates).length > 0) {
-      setConfig((prev) => ({ ...prev, ...updates }));
+  useEffect(() => {
+    const crownId = productIds?.crownProductId;
+    if (crownId !== undefined && crownId !== config.crownId) {
+      setConfig((prev) => ({ ...prev, crownId }));
     }
-  }, [
-    productIds?.doorProductId,
-    productIds?.frameProductId,
-    productIds?.crownProductId,
-  ]);
+  }, [productIds?.crownProductId]);
 
   // Fetch door products to determine sash type when door is selected
   const { data: doorProducts } = useCategoryProducts("doors");
@@ -233,9 +224,9 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     [onChange],
   );
 
-  // Handle part selection
+  // Handle part selection (all support toggle/deselect)
   const handleFrameSelect = useCallback(
-    (id: number) => {
+    (id: number | null) => {
       updateConfig({ frameId: id });
       onProductSelect?.("frame", id);
     },
@@ -245,13 +236,13 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   const handleCrownSelect = useCallback(
     (id: number | null) => {
       updateConfig({ crownId: id });
-      if (id) onProductSelect?.("crown", id);
+      onProductSelect?.("crown", id);
     },
     [updateConfig, onProductSelect],
   );
 
   const handleDoorSelect = useCallback(
-    (id: number) => {
+    (id: number | null) => {
       updateConfig({ doorId: id });
       onProductSelect?.("door", id);
     },
