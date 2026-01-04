@@ -61,6 +61,27 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     ...initialConfig,
   });
 
+  // Local sash state - allows selection even when form field is not registered
+  const [localSashValue, setLocalSashValue] = useState<string | null>(
+    sashValue ?? null,
+  );
+
+  // Sync local sash with form sash value when it changes from form
+  useEffect(() => {
+    if (sashValue && sashValue !== localSashValue) {
+      setLocalSashValue(sashValue);
+    }
+  }, [sashValue]);
+
+  // Handle sash change - update local state and notify parent
+  const handleSashChange = useCallback(
+    (value: string) => {
+      setLocalSashValue(value);
+      onSashChange?.(value);
+    },
+    [onSashChange],
+  );
+
   // Sync config with productIds from form (bidirectional sync)
   useEffect(() => {
     const updates: Partial<DoorConfig> = {};
@@ -105,17 +126,17 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   const { data: crownProducts } = useCategoryProducts("crowns");
   const { data: casingProducts } = useCategoryProducts("casings");
 
-  // Determine sash type from form sash value (primary source)
+  // Determine sash type from local sash value (which syncs with form)
   // Maps: sash=1 → one-sash, sash=2 → one-half-sash, sash=3 → two-sash, etc.
   const currentSashType = useMemo((): SashType | null => {
-    // Primary: use sash value from form
-    const assignmentFromSash = getAssignmentFromSash(sashValue);
+    // Use local sash value (allows selection when form field is not registered)
+    const assignmentFromSash = getAssignmentFromSash(localSashValue);
     if (assignmentFromSash) {
       return assignmentFromSash as SashType;
     }
 
     return null;
-  }, [sashValue]);
+  }, [localSashValue]);
 
   // Get image URL from selected product in PartSelector
   const getSelectedProductImageUrl = (
@@ -259,12 +280,10 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     <div className={cn("flex h-full flex-col", className)}>
       {/* Main content: Canvas + Color picker + Sash selector */}
       <div className="relative flex flex-1 items-center justify-center bg-gradient-to-b from-gray-50 to-white py-6">
-        {/* Sash selector - vertical on the left side (hidden when sections expanded) */}
+        {/* Sash selector - vertical on the left side */}
         <div className="absolute left-6 top-1/2 z-50 -translate-y-1/2">
-          <SashSelector value={sashValue} onChange={onSashChange} />
+          <SashSelector value={localSashValue} onChange={handleSashChange} />
         </div>
-        {/*{showSashSelector && (*/}
-        {/*)}*/}
 
         {/* Door canvas visualization - larger size */}
         <DoorCanvas

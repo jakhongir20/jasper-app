@@ -68,16 +68,8 @@ export const DoorBoxes2DForm: FC<Props> = ({
       };
 
       const fieldName = fieldMap[type];
-      const currentTransactions = form.getFieldValue("transactions") || [{}];
-
-      // Update the first transaction's product field
-      const updatedTransactions = [...currentTransactions];
-      updatedTransactions[0] = {
-        ...updatedTransactions[0],
-        [fieldName]: productId,
-      };
-
-      form.setFieldsValue({ transactions: updatedTransactions });
+      // Use setFieldValue with specific path for immediate update
+      form.setFieldValue(["transactions", 0, fieldName], productId);
     },
     [form],
   );
@@ -85,13 +77,9 @@ export const DoorBoxes2DForm: FC<Props> = ({
   // Handle sash change from 2D editor - update form field
   const handleSashChange = useCallback(
     (value: string) => {
-      const currentTransactions = form.getFieldValue("transactions") || [{}];
-      const updatedTransactions = [...currentTransactions];
-      updatedTransactions[0] = {
-        ...updatedTransactions[0],
-        sash: value,
-      };
-      form.setFieldsValue({ transactions: updatedTransactions });
+      // Use setFieldValue with specific path for immediate update
+      // This works even when the field is not rendered (Полотно section collapsed)
+      form.setFieldValue(["transactions", 0, "sash"], value);
     },
     [form],
   );
