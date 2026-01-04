@@ -7,10 +7,19 @@ import { useDoor2DImages } from "./model/useDoor2DImages";
 import {
   getSashType,
   SashType,
-  useCategoryProducts,
+  useCategoryProductsByIndex,
 } from "./model/useCategoryProducts";
 import { useStaticAssetsUrl } from "@/shared/hooks";
 import { getAssignmentFromSash } from "./data/sashOptions";
+
+/** Section index mapping for common part types */
+const SECTION_INDEX = {
+  frame: 5,
+  crown: 7,
+  doorWindow: 2,
+  doorDeaf: 3,
+  casing: 9,
+} as const;
 
 interface Door2DEditorProps {
   /** Initial configuration (for edit mode) */
@@ -23,19 +32,18 @@ interface Door2DEditorProps {
     frameProductId?: number | null;
     crownProductId?: number | null;
   };
-  /** Callback when product is selected/deselected in 2D editor (to sync with form) */
-  onProductSelect?: (
-    type: "door" | "frame" | "crown",
-    productId: number | null,
-  ) => void;
+  /** Selected products by section index */
+  selectedProducts?: Record<number, number | null>;
+  /** Callback when product is selected/deselected in 2D editor (by section index) */
+  onSectionProductSelect?: (sectionIndex: number, productId: number | null) => void;
   /** Current sash value from form */
   sashValue?: string | null;
   /** Callback when sash is changed in 2D editor */
   onSashChange?: (value: string) => void;
   /** Product type from form (door-window, door-deaf) */
   productType?: string | null;
-  /** Whether to show sash selector (hide when sections are expanded in form) */
-  showSashSelector?: boolean;
+  /** Visible section indexes for tabs */
+  visibleSections?: number[];
   /** Custom class name */
   className?: string;
 }
@@ -48,11 +56,12 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   initialConfig,
   onChange,
   productIds,
-  onProductSelect,
+  selectedProducts: externalSelectedProducts = {},
+  onSectionProductSelect,
   sashValue,
   onSashChange,
   productType,
-  showSashSelector = true,
+  visibleSections, // Optional - PartSelector will use all sections if not provided
   className,
 }) => {
   // Door configuration state
@@ -60,6 +69,28 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     ...defaultDoorConfig,
     ...initialConfig,
   });
+
+  // Local selected products state - allows immediate UI update before form sync
+  const [localSelectedProducts, setLocalSelectedProducts] = useState<Record<number, number | null>>(
+    externalSelectedProducts,
+  );
+
+  // Sync local state with external props when they change (form → 2D editor)
+  useEffect(() => {
+    setLocalSelectedProducts((prev) => {
+      // Merge external values, but don't overwrite local selections with null
+      const merged = { ...prev };
+      for (const key of Object.keys(externalSelectedProducts)) {
+        const sectionIndex = Number(key);
+        const externalValue = externalSelectedProducts[sectionIndex];
+        // Only update if external has a value (don't overwrite local deselection)
+        if (externalValue !== null && externalValue !== undefined) {
+          merged[sectionIndex] = externalValue;
+        }
+      }
+      return merged;
+    });
+  }, [externalSelectedProducts]);
 
   // Local sash state - allows selection even when form field is not registered
   const [localSashValue, setLocalSashValue] = useState<string | null>(
@@ -105,17 +136,18 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     }
   }, [productIds?.crownProductId]);
 
-  // Fetch door products to determine sash type when door is selected
-  const { data: doorProducts } = useCategoryProducts("doors");
+  // Fetch door products by section index (ДО = 2, ДГ = 3)
+  const { data: doorWindowProducts } = useCategoryProductsByIndex(SECTION_INDEX.doorWindow);
+  const { data: doorDeafProducts } = useCategoryProductsByIndex(SECTION_INDEX.doorDeaf);
 
   // Fetch images from API based on product IDs
   const { data: apiImages } = useDoor2DImages(productIds || {});
   const { getAssetUrl } = useStaticAssetsUrl();
 
   // Fetch products for other categories to get images when selected
-  const { data: frameProducts } = useCategoryProducts("frames");
-  const { data: crownProducts } = useCategoryProducts("crowns");
-  const { data: casingProducts } = useCategoryProducts("casings");
+  const { data: frameProducts } = useCategoryProductsByIndex(SECTION_INDEX.frame);
+  const { data: crownProducts } = useCategoryProductsByIndex(SECTION_INDEX.crown);
+  const { data: casingProducts } = useCategoryProductsByIndex(SECTION_INDEX.casing);
 
   // Determine sash type from local sash value (which syncs with form)
   // Maps: sash=1 → one-sash, sash=2 → one-half-sash, sash=3 → two-sash, etc.
@@ -155,27 +187,41 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     return svgImage?.image_url || filteredImages[0]?.image_url;
   };
 
-  // Build image URLs - prioritize PartSelector selection, then API images from form
+  // Build image URLs from localSelectedProducts (by section index)
   const imageUrls = useMemo(() => {
-    // Get URLs from selected products in PartSelector
-    const doorUrl = getSelectedProductImageUrl(
-      doorProducts,
-      config.doorId,
+    // Get product IDs from localSelectedProducts by section index
+    const doorWindowProductId = localSelectedProducts[SECTION_INDEX.doorWindow] ?? null;
+    const doorDeafProductId = localSelectedProducts[SECTION_INDEX.doorDeaf] ?? null;
+    const frameProductId = localSelectedProducts[SECTION_INDEX.frame] ?? null;
+    const crownProductId = localSelectedProducts[SECTION_INDEX.crown] ?? null;
+    const casingProductId = localSelectedProducts[SECTION_INDEX.casing] ?? null;
+
+    // Get URLs from selected products - use correct product list for each door type
+    const doorWindowUrl = getSelectedProductImageUrl(
+      doorWindowProducts,
+      doorWindowProductId,
       currentSashType,
     );
+    const doorDeafUrl = getSelectedProductImageUrl(
+      doorDeafProducts,
+      doorDeafProductId,
+      currentSashType,
+    );
+    // Use whichever door type has a selection
+    const doorUrl = doorWindowUrl || doorDeafUrl;
     const frameUrl = getSelectedProductImageUrl(
       frameProducts,
-      config.frameId,
+      frameProductId,
       currentSashType,
     );
     const crownUrl = getSelectedProductImageUrl(
       crownProducts,
-      config.crownId,
+      crownProductId,
       currentSashType,
     );
     const casingUrl = getSelectedProductImageUrl(
       casingProducts,
-      config.casingId,
+      casingProductId,
       currentSashType,
     );
 
@@ -199,14 +245,12 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
       casingUrl: casingUrl ? getAssetUrl(casingUrl) : undefined,
     };
   }, [
-    doorProducts,
+    doorWindowProducts,
+    doorDeafProducts,
     frameProducts,
     crownProducts,
     casingProducts,
-    config.doorId,
-    config.frameId,
-    config.crownId,
-    config.casingId,
+    localSelectedProducts,
     currentSashType,
     apiImages,
     getAssetUrl,
@@ -224,47 +268,26 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     [onChange],
   );
 
-  // Handle part selection (all support toggle/deselect)
-  const handleFrameSelect = useCallback(
-    (id: number | null) => {
-      updateConfig({ frameId: id });
-      onProductSelect?.("frame", id);
-    },
-    [updateConfig, onProductSelect],
-  );
-
-  const handleCrownSelect = useCallback(
-    (id: number | null) => {
-      updateConfig({ crownId: id });
-      onProductSelect?.("crown", id);
-    },
-    [updateConfig, onProductSelect],
-  );
-
-  const handleDoorSelect = useCallback(
-    (id: number | null) => {
-      updateConfig({ doorId: id });
-      onProductSelect?.("door", id);
-    },
-    [updateConfig, onProductSelect],
-  );
-
-  const handleCasingSelect = useCallback(
-    (id: number | null) => updateConfig({ casingId: id }),
-    [updateConfig],
-  );
-
-  const handleFullHeightToggle = useCallback(
-    (enabled: boolean) => updateConfig({ fullHeight: enabled }),
-    [updateConfig],
-  );
-
   // Handle wall color change
   const handleWallColorChange = useCallback(
     (color: string) => {
       updateConfig({ wallColor: color });
     },
     [updateConfig],
+  );
+
+  // Handle product selection - update local state immediately and notify parent
+  const handleProductSelect = useCallback(
+    (sectionIndex: number, productId: number | null) => {
+      // Update local state immediately for instant UI feedback
+      setLocalSelectedProducts((prev) => ({
+        ...prev,
+        [sectionIndex]: productId,
+      }));
+      // Notify parent to sync with form
+      onSectionProductSelect?.(sectionIndex, productId);
+    },
+    [onSectionProductSelect],
   );
 
   return (
@@ -295,19 +318,14 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
         </div>
       </div>
 
-      {/* Bottom section: Part selector only */}
+      {/* Bottom section: Part selector with dynamic tabs */}
       <div className="border-t border-[rgba(5,5,5,0.06)] bg-white px-4 py-4">
         <PartSelector
-          selectedFrameId={config.frameId}
-          selectedCrownId={config.crownId}
-          selectedDoorId={config.doorId}
-          selectedCasingId={config.casingId}
+          visibleSections={visibleSections}
+          selectedProducts={localSelectedProducts}
           sashType={currentSashType}
           productType={productType}
-          onFrameSelect={handleFrameSelect}
-          onCrownSelect={handleCrownSelect}
-          onDoorSelect={handleDoorSelect}
-          onCasingSelect={handleCasingSelect}
+          onProductSelect={handleProductSelect}
           centered={true}
         />
       </div>

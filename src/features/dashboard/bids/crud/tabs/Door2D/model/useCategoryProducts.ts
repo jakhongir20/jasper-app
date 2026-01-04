@@ -90,6 +90,18 @@ export function useCategoryProducts(category: PartCategory2D, productType?: stri
 }
 
 /**
+ * Hook to fetch products by section index directly
+ */
+export function useCategoryProductsByIndex(sectionIndex: number) {
+  return useQuery({
+    queryKey: ["category-products-2d", sectionIndex],
+    queryFn: () => fetchCategoryProducts(sectionIndex),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    enabled: sectionIndex > 0,
+  });
+}
+
+/**
  * Sash type extracted from assignment (one-sash, two-sash, etc.)
  */
 export type SashType = "one-sash" | "one-half-sash" | "two-sash" | "three-sash" | "four-sash";
