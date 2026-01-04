@@ -87,16 +87,25 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
         style={{
           width: containerWidth,
           height: containerHeight,
-          backgroundColor: config.wallColor,
         }}
       >
+        {/* Wall color background - covers bottom 85% to avoid area above door */}
+        <div
+          className="absolute bottom-0 left-0 right-0"
+          style={{
+            height: "100%",
+            backgroundColor: config.wallColor,
+            zIndex: 0,
+          }}
+        />
+
         {/* Frame layer - background */}
         {frameUrl && (
           <img
             src={frameUrl}
             alt="Frame"
             className="absolute inset-0 h-full w-full object-contain"
-            style={{ zIndex: 1 }}
+            style={{ zIndex: 10 }}
           />
         )}
 
@@ -106,7 +115,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
             src={doorUrl}
             alt="Door"
             className="absolute inset-0 h-full w-full object-contain"
-            style={{ zIndex: 2 }}
+            style={{ zIndex: 20 }}
           />
         )}
 
@@ -116,7 +125,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
             src={crownUrl}
             alt="Crown"
             className="absolute inset-0 h-full w-full object-contain"
-            style={{ zIndex: 3 }}
+            style={{ zIndex: 30 }}
           />
         )}
 
@@ -126,7 +135,7 @@ export const DoorCanvas: FC<DoorCanvasProps> = ({
             src={lockUrl}
             alt="Lock"
             className="absolute inset-0 h-full w-full object-contain"
-            style={{ zIndex: 4 }}
+            style={{ zIndex: 40 }}
           />
         )}
       </div>

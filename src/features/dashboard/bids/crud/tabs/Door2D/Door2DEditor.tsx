@@ -250,7 +250,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
       {/* Main content: Canvas + Color picker + Sash selector */}
       <div className="relative flex flex-1 items-center justify-center bg-gradient-to-b from-gray-50 to-white py-6">
         {/* Sash selector - vertical on the left side */}
-        <div className="absolute left-6 top-1/2 -translate-y-1/2">
+        <div className="absolute left-6 top-1/2 z-50 -translate-y-1/2">
           <SashSelector value={sashValue} onChange={onSashChange} />
         </div>
 
@@ -264,7 +264,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
         />
 
         {/* Wall color picker - vertical on the right side */}
-        <div className="absolute right-6 top-1/2 -translate-y-1/2">
+        <div className="absolute right-6 top-1/2 z-50 -translate-y-1/2">
           <ColorPicker
             wallColor={config.wallColor}
             onWallColorChange={handleWallColorChange}
