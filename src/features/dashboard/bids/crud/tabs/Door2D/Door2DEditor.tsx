@@ -34,6 +34,8 @@ interface Door2DEditorProps {
   onSashChange?: (value: string) => void;
   /** Product type from form (door-window, door-deaf) */
   productType?: string | null;
+  /** Whether to show sash selector (hide when sections are expanded in form) */
+  showSashSelector?: boolean;
   /** Custom class name */
   className?: string;
 }
@@ -50,6 +52,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   sashValue,
   onSashChange,
   productType,
+  showSashSelector = true,
   className,
 }) => {
   // Door configuration state
@@ -252,10 +255,12 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
     <div className={cn("flex h-full flex-col", className)}>
       {/* Main content: Canvas + Color picker + Sash selector */}
       <div className="relative flex flex-1 items-center justify-center bg-gradient-to-b from-gray-50 to-white py-6">
-        {/* Sash selector - vertical on the left side */}
-        <div className="absolute left-6 top-1/2 z-50 -translate-y-1/2">
-          <SashSelector value={sashValue} onChange={onSashChange} />
-        </div>
+        {/* Sash selector - vertical on the left side (hidden when sections expanded) */}
+        {showSashSelector && (
+          <div className="absolute left-6 top-1/2 z-50 -translate-y-1/2">
+            <SashSelector value={sashValue} onChange={onSashChange} />
+          </div>
+        )}
 
         {/* Door canvas visualization - larger size */}
         <DoorCanvas

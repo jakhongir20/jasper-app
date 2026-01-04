@@ -35,6 +35,7 @@ export const TransactionDrawer: FC<Props> = ({
   const [drawerForm] = Form.useForm<ApplicationLocalForm>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("perechen");
+  const [sectionsExpanded, setSectionsExpanded] = useState(false);
   const originalTransactionsRef = useRef<Record<string, any>[]>([]);
 
   // Initialize drawer form when opened
@@ -338,12 +339,24 @@ export const TransactionDrawer: FC<Props> = ({
             {
               key: "perechen",
               label: "Перечень",
-              children: <TransactionForm mode={mode} drawerOpen={open} />,
+              children: (
+                <TransactionForm
+                  mode={mode}
+                  drawerOpen={open}
+                  onDoorSectionToggle={setSectionsExpanded}
+                />
+              ),
             },
             {
               key: "door-boxes-2d",
               label: "2D / Визуализация",
-              children: <DoorBoxes2DForm mode={mode} drawerOpen={open} />,
+              children: (
+                <DoorBoxes2DForm
+                  mode={mode}
+                  drawerOpen={open}
+                  doorSectionExpanded={sectionsExpanded}
+                />
+              ),
             },
           ]}
         />

@@ -70,6 +70,8 @@ interface Props {
   className?: string;
   mode: "add" | "edit";
   drawerOpen?: boolean;
+  /** Callback when door section (Полотно) expand state changes */
+  onDoorSectionToggle?: (expanded: boolean) => void;
 }
 
 // Only include valid product types accepted by the API
@@ -1251,7 +1253,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
   },
 ];
 
-export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
+export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen, onDoorSectionToggle }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
 
   const transactionValues =
@@ -1705,9 +1707,14 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
       // Open all sections
       const allKeys = combinedSections.map((section) => section.key);
       setActiveSectionKeys(allKeys);
+      // Notify about door section if it exists
+      if (allKeys.includes("door")) {
+        onDoorSectionToggle?.(true);
+      }
     } else {
       // Close all sections
       setActiveSectionKeys([]);
+      onDoorSectionToggle?.(false);
     }
   };
 
@@ -1760,6 +1767,11 @@ export const TransactionForm: FC<Props> = ({ className, mode, drawerOpen }) => {
 
                   // Update expandAll state based on whether all sections are open
                   setExpandAll(newKeys.length === combinedSections.length);
+
+                  // Notify parent about door section toggle (for 2D tab sash selector visibility)
+                  if (section.key === "door") {
+                    onDoorSectionToggle?.(open);
+                  }
 
                   return newKeys;
                 });

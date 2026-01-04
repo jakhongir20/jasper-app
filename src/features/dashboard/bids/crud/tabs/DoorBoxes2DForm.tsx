@@ -7,6 +7,8 @@ interface Props {
   className?: string;
   mode: "add" | "edit";
   drawerOpen?: boolean;
+  /** Whether all sections are expanded in TransactionForm (hide sash selector when true) */
+  doorSectionExpanded?: boolean;
 }
 
 /**
@@ -31,7 +33,10 @@ function extractProductId(value: unknown): number | null {
  * Integrates the 2D door editor into the transaction drawer
  * Reads product IDs from form context to load matching SVG images
  */
-export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
+export const DoorBoxes2DForm: FC<Props> = ({
+  className,
+  doorSectionExpanded,
+}) => {
   const form = Form.useFormInstance();
 
   // Get transaction data from form (same approach as TransactionForm)
@@ -100,6 +105,7 @@ export const DoorBoxes2DForm: FC<Props> = ({ className }) => {
         sashValue={sashValue}
         onSashChange={handleSashChange}
         productType={productType}
+        showSashSelector={doorSectionExpanded}
       />
     </div>
   );
