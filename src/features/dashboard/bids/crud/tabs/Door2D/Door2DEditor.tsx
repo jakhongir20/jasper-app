@@ -280,10 +280,19 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
   const handleProductSelect = useCallback(
     (sectionIndex: number, productId: number | null) => {
       // Update local state immediately for instant UI feedback
-      setLocalSelectedProducts((prev) => ({
-        ...prev,
-        [sectionIndex]: productId,
-      }));
+      setLocalSelectedProducts((prev) => {
+        const updated = { ...prev, [sectionIndex]: productId };
+
+        // When selecting a door type, clear the other door type
+        // ДО Дверь (section 2) and ДГ Дверь (section 3) are mutually exclusive
+        if (sectionIndex === SECTION_INDEX.doorWindow && productId !== null) {
+          updated[SECTION_INDEX.doorDeaf] = null;
+        } else if (sectionIndex === SECTION_INDEX.doorDeaf && productId !== null) {
+          updated[SECTION_INDEX.doorWindow] = null;
+        }
+
+        return updated;
+      });
       // Notify parent to sync with form
       onSectionProductSelect?.(sectionIndex, productId);
     },
