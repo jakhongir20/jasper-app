@@ -3,7 +3,7 @@ import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
 import { useConfigurationDetail } from "@/features/admin/settings/model/settings.queries";
-import { Input, NumberInput, Select, SelectInfinitive } from "@/shared/ui";
+import { Input, Select, SelectInfinitive } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 import { SASH_OPTIONS } from "./Door2D/data/sashOptions";
 
@@ -1329,27 +1329,27 @@ export const TransactionForm: FC<Props> = ({
   }, [form, transactionValues]);
 
   // 2.6.1: Auto-fill box_width from company configuration API when adding new transaction
+  // Only auto-fill ONCE, then allow user to change/clear freely
+  const [boxWidthInitialized, setBoxWidthInitialized] = useState(false);
+
   useEffect(() => {
-    if (!drawerOpen || mode !== "add") return;
+    if (mode !== "add") return;
+    if (boxWidthInitialized) return;
+    if (!configuration?.standard_box_width) return;
 
     const transactionBoxWidth = transactionValues.box_width;
 
-    // Check for undefined, null, empty string, or 0 - all considered "not set"
+    // Check for undefined, null, empty string - but NOT 0 (0 is valid value)
     const isTransactionBoxWidthEmpty =
       transactionBoxWidth === undefined ||
       transactionBoxWidth === null ||
-      transactionBoxWidth === "" ||
-      transactionBoxWidth === 0;
+      transactionBoxWidth === "";
 
-    const hasConfigBoxWidth =
-      configuration?.standard_box_width !== undefined &&
-      configuration?.standard_box_width !== null &&
-      configuration?.standard_box_width !== 0;
-
-    if (hasConfigBoxWidth && isTransactionBoxWidthEmpty) {
+    if (isTransactionBoxWidthEmpty) {
       setTransactionField("box_width", configuration.standard_box_width);
+      setBoxWidthInitialized(true);
     }
-  }, [drawerOpen, mode, configuration?.standard_box_width]);
+  }, [mode, configuration?.standard_box_width, boxWidthInitialized]);
 
   // 2.6.2: Auto-fill default door lock and hinge from application defaults
   useEffect(() => {
@@ -1407,6 +1407,7 @@ export const TransactionForm: FC<Props> = ({
       // Reset when drawer closes
       setMeasuringActive([]);
       setSectionsActive([]);
+      setBoxWidthInitialized(false);
     }
   }, [drawerOpen, mode]);
 
@@ -1488,13 +1489,14 @@ export const TransactionForm: FC<Props> = ({
               },
             ]}
           >
-            <NumberInput
+            <Input
+              type="number"
               min={0}
               step={field.numberStep ?? 0.01}
               placeholder={field.placeholder}
               disabled={isFieldDisabled}
-              floatValue={!isInteger}
-              onChange={(numValue) => {
+              onChange={(e) => {
+                const numValue = e.target.value ? Number(e.target.value) : null;
                 // Sync value to aliases (e.g., opening_thickness -> doorway_thickness)
                 if (field.aliases) {
                   field.aliases.forEach((alias) =>
