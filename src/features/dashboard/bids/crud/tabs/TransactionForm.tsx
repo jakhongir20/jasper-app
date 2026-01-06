@@ -3,7 +3,6 @@ import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
 import {
-  CSwitch,
   Input,
   NumberInput,
   Select,
@@ -1201,6 +1200,31 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     aliases: ["doorway_thickness"],
   },
   {
+    name: "threshold",
+    label: "Порог",
+    type: "select",
+    placeholder: "Выберите тип порога",
+    options: [
+      { value: "no", label: "Нет" },
+      { value: "with", label: "С порогом" },
+      { value: "with-low", label: "С порогом (низкий)" },
+    ],
+    visible: (_, productType) => isDoorType(productType),
+  },
+  {
+    name: "opening_logic",
+    label: "Логика открывания",
+    type: "select",
+    placeholder: "Выберите логику открывания",
+    options: [
+      { value: "pull-right", label: "Наружное правое" },
+      { value: "push-right", label: "Внутреннее правое" },
+      { value: "pull-left", label: "Наружное левое" },
+      { value: "push-left", label: "Внутреннее левое" },
+    ],
+    visible: (_, productType) => isDoorType(productType),
+  },
+  {
     name: "framework_front_id",
     label: "Каркас передний",
     type: "image",
@@ -1226,31 +1250,6 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     valueKey: "framework_id",
     visible: (_, productType) => isDoorOrDoorway(productType),
   },
-  {
-    name: "threshold",
-    label: "Порог",
-    type: "select",
-    placeholder: "Выберите тип порога",
-    options: [
-      { value: "no", label: "Нет" },
-      { value: "with", label: "С порогом" },
-      { value: "with-low", label: "С порогом (низкий)" },
-    ],
-    visible: (_, productType) => isDoorType(productType),
-  },
-  {
-    name: "opening_logic",
-    label: "Логика открывания",
-    type: "select",
-    placeholder: "Выберите логику открывания",
-    options: [
-      { value: "pull-right", label: "Наружное правое" },
-      { value: "push-right", label: "Внутреннее правое" },
-      { value: "pull-left", label: "Наружное левое" },
-      { value: "push-left", label: "Внутреннее левое" },
-    ],
-    visible: (_, productType) => isDoorType(productType),
-  },
 ];
 
 export const TransactionForm: FC<Props> = ({
@@ -1272,11 +1271,9 @@ export const TransactionForm: FC<Props> = ({
   const productType = resolveProductType(transactionValues);
 
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
-  const sections = useMemo(() => config?.sections ?? [], [config]);
-  const [activeSectionKeys, setActiveSectionKeys] = useState<string[]>([]);
   const [locationSearch, setLocationSearch] = useState<string>(""); // Per 2.6.4: Track location search term
-  const [expandAll, setExpandAll] = useState<boolean>(false);
   const [measuringActive, setMeasuringActive] = useState<string[]>([]);
+  const [sectionsActive, setSectionsActive] = useState<string[]>([]);
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1419,20 +1416,19 @@ export const TransactionForm: FC<Props> = ({
     }
   }, [transactionValues.transom_type, form]);
 
-  // Auto-open "Замерка" collapse and expand all sections when drawer opens in edit mode
+  // Auto-open "Замерка" and "Секции" collapses when drawer opens in edit mode
   useEffect(() => {
     if (drawerOpen && mode === "edit") {
       const timer = setTimeout(() => {
         setMeasuringActive(["measuring"]);
-        setExpandAll(true);
+        setSectionsActive(["sections"]);
       }, 300);
 
       return () => clearTimeout(timer);
     } else {
       // Reset when drawer closes
       setMeasuringActive([]);
-      setExpandAll(false);
-      setActiveSectionKeys([]);
+      setSectionsActive([]);
     }
   }, [drawerOpen, mode]);
 
@@ -1698,30 +1694,12 @@ export const TransactionForm: FC<Props> = ({
     return filterVisibleSections(ALL_SECTIONS, transactionValues, productType);
   }, [transactionValues, productType]);
 
-  // Auto-expand all sections when expandAll becomes true
+  // Notify parent about door section visibility (for 2D tab sash selector)
   useEffect(() => {
-    if (expandAll) {
-      const allKeys = combinedSections.map((section) => section.key);
-      setActiveSectionKeys(allKeys);
-    }
-  }, [expandAll, combinedSections]);
-
-  const handleExpandAllToggle = (checked: boolean) => {
-    setExpandAll(checked);
-    if (checked) {
-      // Open all sections
-      const allKeys = combinedSections.map((section) => section.key);
-      setActiveSectionKeys(allKeys);
-      // Notify about door section if it exists
-      if (allKeys.includes("door")) {
-        onDoorSectionToggle?.(true);
-      }
-    } else {
-      // Close all sections
-      setActiveSectionKeys([]);
-      onDoorSectionToggle?.(false);
-    }
-  };
+    const hasDoorSection = combinedSections.some((s) => s.key === "door");
+    const isSectionsOpen = sectionsActive.includes("sections");
+    onDoorSectionToggle?.(hasDoorSection && isSectionsOpen);
+  }, [combinedSections, sectionsActive, onDoorSectionToggle]);
 
   return (
     <div className={cn(className)}>
@@ -1737,7 +1715,7 @@ export const TransactionForm: FC<Props> = ({
             <span className={"font-medium !text-[#218395]"}>Замерка</span>
           }
         >
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {MEASUREMENT_FIELDS.map((field) => {
               const node = renderField(field);
               if (!node) return null;
@@ -1749,74 +1727,41 @@ export const TransactionForm: FC<Props> = ({
 
       <Divider />
 
-      <div className="space-y-4">
-        <div className="mb-4 flex items-center gap-2">
-          <CSwitch checked={expandAll} onChange={handleExpandAllToggle} />
-          <span className="text-sm text-gray-400">
-            {expandAll ? "Свернуть все секции" : "Развернуть все секции"}
-          </span>
-        </div>
-        {combinedSections.map((section) => {
-          const isActive = activeSectionKeys.includes(section.key);
-          return (
-            <Collapse
-              key={section.key}
-              activeKey={isActive ? [section.key] : []}
-              destroyOnHidden={false}
-              onChange={(key) => {
-                const open = Array.isArray(key)
-                  ? key.includes(section.key)
-                  : key === section.key;
-                setActiveSectionKeys((prev) => {
-                  const newKeys = open
-                    ? Array.from(new Set([...prev, section.key]))
-                    : prev.filter((value) => value !== section.key);
-
-                  // Update expandAll state based on whether all sections are open
-                  setExpandAll(newKeys.length === combinedSections.length);
-
-                  // Notify parent about door section toggle (for 2D tab sash selector visibility)
-                  if (section.key === "door") {
-                    onDoorSectionToggle?.(open);
-                  }
-
-                  return newKeys;
-                });
-              }}
-              expandIconPosition="end"
-            >
-              <Collapse.Panel
-                header={
-                  <p className={"!text-medium !text-[#218395]"}>
-                    {section.title ?? "Параметры"}
-                  </p>
-                }
-                key={section.key}
-              >
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {section.fields.map((field) => {
-                    const node = renderField(field);
-                    if (!node) return null;
-                    return (
-                      <Fragment key={`${section.key}-${field.name}`}>
-                        {node}
-                      </Fragment>
-                    );
-                  })}
-                </div>
-              </Collapse.Panel>
-            </Collapse>
-          );
-        })}
-
-        {combinedSections.length === 0 && (
-          <div className="text-sm text-gray-500">
-            {productType
-              ? "Для выбранного типа продукта дополнительных полей пока не настроено."
-              : "Выберите тип продукта для активации этапа моделирования"}
-          </div>
-        )}
-      </div>
+      <Collapse
+        destroyOnHidden={false}
+        ghost
+        activeKey={sectionsActive}
+        onChange={(key) => setSectionsActive(Array.isArray(key) ? key : [key])}
+      >
+        <Collapse.Panel
+          key="sections"
+          header={
+            <span className={"font-medium !text-[#218395]"}>Секции</span>
+          }
+        >
+          {combinedSections.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {combinedSections.flatMap((section) =>
+                section.fields.map((field) => {
+                  const node = renderField(field);
+                  if (!node) return null;
+                  return (
+                    <Fragment key={`${section.key}-${field.name}`}>
+                      {node}
+                    </Fragment>
+                  );
+                }),
+              )}
+            </div>
+          ) : (
+            <div className="text-sm text-gray-500">
+              {productType
+                ? "Для выбранного типа продукта дополнительных полей пока не настроено."
+                : "Выберите тип продукта для активации этапа моделирования"}
+            </div>
+          )}
+        </Collapse.Panel>
+      </Collapse>
     </div>
   );
 };
