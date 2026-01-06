@@ -2,12 +2,8 @@ import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
-import {
-  Input,
-  NumberInput,
-  Select,
-  SelectInfinitive,
-} from "@/shared/ui";
+import { useConfigurationDetail } from "@/features/admin/settings/model/settings.queries";
+import { Input, NumberInput, Select, SelectInfinitive } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 import { SASH_OPTIONS } from "./Door2D/data/sashOptions";
 
@@ -814,7 +810,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         type: "number",
         numberStep: 0.01,
         placeholder: "Введите ширину коробки",
-        defaultValue: 0.09,
       },
       {
         name: "box_width_length",
@@ -867,8 +862,6 @@ const getSectionsForProductType = (productType: string) =>
     }
     return section.allowedProductTypes.includes(productType);
   });
-
-const DEFAULT_PRODUCT_SECTIONS: SectionConfig[] = ALL_SECTIONS;
 
 const resolveProductType = (values: TransactionValues) =>
   ((values.product_type ?? values.door_type) as string | undefined) ?? "";
@@ -1259,14 +1252,12 @@ export const TransactionForm: FC<Props> = ({
   onDoorSectionToggle,
 }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
+  const { data: configuration } = useConfigurationDetail();
 
   const transactionValues =
     (Form.useWatch(["transactions", 0], form) as TransactionValues) ??
     (form.getFieldValue(["transactions", 0]) as TransactionValues) ??
     {};
-
-  // Watch general.box_width for auto-fill functionality
-  const generalBoxWidth = Form.useWatch(["general", "box_width"], form);
 
   const productType = resolveProductType(transactionValues);
 
@@ -1337,13 +1328,12 @@ export const TransactionForm: FC<Props> = ({
     });
   }, [form, transactionValues]);
 
-  // 2.6.1: Auto-fill box_width from company_configuration (application general form)
-  // Only auto-fill once when transaction is first created, then allow manual override
-  const [boxWidthInitialized, setBoxWidthInitialized] = useState(false);
+  // 2.6.1: Auto-fill box_width from company configuration API when adding new transaction
   useEffect(() => {
+    if (!drawerOpen || mode !== "add") return;
+
     const transactionBoxWidth = transactionValues.box_width;
 
-    // Auto-fill box_width only once on initial load, then never override user changes
     // Check for undefined, null, empty string, or 0 - all considered "not set"
     const isTransactionBoxWidthEmpty =
       transactionBoxWidth === undefined ||
@@ -1351,20 +1341,15 @@ export const TransactionForm: FC<Props> = ({
       transactionBoxWidth === "" ||
       transactionBoxWidth === 0;
 
-    const hasGeneralBoxWidth =
-      generalBoxWidth !== undefined &&
-      generalBoxWidth !== null &&
-      generalBoxWidth !== 0;
+    const hasConfigBoxWidth =
+      configuration?.standard_box_width !== undefined &&
+      configuration?.standard_box_width !== null &&
+      configuration?.standard_box_width !== 0;
 
-    if (
-      !boxWidthInitialized &&
-      hasGeneralBoxWidth &&
-      isTransactionBoxWidthEmpty
-    ) {
-      setTransactionField("box_width", generalBoxWidth);
-      setBoxWidthInitialized(true);
+    if (hasConfigBoxWidth && isTransactionBoxWidthEmpty) {
+      setTransactionField("box_width", configuration.standard_box_width);
     }
-  }, [generalBoxWidth, transactionValues.box_width, boxWidthInitialized]);
+  }, [drawerOpen, mode, configuration?.standard_box_width]);
 
   // 2.6.2: Auto-fill default door lock and hinge from application defaults
   useEffect(() => {
@@ -1393,13 +1378,6 @@ export const TransactionForm: FC<Props> = ({
       setTransactionField("quantity", 1);
     }
   }, [form, transactionValues]);
-
-  // Apply default box_width value (0.09) when creating new transaction
-  useEffect(() => {
-    if (mode === "add" && !transactionValues.box_width) {
-      setTransactionField("box_width", 0.09);
-    }
-  }, [mode, transactionValues.box_width]);
 
   // 2.6.6: Transom conditional fields - hide and clear if transom_type != "Скрытая" (Hidden = 2)
   useEffect(() => {
@@ -1548,32 +1526,7 @@ export const TransactionForm: FC<Props> = ({
         );
       case "selectInfinitive":
         return (
-          <Form.Item
-            name={namePath}
-            label={field.label}
-            rules={rules}
-            getValueFromEvent={(value) => {
-              // Extract label (name) for location field, not ID
-              if (field.name === "location") {
-                if (typeof value === "object" && value !== null) {
-                  const labelKey = field.labelKey;
-                  // Handle string or array labelKey
-                  if (Array.isArray(labelKey)) {
-                    return (
-                      labelKey
-                        .map((key) => value?.[key])
-                        .filter(Boolean)
-                        .join(" ") || ""
-                    );
-                  }
-                  return value?.[labelKey ?? "name"] ?? "";
-                }
-                // Return empty string if value is not found
-                return value ?? "";
-              }
-              return value;
-            }}
-          >
+          <Form.Item name={namePath} label={field.label} rules={rules}>
             <SelectInfinitive
               placeholder={field.placeholder}
               queryKey={field.queryKey}
@@ -1735,9 +1688,7 @@ export const TransactionForm: FC<Props> = ({
       >
         <Collapse.Panel
           key="sections"
-          header={
-            <span className={"font-medium !text-[#218395]"}>Секции</span>
-          }
+          header={<span className={"font-medium !text-[#218395]"}>Секции</span>}
         >
           {combinedSections.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

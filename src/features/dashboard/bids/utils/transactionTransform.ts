@@ -163,7 +163,7 @@ export const buildTransactionPayload = (
   transaction: PrimitiveRecord,
 ): PrimitiveRecord => {
   const data = {
-    location: normalizeString(transaction.location),
+    location_id: extractId(transaction.location, ["location_id", "id", "value"]),
     product_type: normalizeProductType(
       transaction.product_type ?? transaction.door_type,
     ),
