@@ -180,7 +180,7 @@ export const TransactionDrawer: FC<Props> = ({
 
       parentForm.setFieldsValue({ transactions: updatedTransactions });
       drawerForm.resetFields();
-      message.success("Замерка успешно сохранена");
+      message.success("Аудит успешно сохранен");
       onClose(true);
       return;
     }

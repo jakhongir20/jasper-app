@@ -78,16 +78,24 @@ export const TabTransactionsForm: FC<Props> = ({
   };
 
   const thresholdLabels: Record<string, string> = {
-    yes: "Да",
     no: "Нет",
-    custom: "Кастомный",
+    "with-threshold": "С порогом",
+    custom: "Вручную",
   };
 
   const openingLogicLabels: Record<string, string> = {
-    left: "Левое",
-    right: "Правое",
-    up: "Вверх",
-    down: "Вниз",
+    "pull-right": "Наружное правое",
+    "push-right": "Внутреннее правое",
+    "pull-left": "Наружное левое",
+    "push-left": "Внутреннее левое",
+  };
+
+  const sashLabels: Record<string, string> = {
+    "1": "1 - Ствочатая",
+    "2": "1.5 - Ствочатая",
+    "3": "2 - Ствочатая",
+    "4": "3 - Ствочатая",
+    "5": "4 - Ствочатая",
   };
 
   const renderPrimitive = (value: unknown) => {
@@ -153,6 +161,46 @@ export const TabTransactionsForm: FC<Props> = ({
         dataIndex: "entity_quantity",
         render: (value: number) =>
           value === undefined || value === null ? "-" : String(value),
+      },
+      {
+        title: "Каркас передний",
+        dataIndex: "framework_front_id",
+        render: (_: unknown, record: Transaction) => {
+          const framework = (record as any).framework_front;
+          if (framework && typeof framework === "object" && framework.name) {
+            return framework.name;
+          }
+          return "-";
+        },
+      },
+      {
+        title: "Каркас задний",
+        dataIndex: "framework_back_id",
+        render: (_: unknown, record: Transaction) => {
+          const framework = (record as any).framework_back;
+          if (framework && typeof framework === "object" && framework.name) {
+            return framework.name;
+          }
+          return "-";
+        },
+      },
+      {
+        title: "Логика открывания",
+        dataIndex: "opening_logic",
+        render: (value: string) =>
+          openingLogicLabels[value] ?? renderPrimitive(value),
+      },
+      {
+        title: "Распашка",
+        dataIndex: "sash",
+        render: (value: string) =>
+          sashLabels[value] ?? renderPrimitive(value),
+      },
+      {
+        title: "Порог",
+        dataIndex: "threshold",
+        render: (value: string) =>
+          thresholdLabels[value] ?? renderPrimitive(value),
       },
       {
         title: null,

@@ -255,24 +255,6 @@ const ALL_SECTIONS: SectionConfig[] = [
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      {
-        name: "sash",
-        label: "Распашка",
-        type: "select",
-        placeholder: "Выберите распашку",
-        options: SASH_OPTIONS,
-      },
-      {
-        name: "chamfer",
-        label: "Фаска",
-        type: "select",
-        placeholder: "Выберите фаску",
-        options: [
-          { value: "1", label: "Лицо" },
-          { value: "2", label: "Зад" },
-          { value: "3", label: "Обе стороны" },
-        ],
-      },
     ],
   },
   {
@@ -803,16 +785,9 @@ const ALL_SECTIONS: SectionConfig[] = [
   },
   {
     key: "box-width",
-    title: "Ширина коробки",
+    title: "Доп. длина коробки",
     allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
-      {
-        name: "box_width",
-        label: "Ширина коробки",
-        type: "number",
-        numberStep: 0.01,
-        placeholder: "Введите ширину коробки",
-      },
       {
         name: "box_width_length",
         label: "Дополнительная длина коробки",
@@ -1139,12 +1114,14 @@ const filterVisibleSections = (
   });
 
 const MEASUREMENT_FIELDS: FieldConfig[] = [
+  // 1. location
   {
     name: "location",
     label: "Местоположение",
     type: "text",
     placeholder: "Введите местоположение",
   },
+  // 2. product_type
   {
     name: "product_type",
     label: "Тип продукта",
@@ -1154,6 +1131,35 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     options: PRODUCT_TYPES,
     aliases: ["door_type"],
   },
+  // 3. height
+  {
+    name: "opening_height",
+    label: "Высота проёма",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите высоту проёма",
+    aliases: ["height"],
+  },
+  // 4. width
+  {
+    name: "opening_width",
+    label: "Ширина проёма",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите ширину проёма",
+    aliases: ["width"],
+  },
+  // 5. thickness
+  {
+    name: "opening_thickness",
+    label: "Толщина проёма",
+    type: "number",
+    numberStep: 0.01,
+    defaultValue: 1,
+    placeholder: "Введите толщину проёма",
+    aliases: ["doorway_thickness"],
+  },
+  // 6. quantity
   {
     name: "entity_quantity",
     label: "Количество элементов",
@@ -1164,52 +1170,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     placeholder: "Введите количество элементов",
     aliases: ["quantity"],
   },
-  {
-    name: "opening_height",
-    label: "Высота проёма",
-    type: "number",
-    numberStep: 0.01,
-    placeholder: "Введите высоту проёма",
-    aliases: ["height"],
-  },
-  {
-    name: "opening_width",
-    label: "Ширина проёма",
-    type: "number",
-    numberStep: 0.01,
-    placeholder: "Введите ширину проёма",
-    aliases: ["width"],
-  },
-  {
-    name: "opening_thickness",
-    label: "Толщина проёма",
-    type: "number",
-    numberStep: 0.01,
-    defaultValue: 1,
-    placeholder: "Введите толщину проёма",
-    aliases: ["doorway_thickness"],
-  },
-  {
-    name: "threshold",
-    label: "Порог",
-    type: "select",
-    placeholder: "Выберите тип порога",
-    options: [
-      { value: "no", label: "Нет" },
-      { value: "with", label: "С порогом" },
-      { value: "with-low", label: "С порогом (низкий)" },
-      { value: "custom", label: "Вручную" },
-    ],
-    visible: (_, productType) => isDoorType(productType),
-  },
-  {
-    name: "threshold_height",
-    label: "Высота порога",
-    type: "number",
-    numberStep: 0.01,
-    placeholder: "Введите высоту порога",
-    visible: (values) => values.threshold === "custom",
-  },
+  // 7. opening_logic
   {
     name: "opening_logic",
     label: "Логика открывания",
@@ -1239,6 +1200,16 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     ],
     visible: (_, productType) => isDoorType(productType),
   },
+  // 8. sash
+  {
+    name: "sash",
+    label: "Распашка",
+    type: "select",
+    placeholder: "Выберите распашку",
+    options: SASH_OPTIONS,
+    visible: (_, productType) => isDoorType(productType),
+  },
+  // 9. framework_front
   {
     name: "framework_front_id",
     label: "Каркас передний",
@@ -1252,6 +1223,7 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     valueKey: "framework_id",
     visible: (_, productType) => isDoorOrDoorway(productType),
   },
+  // 10. framework_back
   {
     name: "framework_back_id",
     label: "Каркас задний",
@@ -1264,6 +1236,51 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     imageKey: "image_url",
     valueKey: "framework_id",
     visible: (_, productType) => isDoorOrDoorway(productType),
+  },
+  // 11. box_width
+  {
+    name: "box_width",
+    label: "Ширина коробки",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите ширину коробки",
+    visible: (_, productType) => isDoorType(productType),
+  },
+  // 12. threshold
+  {
+    name: "threshold",
+    label: "Порог",
+    type: "select",
+    placeholder: "Выберите тип порога",
+    options: [
+      { value: "no", label: "Нет" },
+      { value: "with", label: "С порогом" },
+      { value: "with-low", label: "С порогом (низкий)" },
+      { value: "custom", label: "Вручную" },
+    ],
+    visible: (_, productType) => isDoorType(productType),
+  },
+  // threshold_height (conditional, shows when threshold="custom")
+  {
+    name: "threshold_height",
+    label: "Высота порога",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите высоту порога",
+    visible: (values) => values.threshold === "custom",
+  },
+  // 13. chamfer
+  {
+    name: "chamfer",
+    label: "Фаска",
+    type: "select",
+    placeholder: "Выберите фаску",
+    options: [
+      { value: "1", label: "Лицо" },
+      { value: "2", label: "Зад" },
+      { value: "3", label: "Обе стороны" },
+    ],
+    visible: (_, productType) => isDoorType(productType),
   },
 ];
 
@@ -1417,7 +1434,7 @@ export const TransactionForm: FC<Props> = ({
     }
   }, [transactionValues.transom_type, form]);
 
-  // Auto-open "Замерка" and "Секции" collapses when drawer opens in edit mode
+  // Auto-open "Аудит" and "Модели" collapses when drawer opens in edit mode
   useEffect(() => {
     if (drawerOpen && mode === "edit") {
       const timer = setTimeout(() => {
@@ -1737,7 +1754,7 @@ export const TransactionForm: FC<Props> = ({
                 onChange={handleSectionsEnabledChange}
                 onClick={(_, e) => e.stopPropagation()}
               />
-              <span className="text-gray-400">Секции</span>
+              <span className="text-gray-400">Аудит</span>
             </div>
           }
         >
@@ -1766,7 +1783,7 @@ export const TransactionForm: FC<Props> = ({
             <Collapse.Panel
               key="sections"
               header={
-                <span className={"font-medium !text-[#218395]"}>Секции</span>
+                <span className={"font-medium !text-[#218395]"}>Модели</span>
               }
             >
               {combinedSections.length > 0 ? (
