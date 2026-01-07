@@ -980,6 +980,7 @@ const CONDITIONAL_REQUIREMENTS: Record<
   Record<string, (values: TransactionValues) => boolean>
 > = {
   "door-window": {
+    threshold_height: (values) => values.threshold === "custom",
     door_bolt_product_id: (values) =>
       Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
     // Frame/Decor Logic per 2.5.1: If frame_front_id or frame_back_id selected,
@@ -1011,6 +1012,7 @@ const CONDITIONAL_REQUIREMENTS: Record<
       lattingBackFlag(values, "is_filler"),
   },
   "door-deaf": {
+    threshold_height: (values) => values.threshold === "custom",
     door_bolt_product_id: (values) =>
       Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
     // Frame/Decor Logic per 2.5.1: If frame_front_id or frame_back_id selected,
@@ -1138,15 +1140,8 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
   {
     name: "location",
     label: "Местоположение",
-    type: "selectInfinitive", // Per 2.6.4: Auto-suggest with Locations API
-    placeholder: "Выберите местоположение",
-    queryKey: "location",
-    fetchUrl: "/location/all",
-    labelKey: "name",
-    valueKey: "location_id",
-    useValueAsLabel: true,
-    allowClear: true,
-    // Note: params with query will be added dynamically in renderField based on search term
+    type: "text",
+    placeholder: "Введите местоположение",
   },
   {
     name: "product_type",
@@ -1201,8 +1196,17 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
       { value: "no", label: "Нет" },
       { value: "with", label: "С порогом" },
       { value: "with-low", label: "С порогом (низкий)" },
+      { value: "custom", label: "Вручную" },
     ],
     visible: (_, productType) => isDoorType(productType),
+  },
+  {
+    name: "threshold_height",
+    label: "Высота порога",
+    type: "number",
+    numberStep: 0.01,
+    placeholder: "Введите высоту порога",
+    visible: (values) => values.threshold === "custom",
   },
   {
     name: "opening_logic",
@@ -1262,7 +1266,6 @@ export const TransactionForm: FC<Props> = ({
   const productType = resolveProductType(transactionValues);
 
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
-  const [locationSearch, setLocationSearch] = useState<string>(""); // Per 2.6.4: Track location search term
   const [measuringActive, setMeasuringActive] = useState<string[]>([]);
   const [sectionsActive, setSectionsActive] = useState<string[]>([]);
 
@@ -1535,23 +1538,14 @@ export const TransactionForm: FC<Props> = ({
               fetchUrl={field.fetchUrl}
               disabled={isFieldDisabled}
               params={
-                // Per 2.6.4: For location field, add query param for search
-                field.name === "location"
-                  ? { query: locationSearch }
-                  : typeof field.params === "function"
-                    ? field.params(transactionValues, productType)
-                    : field.params
+                typeof field.params === "function"
+                  ? field.params(transactionValues, productType)
+                  : field.params
               }
               labelKey={field.labelKey ?? "name"}
               valueKey={(field.valueKey ?? "product_id") as string}
               useValueAsLabel={field.useValueAsLabel}
               allowClear={field.allowClear}
-              onSearch={
-                // Per 2.6.4: For location field, handle search input
-                field.name === "location"
-                  ? (search: string) => setLocationSearch(search)
-                  : undefined
-              }
               onSelect={(_: string, selectedOption?: any) => {
                 // Auto-fill percent/size attributes directly from the selected product
                 if (!selectedOption) return;
@@ -1670,7 +1664,7 @@ export const TransactionForm: FC<Props> = ({
             <span className={"font-medium !text-[#218395]"}>Замерка</span>
           }
         >
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-7">
             {MEASUREMENT_FIELDS.map((field) => {
               const node = renderField(field);
               if (!node) return null;
@@ -1693,7 +1687,7 @@ export const TransactionForm: FC<Props> = ({
           header={<span className={"font-medium !text-[#218395]"}>Секции</span>}
         >
           {combinedSections.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-7">
               {combinedSections.flatMap((section) =>
                 section.fields.map((field) => {
                   const node = renderField(field);

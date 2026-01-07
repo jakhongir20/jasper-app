@@ -163,7 +163,7 @@ export const buildTransactionPayload = (
   transaction: PrimitiveRecord,
 ): PrimitiveRecord => {
   const data = {
-    location_id: extractId(transaction.location, ["location_id", "id", "value"]),
+    location: normalizeString(transaction.location),
     product_type: normalizeProductType(
       transaction.product_type ?? transaction.door_type,
     ),
@@ -184,6 +184,7 @@ export const buildTransactionPayload = (
       "value",
     ]),
     threshold: normalizeString(transaction.threshold),
+    threshold_height: toNullableNumber(transaction.threshold_height),
     opening_logic: normalizeString(transaction.opening_logic),
     sash: transaction.sash != null ? String(transaction.sash) : null,
     chamfer: toNullableNumber(transaction.chamfer),
@@ -492,6 +493,7 @@ export const transformTransactionDetailToForm = (
     frame_front_id: resolveFrameworkFrontId(transaction),
     frame_back_id: resolveFrameworkBackId(transaction),
     threshold: transaction.threshold ?? null,
+    threshold_height: transaction.threshold_height ?? null,
     opening_logic: resolveOpeningLogic(transaction),
     sash: transaction.sash != null ? String(transaction.sash) : null,
     chamfer: transaction.chamfer ?? null,
