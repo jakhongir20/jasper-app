@@ -251,7 +251,7 @@ export const buildTransactionPayload = (
     box_width_length: toNullableNumber(transaction.box_width_length),
     percent_extra_option: toNullableNumber(transaction.percent_extra_option),
     extra_option_product_id: extractId(transaction.extra_option_product_id),
-    allow_auditing: Boolean(transaction.allow_auditing),
+    allow_audition: Boolean(transaction.allow_audition),
   };
   return data;
 };
@@ -645,6 +645,6 @@ export const transformTransactionDetailToForm = (
       extraOptionProductId,
       transaction.extra_option_product ?? transaction.extra_option,
     ),
-    allow_auditing: Boolean(transaction.allow_auditing),
+    allow_audition: Boolean(transaction.allow_audition),
   };
 };

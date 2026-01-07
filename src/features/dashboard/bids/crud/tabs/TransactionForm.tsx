@@ -1310,11 +1310,11 @@ export const TransactionForm: FC<Props> = ({
 
   // Sync local state with form value when transaction loads (edit mode)
   useEffect(() => {
-    const formValue = Boolean(transactionValues.allow_auditing);
+    const formValue = Boolean(transactionValues.allow_audition);
     if (formValue !== sectionsEnabled) {
       setSectionsEnabled(formValue);
     }
-  }, [transactionValues.allow_auditing]);
+  }, [transactionValues.allow_audition]);
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1743,7 +1743,7 @@ export const TransactionForm: FC<Props> = ({
 
   const handleSectionsEnabledChange = (enabled: boolean) => {
     setSectionsEnabled(enabled); // Immediate UI update
-    setTransactionField("allow_auditing", enabled); // Sync to form for backend
+    setTransactionField("allow_audition", enabled); // Sync to form for backend
     onSectionsEnabledChange?.(enabled);
   };
 
