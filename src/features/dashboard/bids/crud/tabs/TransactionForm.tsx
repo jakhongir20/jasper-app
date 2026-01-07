@@ -124,7 +124,7 @@ type FieldConfig = {
   minValue?: number; // Minimum allowed value for number fields (default: 0)
   integerOnly?: boolean; // Only allow integer values
   defaultValue?: string | number; // Default value for the field when creating new transaction
-  options?: { value: string | number; label: string }[];
+  options?: { value: string | number; label: string; image?: string }[];
   queryKey?: string;
   fetchUrl?: string;
   valueKey?: string;
@@ -1214,10 +1214,26 @@ const MEASUREMENT_FIELDS: FieldConfig[] = [
     type: "select",
     placeholder: "Выберите логику открывания",
     options: [
-      { value: "pull-right", label: "Наружное правое" },
-      { value: "push-right", label: "Внутреннее правое" },
-      { value: "pull-left", label: "Наружное левое" },
-      { value: "push-left", label: "Внутреннее левое" },
+      {
+        value: "pull-right",
+        label: "Наружное правое",
+        image: "https://uat.jaspercrm.uz/static/pull-right.png",
+      },
+      {
+        value: "push-right",
+        label: "Внутреннее правое",
+        image: "https://uat.jaspercrm.uz/static/push-right.png",
+      },
+      {
+        value: "pull-left",
+        label: "Наружное левое",
+        image: "https://uat.jaspercrm.uz/static/pull-left.png",
+      },
+      {
+        value: "push-left",
+        label: "Внутреннее левое",
+        image: "https://uat.jaspercrm.uz/static/push-left.png",
+      },
     ],
     visible: (_, productType) => isDoorType(productType),
   },
@@ -1511,7 +1527,8 @@ export const TransactionForm: FC<Props> = ({
           </Form.Item>
         );
       }
-      case "select":
+      case "select": {
+        const hasImages = field.options?.some((opt) => opt.image);
         return (
           <Form.Item name={namePath} label={field.label} rules={rules}>
             <Select
@@ -1526,9 +1543,52 @@ export const TransactionForm: FC<Props> = ({
                   );
                 }
               }}
+              optionRender={
+                hasImages
+                  ? (option) => {
+                      const opt = field.options?.find(
+                        (o) => o.value === option.value,
+                      );
+                      return (
+                        <div className="flex items-center gap-2">
+                          {opt?.image && (
+                            <img
+                              src={opt.image}
+                              alt={opt.label}
+                              className="h-6 w-6 object-contain"
+                            />
+                          )}
+                          <span>{opt?.label}</span>
+                        </div>
+                      );
+                    }
+                  : undefined
+              }
+              labelRender={
+                hasImages
+                  ? (props) => {
+                      const opt = field.options?.find(
+                        (o) => o.value === props.value,
+                      );
+                      return (
+                        <div className="flex items-center gap-2">
+                          {opt?.image && (
+                            <img
+                              src={opt.image}
+                              alt={opt.label}
+                              className="h-5 w-5 object-contain"
+                            />
+                          )}
+                          <span>{opt?.label}</span>
+                        </div>
+                      );
+                    }
+                  : undefined
+              }
             />
           </Form.Item>
         );
+      }
       case "selectInfinitive":
         return (
           <Form.Item name={namePath} label={field.label} rules={rules}>
