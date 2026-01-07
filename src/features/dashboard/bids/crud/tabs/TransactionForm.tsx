@@ -1304,7 +1304,9 @@ export const TransactionForm: FC<Props> = ({
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
   const [measuringActive, setMeasuringActive] = useState<string[]>([]);
   const [sectionsActive, setSectionsActive] = useState<string[]>([]);
-  const [sectionsEnabled, setSectionsEnabled] = useState(false);
+
+  // Read allow_auditing from form field (synced with backend)
+  const sectionsEnabled = Boolean(transactionValues.allow_auditing);
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1732,7 +1734,7 @@ export const TransactionForm: FC<Props> = ({
   }, [combinedSections, sectionsActive, onDoorSectionToggle]);
 
   const handleSectionsEnabledChange = (enabled: boolean) => {
-    setSectionsEnabled(enabled);
+    setTransactionField("allow_auditing", enabled);
     onSectionsEnabledChange?.(enabled);
   };
 
