@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { ColumnType } from "antd/es/table";
 import { cn } from "@/shared/helpers";
 import { useToggle } from "@/shared/hooks/useToggle";
+import { useStaticAssetsUrl } from "@/shared/hooks";
 import { ActionModal, Icon, TableWrapper } from "@/shared/ui";
 import { Form, message } from "antd";
 import {
@@ -34,6 +35,7 @@ export const TabTransactionsForm: FC<Props> = ({
 }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
   const { t } = useTranslation();
+  const { getAssetUrl } = useStaticAssetsUrl();
   const { isOpen: isAddProductModalOpen, toggle: toggleProductModal } =
     useToggle();
   const { isOpen: isDeleteConfirmOpen, toggle: toggleDeleteConfirm } =
@@ -79,7 +81,8 @@ export const TabTransactionsForm: FC<Props> = ({
 
   const thresholdLabels: Record<string, string> = {
     no: "Нет",
-    "with-threshold": "С порогом",
+    with: "С порогом",
+    "with-low": "С порогом (низкий)",
     custom: "Вручную",
   };
 
@@ -165,10 +168,22 @@ export const TabTransactionsForm: FC<Props> = ({
       {
         title: "Каркас передний",
         dataIndex: "framework_front_id",
+        width: 100,
         render: (_: unknown, record: Transaction) => {
           const framework = (record as any).framework_front;
-          if (framework && typeof framework === "object" && framework.name) {
-            return framework.name;
+          if (framework && typeof framework === "object") {
+            if (framework.image_url) {
+              return (
+                <img
+                  src={getAssetUrl(framework.image_url)}
+                  alt={framework.name || "Каркас"}
+                  className="h-12 w-12 object-contain"
+                />
+              );
+            }
+            if (framework.name) {
+              return framework.name;
+            }
           }
           return "-";
         },
@@ -176,10 +191,22 @@ export const TabTransactionsForm: FC<Props> = ({
       {
         title: "Каркас задний",
         dataIndex: "framework_back_id",
+        width: 100,
         render: (_: unknown, record: Transaction) => {
           const framework = (record as any).framework_back;
-          if (framework && typeof framework === "object" && framework.name) {
-            return framework.name;
+          if (framework && typeof framework === "object") {
+            if (framework.image_url) {
+              return (
+                <img
+                  src={getAssetUrl(framework.image_url)}
+                  alt={framework.name || "Каркас"}
+                  className="h-12 w-12 object-contain"
+                />
+              );
+            }
+            if (framework.name) {
+              return framework.name;
+            }
           }
           return "-";
         },
@@ -193,8 +220,7 @@ export const TabTransactionsForm: FC<Props> = ({
       {
         title: "Распашка",
         dataIndex: "sash",
-        render: (value: string) =>
-          sashLabels[value] ?? renderPrimitive(value),
+        render: (value: string) => sashLabels[value] ?? renderPrimitive(value),
       },
       {
         title: "Порог",
@@ -221,7 +247,7 @@ export const TabTransactionsForm: FC<Props> = ({
         ),
       },
     ],
-    [onEditTransaction, onOpenDelete, productTypeLabels],
+    [onEditTransaction, onOpenDelete, productTypeLabels, getAssetUrl],
   );
 
   const handleAddTransaction = () => {
@@ -239,7 +265,9 @@ export const TabTransactionsForm: FC<Props> = ({
   };
 
   // Use Form.useWatch to reactively get transactions - this will trigger re-renders when form data changes
-  const watchedTransactions = Form.useWatch("transactions", form) as Transaction[] | undefined;
+  const watchedTransactions = Form.useWatch("transactions", form) as
+    | Transaction[]
+    | undefined;
   const tableData = watchedTransactions?.length ? watchedTransactions : [];
 
   return (
