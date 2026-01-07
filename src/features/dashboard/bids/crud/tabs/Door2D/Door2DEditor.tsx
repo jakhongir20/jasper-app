@@ -5,6 +5,7 @@ import { ColorPicker, PartSelector, SashSelector } from "./ui";
 import { defaultDoorConfig, DoorConfig } from "./data/data2D";
 import { useDoor2DImages } from "./model/useDoor2DImages";
 import {
+  CategoryProduct,
   getSashType,
   SashType,
   useCategoryProductsByIndex,
@@ -163,7 +164,7 @@ export const Door2DEditor: FC<Door2DEditorProps> = ({
 
   // Get image URL from selected product in PartSelector
   const getSelectedProductImageUrl = (
-    products: typeof doorProducts,
+    products: CategoryProduct[] | undefined,
     productId: number | null,
     sashType?: SashType | null,
   ): string | undefined => {

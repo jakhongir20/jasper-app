@@ -36,6 +36,7 @@ export const TransactionDrawer: FC<Props> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("perechen");
   const [sectionsExpanded, setSectionsExpanded] = useState(false);
+  const [sectionsEnabled, setSectionsEnabled] = useState(false);
   const originalTransactionsRef = useRef<Record<string, any>[]>([]);
 
   // Initialize drawer form when opened
@@ -91,6 +92,100 @@ export const TransactionDrawer: FC<Props> = ({
     const transactions = drawerForm.getFieldValue("transactions") || [];
     const currentTransaction = (transactions?.[0] as Record<string, any>) || {};
 
+    // When sectionsEnabled is OFF, skip validation and API call - just save measurement data
+    if (!sectionsEnabled) {
+      const transactionToStore: Record<string, any> = {
+        ...currentTransaction,
+      };
+
+      const productTypeValue =
+        transactionToStore.product_type ??
+        transactionToStore.door_type ??
+        null;
+
+      const finalTransaction = {
+        ...transactionToStore,
+        product_type: productTypeValue,
+        door_type: productTypeValue,
+        height:
+          transactionToStore.height ??
+          transactionToStore.opening_height ??
+          null,
+        width:
+          transactionToStore.width ?? transactionToStore.opening_width ?? null,
+        doorway_thickness:
+          transactionToStore.doorway_thickness ??
+          transactionToStore.opening_thickness ??
+          null,
+        quantity:
+          transactionToStore.quantity ??
+          transactionToStore.entity_quantity ??
+          null,
+      };
+
+      const originalList = Array.isArray(originalTransactionsRef.current)
+        ? [...originalTransactionsRef.current]
+        : [];
+
+      let updatedTransactions: Record<string, any>[];
+
+      if (mode === "edit" && transaction) {
+        const matchTransaction = (item: Record<string, any>) => {
+          if (transaction?._uid && item?._uid) {
+            return item._uid === transaction._uid;
+          }
+          if (
+            transaction?.id !== undefined &&
+            transaction?.id !== null &&
+            item?.id !== undefined &&
+            item?.id !== null
+          ) {
+            return item.id === transaction.id;
+          }
+          return false;
+        };
+
+        let hasMatch = false;
+        updatedTransactions = originalList.map((item) => {
+          if (!hasMatch && matchTransaction(item)) {
+            hasMatch = true;
+            return {
+              ...item,
+              ...finalTransaction,
+              _uid:
+                item._uid ?? transaction._uid ?? getRandomId("transaction_"),
+            };
+          }
+          return item;
+        });
+
+        if (!hasMatch) {
+          updatedTransactions = [
+            ...updatedTransactions,
+            {
+              ...finalTransaction,
+              _uid: transaction._uid ?? getRandomId("transaction_"),
+            },
+          ];
+        }
+      } else {
+        updatedTransactions = [
+          ...originalList,
+          {
+            ...finalTransaction,
+            _uid: getRandomId("transaction_"),
+          },
+        ];
+      }
+
+      parentForm.setFieldsValue({ transactions: updatedTransactions });
+      drawerForm.resetFields();
+      message.success("Замерка успешно сохранена");
+      onClose(true);
+      return;
+    }
+
+    // When sectionsEnabled is ON, proceed with full validation and API call
     // Check for unfilled required fields
     const unfilledFields = getUnfilledRequiredFields(currentTransaction);
     if (unfilledFields.length > 0) {
@@ -344,6 +439,7 @@ export const TransactionDrawer: FC<Props> = ({
                   mode={mode}
                   drawerOpen={open}
                   onDoorSectionToggle={setSectionsExpanded}
+                  onSectionsEnabledChange={setSectionsEnabled}
                 />
               ),
             },

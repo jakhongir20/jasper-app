@@ -3,7 +3,7 @@ import { Collapse, Divider, Form } from "antd";
 import { cn } from "@/shared/helpers";
 import { ApplicationLocalForm } from "@/features/dashboard/bids";
 import { useConfigurationDetail } from "@/features/admin/settings/model/settings.queries";
-import { Input, Select, SelectInfinitive } from "@/shared/ui";
+import { CSwitch, Input, Select, SelectInfinitive } from "@/shared/ui";
 import { ImageSelectPopover } from "@/shared/ui/popover/ImageSelectPopover";
 import { SASH_OPTIONS } from "./Door2D/data/sashOptions";
 
@@ -67,6 +67,8 @@ interface Props {
   drawerOpen?: boolean;
   /** Callback when door section (Полотно) expand state changes */
   onDoorSectionToggle?: (expanded: boolean) => void;
+  /** Callback when sections enabled switch changes */
+  onSectionsEnabledChange?: (enabled: boolean) => void;
 }
 
 // Only include valid product types accepted by the API
@@ -1270,6 +1272,7 @@ export const TransactionForm: FC<Props> = ({
   mode,
   drawerOpen,
   onDoorSectionToggle,
+  onSectionsEnabledChange,
 }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
   const { data: configuration } = useConfigurationDetail();
@@ -1284,6 +1287,7 @@ export const TransactionForm: FC<Props> = ({
   const config = productType ? PRODUCT_CONFIG[productType] : undefined;
   const [measuringActive, setMeasuringActive] = useState<string[]>([]);
   const [sectionsActive, setSectionsActive] = useState<string[]>([]);
+  const [sectionsEnabled, setSectionsEnabled] = useState(false);
 
   const setTransactionField = (fieldName: string, value: unknown) => {
     form.setFieldValue(["transactions", 0, fieldName] as any, value);
@@ -1710,6 +1714,11 @@ export const TransactionForm: FC<Props> = ({
     onDoorSectionToggle?.(hasDoorSection && isSectionsOpen);
   }, [combinedSections, sectionsActive, onDoorSectionToggle]);
 
+  const handleSectionsEnabledChange = (enabled: boolean) => {
+    setSectionsEnabled(enabled);
+    onSectionsEnabledChange?.(enabled);
+  };
+
   return (
     <div className={cn(className)}>
       <Collapse
@@ -1721,7 +1730,15 @@ export const TransactionForm: FC<Props> = ({
         <Collapse.Panel
           key="measuring"
           header={
-            <span className={"font-medium !text-[#218395]"}>Замерка</span>
+            <div className="flex items-center gap-3">
+              <span className={"font-medium !text-[#218395]"}>Замерка</span>
+              <CSwitch
+                checked={sectionsEnabled}
+                onChange={handleSectionsEnabledChange}
+                onClick={(_, e) => e.stopPropagation()}
+              />
+              <span className="text-gray-400">Секции</span>
+            </div>
           }
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-7">
@@ -1734,41 +1751,49 @@ export const TransactionForm: FC<Props> = ({
         </Collapse.Panel>
       </Collapse>
 
-      <Divider />
+      {sectionsEnabled && (
+        <>
+          <Divider />
 
-      <Collapse
-        destroyOnHidden={false}
-        ghost
-        activeKey={sectionsActive}
-        onChange={(key) => setSectionsActive(Array.isArray(key) ? key : [key])}
-      >
-        <Collapse.Panel
-          key="sections"
-          header={<span className={"font-medium !text-[#218395]"}>Секции</span>}
-        >
-          {combinedSections.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-7">
-              {combinedSections.flatMap((section) =>
-                section.fields.map((field) => {
-                  const node = renderField(field);
-                  if (!node) return null;
-                  return (
-                    <Fragment key={`${section.key}-${field.name}`}>
-                      {node}
-                    </Fragment>
-                  );
-                }),
+          <Collapse
+            destroyOnHidden={false}
+            ghost
+            activeKey={sectionsActive}
+            onChange={(key) =>
+              setSectionsActive(Array.isArray(key) ? key : [key])
+            }
+          >
+            <Collapse.Panel
+              key="sections"
+              header={
+                <span className={"font-medium !text-[#218395]"}>Секции</span>
+              }
+            >
+              {combinedSections.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-7">
+                  {combinedSections.flatMap((section) =>
+                    section.fields.map((field) => {
+                      const node = renderField(field);
+                      if (!node) return null;
+                      return (
+                        <Fragment key={`${section.key}-${field.name}`}>
+                          {node}
+                        </Fragment>
+                      );
+                    }),
+                  )}
+                </div>
+              ) : (
+                <div className="text-sm text-gray-500">
+                  {productType
+                    ? "Для выбранного типа продукта дополнительных полей пока не настроено."
+                    : "Выберите тип продукта для активации этапа моделирования"}
+                </div>
               )}
-            </div>
-          ) : (
-            <div className="text-sm text-gray-500">
-              {productType
-                ? "Для выбранного типа продукта дополнительных полей пока не настроено."
-                : "Выберите тип продукта для активации этапа моделирования"}
-            </div>
-          )}
-        </Collapse.Panel>
-      </Collapse>
+            </Collapse.Panel>
+          </Collapse>
+        </>
+      )}
     </div>
   );
 };
