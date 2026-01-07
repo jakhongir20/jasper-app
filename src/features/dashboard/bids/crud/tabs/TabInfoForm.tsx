@@ -99,8 +99,6 @@ export const TabInfoForm: FC<Props> = ({ className }) => {
         <Form.Item
           name={["general", "phone_number"]}
           label={t("common.labels.customerPhone")}
-          rules={[{ required: true, validator: validatePhone }]}
-          validateTrigger={["onBlur", "onSubmit"]}
         >
           <InputPhone placeholder={t("common.placeholder.customerPhone")} />
         </Form.Item>
