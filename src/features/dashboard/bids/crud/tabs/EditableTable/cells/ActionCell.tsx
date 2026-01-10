@@ -30,7 +30,12 @@ export const ActionCell = memo<ActionCellProps>(
           <Spin size="small" />
         ) : (
           <>
-            <Button type="primary" size="small" onClick={handleSave}>
+            <Button
+              className={"w-auto !px-2"}
+              type="primary"
+              size="small"
+              onClick={handleSave}
+            >
               Сохранить
             </Button>
             <Popconfirm
@@ -41,7 +46,7 @@ export const ActionCell = memo<ActionCellProps>(
               cancelText="Нет"
               placement="left"
             >
-              <Button type="default" size="small">
+              <Button type="default" size="small" className={"w-auto !px-2"}>
                 Удалить
               </Button>
             </Popconfirm>

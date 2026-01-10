@@ -2,12 +2,12 @@ import { memo } from "react";
 import { Checkbox, Form } from "antd";
 import type { EditableColumnConfig, RowProps } from "./types";
 import {
-  TextCell,
+  ActionCell,
+  ImageSelectCell,
   NumberCell,
   SelectCell,
   SelectInfinitiveCell,
-  ImageSelectCell,
-  ActionCell,
+  TextCell,
 } from "./cells";
 import type { ApplicationLocalForm } from "@/features/dashboard/bids/model";
 
@@ -61,7 +61,7 @@ export const EditableRow = memo<EditableRowProps>(
         return (
           <td
             key={key}
-            className="sticky right-0 z-10 bg-white px-2 py-2"
+            className="sticky right-0 z-10 bg-white px-2 py-2 drop-shadow-md"
             style={{ width: column.width, minWidth: column.width }}
           >
             <ActionCell

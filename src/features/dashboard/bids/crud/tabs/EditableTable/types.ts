@@ -35,5 +35,5 @@ export const COLUMN_WIDTHS: Record<FieldType | "checkbox" | "actions", number> =
     selectInfinitive: 180,
     image: 160,
     checkbox: 40,
-    actions: 160,
+    actions: 100,
   };

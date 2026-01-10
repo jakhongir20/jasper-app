@@ -1,5 +1,6 @@
-import { memo, useCallback } from "react";
-import { Form, InputNumber } from "antd";
+import { memo, useCallback, type ChangeEvent } from "react";
+import { Form } from "antd";
+import { Input } from "@/shared/ui";
 import type { CellProps } from "../types";
 import { COLUMN_WIDTHS } from "../types";
 import type { ApplicationLocalForm } from "@/features/dashboard/bids/model";
@@ -18,7 +19,8 @@ export const NumberCell = memo<CellProps>(
 
     // Handle value change with aliases support
     const handleChange = useCallback(
-      (value: number | null) => {
+      (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value ? Number(e.target.value) : null;
         // Update the main field
         form.setFieldValue(
           ["transactions", rowIndex, fieldName] as any,
@@ -38,26 +40,15 @@ export const NumberCell = memo<CellProps>(
     );
 
     return (
-      <InputNumber
-        size="middle"
-        step={step}
+      <Input
+        type="number"
         min={minVal}
+        step={step}
         disabled={fieldConfig.disabled}
         placeholder={fieldConfig.placeholder}
-        value={currentValue}
+        value={currentValue ?? ""}
         onChange={handleChange}
         style={{ width: COLUMN_WIDTHS.number }}
-        status={
-          currentValue !== undefined &&
-          currentValue !== null &&
-          currentValue !== ""
-            ? fieldConfig.integerOnly && !Number.isInteger(Number(currentValue))
-              ? "error"
-              : Number(currentValue) < minVal
-                ? "error"
-                : undefined
-            : undefined
-        }
       />
     );
   },
