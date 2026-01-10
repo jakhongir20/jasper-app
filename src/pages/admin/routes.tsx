@@ -118,8 +118,10 @@ function createModuleRoutes(module: {
 
 const modules = (
   [
+    { name: "branches", title: "navigation.branches", icon: "home" },
     { name: "users", title: "navigation.users", icon: "users" },
     { name: "clients", title: "navigation.clients", icon: "people" },
+    { name: "resources", title: "navigation.resources", icon: "cube-alt" },
     { name: "products", title: "navigation.products", icon: "cube" },
     // { name: "colors", title: "navigation.colors", icon: "badge-percent" },
     { name: "categories", title: "navigation.categories", icon: "layer-group" },
@@ -131,8 +133,6 @@ const modules = (
       title: "navigation.factoryStatuses",
       icon: "diagram",
     },
-    { name: "resources", title: "navigation.resources", icon: "cube-alt" },
-    { name: "branches", title: "navigation.branches", icon: "home" },
     { name: "settings", title: "navigation.settings", icon: "settings" },
   ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
