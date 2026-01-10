@@ -8,6 +8,7 @@ export interface EditableColumnConfig {
   cellType: FieldType;
   fieldConfig: FieldConfig;
   fixed?: "left" | "right";
+  allowedProductTypes?: string[]; // Section's allowed product types
 }
 
 export interface CellProps {

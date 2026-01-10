@@ -147,20 +147,25 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
           <tbody>
             <Form.List name="transactions">
               {(fields) =>
-                fields.map((field, index) => (
-                  <EditableRow
-                    key={field.key}
-                    rowIndex={index}
-                    fieldKey={field.key}
-                    selected={selectedRows.includes(index)}
-                    onSelect={() => toggleRowSelection(index)}
-                    onRemove={() => handleDeleteRow(index)}
-                    onDoubleClick={() => handleOpenDrawer(index)}
-                    columns={columns}
-                    onSave={handleSaveRow}
-                    isSaving={savingRows.has(index)}
-                  />
-                ))
+                fields.map((field, index) => {
+                  const transaction = transactions[index] as Record<string, unknown> | undefined;
+                  const rowProductType = (transaction?.product_type as string) ?? "";
+                  return (
+                    <EditableRow
+                      key={field.key}
+                      rowIndex={index}
+                      fieldKey={field.key}
+                      selected={selectedRows.includes(index)}
+                      onSelect={() => toggleRowSelection(index)}
+                      onRemove={() => handleDeleteRow(index)}
+                      onDoubleClick={() => handleOpenDrawer(index)}
+                      columns={columns}
+                      onSave={handleSaveRow}
+                      isSaving={savingRows.has(index)}
+                      productType={rowProductType}
+                    />
+                  );
+                })
               }
             </Form.List>
           </tbody>

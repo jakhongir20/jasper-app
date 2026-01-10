@@ -15,6 +15,7 @@ interface EditableRowProps extends RowProps {
   columns: EditableColumnConfig[];
   onSave: (rowIndex: number) => Promise<void>;
   isSaving: boolean;
+  productType: string;
 }
 
 export const EditableRow = memo<EditableRowProps>(
@@ -27,15 +28,9 @@ export const EditableRow = memo<EditableRowProps>(
     columns,
     onSave,
     isSaving,
+    productType,
   }) => {
     const form = Form.useFormInstance<ApplicationLocalForm>();
-
-    // Watch product_type for this row to determine field visibility
-    const productType =
-      (Form.useWatch(
-        ["transactions", rowIndex, "product_type"],
-        form,
-      ) as string) ?? "";
 
     // Row border color
     const borderColor = "#f0f0f0";
@@ -70,6 +65,24 @@ export const EditableRow = memo<EditableRowProps>(
               onDelete={onRemove}
               isSaving={isSaving}
             />
+          </td>
+        );
+      }
+
+      // Check if this column's section allows current product_type
+      if (
+        column.allowedProductTypes &&
+        column.allowedProductTypes.length > 0 &&
+        productType &&
+        !column.allowedProductTypes.includes(productType)
+      ) {
+        return (
+          <td
+            key={key}
+            className="px-2 py-2"
+            style={{ width: column.width, minWidth: column.width }}
+          >
+            <span className="text-gray-300">—</span>
           </td>
         );
       }
@@ -145,30 +158,6 @@ export const EditableRow = memo<EditableRowProps>(
         {columns.map(renderCell)}
       </tr>
     );
-  },
-  (prev, next) => {
-    // Check basic props
-    if (
-      prev.rowIndex !== next.rowIndex ||
-      prev.selected !== next.selected ||
-      prev.isSaving !== next.isSaving
-    ) {
-      return false;
-    }
-
-    // Check columns by length and keys
-    if (prev.columns.length !== next.columns.length) {
-      return false;
-    }
-
-    // Check if column keys are the same (columns changed based on product_type)
-    for (let i = 0; i < prev.columns.length; i++) {
-      if (prev.columns[i].key !== next.columns[i].key) {
-        return false;
-      }
-    }
-
-    return true;
   },
 );
 
