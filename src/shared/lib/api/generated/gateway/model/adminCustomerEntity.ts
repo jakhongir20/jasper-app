@@ -6,10 +6,9 @@
  *  * 0.1.0
  *  *\/
  */
-import type { AdminCustomerEntityPhoneNumber } from "./adminCustomerEntityPhoneNumber";
 
 export interface AdminCustomerEntity {
   name: string;
-  phone_number?: AdminCustomerEntityPhoneNumber;
+  phone_number: string;
   is_active: boolean;
 }

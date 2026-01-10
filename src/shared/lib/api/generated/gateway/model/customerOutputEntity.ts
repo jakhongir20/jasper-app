@@ -7,7 +7,8 @@
  *  *\/
  */
 import type { CustomerOutputEntityPhoneNumber } from "./customerOutputEntityPhoneNumber";
-import type { CompanyEntity } from "./companyEntity";
+import type { CustomerOutputEntityDeletedAt } from "./customerOutputEntityDeletedAt";
+import type { CustomerOutputEntityDeletionCause } from "./customerOutputEntityDeletionCause";
 
 export interface CustomerOutputEntity {
   customer_id: number;
@@ -15,5 +16,7 @@ export interface CustomerOutputEntity {
   name: string;
   phone_number?: CustomerOutputEntityPhoneNumber;
   is_active: boolean;
-  company: CompanyEntity;
+  is_deleted: boolean;
+  deleted_at?: CustomerOutputEntityDeletedAt;
+  deletion_cause?: CustomerOutputEntityDeletionCause;
 }

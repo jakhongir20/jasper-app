@@ -15,7 +15,10 @@ import type { ApplicationTransactionOutputEntityEntityQuantity } from "./applica
 import type { ApplicationTransactionOutputEntityFrameworkFrontId } from "./applicationTransactionOutputEntityFrameworkFrontId";
 import type { ApplicationTransactionOutputEntityFrameworkBackId } from "./applicationTransactionOutputEntityFrameworkBackId";
 import type { ApplicationTransactionOutputEntityThreshold } from "./applicationTransactionOutputEntityThreshold";
+import type { ApplicationTransactionOutputEntityThresholdHeight } from "./applicationTransactionOutputEntityThresholdHeight";
 import type { ApplicationTransactionOutputEntityOpeningLogic } from "./applicationTransactionOutputEntityOpeningLogic";
+import type { ApplicationTransactionOutputEntityFrameworkFront } from "./applicationTransactionOutputEntityFrameworkFront";
+import type { ApplicationTransactionOutputEntityFrameworkBack } from "./applicationTransactionOutputEntityFrameworkBack";
 import type { ApplicationTransactionOutputEntitySash } from "./applicationTransactionOutputEntitySash";
 import type { ApplicationTransactionOutputEntityChamfer } from "./applicationTransactionOutputEntityChamfer";
 import type { ApplicationTransactionOutputEntityVolumeTransom } from "./applicationTransactionOutputEntityVolumeTransom";
@@ -107,6 +110,7 @@ import type { ApplicationTransactionOutputEntityForecastExtraOptionProduct } fro
 
 export interface ApplicationTransactionOutputEntity {
   application_transaction_id: number;
+  allow_audition: boolean;
   location?: ApplicationTransactionOutputEntityLocation;
   product_type?: ApplicationTransactionOutputEntityProductType;
   opening_height?: ApplicationTransactionOutputEntityOpeningHeight;
@@ -116,7 +120,10 @@ export interface ApplicationTransactionOutputEntity {
   framework_front_id?: ApplicationTransactionOutputEntityFrameworkFrontId;
   framework_back_id?: ApplicationTransactionOutputEntityFrameworkBackId;
   threshold?: ApplicationTransactionOutputEntityThreshold;
+  threshold_height?: ApplicationTransactionOutputEntityThresholdHeight;
   opening_logic?: ApplicationTransactionOutputEntityOpeningLogic;
+  framework_front?: ApplicationTransactionOutputEntityFrameworkFront;
+  framework_back?: ApplicationTransactionOutputEntityFrameworkBack;
   sash?: ApplicationTransactionOutputEntitySash;
   chamfer?: ApplicationTransactionOutputEntityChamfer;
   volume_transom?: ApplicationTransactionOutputEntityVolumeTransom;

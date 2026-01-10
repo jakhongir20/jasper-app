@@ -11,6 +11,7 @@ import type { RootServiceEntityPriceUzs } from "./rootServiceEntityPriceUzs";
 export interface RootServiceEntity {
   unique_name: string;
   name: string;
+  /** @minimum 0 */
   price_usd: number;
   price_uzs?: RootServiceEntityPriceUzs;
   company_id: number;

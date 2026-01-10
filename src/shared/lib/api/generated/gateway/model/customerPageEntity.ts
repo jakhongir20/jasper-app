@@ -7,9 +7,9 @@
  *  *\/
  */
 import type { PaginationEntity } from "./paginationEntity";
-import type { CustomerPlainEntity } from "./customerPlainEntity";
+import type { CustomerOutputEntity } from "./customerOutputEntity";
 
 export interface CustomerPageEntity {
   pagination: PaginationEntity;
-  results: CustomerPlainEntity[];
+  results: CustomerOutputEntity[];
 }

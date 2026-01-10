@@ -9,5 +9,6 @@
 
 export interface AdminQualityInputEntity {
   name: string;
+  /** @minimum 0 */
   price_multiplier: number;
 }

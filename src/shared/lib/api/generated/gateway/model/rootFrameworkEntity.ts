@@ -11,8 +11,13 @@ import type { FrameworkDoorwayTypeEnumEntity } from "./frameworkDoorwayTypeEnumE
 export interface RootFrameworkEntity {
   name: string;
   framework_image: string;
+  /** @minimum 0 */
   order_number: number;
   doorway_type: FrameworkDoorwayTypeEnumEntity;
+  has_up_frame: boolean;
+  has_under_frame: boolean;
+  has_crown: boolean;
+  has_transom: boolean;
   is_frame: boolean;
   is_filler: boolean;
   company_id: number;

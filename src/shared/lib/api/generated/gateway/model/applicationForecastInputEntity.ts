@@ -7,17 +7,17 @@
  *  *\/
  */
 import type { ApplicationForecastInputEntityStatus } from "./applicationForecastInputEntityStatus";
-import type { ApplicationForecastInputEntityForecastRate } from "./applicationForecastInputEntityForecastRate";
 import type { ApplicationForecastInputEntityForecastActiveCurrency } from "./applicationForecastInputEntityForecastActiveCurrency";
 import type { ApplicationForecastInputEntityForecastDiscountType } from "./applicationForecastInputEntityForecastDiscountType";
 import type { ApplicationForecastInputEntityForecastDiscountAmount } from "./applicationForecastInputEntityForecastDiscountAmount";
 import type { ApplicationForecastInputEntityForecastPrepayment } from "./applicationForecastInputEntityForecastPrepayment";
+import type { ApplicationForecastInputEntityForecastBranchMarkup } from "./applicationForecastInputEntityForecastBranchMarkup";
 
 export interface ApplicationForecastInputEntity {
   status?: ApplicationForecastInputEntityStatus;
-  forecast_rate?: ApplicationForecastInputEntityForecastRate;
   forecast_active_currency?: ApplicationForecastInputEntityForecastActiveCurrency;
   forecast_discount_type?: ApplicationForecastInputEntityForecastDiscountType;
   forecast_discount_amount?: ApplicationForecastInputEntityForecastDiscountAmount;
   forecast_prepayment?: ApplicationForecastInputEntityForecastPrepayment;
+  forecast_branch_markup?: ApplicationForecastInputEntityForecastBranchMarkup;
 }

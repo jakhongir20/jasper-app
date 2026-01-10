@@ -21,7 +21,14 @@ import type { ProductPatchEntityPercentCoveringPrimary } from "./productPatchEnt
 import type { ProductPatchEntityPercentCoveringSecondary } from "./productPatchEntityPercentCoveringSecondary";
 import type { ProductPatchEntityPercentColor } from "./productPatchEntityPercentColor";
 import type { ProductPatchEntityPercentExtraOption } from "./productPatchEntityPercentExtraOption";
+import type { ProductPatchEntityIsCrownRequired } from "./productPatchEntityIsCrownRequired";
+import type { ProductPatchEntityIsUpFrameRequired } from "./productPatchEntityIsUpFrameRequired";
+import type { ProductPatchEntityIsUnderFrameRequired } from "./productPatchEntityIsUnderFrameRequired";
+import type { ProductPatchEntityIsCrownAppliable } from "./productPatchEntityIsCrownAppliable";
+import type { ProductPatchEntityIsUpFrameAppliable } from "./productPatchEntityIsUpFrameAppliable";
+import type { ProductPatchEntityIsUnderFrameAppliable } from "./productPatchEntityIsUnderFrameAppliable";
 import type { ProductImageInputEntity } from "./productImageInputEntity";
+import type { ProductResourceUnionEntity } from "./productResourceUnionEntity";
 
 export interface ProductPatchEntity {
   name?: ProductPatchEntityName;
@@ -39,5 +46,12 @@ export interface ProductPatchEntity {
   percent_covering_secondary?: ProductPatchEntityPercentCoveringSecondary;
   percent_color?: ProductPatchEntityPercentColor;
   percent_extra_option?: ProductPatchEntityPercentExtraOption;
+  is_crown_required?: ProductPatchEntityIsCrownRequired;
+  is_up_frame_required?: ProductPatchEntityIsUpFrameRequired;
+  is_under_frame_required?: ProductPatchEntityIsUnderFrameRequired;
+  is_crown_appliable?: ProductPatchEntityIsCrownAppliable;
+  is_up_frame_appliable?: ProductPatchEntityIsUpFrameAppliable;
+  is_under_frame_appliable?: ProductPatchEntityIsUnderFrameAppliable;
   product_images: ProductImageInputEntity[];
+  product_resource_unions: ProductResourceUnionEntity[];
 }

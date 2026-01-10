@@ -25,6 +25,7 @@ import type {
 import type {
   AdminServiceDeleteAdminServiceDeleteParams,
   AdminServiceInputEntity,
+  AdminServiceOutputEntity,
   AdminServicePageEntity,
   AdminServicePatchEntity,
   AdminServiceReadAllAdminServiceAllGetParams,
@@ -685,7 +686,7 @@ export const adminServiceCreateAdminServicePost = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<ServiceEntity>(
+  return customInstance<AdminServiceOutputEntity>(
     {
       url: `/admin/service`,
       method: "POST",
@@ -779,7 +780,7 @@ export const adminServiceReadOneAdminServiceGet = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<ServiceEntity>(
+  return customInstance<AdminServiceOutputEntity>(
     { url: `/admin/service`, method: "GET", params, signal },
     options,
   );
@@ -950,7 +951,7 @@ export const adminServiceUpdateAdminServicePatch = (
   params: AdminServiceUpdateAdminServicePatchParams,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<ServiceEntity>(
+  return customInstance<AdminServiceOutputEntity>(
     {
       url: `/admin/service`,
       method: "PATCH",

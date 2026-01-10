@@ -7,6 +7,7 @@
  *  *\/
  */
 import type { AdminUserEntityTelegramUserId } from "./adminUserEntityTelegramUserId";
+import type { AdminUserEntityBranchId } from "./adminUserEntityBranchId";
 import type { AdminUserEntityFactoryStatusId } from "./adminUserEntityFactoryStatusId";
 
 export interface AdminUserEntity {
@@ -16,6 +17,8 @@ export interface AdminUserEntity {
   is_active: boolean;
   is_admin: boolean;
   is_factory_worker: boolean;
+  is_factory_supervisor: boolean;
   telegram_user_id?: AdminUserEntityTelegramUserId;
+  branch_id?: AdminUserEntityBranchId;
   factory_status_id?: AdminUserEntityFactoryStatusId;
 }

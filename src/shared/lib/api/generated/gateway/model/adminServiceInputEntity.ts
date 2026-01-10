@@ -10,6 +10,7 @@ import type { AdminServiceInputEntityPriceUzs } from "./adminServiceInputEntityP
 
 export interface AdminServiceInputEntity {
   name: string;
+  /** @minimum 0 */
   price_usd: number;
   price_uzs?: AdminServiceInputEntityPriceUzs;
 }

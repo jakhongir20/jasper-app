@@ -20,6 +20,7 @@ import type { AdminProductEntityPercentColor } from "./adminProductEntityPercent
 import type { AdminProductEntityPercentExtraOption } from "./adminProductEntityPercentExtraOption";
 import type { CategoryEntity } from "./categoryEntity";
 import type { ProductImagePlainEntity } from "./productImagePlainEntity";
+import type { ProductResourceUnionPlainEntity } from "./productResourceUnionPlainEntity";
 
 export interface AdminProductEntity {
   product_id: number;
@@ -40,6 +41,13 @@ export interface AdminProductEntity {
   percent_covering_secondary?: AdminProductEntityPercentCoveringSecondary;
   percent_color?: AdminProductEntityPercentColor;
   percent_extra_option?: AdminProductEntityPercentExtraOption;
+  is_crown_required: boolean;
+  is_up_frame_required: boolean;
+  is_under_frame_required: boolean;
+  is_crown_appliable: boolean;
+  is_up_frame_appliable: boolean;
+  is_under_frame_appliable: boolean;
   category: CategoryEntity;
   product_images: ProductImagePlainEntity[];
+  product_resource_unions: ProductResourceUnionPlainEntity[];
 }

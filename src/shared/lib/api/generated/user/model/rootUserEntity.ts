@@ -8,6 +8,7 @@
  */
 import type { RootUserEntityTelegramUserId } from "./rootUserEntityTelegramUserId";
 import type { RootUserEntityCompanyId } from "./rootUserEntityCompanyId";
+import type { RootUserEntityBranchId } from "./rootUserEntityBranchId";
 import type { RootUserEntityFactoryStatusId } from "./rootUserEntityFactoryStatusId";
 
 export interface RootUserEntity {
@@ -18,7 +19,9 @@ export interface RootUserEntity {
   is_admin: boolean;
   is_root: boolean;
   is_factory_worker: boolean;
+  is_factory_supervisor: boolean;
   telegram_user_id?: RootUserEntityTelegramUserId;
   company_id?: RootUserEntityCompanyId;
+  branch_id?: RootUserEntityBranchId;
   factory_status_id?: RootUserEntityFactoryStatusId;
 }

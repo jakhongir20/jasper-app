@@ -37,6 +37,12 @@ export interface ProductOutputEntity {
   percent_covering_secondary?: ProductOutputEntityPercentCoveringSecondary;
   percent_color?: ProductOutputEntityPercentColor;
   percent_extra_option?: ProductOutputEntityPercentExtraOption;
+  is_crown_required: boolean;
+  is_up_frame_required: boolean;
+  is_under_frame_required: boolean;
+  is_crown_appliable: boolean;
+  is_up_frame_appliable: boolean;
+  is_under_frame_appliable: boolean;
   category: CategoryPlainEntity;
   product_images: ProductImagePlainEntity[];
 }

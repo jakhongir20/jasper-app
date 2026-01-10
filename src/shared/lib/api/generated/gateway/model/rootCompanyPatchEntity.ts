@@ -8,8 +8,10 @@
  */
 import type { RootCompanyPatchEntityDisplayName } from "./rootCompanyPatchEntityDisplayName";
 import type { RootCompanyPatchEntityLegalName } from "./rootCompanyPatchEntityLegalName";
+import type { RootCompanyPatchEntityCompanyPhoneNumber } from "./rootCompanyPatchEntityCompanyPhoneNumber";
 
 export interface RootCompanyPatchEntity {
   display_name?: RootCompanyPatchEntityDisplayName;
   legal_name?: RootCompanyPatchEntityLegalName;
+  company_phone_number?: RootCompanyPatchEntityCompanyPhoneNumber;
 }

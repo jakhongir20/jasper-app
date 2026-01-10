@@ -6,8 +6,10 @@
  *  * 0.1.0
  *  *\/
  */
+import type { RootCompanyEntityCompanyPhoneNumber } from "./rootCompanyEntityCompanyPhoneNumber";
 
 export interface RootCompanyEntity {
   display_name: string;
   legal_name: string;
+  company_phone_number?: RootCompanyEntityCompanyPhoneNumber;
 }

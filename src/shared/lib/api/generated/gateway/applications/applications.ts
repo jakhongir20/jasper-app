@@ -23,6 +23,7 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  AdminApplicationReadAllAdminApplicationAllGetParams,
   ApplicationDeleteApplicationDeleteParams,
   ApplicationFactoryStatusEntity,
   ApplicationFactoryStatusInitializeApplicationFactoryStatusInitPostParams,
@@ -37,9 +38,12 @@ import type {
   ApplicationReadAllApplicationAllGetParams,
   ApplicationReadOneApplicationGetParams,
   ApplicationServiceManagerApplicationServiceManagerPostParams,
+  ApplicationSupervisorFactoryStatusEntity,
+  ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams,
   ApplicationTransactionInputEntity,
   ApplicationUpdateApplicationPatchParams,
   HTTPValidationErrorEntity,
+  RootApplicationReadAllRootApplicationAllGetParams,
 } from ".././model";
 
 import { customInstance } from "../../../mutator";
@@ -997,6 +1001,150 @@ export const useApplicationFactoryStatusInitializeApplicationFactoryStatusInitPo
     return useMutation(mutationOptions, queryClient);
   };
 /**
+ * @summary Application Supervisor Factory Status Move
+ */
+export const applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost =
+  (
+    applicationSupervisorFactoryStatusEntity: ApplicationSupervisorFactoryStatusEntity,
+    params: ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams,
+    options?: SecondParameter<typeof customInstance>,
+    signal?: AbortSignal,
+  ) => {
+    return customInstance<boolean>(
+      {
+        url: `/application/supervisor/factory-status/move`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: applicationSupervisorFactoryStatusEntity,
+        params,
+        signal,
+      },
+      options,
+    );
+  };
+
+export const getApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostMutationOptions =
+  <
+    TError = ErrorType<HTTPValidationErrorEntity>,
+    TContext = unknown,
+  >(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<
+          typeof applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost
+        >
+      >,
+      TError,
+      {
+        data: ApplicationSupervisorFactoryStatusEntity;
+        params: ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams;
+      },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  }): UseMutationOptions<
+    Awaited<
+      ReturnType<
+        typeof applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost
+      >
+    >,
+    TError,
+    {
+      data: ApplicationSupervisorFactoryStatusEntity;
+      params: ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams;
+    },
+    TContext
+  > => {
+    const mutationKey = [
+      "applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost",
+    ];
+    const { mutation: mutationOptions, request: requestOptions } = options
+      ? options.mutation &&
+        "mutationKey" in options.mutation &&
+        options.mutation.mutationKey
+        ? options
+        : { ...options, mutation: { ...options.mutation, mutationKey } }
+      : { mutation: { mutationKey }, request: undefined };
+
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<
+          typeof applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost
+        >
+      >,
+      {
+        data: ApplicationSupervisorFactoryStatusEntity;
+        params: ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams;
+      }
+    > = (props) => {
+      const { data, params } = props ?? {};
+
+      return applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost(
+        data,
+        params,
+        requestOptions,
+      );
+    };
+
+    return { mutationFn, ...mutationOptions };
+  };
+
+export type ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostMutationResult =
+  NonNullable<
+    Awaited<
+      ReturnType<
+        typeof applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost
+      >
+    >
+  >;
+export type ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostMutationBody =
+  ApplicationSupervisorFactoryStatusEntity;
+export type ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
+
+/**
+ * @summary Application Supervisor Factory Status Move
+ */
+export const useApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost =
+  <TError = ErrorType<HTTPValidationErrorEntity>, TContext = unknown>(
+    options?: {
+      mutation?: UseMutationOptions<
+        Awaited<
+          ReturnType<
+            typeof applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost
+          >
+        >,
+        TError,
+        {
+          data: ApplicationSupervisorFactoryStatusEntity;
+          params: ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams;
+        },
+        TContext
+      >;
+      request?: SecondParameter<typeof customInstance>;
+    },
+    queryClient?: QueryClient,
+  ): UseMutationResult<
+    Awaited<
+      ReturnType<
+        typeof applicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePost
+      >
+    >,
+    TError,
+    {
+      data: ApplicationSupervisorFactoryStatusEntity;
+      params: ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams;
+    },
+    TContext
+  > => {
+    const mutationOptions =
+      getApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostMutationOptions(
+        options,
+      );
+
+    return useMutation(mutationOptions, queryClient);
+  };
+/**
  * @summary Application Factory Status Move
  */
 export const applicationFactoryStatusMoveApplicationFactoryStatusMovePost = (
@@ -1301,6 +1449,399 @@ export function useApplicationReadAllApplicationAllGet<
     params,
     options,
   );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Admin Application Read All
+ */
+export const adminApplicationReadAllAdminApplicationAllGet = (
+  params?: AdminApplicationReadAllAdminApplicationAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<ApplicationPageEntity>(
+    { url: `/admin/application/all`, method: "GET", params, signal },
+    options,
+  );
+};
+
+export const getAdminApplicationReadAllAdminApplicationAllGetQueryKey = (
+  params?: AdminApplicationReadAllAdminApplicationAllGetParams,
+) => {
+  return [`/admin/application/all`, ...(params ? [params] : [])] as const;
+};
+
+export const getAdminApplicationReadAllAdminApplicationAllGetQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: AdminApplicationReadAllAdminApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getAdminApplicationReadAllAdminApplicationAllGetQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>>
+  > = ({ signal }) =>
+    adminApplicationReadAllAdminApplicationAllGet(
+      params,
+      requestOptions,
+      signal,
+    );
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type AdminApplicationReadAllAdminApplicationAllGetQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>>
+  >;
+export type AdminApplicationReadAllAdminApplicationAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
+
+export function useAdminApplicationReadAllAdminApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: undefined | AdminApplicationReadAllAdminApplicationAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useAdminApplicationReadAllAdminApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: AdminApplicationReadAllAdminApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useAdminApplicationReadAllAdminApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: AdminApplicationReadAllAdminApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Admin Application Read All
+ */
+
+export function useAdminApplicationReadAllAdminApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: AdminApplicationReadAllAdminApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof adminApplicationReadAllAdminApplicationAllGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getAdminApplicationReadAllAdminApplicationAllGetQueryOptions(
+      params,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+/**
+ * @summary Root Application Read All
+ */
+export const rootApplicationReadAllRootApplicationAllGet = (
+  params?: RootApplicationReadAllRootApplicationAllGetParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<ApplicationPageEntity>(
+    { url: `/root/application/all`, method: "GET", params, signal },
+    options,
+  );
+};
+
+export const getRootApplicationReadAllRootApplicationAllGetQueryKey = (
+  params?: RootApplicationReadAllRootApplicationAllGetParams,
+) => {
+  return [`/root/application/all`, ...(params ? [params] : [])] as const;
+};
+
+export const getRootApplicationReadAllRootApplicationAllGetQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: RootApplicationReadAllRootApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getRootApplicationReadAllRootApplicationAllGetQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>
+  > = ({ signal }) =>
+    rootApplicationReadAllRootApplicationAllGet(params, requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type RootApplicationReadAllRootApplicationAllGetQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>
+  >;
+export type RootApplicationReadAllRootApplicationAllGetQueryError =
+  ErrorType<HTTPValidationErrorEntity>;
+
+export function useRootApplicationReadAllRootApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params: undefined | RootApplicationReadAllRootApplicationAllGetParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRootApplicationReadAllRootApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: RootApplicationReadAllRootApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useRootApplicationReadAllRootApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: RootApplicationReadAllRootApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Root Application Read All
+ */
+
+export function useRootApplicationReadAllRootApplicationAllGet<
+  TData = Awaited<
+    ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>
+  >,
+  TError = ErrorType<HTTPValidationErrorEntity>,
+>(
+  params?: RootApplicationReadAllRootApplicationAllGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof rootApplicationReadAllRootApplicationAllGet>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getRootApplicationReadAllRootApplicationAllGetQueryOptions(params, options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

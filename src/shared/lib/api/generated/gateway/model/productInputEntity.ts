@@ -17,12 +17,20 @@ import type { ProductInputEntityPercentCoveringPrimary } from "./productInputEnt
 import type { ProductInputEntityPercentCoveringSecondary } from "./productInputEntityPercentCoveringSecondary";
 import type { ProductInputEntityPercentColor } from "./productInputEntityPercentColor";
 import type { ProductInputEntityPercentExtraOption } from "./productInputEntityPercentExtraOption";
+import type { ProductInputEntityIsCrownRequired } from "./productInputEntityIsCrownRequired";
+import type { ProductInputEntityIsUpFrameRequired } from "./productInputEntityIsUpFrameRequired";
+import type { ProductInputEntityIsUnderFrameRequired } from "./productInputEntityIsUnderFrameRequired";
+import type { ProductInputEntityIsCrownAppliable } from "./productInputEntityIsCrownAppliable";
+import type { ProductInputEntityIsUpFrameAppliable } from "./productInputEntityIsUpFrameAppliable";
+import type { ProductInputEntityIsUnderFrameAppliable } from "./productInputEntityIsUnderFrameAppliable";
 import type { ProductImageInputEntity } from "./productImageInputEntity";
+import type { ProductResourceUnionEntity } from "./productResourceUnionEntity";
 
 export interface ProductInputEntity {
   name: string;
   product_type?: ProductInputEntityProductType;
   price_uzs?: ProductInputEntityPriceUzs;
+  /** @minimum 0 */
   price_usd: number;
   measurement_unit: string;
   category_id: number;
@@ -35,5 +43,12 @@ export interface ProductInputEntity {
   percent_covering_secondary?: ProductInputEntityPercentCoveringSecondary;
   percent_color?: ProductInputEntityPercentColor;
   percent_extra_option?: ProductInputEntityPercentExtraOption;
+  is_crown_required?: ProductInputEntityIsCrownRequired;
+  is_up_frame_required?: ProductInputEntityIsUpFrameRequired;
+  is_under_frame_required?: ProductInputEntityIsUnderFrameRequired;
+  is_crown_appliable?: ProductInputEntityIsCrownAppliable;
+  is_up_frame_appliable?: ProductInputEntityIsUpFrameAppliable;
+  is_under_frame_appliable?: ProductInputEntityIsUnderFrameAppliable;
   product_images: ProductImageInputEntity[];
+  product_resource_unions: ProductResourceUnionEntity[];
 }

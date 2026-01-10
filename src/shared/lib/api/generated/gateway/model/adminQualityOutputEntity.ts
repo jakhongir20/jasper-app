@@ -7,7 +7,6 @@
  *  *\/
  */
 import type { AdminQualityOutputEntityDeletedAt } from "./adminQualityOutputEntityDeletedAt";
-import type { CompanyEntity } from "./companyEntity";
 
 export interface AdminQualityOutputEntity {
   quality_id: number;
@@ -16,5 +15,4 @@ export interface AdminQualityOutputEntity {
   price_multiplier: number;
   is_deleted: boolean;
   deleted_at?: AdminQualityOutputEntityDeletedAt;
-  company: CompanyEntity;
 }

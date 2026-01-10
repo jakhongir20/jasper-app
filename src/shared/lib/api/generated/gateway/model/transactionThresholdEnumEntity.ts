@@ -15,4 +15,5 @@ export const TransactionThresholdEnumEntity = {
   no: "no",
   with: "with",
   "with-low": "with-low",
+  custom: "custom",
 } as const;

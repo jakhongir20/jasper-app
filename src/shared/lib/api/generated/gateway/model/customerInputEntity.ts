@@ -6,9 +6,8 @@
  *  * 0.1.0
  *  *\/
  */
-import type { CustomerInputEntityPhoneNumber } from "./customerInputEntityPhoneNumber";
 
 export interface CustomerInputEntity {
   name: string;
-  phone_number?: CustomerInputEntityPhoneNumber;
+  phone_number: string;
 }

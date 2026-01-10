@@ -6,6 +6,7 @@
  *  * 0.1.0
  *  *\/
  */
+import type { ApplicationTransactionInputEntityAllowAudition } from "./applicationTransactionInputEntityAllowAudition";
 import type { ApplicationTransactionInputEntityLocation } from "./applicationTransactionInputEntityLocation";
 import type { ApplicationTransactionInputEntityProductType } from "./applicationTransactionInputEntityProductType";
 import type { ApplicationTransactionInputEntityOpeningHeight } from "./applicationTransactionInputEntityOpeningHeight";
@@ -15,6 +16,7 @@ import type { ApplicationTransactionInputEntityEntityQuantity } from "./applicat
 import type { ApplicationTransactionInputEntityFrameworkFrontId } from "./applicationTransactionInputEntityFrameworkFrontId";
 import type { ApplicationTransactionInputEntityFrameworkBackId } from "./applicationTransactionInputEntityFrameworkBackId";
 import type { ApplicationTransactionInputEntityThreshold } from "./applicationTransactionInputEntityThreshold";
+import type { ApplicationTransactionInputEntityThresholdHeight } from "./applicationTransactionInputEntityThresholdHeight";
 import type { ApplicationTransactionInputEntityOpeningLogic } from "./applicationTransactionInputEntityOpeningLogic";
 import type { ApplicationTransactionInputEntitySash } from "./applicationTransactionInputEntitySash";
 import type { ApplicationTransactionInputEntityChamfer } from "./applicationTransactionInputEntityChamfer";
@@ -65,6 +67,7 @@ import type { ApplicationTransactionInputEntityPercentExtraOption } from "./appl
 import type { ApplicationTransactionInputEntityExtraOptionProductId } from "./applicationTransactionInputEntityExtraOptionProductId";
 
 export interface ApplicationTransactionInputEntity {
+  allow_audition?: ApplicationTransactionInputEntityAllowAudition;
   location?: ApplicationTransactionInputEntityLocation;
   product_type?: ApplicationTransactionInputEntityProductType;
   opening_height?: ApplicationTransactionInputEntityOpeningHeight;
@@ -74,6 +77,7 @@ export interface ApplicationTransactionInputEntity {
   framework_front_id?: ApplicationTransactionInputEntityFrameworkFrontId;
   framework_back_id?: ApplicationTransactionInputEntityFrameworkBackId;
   threshold?: ApplicationTransactionInputEntityThreshold;
+  threshold_height?: ApplicationTransactionInputEntityThresholdHeight;
   opening_logic?: ApplicationTransactionInputEntityOpeningLogic;
   sash?: ApplicationTransactionInputEntitySash;
   chamfer?: ApplicationTransactionInputEntityChamfer;

@@ -16,6 +16,10 @@ export interface AdminFrameworkOutputEntity {
   image_url: string;
   order_number?: AdminFrameworkOutputEntityOrderNumber;
   doorway_type: number;
+  has_up_frame: boolean;
+  has_under_frame: boolean;
+  has_crown: boolean;
+  has_transom: boolean;
   is_frame: boolean;
   is_filler: boolean;
   is_deleted: boolean;

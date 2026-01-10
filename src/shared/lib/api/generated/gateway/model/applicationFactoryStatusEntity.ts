@@ -9,9 +9,11 @@
 import type { ApplicationFactoryStatusEntityProductionStatusReason } from "./applicationFactoryStatusEntityProductionStatusReason";
 import type { ApplicationFactoryStatusEntityFactoryRemark } from "./applicationFactoryStatusEntityFactoryRemark";
 import type { ApplicationFactoryStatusActionTypeEnumEntity } from "./applicationFactoryStatusActionTypeEnumEntity";
+import type { ApplicationFactoryStatusEntityFactoryStatusId } from "./applicationFactoryStatusEntityFactoryStatusId";
 
 export interface ApplicationFactoryStatusEntity {
   production_status_reason?: ApplicationFactoryStatusEntityProductionStatusReason;
   factory_remark?: ApplicationFactoryStatusEntityFactoryRemark;
   action_type: ApplicationFactoryStatusActionTypeEnumEntity;
+  factory_status_id?: ApplicationFactoryStatusEntityFactoryStatusId;
 }

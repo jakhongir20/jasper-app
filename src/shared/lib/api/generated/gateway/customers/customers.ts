@@ -32,11 +32,13 @@ import type {
   CustomerOutputEntity,
   CustomerPageEntity,
   CustomerPlainEntity,
+  CustomerPlainPageEntity,
   CustomerReadAllCustomerAllGetParams,
   CustomerReadOneCustomerGetParams,
   HTTPValidationErrorEntity,
   RootCustomerDeleteRootCustomerDeleteParams,
   RootCustomerEntity,
+  RootCustomerPatchEntity,
   RootCustomerReadAllRootCustomerAllGetParams,
   RootCustomerReadOneRootCustomerGetParams,
   RootCustomerUpdateRootCustomerPatchParams,
@@ -315,7 +317,7 @@ export function useRootCustomerReadOneRootCustomerGet<
  * @summary Root Customer Update
  */
 export const rootCustomerUpdateRootCustomerPatch = (
-  rootCustomerEntity: RootCustomerEntity,
+  rootCustomerPatchEntity: RootCustomerPatchEntity,
   params: RootCustomerUpdateRootCustomerPatchParams,
   options?: SecondParameter<typeof customInstance>,
 ) => {
@@ -324,7 +326,7 @@ export const rootCustomerUpdateRootCustomerPatch = (
       url: `/root/customer`,
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      data: rootCustomerEntity,
+      data: rootCustomerPatchEntity,
       params,
     },
     options,
@@ -339,7 +341,7 @@ export const getRootCustomerUpdateRootCustomerPatchMutationOptions = <
     Awaited<ReturnType<typeof rootCustomerUpdateRootCustomerPatch>>,
     TError,
     {
-      data: RootCustomerEntity;
+      data: RootCustomerPatchEntity;
       params: RootCustomerUpdateRootCustomerPatchParams;
     },
     TContext
@@ -349,7 +351,7 @@ export const getRootCustomerUpdateRootCustomerPatchMutationOptions = <
   Awaited<ReturnType<typeof rootCustomerUpdateRootCustomerPatch>>,
   TError,
   {
-    data: RootCustomerEntity;
+    data: RootCustomerPatchEntity;
     params: RootCustomerUpdateRootCustomerPatchParams;
   },
   TContext
@@ -366,7 +368,7 @@ export const getRootCustomerUpdateRootCustomerPatchMutationOptions = <
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof rootCustomerUpdateRootCustomerPatch>>,
     {
-      data: RootCustomerEntity;
+      data: RootCustomerPatchEntity;
       params: RootCustomerUpdateRootCustomerPatchParams;
     }
   > = (props) => {
@@ -382,7 +384,7 @@ export type RootCustomerUpdateRootCustomerPatchMutationResult = NonNullable<
   Awaited<ReturnType<typeof rootCustomerUpdateRootCustomerPatch>>
 >;
 export type RootCustomerUpdateRootCustomerPatchMutationBody =
-  RootCustomerEntity;
+  RootCustomerPatchEntity;
 export type RootCustomerUpdateRootCustomerPatchMutationError =
   ErrorType<HTTPValidationErrorEntity>;
 
@@ -398,7 +400,7 @@ export const useRootCustomerUpdateRootCustomerPatch = <
       Awaited<ReturnType<typeof rootCustomerUpdateRootCustomerPatch>>,
       TError,
       {
-        data: RootCustomerEntity;
+        data: RootCustomerPatchEntity;
         params: RootCustomerUpdateRootCustomerPatchParams;
       },
       TContext
@@ -410,7 +412,7 @@ export const useRootCustomerUpdateRootCustomerPatch = <
   Awaited<ReturnType<typeof rootCustomerUpdateRootCustomerPatch>>,
   TError,
   {
-    data: RootCustomerEntity;
+    data: RootCustomerPatchEntity;
     params: RootCustomerUpdateRootCustomerPatchParams;
   },
   TContext
@@ -1578,7 +1580,7 @@ export const customerReadAllCustomerAllGet = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<CustomerPageEntity>(
+  return customInstance<CustomerPlainPageEntity>(
     { url: `/customer/all`, method: "GET", params, signal },
     options,
   );

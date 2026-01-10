@@ -6,14 +6,11 @@
  *  * 0.1.0
  *  *\/
  */
-import type { RootCustomerEntityName } from "./rootCustomerEntityName";
-import type { RootCustomerEntityPhoneNumber } from "./rootCustomerEntityPhoneNumber";
 import type { RootCustomerEntityIsActive } from "./rootCustomerEntityIsActive";
-import type { RootCustomerEntityCompanyId } from "./rootCustomerEntityCompanyId";
 
 export interface RootCustomerEntity {
-  name?: RootCustomerEntityName;
-  phone_number?: RootCustomerEntityPhoneNumber;
+  name: string;
+  phone_number: string;
   is_active?: RootCustomerEntityIsActive;
-  company_id?: RootCustomerEntityCompanyId;
+  company_id: number;
 }

@@ -12,8 +12,10 @@ import type { RootUserPatchEntityIsActive } from "./rootUserPatchEntityIsActive"
 import type { RootUserPatchEntityIsAdmin } from "./rootUserPatchEntityIsAdmin";
 import type { RootUserPatchEntityIsRoot } from "./rootUserPatchEntityIsRoot";
 import type { RootUserPatchEntityIsFactoryWorker } from "./rootUserPatchEntityIsFactoryWorker";
+import type { RootUserPatchEntityIsFactorySupervisor } from "./rootUserPatchEntityIsFactorySupervisor";
 import type { RootUserPatchEntityTelegramUserId } from "./rootUserPatchEntityTelegramUserId";
 import type { RootUserPatchEntityCompanyId } from "./rootUserPatchEntityCompanyId";
+import type { RootUserPatchEntityBranchId } from "./rootUserPatchEntityBranchId";
 import type { RootUserPatchEntityFactoryStatusId } from "./rootUserPatchEntityFactoryStatusId";
 
 export interface RootUserPatchEntity {
@@ -23,7 +25,9 @@ export interface RootUserPatchEntity {
   is_admin?: RootUserPatchEntityIsAdmin;
   is_root?: RootUserPatchEntityIsRoot;
   is_factory_worker?: RootUserPatchEntityIsFactoryWorker;
+  is_factory_supervisor?: RootUserPatchEntityIsFactorySupervisor;
   telegram_user_id?: RootUserPatchEntityTelegramUserId;
   company_id?: RootUserPatchEntityCompanyId;
+  branch_id?: RootUserPatchEntityBranchId;
   factory_status_id?: RootUserPatchEntityFactoryStatusId;
 }

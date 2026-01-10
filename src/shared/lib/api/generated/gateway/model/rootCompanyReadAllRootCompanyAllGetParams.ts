@@ -9,6 +9,7 @@
 
 export type RootCompanyReadAllRootCompanyAllGetParams = {
   query?: string | null;
+  is_deleted?: boolean | null;
   offset?: number;
   limit?: number;
 };

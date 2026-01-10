@@ -9,6 +9,7 @@
 
 export type AdminUserReadAllAdminAllGetParams = {
   query?: string | null;
+  branch_id?: number | null;
   offset?: number;
   limit?: number;
 };

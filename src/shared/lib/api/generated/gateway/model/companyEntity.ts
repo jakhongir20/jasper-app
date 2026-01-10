@@ -6,10 +6,12 @@
  *  * 0.1.0
  *  *\/
  */
+import type { CompanyEntityCompanyPhoneNumber } from "./companyEntityCompanyPhoneNumber";
 
 export interface CompanyEntity {
   company_id: number;
   created_at: number;
   display_name: string;
   legal_name: string;
+  company_phone_number?: CompanyEntityCompanyPhoneNumber;
 }

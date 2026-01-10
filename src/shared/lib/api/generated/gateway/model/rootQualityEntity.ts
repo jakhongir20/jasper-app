@@ -9,6 +9,7 @@
 
 export interface RootQualityEntity {
   name: string;
+  /** @minimum 0 */
   price_multiplier: number;
   company_id: number;
 }

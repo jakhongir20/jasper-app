@@ -43,6 +43,7 @@ import type {
   UserEntity,
   UserPageEntity,
   UserPasswordResetEntity,
+  UserPatchMEEntity,
   UserPermissionSetEntity,
 } from ".././model";
 
@@ -1889,3 +1890,94 @@ export function useUserReadMeMeGet<
 
   return query;
 }
+
+/**
+ * @summary User Update Me
+ */
+export const userUpdateMeMePatch = (
+  userPatchMEEntity: UserPatchMEEntity,
+  options?: SecondParameter<typeof customUserInstance>,
+) => {
+  return customUserInstance<UserEntity>(
+    {
+      url: `/me`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: userPatchMEEntity,
+    },
+    options,
+  );
+};
+
+export const getUserUpdateMeMePatchMutationOptions = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof userUpdateMeMePatch>>,
+    TError,
+    { data: UserPatchMEEntity },
+    TContext
+  >;
+  request?: SecondParameter<typeof customUserInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof userUpdateMeMePatch>>,
+  TError,
+  { data: UserPatchMEEntity },
+  TContext
+> => {
+  const mutationKey = ["userUpdateMeMePatch"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof userUpdateMeMePatch>>,
+    { data: UserPatchMEEntity }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return userUpdateMeMePatch(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UserUpdateMeMePatchMutationResult = NonNullable<
+  Awaited<ReturnType<typeof userUpdateMeMePatch>>
+>;
+export type UserUpdateMeMePatchMutationBody = UserPatchMEEntity;
+export type UserUpdateMeMePatchMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
+
+/**
+ * @summary User Update Me
+ */
+export const useUserUpdateMeMePatch = <
+  TError = ErrorType<HTTPValidationErrorEntity>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof userUpdateMeMePatch>>,
+      TError,
+      { data: UserPatchMEEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customUserInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof userUpdateMeMePatch>>,
+  TError,
+  { data: UserPatchMEEntity },
+  TContext
+> => {
+  const mutationOptions = getUserUpdateMeMePatchMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};

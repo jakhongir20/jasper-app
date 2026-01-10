@@ -24,6 +24,7 @@ import type { ApplicationOutputEntityForecastAccessories } from "./applicationOu
 import type { ApplicationOutputEntityForecastServices } from "./applicationOutputEntityForecastServices";
 import type { ApplicationOutputEntityForecastInitial } from "./applicationOutputEntityForecastInitial";
 import type { ApplicationOutputEntityForecastFinal } from "./applicationOutputEntityForecastFinal";
+import type { ApplicationOutputEntityForecastBranchMarkup } from "./applicationOutputEntityForecastBranchMarkup";
 import type { ApplicationTransactionOutputEntity } from "./applicationTransactionOutputEntity";
 import type { ApplicationServiceOutputEntity } from "./applicationServiceOutputEntity";
 import type { ApplicationQualityOutputEntity } from "./applicationQualityOutputEntity";
@@ -58,6 +59,7 @@ export interface ApplicationOutputEntity {
   forecast_services?: ApplicationOutputEntityForecastServices;
   forecast_initial?: ApplicationOutputEntityForecastInitial;
   forecast_final?: ApplicationOutputEntityForecastFinal;
+  forecast_branch_markup?: ApplicationOutputEntityForecastBranchMarkup;
   application_transactions: ApplicationTransactionOutputEntity[];
   application_services: ApplicationServiceOutputEntity[];
   application_qualities: ApplicationQualityOutputEntity[];

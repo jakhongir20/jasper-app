@@ -13,4 +13,6 @@ export type TransactionHingeMechanismEnumEntity =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TransactionHingeMechanismEnumEntity = {
   NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
 } as const;

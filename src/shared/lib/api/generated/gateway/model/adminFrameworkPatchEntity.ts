@@ -10,6 +10,10 @@ import type { AdminFrameworkPatchEntityName } from "./adminFrameworkPatchEntityN
 import type { AdminFrameworkPatchEntityFrameworkImage } from "./adminFrameworkPatchEntityFrameworkImage";
 import type { AdminFrameworkPatchEntityOrderNumber } from "./adminFrameworkPatchEntityOrderNumber";
 import type { AdminFrameworkPatchEntityDoorwayType } from "./adminFrameworkPatchEntityDoorwayType";
+import type { AdminFrameworkPatchEntityHasUpFrame } from "./adminFrameworkPatchEntityHasUpFrame";
+import type { AdminFrameworkPatchEntityHasUnderFrame } from "./adminFrameworkPatchEntityHasUnderFrame";
+import type { AdminFrameworkPatchEntityHasCrown } from "./adminFrameworkPatchEntityHasCrown";
+import type { AdminFrameworkPatchEntityHasTransom } from "./adminFrameworkPatchEntityHasTransom";
 import type { AdminFrameworkPatchEntityIsFrame } from "./adminFrameworkPatchEntityIsFrame";
 import type { AdminFrameworkPatchEntityIsFiller } from "./adminFrameworkPatchEntityIsFiller";
 
@@ -18,6 +22,10 @@ export interface AdminFrameworkPatchEntity {
   framework_image?: AdminFrameworkPatchEntityFrameworkImage;
   order_number?: AdminFrameworkPatchEntityOrderNumber;
   doorway_type?: AdminFrameworkPatchEntityDoorwayType;
+  has_up_frame?: AdminFrameworkPatchEntityHasUpFrame;
+  has_under_frame?: AdminFrameworkPatchEntityHasUnderFrame;
+  has_crown?: AdminFrameworkPatchEntityHasCrown;
+  has_transom?: AdminFrameworkPatchEntityHasTransom;
   is_frame?: AdminFrameworkPatchEntityIsFrame;
   is_filler?: AdminFrameworkPatchEntityIsFiller;
 }

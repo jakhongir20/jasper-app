@@ -11,7 +11,9 @@ import type { AdminUserPatchEntityUsername } from "./adminUserPatchEntityUsernam
 import type { AdminUserPatchEntityIsActive } from "./adminUserPatchEntityIsActive";
 import type { AdminUserPatchEntityIsAdmin } from "./adminUserPatchEntityIsAdmin";
 import type { AdminUserPatchEntityIsFactoryWorker } from "./adminUserPatchEntityIsFactoryWorker";
+import type { AdminUserPatchEntityIsFactorySupervisor } from "./adminUserPatchEntityIsFactorySupervisor";
 import type { AdminUserPatchEntityTelegramUserId } from "./adminUserPatchEntityTelegramUserId";
+import type { AdminUserPatchEntityBranchId } from "./adminUserPatchEntityBranchId";
 import type { AdminUserPatchEntityFactoryStatusId } from "./adminUserPatchEntityFactoryStatusId";
 
 export interface AdminUserPatchEntity {
@@ -20,6 +22,8 @@ export interface AdminUserPatchEntity {
   is_active?: AdminUserPatchEntityIsActive;
   is_admin?: AdminUserPatchEntityIsAdmin;
   is_factory_worker?: AdminUserPatchEntityIsFactoryWorker;
+  is_factory_supervisor?: AdminUserPatchEntityIsFactorySupervisor;
   telegram_user_id?: AdminUserPatchEntityTelegramUserId;
+  branch_id?: AdminUserPatchEntityBranchId;
   factory_status_id?: AdminUserPatchEntityFactoryStatusId;
 }

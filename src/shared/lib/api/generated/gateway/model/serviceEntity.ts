@@ -8,20 +8,14 @@
  */
 import type { ServiceEntityUniqueName } from "./serviceEntityUniqueName";
 import type { ServiceEntityName } from "./serviceEntityName";
-import type { ServiceEntityFeatures } from "./serviceEntityFeatures";
-import type { ServiceEntityMeasure } from "./serviceEntityMeasure";
 import type { ServiceEntityPriceUzs } from "./serviceEntityPriceUzs";
 import type { ServiceEntityPriceUsd } from "./serviceEntityPriceUsd";
-import type { CompanyEntity } from "./companyEntity";
 
 export interface ServiceEntity {
   service_id: number;
   created_at: number;
   unique_name?: ServiceEntityUniqueName;
   name?: ServiceEntityName;
-  features?: ServiceEntityFeatures;
-  measure?: ServiceEntityMeasure;
   price_uzs?: ServiceEntityPriceUzs;
   price_usd?: ServiceEntityPriceUsd;
-  company: CompanyEntity;
 }
