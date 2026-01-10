@@ -30,8 +30,7 @@ export interface ProductInputEntity {
   name: string;
   product_type?: ProductInputEntityProductType;
   price_uzs?: ProductInputEntityPriceUzs;
-  /** @minimum 0 */
-  price_usd: number;
+  factory_price_markup: number;
   measurement_unit: string;
   category_id: number;
   frame_thickness?: ProductInputEntityFrameThickness;

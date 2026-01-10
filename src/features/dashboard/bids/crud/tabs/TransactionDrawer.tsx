@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Drawer, Form, message, Tabs } from "antd";
 import { Button } from "@/shared/ui";
 import {
@@ -22,6 +22,8 @@ interface Props {
   onClose: (closed: boolean) => void;
   mode: "add" | "edit";
   transaction?: Transaction | null;
+  /** Alternative to transaction - pass index to get transaction from parent form */
+  transactionIndex?: number | null;
 }
 
 export const TransactionDrawer: FC<Props> = ({
@@ -29,9 +31,20 @@ export const TransactionDrawer: FC<Props> = ({
   open,
   onClose,
   mode,
-  transaction,
+  transaction: transactionProp,
+  transactionIndex,
 }) => {
   const parentForm = Form.useFormInstance<ApplicationLocalForm>();
+
+  // Get transaction either from prop or by index from parent form
+  const transaction = useMemo(() => {
+    if (transactionProp) return transactionProp;
+    if (transactionIndex !== null && transactionIndex !== undefined) {
+      const transactions = parentForm.getFieldValue("transactions") ?? [];
+      return transactions[transactionIndex] ?? null;
+    }
+    return null;
+  }, [transactionProp, transactionIndex, parentForm]);
   const [drawerForm] = Form.useForm<ApplicationLocalForm>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("perechen");

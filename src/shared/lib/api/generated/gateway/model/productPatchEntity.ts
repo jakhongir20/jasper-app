@@ -9,7 +9,7 @@
 import type { ProductPatchEntityName } from "./productPatchEntityName";
 import type { ProductPatchEntityProductType } from "./productPatchEntityProductType";
 import type { ProductPatchEntityPriceUzs } from "./productPatchEntityPriceUzs";
-import type { ProductPatchEntityPriceUsd } from "./productPatchEntityPriceUsd";
+import type { ProductPatchEntityFactoryPriceMarkup } from "./productPatchEntityFactoryPriceMarkup";
 import type { ProductPatchEntityMeasurementUnit } from "./productPatchEntityMeasurementUnit";
 import type { ProductPatchEntityCategoryId } from "./productPatchEntityCategoryId";
 import type { ProductPatchEntityFrameThickness } from "./productPatchEntityFrameThickness";
@@ -34,7 +34,7 @@ export interface ProductPatchEntity {
   name?: ProductPatchEntityName;
   product_type?: ProductPatchEntityProductType;
   price_uzs?: ProductPatchEntityPriceUzs;
-  price_usd?: ProductPatchEntityPriceUsd;
+  factory_price_markup?: ProductPatchEntityFactoryPriceMarkup;
   measurement_unit?: ProductPatchEntityMeasurementUnit;
   category_id?: ProductPatchEntityCategoryId;
   frame_thickness?: ProductPatchEntityFrameThickness;

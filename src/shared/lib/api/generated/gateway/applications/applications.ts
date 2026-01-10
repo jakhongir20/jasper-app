@@ -6,7 +6,6 @@
  *  * 0.1.0
  *  *\/
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -21,6 +20,7 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type {
   AdminApplicationReadAllAdminApplicationAllGetParams,
@@ -40,14 +40,15 @@ import type {
   ApplicationServiceManagerApplicationServiceManagerPostParams,
   ApplicationSupervisorFactoryStatusEntity,
   ApplicationSupervisorFactoryStatusMoveApplicationSupervisorFactoryStatusMovePostParams,
+  ApplicationTransactionBatchAuditEntity,
   ApplicationTransactionInputEntity,
   ApplicationUpdateApplicationPatchParams,
   HTTPValidationErrorEntity,
   RootApplicationReadAllRootApplicationAllGetParams,
 } from ".././model";
 
-import { customInstance } from "../../../mutator";
 import type { ErrorType } from "../../../mutator";
+import { customInstance } from "../../../mutator";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -631,6 +632,132 @@ export const useApplicationTransactionAuditorApplicationTransactionAuditorPost =
   > => {
     const mutationOptions =
       getApplicationTransactionAuditorApplicationTransactionAuditorPostMutationOptions(
+        options,
+      );
+
+    return useMutation(mutationOptions, queryClient);
+  };
+/**
+ * @summary Application Batch Transaction Auditor
+ */
+export const applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost =
+  (
+    applicationTransactionBatchAuditEntity: ApplicationTransactionBatchAuditEntity,
+    options?: SecondParameter<typeof customInstance>,
+    signal?: AbortSignal,
+  ) => {
+    return customInstance<boolean>(
+      {
+        url: `/application/batch/transaction-auditor`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: applicationTransactionBatchAuditEntity,
+        signal,
+      },
+      options,
+    );
+  };
+
+export const getApplicationBatchTransactionAuditorApplicationBatchTransactionAuditorPostMutationOptions =
+  <
+    TError = ErrorType<HTTPValidationErrorEntity>,
+    TContext = unknown,
+  >(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<
+          typeof applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost
+        >
+      >,
+      TError,
+      { data: ApplicationTransactionBatchAuditEntity },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  }): UseMutationOptions<
+    Awaited<
+      ReturnType<
+        typeof applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost
+      >
+    >,
+    TError,
+    { data: ApplicationTransactionBatchAuditEntity },
+    TContext
+  > => {
+    const mutationKey = [
+      "applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost",
+    ];
+    const { mutation: mutationOptions, request: requestOptions } = options
+      ? options.mutation &&
+        "mutationKey" in options.mutation &&
+        options.mutation.mutationKey
+        ? options
+        : { ...options, mutation: { ...options.mutation, mutationKey } }
+      : { mutation: { mutationKey }, request: undefined };
+
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<
+          typeof applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost
+        >
+      >,
+      { data: ApplicationTransactionBatchAuditEntity }
+    > = (props) => {
+      const { data } = props ?? {};
+
+      return applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost(
+        data,
+        requestOptions,
+      );
+    };
+
+    return { mutationFn, ...mutationOptions };
+  };
+
+export type ApplicationBatchTransactionAuditorApplicationBatchTransactionAuditorPostMutationResult =
+  NonNullable<
+    Awaited<
+      ReturnType<
+        typeof applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost
+      >
+    >
+  >;
+export type ApplicationBatchTransactionAuditorApplicationBatchTransactionAuditorPostMutationBody =
+  ApplicationTransactionBatchAuditEntity;
+export type ApplicationBatchTransactionAuditorApplicationBatchTransactionAuditorPostMutationError =
+  ErrorType<HTTPValidationErrorEntity>;
+
+/**
+ * @summary Application Batch Transaction Auditor
+ */
+export const useApplicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost =
+  <TError = ErrorType<HTTPValidationErrorEntity>, TContext = unknown>(
+    options?: {
+      mutation?: UseMutationOptions<
+        Awaited<
+          ReturnType<
+            typeof applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost
+          >
+        >,
+        TError,
+        { data: ApplicationTransactionBatchAuditEntity },
+        TContext
+      >;
+      request?: SecondParameter<typeof customInstance>;
+    },
+    queryClient?: QueryClient,
+  ): UseMutationResult<
+    Awaited<
+      ReturnType<
+        typeof applicationBatchTransactionAuditorApplicationBatchTransactionAuditorPost
+      >
+    >,
+    TError,
+    { data: ApplicationTransactionBatchAuditEntity },
+    TContext
+  > => {
+    const mutationOptions =
+      getApplicationBatchTransactionAuditorApplicationBatchTransactionAuditorPostMutationOptions(
         options,
       );
 

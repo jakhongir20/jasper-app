@@ -7,4 +7,4 @@
  *  *\/
  */
 
-export type ProductPatchEntityPriceUsd = number | null;
+export type ProductPatchEntityFactoryPriceMarkup = number | null;

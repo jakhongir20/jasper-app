@@ -73,6 +73,7 @@ interface Props {
 
 // Only include valid product types accepted by the API
 // Other items like transom, frame, filler, etc. are component sections, not product types
+// Exported for EditableTable
 export const PRODUCT_TYPES = [
   { value: "door-window", label: "ДО дверь" },
   { value: "door-deaf", label: "ДГ дверь" },
@@ -113,11 +114,11 @@ const CATEGORY_SECTION_INDEX = {
   extra_options: 27,
 } as const;
 
-type TransactionValues = Record<string, unknown>;
+export type TransactionValues = Record<string, unknown>;
 
-type FieldType = "text" | "number" | "select" | "selectInfinitive" | "image";
+export type FieldType = "text" | "number" | "select" | "selectInfinitive" | "image";
 
-type FieldConfig = {
+export type FieldConfig = {
   name: string;
   label: string;
   type: FieldType;
@@ -145,7 +146,7 @@ type FieldConfig = {
   visible?: (values: TransactionValues, productType: string) => boolean;
 };
 
-type SectionConfig = {
+export type SectionConfig = {
   key: string;
   title?: string;
   fields: FieldConfig[];
@@ -161,13 +162,13 @@ type ProductTypeConfig = {
 
 const ALWAYS_REQUIRED_FIELDS: string[] = [];
 
-const isDoorType = (productType: string) =>
+export const isDoorType = (productType: string) =>
   productType === "door-window" || productType === "door-deaf";
 
-const isDoorOrDoorway = (productType: string) =>
+export const isDoorOrDoorway = (productType: string) =>
   isDoorType(productType) || productType === "doorway";
 
-const ALL_SECTIONS: SectionConfig[] = [
+export const ALL_SECTIONS: SectionConfig[] = [
   {
     key: "transom",
     title: "Фрамуга",
@@ -829,7 +830,7 @@ const ALL_SECTIONS: SectionConfig[] = [
   },
 ];
 
-const getSectionsForProductType = (productType: string) =>
+export const getSectionsForProductType = (productType: string) =>
   ALL_SECTIONS.filter((section) => {
     if (
       !section.allowedProductTypes ||
@@ -843,7 +844,7 @@ const getSectionsForProductType = (productType: string) =>
 const resolveProductType = (values: TransactionValues) =>
   ((values.product_type ?? values.door_type) as string | undefined) ?? "";
 
-const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
+export const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   "door-window": [
     // Measurement fields (required for all)
     "opening_height",
@@ -919,7 +920,7 @@ const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
   ],
 };
 
-const hasValue = (value: unknown) =>
+export const hasValue = (value: unknown) =>
   value !== undefined && value !== null && value !== "";
 
 const toBoolean = (value: unknown) => {
@@ -952,7 +953,7 @@ const lattingFrontFlag = (values: TransactionValues, flag: string) =>
 const lattingBackFlag = (values: TransactionValues, flag: string) =>
   toBoolean(getNestedValue(values, `frame_back.${flag}`));
 
-const CONDITIONAL_REQUIREMENTS: Record<
+export const CONDITIONAL_REQUIREMENTS: Record<
   string,
   Record<string, (values: TransactionValues) => boolean>
 > = {
@@ -1086,7 +1087,7 @@ const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
   },
 };
 
-const filterVisibleSections = (
+export const filterVisibleSections = (
   sections: SectionConfig[],
   values: TransactionValues,
   productType: string,
@@ -1113,7 +1114,7 @@ const filterVisibleSections = (
     }
   });
 
-const MEASUREMENT_FIELDS: FieldConfig[] = [
+export const MEASUREMENT_FIELDS: FieldConfig[] = [
   // 1. location
   {
     name: "location",
