@@ -49,6 +49,12 @@ const moduleImports = {
   qualities: {
     list: () => import("@/pages/admin/qualities/list/Page"),
   },
+  resources: {
+    list: () => import("@/pages/admin/resources/list/Page"),
+  },
+  branches: {
+    list: () => import("@/pages/admin/branches/list/Page"),
+  },
   settings: {
     list: () => import("@/pages/admin/settings/Page"),
   },
@@ -125,6 +131,8 @@ const modules = (
       title: "navigation.factoryStatuses",
       icon: "diagram",
     },
+    { name: "resources", title: "navigation.resources", icon: "cube-alt" },
+    { name: "branches", title: "navigation.branches", icon: "home" },
     { name: "settings", title: "navigation.settings", icon: "settings" },
   ] as { name: keyof typeof moduleImports; title: string; icon: IconType }[]
 ).map(createModuleRoutes);
