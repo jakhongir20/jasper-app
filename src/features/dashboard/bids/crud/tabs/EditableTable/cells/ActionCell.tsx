@@ -6,11 +6,12 @@ interface ActionCellProps {
   rowIndex: number;
   onSave: (rowIndex: number) => Promise<void>;
   onDelete: (rowIndex: number) => void;
+  onView: (rowIndex: number) => void;
   isSaving?: boolean;
 }
 
 export const ActionCell = memo<ActionCellProps>(
-  ({ rowIndex, onSave, onDelete, isSaving }) => {
+  ({ rowIndex, onSave, onDelete, onView, isSaving }) => {
     const [saving, setSaving] = useState(false);
 
     const handleSave = async () => {
@@ -37,6 +38,14 @@ export const ActionCell = memo<ActionCellProps>(
               onClick={handleSave}
             >
               Сохранить
+            </Button>
+            <Button
+              type="default"
+              size="small"
+              className={"w-auto !px-2"}
+              onClick={() => onView(rowIndex)}
+            >
+              Просмотр
             </Button>
             <Popconfirm
               title="Удалить запись?"

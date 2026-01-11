@@ -28,7 +28,7 @@ export interface RowProps {
 }
 
 // Column width constants by field type
-export const COLUMN_WIDTHS: Record<FieldType | "checkbox" | "actions", number> =
+export const COLUMN_WIDTHS: Record<FieldType | "checkbox" | "actions" | "index", number> =
   {
     text: 150,
     number: 100,
@@ -37,4 +37,5 @@ export const COLUMN_WIDTHS: Record<FieldType | "checkbox" | "actions", number> =
     image: 160,
     checkbox: 40,
     actions: 100,
+    index: 50,
   };

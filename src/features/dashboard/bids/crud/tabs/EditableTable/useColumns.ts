@@ -58,6 +58,23 @@ export const CHECKBOX_COLUMN: EditableColumnConfig = {
 };
 
 /**
+ * Index column config (fixed left)
+ */
+export const INDEX_COLUMN: EditableColumnConfig = {
+  key: "index",
+  dataIndex: "index",
+  title: "№",
+  width: COLUMN_WIDTHS.index,
+  cellType: "text", // Not used, just placeholder
+  fieldConfig: {
+    name: "index",
+    label: "№",
+    type: "text",
+  },
+  fixed: "left",
+};
+
+/**
  * Hook to get ALL table columns
  * Shows columns from ALL product types - each row handles its own visibility
  * Columns are computed from:
@@ -66,8 +83,14 @@ export const CHECKBOX_COLUMN: EditableColumnConfig = {
  */
 export const useTableColumns = (): EditableColumnConfig[] => {
   return useMemo(() => {
-    // All measurement columns
-    const measurementCols = MEASUREMENT_FIELDS.map((field) => fieldToColumn(field));
+    // All measurement columns - location is fixed left
+    const measurementCols = MEASUREMENT_FIELDS.map((field) => {
+      const col = fieldToColumn(field);
+      if (field.name === "location") {
+        col.fixed = "left";
+      }
+      return col;
+    });
 
     // All section columns with their allowedProductTypes
     const seenFields = new Set<string>();
@@ -82,7 +105,7 @@ export const useTableColumns = (): EditableColumnConfig[] => {
       });
     });
 
-    // Combine: checkbox + measurement + sections + actions
-    return [CHECKBOX_COLUMN, ...measurementCols, ...sectionCols, ACTION_COLUMN];
+    // Combine: checkbox + index + measurement + sections + actions
+    return [CHECKBOX_COLUMN, INDEX_COLUMN, ...measurementCols, ...sectionCols, ACTION_COLUMN];
   }, []);
 };

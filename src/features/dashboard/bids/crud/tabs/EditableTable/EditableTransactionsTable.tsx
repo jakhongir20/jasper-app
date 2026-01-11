@@ -7,8 +7,8 @@ import { TableToolbar } from "./TableToolbar";
 import { TableHeader } from "./TableHeader";
 import { EditableRow } from "./EditableRow";
 import { useSaveRow } from "./hooks/useSaveRow";
-import { useBulkValidation } from "./hooks/useBulkValidation";
 import { TransactionDrawer } from "../TransactionDrawer";
+import { BulkEditDrawer } from "./BulkEditDrawer";
 
 interface EditableTransactionsTableProps {
   mode: "add" | "edit";
@@ -25,13 +25,13 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
   const [savingRows, setSavingRows] = useState<Set<number>>(new Set());
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingRowIndex, setEditingRowIndex] = useState<number | null>(null);
+  const [bulkEditDrawerOpen, setBulkEditDrawerOpen] = useState(false);
 
   // Watch transactions for rendering
   const transactions = Form.useWatch("transactions", form) ?? [];
 
   // API hooks
   const saveRowMutation = useSaveRow();
-  const bulkValidationMutation = useBulkValidation();
 
   // Row selection handlers
   const toggleRowSelection = useCallback((index: number) => {
@@ -98,12 +98,21 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
     [form],
   );
 
-  // Bulk save
-  const handleBulkSave = useCallback(() => {
+  // Open bulk edit drawer
+  const handleBulkEdit = useCallback(() => {
     if (selectedRows.length > 0) {
-      bulkValidationMutation.mutate(selectedRows);
+      setBulkEditDrawerOpen(true);
     }
-  }, [selectedRows, bulkValidationMutation]);
+  }, [selectedRows.length]);
+
+  // Close bulk edit drawer
+  const handleCloseBulkEditDrawer = useCallback((success: boolean) => {
+    setBulkEditDrawerOpen(false);
+    if (success) {
+      // Clear selection after successful bulk edit
+      setSelectedRows([]);
+    }
+  }, []);
 
   // Open drawer for row editing (double-click)
   const handleOpenDrawer = useCallback((rowIndex: number) => {
@@ -127,8 +136,7 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
       <TableToolbar
         selectedCount={selectedRows.length}
         onAdd={handleAddRow}
-        onBulkSave={handleBulkSave}
-        isBulkSaving={bulkValidationMutation.isPending}
+        onBulkEdit={handleBulkEdit}
       />
 
       <div
@@ -161,6 +169,7 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
                       onDoubleClick={() => handleOpenDrawer(index)}
                       columns={columns}
                       onSave={handleSaveRow}
+                      onView={handleOpenDrawer}
                       isSaving={savingRows.has(index)}
                       productType={rowProductType}
                     />
@@ -178,7 +187,7 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
         )}
       </div>
 
-      {/* Drawer fallback for full editing (double-click) */}
+      {/* Drawer for single row editing (double-click or view button) */}
       {drawerOpen && editingRowIndex !== null && (
         <TransactionDrawer
           open={drawerOpen}
@@ -187,6 +196,13 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
           transactionIndex={editingRowIndex}
         />
       )}
+
+      {/* Drawer for bulk editing selected rows */}
+      <BulkEditDrawer
+        open={bulkEditDrawerOpen}
+        onClose={handleCloseBulkEditDrawer}
+        selectedRowIndices={selectedRows}
+      />
     </div>
   );
 };

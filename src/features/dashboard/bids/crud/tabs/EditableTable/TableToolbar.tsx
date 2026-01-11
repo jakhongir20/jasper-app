@@ -1,16 +1,15 @@
 import { memo } from "react";
-import { Button, Spin } from "antd";
+import { Button } from "antd";
 import { Icon } from "@/shared/ui";
 
 interface TableToolbarProps {
   selectedCount: number;
   onAdd: () => void;
-  onBulkSave: () => void;
-  isBulkSaving: boolean;
+  onBulkEdit: () => void;
 }
 
 export const TableToolbar = memo<TableToolbarProps>(
-  ({ selectedCount, onAdd, onBulkSave, isBulkSaving }) => {
+  ({ selectedCount, onAdd, onBulkEdit }) => {
     return (
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -21,15 +20,8 @@ export const TableToolbar = memo<TableToolbarProps>(
               </span>
               <Button
                 type="primary"
-                onClick={onBulkSave}
-                disabled={isBulkSaving}
-                icon={
-                  isBulkSaving ? (
-                    <Spin size="small" />
-                  ) : (
-                    <Icon icon="check" width={14} color="" />
-                  )
-                }
+                onClick={onBulkEdit}
+                icon={<Icon icon="pen-square" width={14} color="" />}
               >
                 Массовое действие
               </Button>

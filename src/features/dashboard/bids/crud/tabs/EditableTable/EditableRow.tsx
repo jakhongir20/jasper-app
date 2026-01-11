@@ -14,6 +14,7 @@ import type { ApplicationLocalForm } from "@/features/dashboard/bids/model";
 interface EditableRowProps extends RowProps {
   columns: EditableColumnConfig[];
   onSave: (rowIndex: number) => Promise<void>;
+  onView: (rowIndex: number) => void;
   isSaving: boolean;
   productType: string;
 }
@@ -27,6 +28,7 @@ export const EditableRow = memo<EditableRowProps>(
     onDoubleClick,
     columns,
     onSave,
+    onView,
     isSaving,
     productType,
   }) => {
@@ -34,6 +36,13 @@ export const EditableRow = memo<EditableRowProps>(
 
     // Row border color
     const borderColor = "#f0f0f0";
+
+    // Fixed left positions: checkbox=0, index=40, location=90
+    const FIXED_LEFT_POSITIONS: Record<string, number> = {
+      checkbox: 0,
+      index: 40,
+      location: 90,
+    };
 
     const renderCell = (column: EditableColumnConfig) => {
       const { fieldConfig, cellType, key } = column;
@@ -43,10 +52,23 @@ export const EditableRow = memo<EditableRowProps>(
         return (
           <td
             key={key}
-            className="sticky left-0 z-10 bg-white px-2 py-2 text-center"
-            style={{ width: column.width, minWidth: column.width }}
+            className="sticky z-10 bg-white px-2 py-2 text-center"
+            style={{ left: 0, width: column.width, minWidth: column.width }}
           >
             <Checkbox checked={selected} onChange={onSelect} />
+          </td>
+        );
+      }
+
+      // Index cell
+      if (key === "index") {
+        return (
+          <td
+            key={key}
+            className="sticky z-10 bg-white px-2 py-2 text-center text-sm text-gray-500"
+            style={{ left: FIXED_LEFT_POSITIONS.index, width: column.width, minWidth: column.width }}
+          >
+            {rowIndex + 1}
           </td>
         );
       }
@@ -63,6 +85,7 @@ export const EditableRow = memo<EditableRowProps>(
               rowIndex={rowIndex}
               onSave={onSave}
               onDelete={onRemove}
+              onView={onView}
               isSaving={isSaving}
             />
           </td>
@@ -138,11 +161,19 @@ export const EditableRow = memo<EditableRowProps>(
           cellContent = null;
       }
 
+      // Handle fixed left columns (like location)
+      const isFixedLeft = column.fixed === "left";
+      const leftPosition = isFixedLeft ? FIXED_LEFT_POSITIONS[key] : undefined;
+
       return (
         <td
           key={key}
-          className="px-2 py-2"
-          style={{ width: column.width, minWidth: column.width }}
+          className={`px-2 py-2 ${isFixedLeft ? "sticky z-10 bg-white" : ""}`}
+          style={{
+            width: column.width,
+            minWidth: column.width,
+            left: leftPosition,
+          }}
         >
           {cellContent}
         </td>
