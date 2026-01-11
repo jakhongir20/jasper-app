@@ -15,7 +15,6 @@ interface Props {
 
 interface ForecastRequest {
   status?: number;
-  forecast_rate?: number;
   forecast_active_currency?: number;
   forecast_discount_type?: number;
   forecast_discount_amount?: number;
@@ -51,7 +50,6 @@ export const ApplicationCalc: FC<Props> = ({
       const discountAmount = application.forecast_discount_amount || 0;
 
       form.setFieldsValue({
-        forecast_rate: application.forecast_rate || 0,
         forecast_prepayment: application.forecast_prepayment || 0,
         discount_type: discountType,
         // Populate the correct field based on discount type
@@ -60,10 +58,9 @@ export const ApplicationCalc: FC<Props> = ({
       });
 
       // Automatically send calculation request if we have existing forecast data
-      if (application.forecast_rate && application.forecast_rate > 0) {
+      if (application.forecast_discount_type || application.forecast_prepayment) {
         const requestBody: ForecastRequest = {
           status: 2,
-          forecast_rate: application.forecast_rate,
           forecast_discount_type: application.forecast_discount_type || 1,
           forecast_discount_amount: application.forecast_discount_amount || 0,
           forecast_prepayment: application.forecast_prepayment || 0,
@@ -123,7 +120,6 @@ export const ApplicationCalc: FC<Props> = ({
 
       const requestBody: ForecastRequest = {
         status: 2,
-        forecast_rate: values.forecast_rate || 0,
         forecast_discount_type: values.discount_type,
         forecast_discount_amount: discountAmount,
         forecast_prepayment: values.forecast_prepayment || 0,
@@ -189,11 +185,6 @@ export const ApplicationCalc: FC<Props> = ({
 
         {/* Правая часть - форма расчёта */}
         <div className="flex flex-col gap-4 rounded-xl border border-gray-500/30 p-4 lg:col-span-1">
-          {/* Курс валюты */}
-          <Form.Item name="forecast_rate" label={t("common.labels.curse")}>
-            <NumberInput prefix="$" placeholder="0" />
-          </Form.Item>
-
           {/* Тип скидки */}
           <Form.Item
             name="discount_type"
