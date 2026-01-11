@@ -2,6 +2,7 @@ import { type FC, useState, useCallback } from "react";
 import { Form } from "antd";
 import type { ApplicationLocalForm } from "@/features/dashboard/bids/model";
 import { getRandomId } from "@/shared/utils";
+import { useConfigurationDetail } from "@/features/admin/settings/model/settings.queries";
 import { useTableColumns } from "./useColumns";
 import { TableToolbar } from "./TableToolbar";
 import { TableHeader } from "./TableHeader";
@@ -19,6 +20,7 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
 }) => {
   const form = Form.useFormInstance<ApplicationLocalForm>();
   const columns = useTableColumns();
+  const { data: configuration } = useConfigurationDetail();
 
   // State
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -51,16 +53,20 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
   // Add new row
   const handleAddRow = useCallback(() => {
     const currentTransactions = form.getFieldValue("transactions") ?? [];
-    const newTransaction = {
+    const newTransaction: Record<string, unknown> = {
       _uid: getRandomId("transaction_"),
       entity_quantity: 1,
       opening_thickness: 1,
     };
+    // Set default box_width from company configuration
+    if (configuration?.standard_box_width) {
+      newTransaction.box_width = configuration.standard_box_width;
+    }
     form.setFieldValue("transactions", [
       ...currentTransactions,
       newTransaction,
     ]);
-  }, [form]);
+  }, [form, configuration?.standard_box_width]);
 
   // Save single row
   const handleSaveRow = useCallback(
