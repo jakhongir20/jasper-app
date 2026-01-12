@@ -56,10 +56,12 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
     const newTransaction: Record<string, unknown> = {
       _uid: getRandomId("transaction_"),
       entity_quantity: 1,
-      opening_thickness: 1,
     };
-    // Set default box_width from company configuration
-    if (configuration?.standard_box_width) {
+    // Set default box_width: first from general form field, then from company configuration
+    const generalBoxWidth = form.getFieldValue(["general", "box_width"]);
+    if (generalBoxWidth != null && generalBoxWidth !== "") {
+      newTransaction.box_width = generalBoxWidth;
+    } else if (configuration?.standard_box_width) {
       newTransaction.box_width = configuration.standard_box_width;
     }
     form.setFieldValue("transactions", [
