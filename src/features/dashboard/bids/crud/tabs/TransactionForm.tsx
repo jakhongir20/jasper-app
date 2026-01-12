@@ -844,213 +844,28 @@ export const getSectionsForProductType = (productType: string) =>
 const resolveProductType = (values: TransactionValues) =>
   ((values.product_type ?? values.door_type) as string | undefined) ?? "";
 
+// Required validations removed - backend handles validation
 export const REQUIRED_FIELDS_BY_PRODUCT_TYPE: Record<string, string[]> = {
-  "door-window": [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "opening_thickness", // Толщина проёма - required for doors and doorway
-    "entity_quantity",
-    // Required modelling fields per 2.4.1
-    "box_width", // Ширина коробки
-    "door_product_id", // Модель двери
-    "glass_product_id", // Модель стекла
-    "door_lock_product_id", // Модель замка
-    "hinge_product_id", // Модель петель
-    "door_bolt_product_id", // Модель шпингалета
-    "sheathing_product_id", // Модель обшивки
-    // frame_product_id is conditionally required (only when frame section is visible)
-  ],
-  "door-deaf": [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "opening_thickness", // Толщина проёма - required for doors and doorway
-    "entity_quantity",
-    // Required modelling fields per 2.4.2
-    // Same as door-window except NO glass_product_id
-    "box_width", // Ширина коробки
-    "door_product_id", // Модель двери
-    "door_lock_product_id", // Модель замка
-    "hinge_product_id", // Модель петель
-    "door_bolt_product_id", // Модель шпингалета
-    "sheathing_product_id", // Модель обшивки
-    // frame_product_id is conditionally required (only when frame section is visible)
-  ],
-  doorway: [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "opening_thickness", // Толщина проёма - required for doors and doorway
-    "entity_quantity",
-    // Required modelling fields per 2.4.3
-    "sheathing_product_id", // Модель обшивки
-  ],
-  window: [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "entity_quantity",
-    // Required modelling fields per 2.4.4
-    "window_product_id", // Модель окна
-  ],
-  windowsill: [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "entity_quantity",
-    // Required modelling fields per 2.4.5
-    "windowsill_product_id", // Модель подоконника
-  ],
-  "heated-floor": [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "entity_quantity",
-    // Required modelling fields per 2.4.6
-    "heated_floor_product_id", // Модель тёплого пола
-  ],
-  latting: [
-    // Measurement fields (required for all)
-    "opening_height",
-    "opening_width",
-    "entity_quantity",
-    // Required modelling fields per 2.4.7
-    "latting_product_id", // Модель обрешётки
-  ],
+  "door-window": [],
+  "door-deaf": [],
+  doorway: [],
+  window: [],
+  windowsill: [],
+  "heated-floor": [],
+  latting: [],
 };
 
 export const hasValue = (value: unknown) =>
   value !== undefined && value !== null && value !== "";
 
-const toBoolean = (value: unknown) => {
-  if (typeof value === "boolean") return value;
-  if (typeof value === "number") return value !== 0;
-  if (typeof value === "string") {
-    const normalized = value.toLowerCase().trim();
-    return normalized === "true" || normalized === "1" || normalized === "yes";
-  }
-  return false;
-};
-
-const getNestedValue = (values: TransactionValues, path: string): unknown =>
-  path.split(".").reduce<unknown>((acc, key) => {
-    if (acc && typeof acc === "object") {
-      return (acc as Record<string, unknown>)[key];
-    }
-    return undefined;
-  }, values);
-
-const lattingHasFront = (values: TransactionValues) =>
-  hasValue(values.frame_front_id);
-
-const lattingHasBack = (values: TransactionValues) =>
-  hasValue(values.frame_back_id);
-
-const lattingFrontFlag = (values: TransactionValues, flag: string) =>
-  toBoolean(getNestedValue(values, `frame_front.${flag}`));
-
-const lattingBackFlag = (values: TransactionValues, flag: string) =>
-  toBoolean(getNestedValue(values, `frame_back.${flag}`));
-
+// Conditional validations removed - backend handles validation
 export const CONDITIONAL_REQUIREMENTS: Record<
   string,
   Record<string, (values: TransactionValues) => boolean>
 > = {
-  "door-window": {
-    threshold_height: (values) => values.threshold === "custom",
-    door_bolt_product_id: (values) =>
-      Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
-    // Frame/Decor Logic per 2.5.1: If frame_front_id or frame_back_id selected,
-    // decorative components become conditionally required based on frame flags
-    up_frame_product_id: (values) =>
-      lattingFrontFlag(values, "has_up_frame") ||
-      lattingBackFlag(values, "has_up_frame"),
-    under_frame_height: (values) =>
-      lattingFrontFlag(values, "has_under_frame") ||
-      lattingBackFlag(values, "has_under_frame"),
-    under_frame_product_id: (values) =>
-      lattingFrontFlag(values, "has_under_frame") ||
-      lattingBackFlag(values, "has_under_frame"),
-    crown_product_id: (values) =>
-      lattingFrontFlag(values, "has_crown") ||
-      lattingBackFlag(values, "has_crown"),
-    transom_type: (values) =>
-      lattingFrontFlag(values, "has_transom") ||
-      lattingBackFlag(values, "has_transom"),
-    transom_height_front: (values) => lattingFrontFlag(values, "has_transom"),
-    transom_height_back: (values) => lattingBackFlag(values, "has_transom"),
-    transom_product_id: (values) =>
-      lattingFrontFlag(values, "has_transom") ||
-      lattingBackFlag(values, "has_transom"),
-    frame_product_id: (values) =>
-      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
-    filler_product_id: (values) =>
-      lattingFrontFlag(values, "is_filler") ||
-      lattingBackFlag(values, "is_filler"),
-  },
-  "door-deaf": {
-    threshold_height: (values) => values.threshold === "custom",
-    door_bolt_product_id: (values) =>
-      Number(values?.opening_width ?? values?.width ?? 0) >= 1.1,
-    // Frame/Decor Logic per 2.5.1: If frame_front_id or frame_back_id selected,
-    // decorative components become conditionally required based on frame flags
-    up_frame_product_id: (values) =>
-      lattingFrontFlag(values, "has_up_frame") ||
-      lattingBackFlag(values, "has_up_frame"),
-    under_frame_height: (values) =>
-      lattingFrontFlag(values, "has_under_frame") ||
-      lattingBackFlag(values, "has_under_frame"),
-    under_frame_product_id: (values) =>
-      lattingFrontFlag(values, "has_under_frame") ||
-      lattingBackFlag(values, "has_under_frame"),
-    crown_product_id: (values) =>
-      lattingFrontFlag(values, "has_crown") ||
-      lattingBackFlag(values, "has_crown"),
-    transom_type: (values) =>
-      lattingFrontFlag(values, "has_transom") ||
-      lattingBackFlag(values, "has_transom"),
-    transom_height_front: (values) => lattingFrontFlag(values, "has_transom"),
-    transom_height_back: (values) => lattingBackFlag(values, "has_transom"),
-    transom_product_id: (values) =>
-      lattingFrontFlag(values, "has_transom") ||
-      lattingBackFlag(values, "has_transom"),
-    frame_product_id: (values) =>
-      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
-    filler_product_id: (values) =>
-      lattingFrontFlag(values, "is_filler") ||
-      lattingBackFlag(values, "is_filler"),
-  },
-  latting: {
-    frame_front_id: lattingHasFront,
-    frame_back_id: lattingHasBack,
-    up_frame_product_id: (values) =>
-      lattingFrontFlag(values, "has_up_frame") ||
-      lattingBackFlag(values, "has_up_frame"),
-    under_frame_height: (values) =>
-      lattingFrontFlag(values, "has_under_frame") ||
-      lattingBackFlag(values, "has_under_frame"),
-    under_frame_product_id: (values) =>
-      lattingFrontFlag(values, "has_under_frame") ||
-      lattingBackFlag(values, "has_under_frame"),
-    crown_product_id: (values) =>
-      lattingFrontFlag(values, "has_crown") ||
-      lattingBackFlag(values, "has_crown"),
-    transom_type: (values) =>
-      lattingFrontFlag(values, "has_transom") ||
-      lattingBackFlag(values, "has_transom"),
-    transom_height_front: (values) => lattingFrontFlag(values, "has_transom"),
-    transom_height_back: (values) => lattingBackFlag(values, "has_transom"),
-    transom_product_id: (values) =>
-      lattingFrontFlag(values, "has_transom") ||
-      lattingBackFlag(values, "has_transom"),
-    frame_product_id: (values) =>
-      lattingFrontFlag(values, "is_frame") ||
-      lattingBackFlag(values, "is_frame"),
-    filler_product_id: (values) =>
-      lattingFrontFlag(values, "is_filler") ||
-      lattingBackFlag(values, "is_filler"),
-  },
+  "door-window": {},
+  "door-deaf": {},
+  latting: {},
 };
 
 const PRODUCT_CONFIG: Record<string, ProductTypeConfig> = {
