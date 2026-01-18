@@ -10,12 +10,20 @@ import type { ConfigurationPatchEntityUsdRate } from "./configurationPatchEntity
 import type { ConfigurationPatchEntityPfpFile } from "./configurationPatchEntityPfpFile";
 import type { ConfigurationPatchEntityHostingDomain } from "./configurationPatchEntityHostingDomain";
 import type { ConfigurationPatchEntityStandardBoxWidth } from "./configurationPatchEntityStandardBoxWidth";
+import type { ConfigurationPatchEntityMaxDiscountPercentAmount } from "./configurationPatchEntityMaxDiscountPercentAmount";
 import type { ConfigurationPatchEntityPercentCalculationMethod } from "./configurationPatchEntityPercentCalculationMethod";
+import type { ConfigurationPatchEntityOpeningMeasuringMethod } from "./configurationPatchEntityOpeningMeasuringMethod";
+import type { ConfigurationPatchEntityAllowSashCalculation } from "./configurationPatchEntityAllowSashCalculation";
+import type { ConfigurationPatchEntityAllowHingeCalculation } from "./configurationPatchEntityAllowHingeCalculation";
 
 export interface ConfigurationPatchEntity {
   usd_rate?: ConfigurationPatchEntityUsdRate;
   pfp_file?: ConfigurationPatchEntityPfpFile;
   hosting_domain?: ConfigurationPatchEntityHostingDomain;
   standard_box_width?: ConfigurationPatchEntityStandardBoxWidth;
+  max_discount_percent_amount?: ConfigurationPatchEntityMaxDiscountPercentAmount;
   percent_calculation_method?: ConfigurationPatchEntityPercentCalculationMethod;
+  opening_measuring_method?: ConfigurationPatchEntityOpeningMeasuringMethod;
+  allow_sash_calculation?: ConfigurationPatchEntityAllowSashCalculation;
+  allow_hinge_calculation?: ConfigurationPatchEntityAllowHingeCalculation;
 }

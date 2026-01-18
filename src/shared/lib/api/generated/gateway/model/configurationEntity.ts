@@ -17,6 +17,9 @@ export interface ConfigurationEntity {
   pfp_file?: ConfigurationEntityPfpFile;
   hosting_domain: string;
   standard_box_width: number;
+  max_discount_percent_amount: number;
   percent_calculation_method: number;
+  allow_sash_calculation: boolean;
+  allow_hinge_calculation: boolean;
   company: CompanyEntity;
 }
