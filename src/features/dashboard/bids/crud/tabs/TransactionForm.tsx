@@ -186,7 +186,7 @@ export const ALL_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите тип фрамуги",
         options: [
           { value: 1, label: "Обычная" },
-          { value: 2, label: "Скрытая" },
+          { value: 2, label: "Фальш панель" },
         ],
       },
       {
@@ -230,7 +230,7 @@ export const ALL_SECTIONS: SectionConfig[] = [
         placeholder: "Выберите тип фрамуги",
         options: [
           { value: 1, label: "Обычная" },
-          { value: 2, label: "Скрытая" },
+          { value: 2, label: "Фальш панель" },
         ],
       },
       {
@@ -272,7 +272,7 @@ export const ALL_SECTIONS: SectionConfig[] = [
   },
   {
     key: "sheathing",
-    title: "Обшивка",
+    title: "Добор",
     allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       {
