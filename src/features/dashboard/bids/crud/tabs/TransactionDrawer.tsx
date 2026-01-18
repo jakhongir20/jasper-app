@@ -345,7 +345,7 @@ export const TransactionDrawer: FC<Props> = ({
         </div>
       }
     >
-      <Form layout={"vertical"} form={drawerForm}>
+      <Form layout={"vertical"} form={drawerForm} component={false}>
         <Tabs
           activeKey={activeTab}
           onChange={setActiveTab}
