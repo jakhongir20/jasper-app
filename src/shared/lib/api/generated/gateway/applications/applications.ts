@@ -6,6 +6,7 @@
  *  * 0.1.0
  *  *\/
  */
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,7 +21,6 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type {
   AdminApplicationReadAllAdminApplicationAllGetParams,
@@ -47,8 +47,8 @@ import type {
   RootApplicationReadAllRootApplicationAllGetParams,
 } from ".././model";
 
-import type { ErrorType } from "../../../mutator";
 import { customInstance } from "../../../mutator";
+import type { ErrorType } from "../../../mutator";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 

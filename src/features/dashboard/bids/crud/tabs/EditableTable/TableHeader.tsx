@@ -1,16 +1,15 @@
 import { memo } from "react";
-import { Checkbox } from "antd";
+import { Checkbox, Tooltip } from "antd";
 import type { EditableColumnConfig } from "./types";
 
 interface TableHeaderProps {
   columns: EditableColumnConfig[];
-  allSelected: boolean;
   someSelected: boolean;
-  onSelectAll: () => void;
+  onClearSelection: () => void;
 }
 
 export const TableHeader = memo<TableHeaderProps>(
-  ({ columns, allSelected, someSelected, onSelectAll }) => {
+  ({ columns, someSelected, onClearSelection }) => {
     // Header styles
     const headerBg = "#F8F9FA";
     const headerTextColor = "#A4AAB0";
@@ -31,7 +30,7 @@ export const TableHeader = memo<TableHeaderProps>(
         }}
       >
         {columns.map((column) => {
-          // Render checkbox header
+          // Render checkbox header - only for clearing selection
           if (column.key === "checkbox") {
             return (
               <th
@@ -44,11 +43,14 @@ export const TableHeader = memo<TableHeaderProps>(
                   backgroundColor: headerBg,
                 }}
               >
-                <Checkbox
-                  checked={allSelected}
-                  indeterminate={someSelected && !allSelected}
-                  onChange={onSelectAll}
-                />
+                <Tooltip title={someSelected ? "Сбросить выбор" : ""}>
+                  <Checkbox
+                    checked={false}
+                    indeterminate={someSelected}
+                    onChange={onClearSelection}
+                    disabled={!someSelected}
+                  />
+                </Tooltip>
               </th>
             );
           }

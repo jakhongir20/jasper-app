@@ -8,12 +8,17 @@
  */
 import type { RootConfigurationEntityPfpFile } from "./rootConfigurationEntityPfpFile";
 import type { ConfigurationPercentCalculationMethodEnumEntity } from "./configurationPercentCalculationMethodEnumEntity";
+import type { ConfigurationOpeningMeasuringMethodEnumEntity } from "./configurationOpeningMeasuringMethodEnumEntity";
 
 export interface RootConfigurationEntity {
   usd_rate: number;
   pfp_file?: RootConfigurationEntityPfpFile;
   hosting_domain: string;
   standard_box_width: number;
+  max_discount_percent_amount: number;
   percent_calculation_method: ConfigurationPercentCalculationMethodEnumEntity;
+  opening_measuring_method: ConfigurationOpeningMeasuringMethodEnumEntity;
+  allow_sash_calculation: boolean;
+  allow_hinge_calculation: boolean;
   company_id: number;
 }

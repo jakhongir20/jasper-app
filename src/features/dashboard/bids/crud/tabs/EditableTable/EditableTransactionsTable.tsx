@@ -32,6 +32,21 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
   // Watch transactions for rendering
   const transactions = Form.useWatch("transactions", form) ?? [];
 
+  // Handle select rows by product type - smart selection helper
+  const handleSelectByProductType = useCallback(
+    (productType: string) => {
+      const matchingIndices: number[] = [];
+      transactions.forEach((t, index) => {
+        const transaction = t as Record<string, unknown> | undefined;
+        if (transaction?.product_type === productType) {
+          matchingIndices.push(index);
+        }
+      });
+      setSelectedRows(matchingIndices);
+    },
+    [transactions],
+  );
+
   // API hooks
   const saveRowMutation = useSaveRow();
 
@@ -42,13 +57,10 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
     );
   }, []);
 
-  const selectAllRows = useCallback(() => {
-    if (selectedRows.length === transactions.length) {
-      setSelectedRows([]);
-    } else {
-      setSelectedRows(transactions.map((_: unknown, i: number) => i));
-    }
-  }, [selectedRows.length, transactions.length]);
+  // Clear all selections - only unselect, never select all
+  const clearSelection = useCallback(() => {
+    setSelectedRows([]);
+  }, []);
 
   // Add new row
   const handleAddRow = useCallback(() => {
@@ -135,8 +147,6 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
   }, []);
 
   // Check selection state
-  const allSelected =
-    transactions.length > 0 && selectedRows.length === transactions.length;
   const someSelected = selectedRows.length > 0;
 
   return (
@@ -145,6 +155,8 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
         selectedCount={selectedRows.length}
         onAdd={handleAddRow}
         onBulkEdit={handleBulkEdit}
+        onSelectByProductType={handleSelectByProductType}
+        hasTransactions={transactions.length > 0}
       />
 
       <div
@@ -155,9 +167,8 @@ export const EditableTransactionsTable: FC<EditableTransactionsTableProps> = ({
           <thead>
             <TableHeader
               columns={columns}
-              allSelected={allSelected}
               someSelected={someSelected}
-              onSelectAll={selectAllRows}
+              onClearSelection={clearSelection}
             />
           </thead>
           <tbody>

@@ -116,7 +116,12 @@ const CATEGORY_SECTION_INDEX = {
 
 export type TransactionValues = Record<string, unknown>;
 
-export type FieldType = "text" | "number" | "select" | "selectInfinitive" | "image";
+export type FieldType =
+  | "text"
+  | "number"
+  | "select"
+  | "selectInfinitive"
+  | "image";
 
 export type FieldConfig = {
   name: string;
@@ -170,26 +175,26 @@ export const isDoorOrDoorway = (productType: string) =>
 
 export const ALL_SECTIONS: SectionConfig[] = [
   {
-    key: "transom",
-    title: "Фрамуга",
+    key: "transom-front",
+    title: "Фрамуга (лицо)",
     allowedProductTypes: ["door-window", "door-deaf"],
     fields: [
       {
-        name: "transom_type",
-        label: "Тип фрамуги",
+        name: "transom_front_type",
+        label: "Тип фрамуги (лицо)",
         type: "select",
         placeholder: "Выберите тип фрамуги",
         options: [
           { value: 1, label: "Обычная" },
-          { value: 2, label: "Скрытая" },
+          { value: 2, label: "Фальш панель" },
         ],
       },
       {
-        name: "transom_product_id",
-        label: "Модель фрамуги",
+        name: "transom_front_product_id",
+        label: "Модель фрамуги (лицо)",
         type: "selectInfinitive",
         placeholder: "Выберите модель фрамуги",
-        queryKey: "transom_product",
+        queryKey: "transom_front_product",
         fetchUrl: "/product/by/category-section-index",
         params: { category_section_index: CATEGORY_SECTION_INDEX.transom },
         labelKey: "name",
@@ -197,26 +202,77 @@ export const ALL_SECTIONS: SectionConfig[] = [
         useValueAsLabel: true,
       },
       {
-        name: "transom_height_front",
+        name: "floor_to_ceiling_front_height",
+        label: "От пола до потолка (лицо)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту",
+      },
+      {
+        name: "transom_front_height",
         label: "Высота фрамуги (лицо)",
         type: "number",
         numberStep: 0.01,
         placeholder: "Введите высоту фрамуги (лицо)",
-        visible: (values) => values.transom_type === 2, // Per 2.6.6: Only visible when transom_type is "Скрытая" (Hidden)
+        visible: (values) => values.transom_front_type === 2,
+      },
+    ],
+  },
+  {
+    key: "transom-back",
+    title: "Фрамуга (тыл)",
+    allowedProductTypes: ["door-window", "door-deaf"],
+    fields: [
+      {
+        name: "transom_back_type",
+        label: "Зад",
+        type: "select",
+        placeholder: "Выберите тип фрамуги",
+        options: [
+          { value: 1, label: "Обычная" },
+          { value: 2, label: "Фальш панель" },
+        ],
       },
       {
-        name: "transom_height_back",
-        label: "Высота фрамуги (тыл)",
+        name: "transom_back_product_id",
+        label: "Модель фрамуги (тыл)",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель фрамуги",
+        queryKey: "transom_back_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.transom },
+        labelKey: "name",
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "floor_to_ceiling_back_height",
+        label: "От пола до потолка (тыл)",
         type: "number",
         numberStep: 0.01,
-        placeholder: "Введите высоту фрамуги (тыл)",
-        visible: (values) => values.transom_type === 2, // Per 2.6.6: Only visible when transom_type is "Скрытая" (Hidden)
+        placeholder: "Введите высоту",
+      },
+      {
+        name: "transom_back_height_front",
+        label: "Высота фрамуги тыл (лицо)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту",
+        visible: (values) => values.transom_back_type === 2,
+      },
+      {
+        name: "transom_back_height_back",
+        label: "Высота фрамуги тыл (тыл)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту",
+        visible: (values) => values.transom_back_type === 2,
       },
     ],
   },
   {
     key: "sheathing",
-    title: "Обшивка",
+    title: "Добор",
     allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       {
@@ -259,85 +315,117 @@ export const ALL_SECTIONS: SectionConfig[] = [
     ],
   },
   {
-    key: "frame",
-    title: "Наличник",
+    key: "frame-front",
+    title: "Наличник (лицо)",
     allowedProductTypes: ["door-window", "door-deaf"],
-    visible: (values) =>
-      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
+    visible: (values) => hasValue(values.framework_front_id),
     fields: [
-      // Per 2.6.8: Model selector first
       {
-        name: "frame_product_id",
-        label: "Модель наличника",
+        name: "frame_front_product_id",
+        label: "Модель наличника (лицо)",
         type: "selectInfinitive",
         placeholder: "Выберите модель наличника",
-        queryKey: "frame_product",
+        queryKey: "frame_front_product",
         fetchUrl: "/product/by/category-section-index",
         params: { category_section_index: CATEGORY_SECTION_INDEX.frame },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      // Per 2.6.7: volume_frame removed
     ],
   },
   {
-    key: "filler",
-    title: "Нашельник",
+    key: "frame-back",
+    title: "Наличник (тыл)",
     allowedProductTypes: ["door-window", "door-deaf"],
-    visible: (values) =>
-      hasValue(values.frame_front_id) || hasValue(values.frame_back_id),
+    visible: (values) => hasValue(values.framework_back_id),
     fields: [
-      // Per 2.6.8: Model selector first
       {
-        name: "filler_product_id",
-        label: "Модель нашельника",
+        name: "frame_back_product_id",
+        label: "Модель наличника (тыл)",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель наличника",
+        queryKey: "frame_back_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "filler-front",
+    title: "Нашельник (лицо)",
+    allowedProductTypes: ["door-window", "door-deaf"],
+    visible: (values) => hasValue(values.framework_front_id),
+    fields: [
+      {
+        name: "filler_front_product_id",
+        label: "Модель нашельника (лицо)",
         type: "selectInfinitive",
         placeholder: "Выберите модель нашельника",
-        queryKey: "filler_product",
+        queryKey: "filler_front_product",
         fetchUrl: "/product/by/category-section-index",
         params: { category_section_index: CATEGORY_SECTION_INDEX.filler },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      // Per 2.6.7: volume_filler removed
     ],
   },
   {
-    key: "crown",
-    title: "Корона",
+    key: "filler-back",
+    title: "Нашельник (тыл)",
+    allowedProductTypes: ["door-window", "door-deaf"],
+    visible: (values) => hasValue(values.framework_back_id),
+    fields: [
+      {
+        name: "filler_back_product_id",
+        label: "Модель нашельника (тыл)",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель нашельника",
+        queryKey: "filler_back_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.filler },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+    ],
+  },
+  {
+    key: "crown-front",
+    title: "Корона (лицо)",
     allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
-      // Per 2.6.8: Model selector first
       {
-        name: "crown_product_id",
-        label: "Модель короны",
+        name: "crown_front_product_id",
+        label: "Модель короны (лицо)",
         type: "selectInfinitive",
         placeholder: "Выберите модель короны",
-        queryKey: "crown_product",
+        queryKey: "crown_front_product",
         fetchUrl: "/product/by/category-section-index",
         params: { category_section_index: CATEGORY_SECTION_INDEX.crown },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
       },
-      // Per 2.6.7: volume_crown removed
     ],
   },
   {
-    key: "up-frame",
-    title: "Кубик (Надналичник)",
+    key: "crown-back",
+    title: "Корона (тыл)",
     allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
       {
-        name: "up_frame_product_id",
-        label: "Модель надналичника",
+        name: "crown_back_product_id",
+        label: "Модель короны (тыл)",
         type: "selectInfinitive",
-        placeholder: "Выберите модель надналичника",
-        queryKey: "up_frame_product",
+        placeholder: "Выберите модель короны",
+        queryKey: "crown_back_product",
         fetchUrl: "/product/by/category-section-index",
-        params: { category_section_index: CATEGORY_SECTION_INDEX.up_frame },
+        params: { category_section_index: CATEGORY_SECTION_INDEX.crown },
         labelKey: ["name", "feature"],
         valueKey: "product_id",
         useValueAsLabel: true,
@@ -345,17 +433,70 @@ export const ALL_SECTIONS: SectionConfig[] = [
     ],
   },
   {
-    key: "under-frame",
-    title: "Сапожок (Подналичник)",
+    key: "up-frame-front",
+    title: "Кубик (лицо)",
     allowedProductTypes: ["door-window", "door-deaf", "doorway"],
     fields: [
-      // Per 2.6.8: Model selector first
       {
-        name: "under_frame_product_id",
-        label: "Модель подналичника",
+        name: "up_frame_front_product_id",
+        label: "Модель надналичника (лицо)",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель надналичника",
+        queryKey: "up_frame_front_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.up_frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "up_frame_front_quantity",
+        label: "Количество (лицо)",
+        type: "number",
+        numberStep: 1,
+        integerOnly: true,
+        placeholder: "Введите количество",
+      },
+    ],
+  },
+  {
+    key: "up-frame-back",
+    title: "Кубик (тыл)",
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
+    fields: [
+      {
+        name: "up_frame_back_product_id",
+        label: "Модель надналичника (тыл)",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель надналичника",
+        queryKey: "up_frame_back_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.up_frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "up_frame_back_quantity",
+        label: "Количество (тыл)",
+        type: "number",
+        numberStep: 1,
+        integerOnly: true,
+        placeholder: "Введите количество",
+      },
+    ],
+  },
+  {
+    key: "under-frame-front",
+    title: "Сапожок (лицо)",
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
+    fields: [
+      {
+        name: "under_frame_front_product_id",
+        label: "Модель подналичника (лицо)",
         type: "selectInfinitive",
         placeholder: "Выберите модель подналичника",
-        queryKey: "under_frame_product",
+        queryKey: "under_frame_front_product",
         fetchUrl: "/product/by/category-section-index",
         params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
         labelKey: ["name", "feature"],
@@ -363,8 +504,50 @@ export const ALL_SECTIONS: SectionConfig[] = [
         useValueAsLabel: true,
       },
       {
-        name: "under_frame_height",
-        label: "Высота подналичника",
+        name: "under_frame_front_quantity",
+        label: "Количество (лицо)",
+        type: "number",
+        numberStep: 1,
+        integerOnly: true,
+        placeholder: "Введите количество",
+      },
+      {
+        name: "under_frame_front_height",
+        label: "Высота подналичника (лицо)",
+        type: "number",
+        numberStep: 0.01,
+        placeholder: "Введите высоту подналичника",
+      },
+    ],
+  },
+  {
+    key: "under-frame-back",
+    title: "Сапожок (тыл)",
+    allowedProductTypes: ["door-window", "door-deaf", "doorway"],
+    fields: [
+      {
+        name: "under_frame_back_product_id",
+        label: "Модель подналичника (тыл)",
+        type: "selectInfinitive",
+        placeholder: "Выберите модель подналичника",
+        queryKey: "under_frame_back_product",
+        fetchUrl: "/product/by/category-section-index",
+        params: { category_section_index: CATEGORY_SECTION_INDEX.under_frame },
+        labelKey: ["name", "feature"],
+        valueKey: "product_id",
+        useValueAsLabel: true,
+      },
+      {
+        name: "under_frame_back_quantity",
+        label: "Количество (тыл)",
+        type: "number",
+        numberStep: 1,
+        integerOnly: true,
+        placeholder: "Введите количество",
+      },
+      {
+        name: "under_frame_back_height",
+        label: "Высота подналичника (тыл)",
         type: "number",
         numberStep: 0.01,
         placeholder: "Введите высоту подналичника",
